@@ -1,6 +1,7 @@
 import { NextRequest } from 'next/server';
 import { getCurrentUser } from '@/lib/auth-helpers';
 import { prisma } from '@/lib/prisma';
+import { getItemLock } from '@/lib/progress';
 import { logActivity } from '@/lib/activity-log';
 import { broadcast } from '@/lib/realtime';
 
@@ -10,12 +11,18 @@ export async function POST(req: NextRequest) {
   const user = await getCurrentUser();
   if (!user) return Response.json({ error: 'unauthorized' }, { status: 401 });
 
-  const { itemId, answers } = await req.json();
+  const { itemId, answers } = (await req.json()) as {
+    itemId: string;
+    answers: { questionId: string; selectedIndex: number; correct: boolean }[];
+  };
   const item = await prisma.item.findUnique({
     where: { id: itemId },
     include: { section: { include: { module: true } } },
   });
   if (!item) return Response.json({ error: 'item_not_found' }, { status: 404 });
+
+  const lock = await getItemLock(user.id, itemId);
+  if (lock.locked) return Response.json({ error: 'item_locked', reason: lock.reason }, { status: 403 });
 
   // 1. Load all questions for this item
   const questions = await prisma.question.findMany({
@@ -34,10 +41,15 @@ export async function POST(req: NextRequest) {
   // 3. Grade
   let correct = 0;
   let needsReAnswer = false;
-  const detailedAnswers: any[] = [];
+  const detailedAnswers: {
+    questionId: string;
+    selectedIndex?: number;
+    correct: boolean;
+    invalidated: boolean;
+  }[] = [];
 
   for (const q of questions) {
-    const submitted = answers.find((a: any) => a.questionId === q.id);
+    const submitted = answers.find((a) => a.questionId === q.id);
     const selectedIndex = submitted?.selectedIndex;
     const options = q.options as { text: string; correct: boolean }[];
     const correctIndex = options.findIndex((o) => o.correct);
@@ -60,9 +72,9 @@ export async function POST(req: NextRequest) {
     });
   }
 
-  const total = questions.length;
   const effectiveTotal = questions.filter((q) => !invalidationMap.has(q.id)).length;
   const passed = correct >= item.quizPassThreshold && !needsReAnswer;
+  const scoreFailed = correct < item.quizPassThreshold;
 
   // 4. Persist attempt
   await prisma.quizAttempt.create({
@@ -96,7 +108,35 @@ export async function POST(req: NextRequest) {
     },
   });
 
-  // 6. If all 3 items in section complete, mark section done
+  // 6. If the score fails the pass criteria, reset the section video so the
+  //    student must re-watch it from the start before retaking the quiz.
+  let redirectTo: string | null = null;
+  if (scoreFailed) {
+    const sectionItems = await prisma.item.findMany({
+      where: { sectionId: item.sectionId },
+      orderBy: { order: 'asc' },
+    });
+    const videoItem = sectionItems.find((i) => i.type === 'VIDEO');
+    if (videoItem) {
+      await prisma.topicProgress.upsert({
+        where: { userId_itemId: { userId: user.id, itemId: videoItem.id } },
+        create: {
+          userId: user.id,
+          itemId: videoItem.id,
+          videoCompleted: false,
+          videoWatchedSeconds: 0,
+        },
+        update: {
+          videoCompleted: false,
+          videoWatchedSeconds: 0,
+          completedAt: null,
+        },
+      });
+      redirectTo = `/learn/${item.section.module.courseId}/${item.section.module.id}/${item.sectionId}/${videoItem.id}`;
+    }
+  }
+
+  // 7. If all 3 items in section complete, mark section done
   if (passed) {
     const sectionItems = await prisma.item.findMany({ where: { sectionId: item.sectionId } });
     const allProgress = await prisma.topicProgress.findMany({
@@ -150,5 +190,5 @@ export async function POST(req: NextRequest) {
     metadata: { correct, total: effectiveTotal, needsReAnswer },
   });
 
-  return Response.json({ correct, total: effectiveTotal, passed, needsReAnswer });
+  return Response.json({ correct, total: effectiveTotal, passed, needsReAnswer, redirectTo });
 }
