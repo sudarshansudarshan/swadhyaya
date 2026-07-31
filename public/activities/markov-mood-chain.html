@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Markov Mood Chain — Steady States from Transitions</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=IBM+Plex+Mono:wght@500;600&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#FAF5E8; --paper-line:#D8CFB6; --ink:#26332B; --ink-soft:#5B6B60;
+    --fn:#1F6F5C; --fn-soft:#DCEDE7; --pt:#7B5EA7; --pt-soft:#EAE3F5;
+    --target:#B8860B; --target-soft:#F3E9CE; --d1:#B5502E; --d1-soft:#FBEFE8;
+    --card:#FFFDF7; --shadow:0 2px 10px rgba(38,51,43,0.08);
+    --happy:#1F6F5C; --happy-bg:#DCEDE7; --stressed:#B5502E; --stressed-bg:#FBEFE8;
+  }
+  *{box-sizing:border-box;} html,body{margin:0;padding:0;}
+  body{
+    background:repeating-linear-gradient(#FAF5E8 0px,#FAF5E8 27px,var(--paper-line) 28px),var(--paper);
+    background-size:100% 28px; color:var(--ink); font-family:'Source Sans 3',sans-serif;
+    min-height:100vh; padding:28px 16px 60px;
+  }
+  .wrap{max-width:1080px;margin:0 auto;}
+  header.hero{background:var(--card);border:1px solid var(--paper-line);border-radius:14px;box-shadow:var(--shadow);padding:26px 28px 22px;margin-bottom:20px;}
+  .eyebrow{font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);margin:0 0 6px;}
+  h1{font-family:'Caveat',cursive;font-weight:700;font-size:38px;margin:0 0 10px;line-height:1.05;}
+  header.hero p{max-width:680px;line-height:1.55;font-size:15.5px;margin:0 0 8px;}
+  .dim-grid{display:flex;gap:14px;flex-wrap:wrap;margin-top:12px;}
+  .dim-grid span{font-family:'IBM Plex Mono',monospace;font-size:13px;padding:8px 14px;border-radius:8px;font-weight:600;border:1px solid var(--paper-line);background:var(--paper);}
+  .grid-layout{display:grid;grid-template-columns:300px 1fr;gap:20px;align-items:start;}
+  @media (max-width:800px){.grid-layout{grid-template-columns:1fr;}}
+  .card{background:var(--card);border:1px solid var(--paper-line);border-radius:14px;box-shadow:var(--shadow);padding:20px;}
+  .panel-title{font-family:'Caveat',cursive;font-weight:700;font-size:24px;margin:0 0 4px;}
+  .panel-sub{font-size:13px;color:var(--ink-soft);margin:0 0 14px;line-height:1.4;}
+  .field{margin-bottom:14px;}
+  .field label{display:flex;justify-content:space-between;font-size:13.5px;font-weight:600;margin-bottom:6px;}
+  .field label span.val{font-family:'IBM Plex Mono',monospace;font-weight:600;color:var(--pt);}
+  input[type=number]{width:100%;padding:9px 10px;border-radius:8px;border:1px solid var(--paper-line);font-family:'IBM Plex Mono',monospace;font-size:16px;background:var(--paper);color:var(--ink);}
+  input[type=number]:focus{outline:2px solid var(--pt);outline-offset:-1px;border-color:var(--pt);}
+  .helper{font-size:12px;color:var(--ink-soft);margin-top:4px;line-height:1.4;}
+  button{font-family:'Source Sans 3',sans-serif;font-weight:600;font-size:14.5px;border:none;border-radius:9px;padding:11px 16px;cursor:pointer;width:100%;transition:transform .08s ease,filter .15s ease;}
+  button:active{transform:translateY(1px);}button:disabled{opacity:.4;cursor:not-allowed;}
+  .btn-primary{background:var(--fn);color:#fff;}.btn-primary:hover:not(:disabled){filter:brightness(1.08);}
+  .btn-secondary{background:var(--paper);color:var(--ink);border:1px solid var(--paper-line);margin-top:8px;}
+  .btn-secondary:hover:not(:disabled){background:#F0E9D6;}
+  .status{font-size:13.5px;line-height:1.5;padding:12px;border-radius:9px;background:var(--paper);border:1px solid var(--paper-line);margin-bottom:14px;min-height:20px;}
+  .status.feedback-good{background:var(--fn-soft);border-color:var(--fn);color:var(--fn);font-weight:600;}
+  .status.feedback-mid{background:var(--pt-soft);border-color:var(--pt);color:var(--pt);font-weight:600;}
+  .status.feedback-target{background:var(--target-soft);border-color:var(--target);color:var(--target);font-weight:600;}
+  .steps{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap;}
+  .step-dot{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:600;border:1.5px solid var(--paper-line);color:var(--ink-soft);background:var(--paper);}
+  .step-dot.done{background:var(--fn);border-color:var(--fn);color:#fff;}
+  .step-dot.solution{background:var(--target);border-color:var(--target);color:#fff;}
+  .step-dot.active{border-color:var(--pt);color:var(--pt);background:var(--pt-soft);}
+  .reflect,.explore{margin-top:20px;padding-top:16px;border-top:1px dashed var(--paper-line);}
+  .reflect.hidden,.explore.hidden{display:none;}
+  .q{margin-bottom:16px;}.q p.qtext{font-weight:600;margin:0 0 8px;font-size:14.5px;}
+  .options{display:flex;gap:8px;flex-wrap:wrap;}
+  .opt{padding:8px 14px;border-radius:8px;border:1px solid var(--paper-line);background:var(--paper);font-size:13.5px;cursor:pointer;font-weight:600;}
+  .opt.correct{background:var(--fn-soft);border-color:var(--fn);color:var(--fn);}
+  .opt.wrong{background:#F6DCD4;border-color:var(--d1);color:#8C3A1F;}
+  .opt:disabled{cursor:default;}
+  .explore .panel-title{font-size:22px;}
+  footer.note{text-align:center;font-size:12px;color:var(--ink-soft);margin-top:26px;font-family:'IBM Plex Mono',monospace;}
+
+  .matrix-display{font-family:'IBM Plex Mono',monospace;font-size:15px;text-align:center;padding:10px;border-radius:8px;background:var(--paper);border:1px solid var(--paper-line);margin-bottom:14px;line-height:2;}
+  .matrix-display .mat{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;margin:0 6px;}
+  .matrix-display .mat .mrow{display:flex;gap:10px;padding:1px 10px;}
+  .matrix-display .mat .mel{font-weight:600;text-align:center;min-width:30px;}
+  .matrix-display .hdr{display:inline-flex;flex-direction:column;vertical-align:middle;font-size:12px;color:var(--ink-soft);margin-right:4px;}
+  .matrix-display .hdr span{text-align:center;padding:1px 4px;}
+  .matrix-display .mlabel{color:var(--ink-soft);font-size:11px;}
+
+  .diagram-wrap{display:flex;justify-content:center;margin-bottom:10px;}
+  .diagram-wrap svg{width:100%;height:auto;max-height:260px;}
+
+  .bar-wrap{margin:12px 0;border-radius:8px;overflow:hidden;border:1px solid var(--paper-line);display:flex;height:36px;font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:600;}
+  .bar-wrap .bar{display:flex;align-items:center;justify-content:center;transition:width .4s ease;min-width:0;}
+  .bar-wrap .bar.h{background:var(--happy);color:#fff;}
+  .bar-wrap .bar.s{background:var(--stressed);color:#fff;}
+
+  .calc-box{font-family:'IBM Plex Mono',monospace;font-size:13px;line-height:1.7;padding:12px;border-radius:8px;background:var(--paper);border:1px solid var(--paper-line);margin-top:10px;}
+  .calc-box .highlight{color:var(--fn);font-weight:700;}
+  .calc-box .highlight2{color:var(--stressed);font-weight:700;}
+  .calc-box .step-label{font-size:11px;color:var(--ink-soft);font-weight:600;}
+  .conv-table{border-collapse:collapse;font-size:12px;width:100%;margin-top:4px;}
+  .conv-table th{font-size:10px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.05em;padding:3px 4px;border-bottom:1px solid var(--paper-line);text-align:right;}
+  .conv-table th:first-child{text-align:center;}
+  .conv-table td{padding:3px 4px;text-align:right;border-bottom:1px solid var(--paper-line);}
+  .conv-table td:first-child{text-align:center;color:var(--ink-soft);}
+  .conv-table .steady-row td{border-bottom:2px solid var(--ink);font-weight:700;}
+
+  .explore-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0;}
+  .explore-grid .field{margin-bottom:0;}
+  .explore-grid .field label{font-size:11px;}
+  .explore-grid .field input{font-size:13px;padding:6px 7px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <p class="eyebrow">Markov Chains · Steady State</p>
+    <h1>The Mood Chain — Where Do People End Up?</h1>
+    <p>Each day a person is either <strong>Happy</strong> or <strong>Stressed</strong>. Their mood tomorrow depends only on today's mood — with fixed probabilities. This is a <strong>Markov chain</strong>. After many days, the fraction in each state settles to a <strong>steady state</strong> — regardless of where they started.</p>
+    <div class="dim-grid">
+      <span style="background:var(--happy-bg);border-color:var(--happy);color:var(--happy);">Happy (H)</span>
+      <span style="background:var(--stressed-bg);border-color:var(--stressed);color:var(--stressed);">Stressed (S)</span>
+      <span style="background:var(--target-soft);border-color:var(--target);color:var(--target);">πP = π</span>
+    </div>
+  </header>
+
+  <div class="grid-layout">
+    <div class="card">
+      <p class="panel-title" id="stepTitle">The Mood Chain</p>
+      <p class="panel-sub" id="stepSub">Two states, fixed transition probabilities.</p>
+
+      <div class="matrix-display" id="matrixDisplay">
+        <span class="mlabel">Transition matrix P</span><br>
+        <span class="hdr"><span> </span><span style="color:var(--happy);">H</span><span style="color:var(--stressed);">S</span></span>
+        <span class="mat">
+          <span class="mrow"><span class="mel" style="color:var(--happy);">0.3</span><span class="mel" style="color:var(--stressed);">0.7</span></span>
+          <span class="mrow"><span class="mel" style="color:var(--happy);">0.5</span><span class="mel" style="color:var(--stressed);">0.5</span></span>
+        </span>
+        <br><span style="font-size:11px;color:var(--ink-soft);">row = current mood, col = next mood</span>
+      </div>
+
+      <div id="stepContent"></div>
+
+      <div class="steps" id="stepDots"></div>
+
+      <div class="status" id="statusBox">Step 1 of 6 — Examine the mood chain.</div>
+
+      <button class="btn-primary" id="checkBtn">Reveal</button>
+      <button class="btn-secondary" id="resetBtn">Start Over</button>
+    </div>
+
+    <div class="card">
+      <p class="panel-title" id="rightTitle">Transition Diagram</p>
+      <p class="panel-sub" id="rightSub">Arrows show how moods change day-to-day.</p>
+      <div class="diagram-wrap">
+        <svg viewBox="0 0 400 240" id="diagramSvg"></svg>
+      </div>
+      <div id="distributionDisplay"></div>
+    </div>
+  </div>
+
+  <!-- REFLECTION QUIZ -->
+  <div class="card reflect hidden" id="reflectCard">
+    <p class="panel-title">Markov Chains &amp; Steady States</p>
+    <p class="panel-sub">A Markov chain's long-run behavior is captured by its stationary distribution.</p>
+
+    <div class="q" id="q1">
+      <p class="qtext">1. What does the Markov property say?</p>
+      <div class="options">
+        <button class="opt" data-correct="true">Tomorrow's mood depends only on today's mood — not on the past before today.</button>
+        <button class="opt" data-correct="false">Tomorrow's mood depends on the entire history of moods.</button>
+        <button class="opt" data-correct="false">Moods are completely random and independent each day.</button>
+      </div>
+    </div>
+
+    <div class="q" id="q2">
+      <p class="qtext">2. In the steady state, what fraction of people are Happy?</p>
+      <div class="options">
+        <button class="opt" data-correct="false">1/2 (50%)</button>
+        <button class="opt" data-correct="true">5/12 ≈ 41.7%</button>
+        <button class="opt" data-correct="false">7/12 ≈ 58.3%</button>
+      </div>
+    </div>
+
+    <div class="q" id="q3">
+      <p class="qtext">3. Does the initial state affect the steady state?</p>
+      <div class="options">
+        <button class="opt" data-correct="true">No — for an irreducible, aperiodic chain, the stationary distribution is unique and independent of the starting state.</button>
+        <button class="opt" data-correct="false">Yes — starting Happy guarantees more Happy people forever.</button>
+        <button class="opt" data-correct="false">Only if the chain is periodic.</button>
+      </div>
+    </div>
+
+    <div class="q" id="q4">
+      <p class="qtext">4. The steady-state equation πP = π means:</p>
+      <div class="options">
+        <button class="opt" data-correct="true">The distribution π is unchanged after one more step — it's an eigenvector of P with eigenvalue 1.</button>
+        <button class="opt" data-correct="false">π multiplied by P equals zero.</button>
+        <button class="opt" data-correct="false">P is the identity matrix.</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- EXPLORE MODE -->
+  <div class="card explore hidden" id="exploreCard">
+    <p class="panel-title">Explore Your Own Chain</p>
+    <p class="panel-sub">Adjust transition probabilities and see the steady state change instantly.</p>
+
+    <div class="explore-grid">
+      <div class="field"><label>P(H → H) <span class="val" id="expPHHv">0.3</span></label><input type="number" id="expPHH" value="0.3" min="0" max="1" step="0.05"></div>
+      <div class="field"><label>P(S → S) <span class="val" id="expPSSv">0.5</span></label><input type="number" id="expPSS" value="0.5" min="0" max="1" step="0.05"></div>
+      <div class="field"><label>Initial H out of 1000 <span class="val" id="expInitHv">500</span></label><input type="number" id="expInitH" value="500" min="0" max="1000" step="10"></div>
+    </div>
+
+    <div id="expResult" style="font-family:'IBM Plex Mono',monospace;font-size:13px;line-height:1.8;background:var(--paper);border:1px solid var(--paper-line);border-radius:10px;padding:14px;"></div>
+  </div>
+
+  <footer class="note">Markov chain · πP = π · steady state = [5/12, 7/12]</footer>
+</div>
+
+<script>
+(function(){
+  const $ = id => document.getElementById(id);
+
+  const H = 0, S = 1;
+  const P = [[0.3, 0.7], [0.5, 0.5]];
+  const LABELS = ['Happy', 'Stressed'];
+  const CLS = ['h', 's'];
+
+  const STEPS = [
+    { label:'The Mood Chain', desc:'Two moods. Fixed transition probabilities.', key:'intro' },
+    { label:'One Step from Happy', desc:'Start 1000 people Happy. What happens tomorrow?', key:'fromH', start:H },
+    { label:'One Step from Stressed', desc:'Start 1000 people Stressed. What happens tomorrow?', key:'fromS', start:S },
+    { label:'Convergence', desc:'Watch both paths settle to the same numbers.', key:'converge' },
+    { label:'Steady State', desc:'Set up πP = π and solve.', key:'steady' },
+    { label:'Equilibrium', desc:'Plug in 1000 people. The answer!', key:'equil' },
+  ];
+  const TOTAL = STEPS.length;
+  let step = 0;
+  let revealed = false;
+
+  const stepDots = $('stepDots');
+  const statusBox = $('statusBox');
+  const checkBtn = $('checkBtn');
+  const resetBtn = $('resetBtn');
+  const reflectCard = $('reflectCard');
+  const exploreCard = $('exploreCard');
+  const stepTitle = $('stepTitle');
+  const stepSub = $('stepSub');
+  const stepContent = $('stepContent');
+  const rightTitle = $('rightTitle');
+  const rightSub = $('rightSub');
+  const diagramSvg = $('diagramSvg');
+  const distributionDisplay = $('distributionDisplay');
+
+  for(let i=1;i<=TOTAL;i++){
+    const d = document.createElement('div');
+    d.className='step-dot'; d.textContent=i; d.id='step-'+i;
+    stepDots.appendChild(d);
+  }
+
+  function getSD(){ return STEPS[step]; }
+  function fmt(n){ return Math.round(n*100)/100; }
+
+  // ----- SVG Diagram -----
+  function drawDiagram(highlight){
+    const svg = diagramSvg;
+    const w = 400, h = 240;
+    svg.innerHTML = '';
+
+    const ns = 'http://www.w3.org/2000/svg';
+
+    // arrowhead marker
+    const defs = document.createElementNS(ns,'defs');
+    ['happy','stressed','self'].forEach(id=>{
+      const mk = document.createElementNS(ns,'marker');
+      mk.setAttribute('id','arr-'+id);
+      mk.setAttribute('viewBox','0 0 10 10');
+      mk.setAttribute('refX', id==='self' ? 10 : 9);
+      mk.setAttribute('refY','5');
+      mk.setAttribute('markerWidth','8');
+      mk.setAttribute('markerHeight','8');
+      mk.setAttribute('orient','auto');
+      const path = document.createElementNS(ns,'path');
+      path.setAttribute('d','M 0 0 L 10 5 L 0 10 z');
+      path.setAttribute('fill', id==='happy' ? 'var(--happy)' : id==='stressed' ? 'var(--stressed)' : 'var(--ink-soft)');
+      mk.appendChild(path);
+      defs.appendChild(mk);
+    });
+    svg.appendChild(defs);
+
+    // state circles
+    const cx = [140, 260], cy = 120, r = 38;
+    const colors = ['var(--happy)','var(--stressed)'];
+    const fills = ['var(--happy-bg)','var(--stressed-bg)'];
+
+    for(let i=0;i<2;i++){
+      const c = document.createElementNS(ns,'circle');
+      c.setAttribute('cx',cx[i]); c.setAttribute('cy',cy);
+      c.setAttribute('r',r);
+      c.setAttribute('fill',fills[i]); c.setAttribute('stroke',colors[i]);
+      c.setAttribute('stroke-width','2.5');
+      svg.appendChild(c);
+
+      const t = document.createElementNS(ns,'text');
+      t.setAttribute('x',cx[i]); t.setAttribute('y',cy+4);
+      t.setAttribute('text-anchor','middle'); t.setAttribute('font-size','15');
+      t.setAttribute('font-weight','700');
+      t.setAttribute('fill',colors[i]);
+      t.setAttribute('font-family','Source Sans 3,sans-serif');
+      t.textContent = LABELS[i];
+      svg.appendChild(t);
+    }
+
+    // self-loops
+    for(let i=0;i<2;i++){
+      const x = cx[i];
+      const startX = x - 24, startY = cy - 26;
+      const endX = x + 24, endY = cy - 26;
+      const path = document.createElementNS(ns,'path');
+      path.setAttribute('d',`M ${startX} ${startY} C ${startX} ${cy-65}, ${endX} ${cy-65}, ${endX} ${endY}`);
+      path.setAttribute('fill','none'); path.setAttribute('stroke','var(--ink-soft)');
+      path.setAttribute('stroke-width','1.8');
+      path.setAttribute('marker-end','url(#arr-self)');
+      svg.appendChild(path);
+
+      const t = document.createElementNS(ns,'text');
+      t.setAttribute('x',x); t.setAttribute('y',cy-68);
+      t.setAttribute('text-anchor','middle'); t.setAttribute('font-size','13');
+      t.setAttribute('font-weight','600');
+      t.setAttribute('fill','var(--ink)');
+      t.setAttribute('font-family','IBM Plex Mono,monospace');
+      t.textContent = i===H ? '0.3' : '0.5';
+      svg.appendChild(t);
+    }
+
+    // cross transitions
+    const crossProbs = [[0.7, 'stressed', 'H → S'], [0.5, 'happy', 'S → H']];
+    for(let ci=0;ci<2;ci++){
+      const from = ci===0 ? H : S;
+      const to = ci===0 ? S : H;
+      const prob = P[from][to];
+      const markerId = ci===0 ? 'arr-stressed' : 'arr-happy';
+      const yOff = ci===0 ? -10 : 10;
+
+      const x1 = cx[from] + r - 4;
+      const y1 = cy + yOff;
+      const x2 = cx[to] - r + 4;
+      const y2 = cy + yOff;
+
+      const line = document.createElementNS(ns,'line');
+      line.setAttribute('x1',x1); line.setAttribute('y1',y1);
+      line.setAttribute('x2',x2); line.setAttribute('y2',y2);
+      line.setAttribute('stroke','var(--ink-soft)'); line.setAttribute('stroke-width','1.8');
+      line.setAttribute('marker-end','url(#'+markerId+')');
+      svg.appendChild(line);
+
+      const t = document.createElementNS(ns,'text');
+      t.setAttribute('x',(x1+x2)/2); t.setAttribute('y',cy + yOff - (ci===0?8:-8));
+      t.setAttribute('text-anchor','middle'); t.setAttribute('font-size','13');
+      t.setAttribute('font-weight','600');
+      t.setAttribute('fill','var(--ink)');
+      t.setAttribute('font-family','IBM Plex Mono,monospace');
+      t.textContent = prob.toFixed(1);
+      svg.appendChild(t);
+    }
+  }
+
+  // ----- Distribution bar -----
+  function renderBar(hCount, sCount, label){
+    const total = hCount + sCount;
+    const hp = (hCount/total*100).toFixed(1);
+    const sp = (sCount/total*100).toFixed(1);
+    let html = `<div class="bar-wrap">`;
+    html += `<div class="bar h" style="width:${hp}%">${hCount}</div>`;
+    html += `<div class="bar s" style="width:${sp}%">${sCount}</div>`;
+    html += `</div>`;
+    html += `<div style="display:flex;justify-content:space-between;font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--ink-soft);margin-bottom:6px;">`;
+    html += `<span style="color:var(--happy);font-weight:600;">Happy: ${hCount} (${hp}%)</span>`;
+    html += `<span style="color:var(--stressed);font-weight:600;">Stressed: ${sCount} (${sp}%)</span>`;
+    html += `</div>`;
+    if(label) html += `<div style="font-size:12px;color:var(--ink-soft);text-align:center;">${label}</div>`;
+    distributionDisplay.innerHTML = html;
+  }
+
+  // ----- Step Content -----
+  function renderStep(){
+    const sd = getSD();
+    stepTitle.textContent = sd.label;
+    stepSub.textContent = sd.desc;
+
+    let html = '';
+
+    if(sd.key === 'intro'){
+      html = `<div class="calc-box">Each day, a person's mood follows fixed probabilities — no memory of earlier days. After many days, the fraction in each mood stabilizes.</div>`;
+      rightTitle.textContent = 'Transition Diagram';
+      rightSub.textContent = 'Arrows show the probabilities of switching moods.';
+      distributionDisplay.innerHTML = '';
+    } else if(sd.key === 'fromH' || sd.key === 'fromS'){
+      const start = sd.start;
+      const dist = [0, 0];
+      dist[H] = start === H ? 1000 : 0;
+      dist[S] = start === S ? 1000 : 0;
+      const next = [Math.round(P[H][H]*dist[H] + P[S][H]*dist[S]),
+                    Math.round(P[H][S]*dist[H] + P[S][S]*dist[S])];
+      const startLabel = LABELS[start];
+
+      html = `<div class="calc-box">`;
+      html += `<div class="step-label">Starting state: all 1000 people are ${startLabel}</div><br>`;
+      html += `H tomorrow = P(H→H)·1000 + P(S→H)·0 = ${P[H][H]}·1000 = <span class="highlight">${next[H]}</span><br>`;
+      html += `S tomorrow = P(H→S)·1000 + P(S→S)·0 = ${P[H][S]}·1000 = <span class="highlight2">${next[S]}</span><br><br>`;
+      html += `After 1 day: <span class="highlight">${next[H]} Happy</span>, <span class="highlight2">${next[S]} Stressed</span>`;
+      html += `</div>`;
+
+      rightTitle.textContent = `One Step from ${startLabel}`;
+      rightSub.textContent = `${next[H]} Happy, ${next[S]} Stressed after 1 day.`;
+      renderBar(next[H], next[S], `After 1 step starting from ${startLabel}`);
+    } else if(sd.key === 'converge'){
+      // simulate from both starts
+      function simulate(startH){
+        let d = [startH, 1000-startH];
+        const rows = [];
+        for(let s=0;s<=6;s++){
+          rows.push({step:s, h:Math.round(d[H]*10)/10, s:Math.round(d[S]*10)/10});
+          d = [d[H]*P[H][H]+d[S]*P[S][H], d[H]*P[H][S]+d[S]*P[S][S]];
+        }
+        rows.push({step:'∞', h:5000/12, s:7000/12});
+        return rows;
+      }
+      const fromH = simulate(1000);
+      const fromS = simulate(0);
+
+      html = `<div class="calc-box">`;
+      html += `<div class="step-label">Day-by-day convergence from both starting states</div>`;
+      html += `<div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:8px;">`;
+
+      for(let startLabel of ['Start Happy','Start Stressed']){
+        const rows = startLabel === 'Start Happy' ? fromH : fromS;
+        html += `<div><div style="font-weight:600;font-size:12px;margin-bottom:4px;color:${startLabel==='Start Happy' ? 'var(--happy)' : 'var(--stressed)'};">${startLabel}</div>`;
+        html += `<table class="conv-table"><thead><tr><th>Day</th><th>H</th><th>S</th></tr></thead><tbody>`;
+        for(let r of rows){
+          const isSteady = r.step === '∞';
+          html += `<tr${isSteady?' class="steady-row"':''}>`;
+          html += `<td>${r.step}</td>`;
+          html += `<td style="color:var(--happy);font-weight:${isSteady?'700':'600'};">${isSteady ? r.h.toFixed(1) : r.h}</td>`;
+          html += `<td style="color:var(--stressed);font-weight:${isSteady?'700':'600'};">${isSteady ? r.s.toFixed(1) : r.s}</td>`;
+          html += `</tr>`;
+        }
+        html += `</tbody></table></div>`;
+      }
+
+      html += `</div><br>`;
+      html += `<span style="font-size:12px;">Both paths converge to the same numbers — the chain <strong>forgets</strong> its starting state.</span>`;
+      html += `</div>`;
+
+      rightTitle.textContent = 'Convergence';
+      rightSub.textContent = 'Both starting states converge to [417, 583].';
+      renderBar(417, 583, 'Steady state (per 1000)');
+    } else if(sd.key === 'steady'){
+      html = `<div class="calc-box">`;
+      html += `<div class="step-label">Stationary distribution π = [π_H, π_S] solves πP = π</div><br>`;
+      html += `π_H = 0.3·π_H + 0.5·π_S &nbsp;→&nbsp; 0.7·π_H = 0.5·π_S &nbsp;→&nbsp; π_S = <strong>1.4</strong>·π_H<br>`;
+      html += `π_S = 0.7·π_H + 0.5·π_S &nbsp;→&nbsp; 0.5·π_S = 0.7·π_H &nbsp;→&nbsp; (same)<br><br>`;
+      html += `π_H + π_S = 1 &nbsp;→&nbsp; π_H + 1.4·π_H = 1 &nbsp;→&nbsp; 2.4·π_H = 1<br>`;
+      html += `π_H = <strong>5/12</strong> &nbsp; π_S = <strong>7/12</strong>`;
+      html += `</div>`;
+      rightTitle.textContent = 'Steady State';
+      rightSub.textContent = 'π = [5/12, 7/12] ≈ [0.4167, 0.5833]';
+      renderBar(417, 583, 'Steady state (per 1000 people)');
+    } else if(sd.key === 'equil'){
+      html = `<div class="calc-box">`;
+      html += `<div class="step-label">Equilibrium distribution for 1000 people</div><br>`;
+      html += `Happy: 1000 × 5/12 = <span class="highlight">${Math.round(1000*5/12)}</span><br>`;
+      html += `Stressed: 1000 × 7/12 = <span class="highlight2">${Math.round(1000*7/12)}</span><br><br>`;
+      html += `Regardless of the starting state, after many steps:<br>`;
+      html += `<span style="font-size:17px;">~<strong>417 Happy</strong>, ~<strong>583 Stressed</strong></span><br><br>`;
+      html += `The chain forgets where it started — only the transition probabilities matter in the long run.`;
+      html += `</div>`;
+      rightTitle.textContent = 'Equilibrium';
+      rightSub.textContent = '~417 Happy, ~583 Stressed out of 1000';
+      renderBar(417, 583, 'Equilibrium: 417 Happy, 583 Stressed');
+    }
+
+    stepContent.innerHTML = html;
+
+    if(step >= TOTAL){
+      checkBtn.disabled = true; checkBtn.textContent = 'Complete';
+    } else if(revealed){
+      checkBtn.textContent = 'Next Step';
+    } else {
+      checkBtn.textContent = 'Reveal';
+    }
+  }
+
+  function markDots(){
+    document.querySelectorAll('.step-dot').forEach(d=>d.classList.remove('active'));
+    for(let i=0;i<step&&i<TOTAL;i++){
+      const d=$('step-'+(i+1)); if(d) d.classList.add('done');
+    }
+    if(step < TOTAL){ const d=$('step-'+(step+1)); if(d) d.classList.add('active'); }
+  }
+
+  function setStatus(html, cls){
+    statusBox.innerHTML = html;
+    statusBox.className = 'status' + (cls ? ' '+cls : '');
+  }
+
+  function advance(){
+    if(step>=TOTAL){
+      checkBtn.disabled=true;
+      setTimeout(()=>{reflectCard.classList.remove('hidden');exploreCard.classList.remove('hidden');reflectCard.scrollIntoView({behavior:'smooth',block:'nearest'});},500);
+      setStatus('Complete! Explore your own Markov chain below.','feedback-target');
+      return;
+    }
+    revealed = true;
+    const sd = getSD();
+    let msg;
+    if(sd.key === 'intro') msg = 'Today\'s mood determines tomorrow\'s. Let\'s see what happens in one day.';
+    else if(sd.key === 'fromH') msg = 'From all-Happy: 300 stay Happy, 700 become Stressed.';
+    else if(sd.key === 'fromS') msg = 'From all-Stressed: 500 become Happy, 500 stay Stressed.';
+    else if(sd.key === 'converge') msg = 'Both paths converge to ~417 Happy, ~583 Stressed by day 6.';
+    else if(sd.key === 'steady') msg = 'π_H = 5/12 ≈ 0.417, π_S = 7/12 ≈ 0.583.';
+    else msg = '~417 Happy, ~583 Stressed in the long run — independent of the start!';
+    setStatus(msg,'feedback-good');
+    markDots(); renderStep();
+  }
+
+  function nextStep(){
+    if(!revealed){
+      advance();
+    } else {
+      step++; revealed = false;
+      if(step<TOTAL){
+        const sd = getSD();
+        setStatus(`Step ${step+1}: ${sd.desc}`);
+        renderStep(); markDots();
+      } else {
+        setStatus('All steps complete!','feedback-target');
+        checkBtn.disabled = true;
+        setTimeout(()=>{reflectCard.classList.remove('hidden');exploreCard.classList.remove('hidden');reflectCard.scrollIntoView({behavior:'smooth',block:'nearest'});},500);
+      }
+    }
+  }
+
+  checkBtn.addEventListener('click', nextStep);
+
+  resetBtn.addEventListener('click', ()=>{
+    step=0; revealed=false;
+    checkBtn.disabled=false;
+    reflectCard.classList.add('hidden');
+    exploreCard.classList.add('hidden');
+    document.querySelectorAll('.step-dot').forEach(d=>d.classList.remove('done','solution','active'));
+    const f=$('step-1'); if(f) f.classList.add('active');
+    renderStep(); markDots();
+    setStatus('Step 1 of 6 — Examine the mood chain.');
+  });
+
+  // ---- EXPLORE ----
+  const expPHH = $('expPHH'), expPSS = $('expPSS'), expInitH = $('expInitH');
+  const expPHHv = $('expPHHv'), expPSSv = $('expPSSv'), expInitHv = $('expInitHv');
+  const expResult = $('expResult');
+
+  function computeSteady(a, b){
+    // a = P(H→H), b = P(S→S)
+    const phh = a, pss = b;
+    const phs = 1 - phh, psh = 1 - pss;
+    // πH = phh·πH + psh·πS  →  (1-phh)·πH = psh·πS  →  phs·πH = psh·πS
+    // πH + πS = 1
+    // πS = (phs/psh)·πH  (if psh != 0)
+    let piH, piS;
+    if(phs === 0 && psh === 0){
+      piH = 0.5; piS = 0.5;
+    } else if(phs === 0){
+      piH = 1; piS = 0;
+    } else if(psh === 0){
+      piH = 0; piS = 1;
+    } else {
+      piS = (phs / psh) * (1 / (1 + phs/psh));
+      piH = 1 - piS;
+    }
+    return { piH, piS, phh, phs, pss, psh };
+  }
+
+  function drawExploreDiagram(data){
+    const svg = document.createElementNS('http://www.w3.org/2000/svg','svg');
+    svg.setAttribute('viewBox','0 0 400 190');
+    svg.style.width = '100%'; svg.style.height = 'auto';
+    svg.style.marginTop = '10px';
+
+    const ns = 'http://www.w3.org/2000/svg';
+    const defs = document.createElementNS(ns,'defs');
+    ['d1','d2','d3'].forEach(id=>{
+      const mk = document.createElementNS(ns,'marker');
+      mk.setAttribute('id','ea-'+id);
+      mk.setAttribute('viewBox','0 0 10 10');
+      mk.setAttribute('refX','9'); mk.setAttribute('refY','5');
+      mk.setAttribute('markerWidth','7'); mk.setAttribute('markerHeight','7');
+      mk.setAttribute('orient','auto');
+      const p = document.createElementNS(ns,'path');
+      p.setAttribute('d','M 0 0 L 10 5 L 0 10 z');
+      p.setAttribute('fill','var(--ink-soft)');
+      mk.appendChild(p); defs.appendChild(mk);
+    });
+    svg.appendChild(defs);
+
+    const cx = [130, 270], cy = 95, r = 32;
+    for(let i=0;i<2;i++){
+      const c = document.createElementNS(ns,'circle');
+      c.setAttribute('cx',cx[i]); c.setAttribute('cy',cy);
+      c.setAttribute('r',r);
+      c.setAttribute('fill',i===0 ? 'var(--happy-bg)' : 'var(--stressed-bg)');
+      c.setAttribute('stroke',i===0 ? 'var(--happy)' : 'var(--stressed)');
+      c.setAttribute('stroke-width','2');
+      svg.appendChild(c);
+      const t = document.createElementNS(ns,'text');
+      t.setAttribute('x',cx[i]); t.setAttribute('y',cy+4);
+      t.setAttribute('text-anchor','middle'); t.setAttribute('font-size','14');
+      t.setAttribute('font-weight','700');
+      t.setAttribute('fill',i===0 ? 'var(--happy)' : 'var(--stressed)');
+      t.setAttribute('font-family','Source Sans 3,sans-serif');
+      t.textContent = LABELS[i];
+      svg.appendChild(t);
+    }
+
+    // self-loops
+    for(let i=0;i<2;i++){
+      const x = cx[i];
+      const p = document.createElementNS(ns,'path');
+      p.setAttribute('d',`M ${x-20} ${cy-24} C ${x-20} ${cy-55}, ${x+20} ${cy-55}, ${x+20} ${cy-24}`);
+      p.setAttribute('fill','none'); p.setAttribute('stroke','var(--ink-soft)');
+      p.setAttribute('stroke-width','1.5'); p.setAttribute('marker-end','url(#ea-d3)');
+      svg.appendChild(p);
+      const t = document.createElementNS(ns,'text');
+      t.setAttribute('x',x); t.setAttribute('y',cy-57);
+      t.setAttribute('text-anchor','middle'); t.setAttribute('font-size','12');
+      t.setAttribute('font-weight','600'); t.setAttribute('fill','var(--ink)');
+      t.setAttribute('font-family','IBM Plex Mono,monospace');
+      t.textContent = (i===0 ? data.phh : data.pss).toFixed(2);
+      svg.appendChild(t);
+    }
+
+    // H→S
+    const line1 = document.createElementNS(ns,'line');
+    line1.setAttribute('x1',cx[H]+r-3); line1.setAttribute('y1',cy-8);
+    line1.setAttribute('x2',cx[S]-r+3); line1.setAttribute('y2',cy-8);
+    line1.setAttribute('stroke','var(--ink-soft)'); line1.setAttribute('stroke-width','1.5');
+    line1.setAttribute('marker-end','url(#ea-d2)');
+    svg.appendChild(line1);
+    let t1 = document.createElementNS(ns,'text');
+    t1.setAttribute('x',(cx[H]+cx[S])/2); t1.setAttribute('y',cy-16);
+    t1.setAttribute('text-anchor','middle'); t1.setAttribute('font-size','12');
+    t1.setAttribute('font-weight','600'); t1.setAttribute('fill','var(--ink)');
+    t1.setAttribute('font-family','IBM Plex Mono,monospace');
+    t1.textContent = data.phs.toFixed(2);
+    svg.appendChild(t1);
+
+    // S→H
+    const line2 = document.createElementNS(ns,'line');
+    line2.setAttribute('x1',cx[S]-r+3); line2.setAttribute('y1',cy+8);
+    line2.setAttribute('x2',cx[H]+r-3); line2.setAttribute('y2',cy+8);
+    line2.setAttribute('stroke','var(--ink-soft)'); line2.setAttribute('stroke-width','1.5');
+    line2.setAttribute('marker-end','url(#ea-d1)');
+    svg.appendChild(line2);
+    let t2 = document.createElementNS(ns,'text');
+    t2.setAttribute('x',(cx[H]+cx[S])/2); t2.setAttribute('y',cy+24);
+    t2.setAttribute('text-anchor','middle'); t2.setAttribute('font-size','12');
+    t2.setAttribute('font-weight','600'); t2.setAttribute('fill','var(--ink)');
+    t2.setAttribute('font-family','IBM Plex Mono,monospace');
+    t2.textContent = data.psh.toFixed(2);
+    svg.appendChild(t2);
+
+    return svg;
+  }
+
+  function renderExplore(){
+    const phh = parseFloat(expPHH.value) || 0.3;
+    const pss = parseFloat(expPSS.value) || 0.5;
+    const initH = Math.round(parseFloat(expInitH.value) || 500);
+    const initS = 1000 - initH;
+
+    expPHHv.textContent = phh.toFixed(2);
+    expPSSv.textContent = pss.toFixed(2);
+    expInitHv.textContent = initH;
+
+    const data = computeSteady(phh, pss);
+    const piH = data.piH, piS = data.piS;
+
+    // simulate steps
+    let dist = [initH, initS];
+    let html = `<div style="margin-bottom:8px;"><span style="color:var(--ink-soft);font-size:12px;">Steady state: π_H = ${(piH*100).toFixed(1)}%, π_S = ${(piS*100).toFixed(1)}%</span></div>`;
+    html += `<div style="display:flex;gap:10px;margin-bottom:6px;font-size:12px;">`;
+    html += `<span style="color:var(--happy);font-weight:600;">H: ${(piH*100).toFixed(1)}%</span>`;
+    html += `<span style="color:var(--stressed);font-weight:600;">S: ${(piS*100).toFixed(1)}%</span>`;
+    html += `</div>`;
+
+    // bar
+    const hp = (piH*100).toFixed(1);
+    const sp = (piS*100).toFixed(1);
+    html += `<div class="bar-wrap" style="height:28px;font-size:11px;">`;
+    html += `<div class="bar h" style="width:${Math.max(hp,0.5)}%">${(piH*1000).toFixed(0)}</div>`;
+    html += `<div class="bar s" style="width:${Math.max(sp,0.5)}%">${(piS*1000).toFixed(0)}</div>`;
+    html += `</div>`;
+
+    // convergence
+    html += `<div style="margin-top:10px;font-size:12px;color:var(--ink-soft);">`;
+    html += `Per 1000 people: <strong style="color:var(--happy);">~${Math.round(piH*1000)} Happy</strong>, <strong style="color:var(--stressed);">~${Math.round(piS*1000)} Stressed</strong>`;
+    html += `</div>`;
+
+    // diagram
+    const diagram = drawExploreDiagram(data);
+    expResult.innerHTML = html;
+    expResult.appendChild(diagram);
+  }
+
+  expPHH.addEventListener('input', renderExplore);
+  expPSS.addEventListener('input', renderExplore);
+  expInitH.addEventListener('input', renderExplore);
+
+  // ---- QUIZ ----
+  document.querySelectorAll('.q .options').forEach(group=>{
+    group.querySelectorAll('.opt').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        const correct = btn.dataset.correct === 'true';
+        group.querySelectorAll('.opt').forEach(b=>{
+          b.disabled = true;
+          if(b.dataset.correct==='true') b.classList.add('correct');
+        });
+        if(!correct) btn.classList.add('wrong');
+      });
+    });
+  });
+
+  // ---- INIT ----
+  (function init(){
+    const f=$('step-1'); if(f) f.classList.add('active');
+    drawDiagram();
+    renderStep(); markDots();
+    setStatus('Step 1 of 6 — Examine the mood chain.');
+    renderExplore();
+  })();
+})();
+</script>
+</body>
+</html>

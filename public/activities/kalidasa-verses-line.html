@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kālidāsa's Verses — f(x) = ax + b</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=IBM+Plex+Mono:wght@500;600&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#FAF5E8; --paper-line:#D8CFB6; --ink:#26332B; --ink-soft:#5B6B60;
+    --fn:#1F6F5C; --fn-soft:#DCEDE7; --pt:#7B5EA7; --pt-soft:#EAE3F5;
+    --target:#B8860B; --target-soft:#F3E9CE; --card:#FFFDF7; --shadow:0 2px 10px rgba(38,51,43,0.08);
+  }
+  *{box-sizing:border-box;} html,body{margin:0;padding:0;}
+  body{
+    background:repeating-linear-gradient(#FAF5E8 0px,#FAF5E8 27px,var(--paper-line) 28px),var(--paper);
+    background-size:100% 28px; color:var(--ink); font-family:'Source Sans 3',sans-serif;
+    min-height:100vh; padding:28px 16px 60px;
+  }
+  .wrap{max-width:1080px;margin:0 auto;}
+  header.hero{background:var(--card);border:1px solid var(--paper-line);border-radius:14px;box-shadow:var(--shadow);padding:26px 28px 22px;margin-bottom:20px;}
+  .eyebrow{font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);margin:0 0 6px;}
+  h1{font-family:'Caveat',cursive;font-weight:700;font-size:38px;margin:0 0 10px;line-height:1.05;}
+  header.hero p{max-width:680px;line-height:1.55;font-size:15.5px;margin:0 0 8px;}
+  .rule-list{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px;}
+  .rule-list span{font-family:'IBM Plex Mono',monospace;font-size:12.5px;background:var(--paper);border:1px dashed var(--paper-line);border-radius:8px;padding:6px 10px;}
+  .grid-layout{display:grid;grid-template-columns:300px 1fr;gap:20px;align-items:start;}
+  @media (max-width:800px){.grid-layout{grid-template-columns:1fr;}}
+  .card{background:var(--card);border:1px solid var(--paper-line);border-radius:14px;box-shadow:var(--shadow);padding:20px;}
+  .panel-title{font-family:'Caveat',cursive;font-weight:700;font-size:24px;margin:0 0 4px;}
+  .panel-sub{font-size:13px;color:var(--ink-soft);margin:0 0 14px;line-height:1.4;}
+  .eq-highlight{
+    font-family:'IBM Plex Mono',monospace;font-size:20px;font-weight:600;text-align:center;
+    padding:12px;border-radius:10px;margin-bottom:14px;border:1px solid var(--paper-line);
+    background:var(--fn-soft);border-color:var(--fn);color:var(--fn);line-height:1.3;word-break:break-all;
+  }
+  .field{margin-bottom:14px;}
+  .field label{display:flex;justify-content:space-between;font-size:13.5px;font-weight:600;margin-bottom:6px;}
+  .field label span.val{font-family:'IBM Plex Mono',monospace;font-weight:600;color:var(--pt);}
+  input[type=number]{
+    width:100%;padding:9px 10px;border-radius:8px;border:1px solid var(--paper-line);
+    font-family:'IBM Plex Mono',monospace;font-size:16px;background:var(--paper);color:var(--ink);
+  }
+  input[type=number]:focus{outline:2px solid var(--pt);outline-offset:-1px;border-color:var(--pt);}
+  input[type=number]:disabled{opacity:.5;cursor:not-allowed;}
+  .helper{font-size:12px;color:var(--ink-soft);margin-top:4px;line-height:1.4;}
+  .param-row{display:flex;gap:8px;margin-bottom:16px;}
+  .param-row .pfield{flex:1;}
+  .param-row .pfield label{font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--ink-soft);margin-bottom:2px;}
+  .param-row .pfield input[type=number]{font-size:13px;padding:6px 7px;}
+  .jars{display:flex;gap:14px;margin-bottom:14px;}
+  .jar{flex:1;text-align:center;padding:10px 6px;border-radius:10px;border:1px solid var(--paper-line);}
+  .jar.fn-jar{background:var(--fn-soft);} .jar.pt-jar{background:var(--pt-soft);} .jar.target-jar{background:var(--target-soft);}
+  .jar .name{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;}
+  .jar.fn-jar .name{color:var(--fn);} .jar.pt-jar .name{color:var(--pt);} .jar.target-jar .name{color:var(--target);}
+  .jar .amt{font-family:'IBM Plex Mono',monospace;font-size:20px;font-weight:600;margin-top:4px;}
+  button{font-family:'Source Sans 3',sans-serif;font-weight:600;font-size:14.5px;border:none;border-radius:9px;padding:11px 16px;cursor:pointer;width:100%;transition:transform .08s ease,filter .15s ease;}
+  button:active{transform:translateY(1px);}button:disabled{opacity:.4;cursor:not-allowed;}
+  .btn-primary{background:var(--fn);color:#fff;}.btn-primary:hover:not(:disabled){filter:brightness(1.08);}
+  .btn-secondary{background:var(--paper);color:var(--ink);border:1px solid var(--paper-line);margin-top:8px;}
+  .btn-secondary:hover:not(:disabled){background:#F0E9D6;}
+  .status{font-size:13.5px;line-height:1.5;padding:12px;border-radius:9px;background:var(--paper);border:1px solid var(--paper-line);margin-bottom:14px;min-height:20px;}
+  .status.feedback-good{background:var(--fn-soft);border-color:var(--fn);color:var(--fn);font-weight:600;}
+  .status.feedback-mid{background:var(--pt-soft);border-color:var(--pt);color:var(--pt);font-weight:600;}
+  .status.feedback-target{background:var(--target-soft);border-color:var(--target);color:var(--target);font-weight:600;}
+  .graph-card{display:flex;flex-direction:column;}
+  .graph-card .panel-title{margin-bottom:0;}
+  .legend{display:flex;gap:18px;flex-wrap:wrap;margin:6px 0 12px;font-size:12.5px;font-family:'IBM Plex Mono',monospace;}
+  .legend span{display:inline-flex;align-items:center;gap:6px;}
+  .dot{width:10px;height:10px;border-radius:50%;display:inline-block;}
+  .dot.line{background:var(--fn);height:2px;border-radius:1px;}
+  .dot.pred{background:var(--pt);} .dot.sol{background:var(--target);}
+  .graph-wrap{position:relative;}
+  .graph-wrap svg{width:100%;height:auto;display:block;background:#FFFDF7;border:1px solid var(--paper-line);border-radius:8px;}
+  .axis-label{font-family:'IBM Plex Mono',monospace;font-size:12px;fill:var(--ink-soft);}
+  .tick-label{font-family:'IBM Plex Mono',monospace;font-size:10px;fill:var(--ink-soft);}
+  .steps{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap;}
+  .step-dot{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:600;border:1.5px solid var(--paper-line);color:var(--ink-soft);background:var(--paper);}
+  .step-dot.done{background:var(--fn);border-color:var(--fn);color:#fff;}
+  .step-dot.solution{background:var(--target);border-color:var(--target);color:#fff;}
+  .step-dot.active{border-color:var(--pt);color:var(--pt);background:var(--pt-soft);}
+  .reflect,.explore{margin-top:20px;padding-top:16px;border-top:1px dashed var(--paper-line);}
+  .reflect.hidden,.explore.hidden{display:none;}
+  .q{margin-bottom:16px;}.q p.qtext{font-weight:600;margin:0 0 8px;font-size:14.5px;}
+  .options{display:flex;gap:8px;flex-wrap:wrap;}
+  .opt{padding:8px 14px;border-radius:8px;border:1px solid var(--paper-line);background:var(--paper);font-size:13.5px;cursor:pointer;font-weight:600;}
+  .opt.correct{background:var(--fn-soft);border-color:var(--fn);color:var(--fn);}
+  .opt.wrong{background:#F6DCD4;border-color:#B5502E;color:#8C3A1F;}
+  .opt:disabled{cursor:default;}
+  .explore .panel-title{font-size:22px;}
+  .explore-inputs{display:flex;gap:10px;flex-wrap:wrap;margin:10px 0 14px;}
+  .explore-inputs .field{flex:1;min-width:70px;margin-bottom:0;}
+  .explore-inputs .field label{font-size:11px;}
+  .explore-inputs input[type=number]{font-size:13px;padding:7px 8px;}
+  .solution-banner{text-align:center;font-weight:700;padding:10px;border-radius:9px;margin:8px 0 14px;font-size:15px;background:var(--target-soft);border:1px solid var(--target);color:var(--target);}
+  .solution-banner.two{background:var(--fn-soft);border-color:var(--fn);color:var(--fn);}
+  .note-box{text-align:center;font-family:'IBM Plex Mono',monospace;font-size:13px;padding:8px;margin:4px 0 10px;color:var(--ink-soft);}
+  footer.note{text-align:center;font-size:12px;color:var(--ink-soft);margin-top:26px;font-family:'IBM Plex Mono',monospace;}
+  .big-arrow{text-align:center;font-size:28px;color:var(--ink-soft);margin:6px 0;}
+  .reason-box{padding:12px;border-radius:9px;background:var(--paper);border:1px solid var(--paper-line);margin:8px 0;font-size:14px;line-height:1.6;display:none;}
+  .reason-box.show{display:block;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <p class="eyebrow">Intuition Builder · Inverse Functions</p>
+    <h1>Kālidāsa's Verses — f(x) = ax + b</h1>
+    <p>Kālidāsa composes <strong>a</strong> verses each day, and already has <strong>b</strong> verses written. So f(x) = ax + b gives total verses after x days. Can you <strong>reverse</strong> it — given a target total, find the day? That's the <strong>inverse</strong>.</p>
+    <div class="rule-list">
+      <span id="heroEq" style="background:var(--fn-soft);color:var(--fn);border-color:var(--fn);">f(x) = 3x + 2</span>
+      <span id="heroTarget" style="background:var(--pt-soft);color:var(--pt);border-color:var(--pt);">f(α) = 17 → α = ?</span>
+    </div>
+  </header>
+
+  <div class="grid-layout">
+    <div class="card">
+      <p class="panel-title">Compose then reverse</p>
+      <p class="panel-sub">First find total verses f(x) for each day x. Then reverse it: find the day α when total reaches the target.</p>
+
+      <div class="param-row">
+        <div class="pfield"><label>Daily rate a</label><input type="number" id="pA" step="0.5" value="3"></div>
+        <div class="pfield"><label>Initial b</label><input type="number" id="pB" step="0.5" value="2"></div>
+        <div class="pfield"><label>target</label><input type="number" id="pTarget" step="0.5" value="17"></div>
+      </div>
+
+      <div class="eq-highlight" id="eqDisplay">f(x) = 3x + 2</div>
+
+      <div class="field" id="predictField">
+        <label id="predictLabel">Day <span class="val">0</span></label>
+        <input type="number" id="predictY" step="any" placeholder="What is f(x)?" value="0">
+        <div class="helper" id="predictHelper">f(0) = 3×0 + 2 = ?</div>
+      </div>
+
+      <div class="jars">
+        <div class="jar fn-jar"><div class="name">Input (x)</div><div class="amt" id="xJar">0</div></div>
+        <div class="jar pt-jar"><div class="name">Output f(x)</div><div class="amt" id="yJar">?</div></div>
+      </div>
+
+      <div class="jars" id="reverseJars" style="display:none;">
+        <div class="jar target-jar"><div class="name">Target f(α)</div><div class="amt" id="targetJar">17</div></div>
+        <div class="jar pt-jar"><div class="name">Solution α</div><div class="amt" id="alphaJar">?</div></div>
+      </div>
+
+      <div class="steps" id="stepDots"></div>
+
+      <div class="status" id="statusBox">Day <strong>0</strong>: f(x) = 3x + 2. How many verses total?</div>
+
+      <button class="btn-primary" id="checkBtn">Predict &amp; Reveal</button>
+      <button class="btn-secondary" id="resetBtn">Reset</button>
+    </div>
+
+    <div class="card graph-card">
+      <p class="panel-title">The graph</p>
+      <div class="legend"><span><i class="dot line"></i>f(x) = ax + b</span><span><i class="dot pred"></i>your answer</span><span><i class="dot sol"></i>α (inverse)</span></div>
+      <div class="graph-wrap"><svg id="graphSvg" viewBox="0 0 640 500" xmlns="http://www.w3.org/2000/svg"></svg></div>
+      <div class="reason-box" id="reasonBox"></div>
+    </div>
+  </div>
+
+  <!-- REFLECTION QUIZ -->
+  <div class="card reflect hidden" id="reflectCard">
+    <p class="panel-title">Think about the inverse</p>
+    <p class="panel-sub">A function f is invertible if every output y comes from exactly one input x.</p>
+    <div class="q" id="q1">
+      <p class="qtext">1. Is f(x) = 3x + 2 invertible?</p>
+      <div class="options">
+        <button class="opt" data-correct="true">Yes — each y comes from exactly one x</button>
+        <button class="opt" data-correct="false">No — different x can give the same y</button>
+        <button class="opt" data-correct="false">Only when x &gt; 0</button>
+      </div>
+    </div>
+    <div class="q" id="q2">
+      <p class="qtext">2. If f(x) = 3x + 2 and f(α) = 17, what is α?</p>
+      <div class="options">
+        <button class="opt" data-correct="false">α = 7</button>
+        <button class="opt" data-correct="true">α = 5</button>
+        <button class="opt" data-correct="false">α = 53</button>
+      </div>
+    </div>
+    <div class="q" id="q3">
+      <p class="qtext">3. Is the answer α = 5 unique? Could another input also give 17?</p>
+      <div class="options">
+        <button class="opt" data-correct="true">Yes — 3x+2 is strictly increasing, so one y → one x</button>
+        <button class="opt" data-correct="false">No — many x values could give y=17</button>
+        <button class="opt" data-correct="false">Only if x is an integer</button>
+      </div>
+    </div>
+    <div class="q" id="q4">
+      <p class="qtext">4. What's the method to find α from f(α) = y?</p>
+      <div class="options">
+        <button class="opt" data-correct="true">α = (y − b) / a — subtract b, then divide by a</button>
+        <button class="opt" data-correct="false">α = y − a − b</button>
+        <button class="opt" data-correct="false">α = (y + b) × a</button>
+      </div>
+    </div>
+    <div class="q" id="q5">
+      <p class="qtext">5. Is it always possible to reverse y = ax + b for any target y?</p>
+      <div class="options">
+        <button class="opt" data-correct="true">Yes — for any y, α = (y−b)/a works (as long as a ≠ 0)</button>
+        <button class="opt" data-correct="false">Only when y is positive</button>
+        <button class="opt" data-correct="false">Only when a = 1</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- EXPLORE MODE -->
+  <div class="card explore hidden" id="exploreCard">
+    <p class="panel-title">Explore: reverse any linear function</p>
+    <p class="panel-sub">Change daily rate a, initial b, and target total. Inverse: α = (target−b)/a. Kālidāsa's formula works for any target — as long as a ≠ 0. Try breaking it!</p>
+    <div class="explore-inputs">
+      <div class="field"><label>Daily rate a</label><input type="number" id="expA" step="0.5" value="3"></div>
+      <div class="field"><label>Initial b</label><input type="number" id="expB" step="0.5" value="2"></div>
+      <div class="field"><label>target total</label><input type="number" id="expTarget" step="0.5" value="17"></div>
+    </div>
+    <div class="eq-highlight" id="exploreEq" style="font-size:18px;padding:10px;">f(x) = 3x + 2</div>
+    <div id="exploreSolution"></div>
+    <div class="note-box">When a = 0, f(x)=b is constant — not invertible (every x gives the same y, or no x gives the target).</div>
+  </div>
+
+  <footer class="note">Built for exploring inverses of linear functions · Kālidāsa's verses: f(x) = ax + b with a ≠ 0 is always invertible</footer>
+</div>
+
+<script>
+(function(){
+  // ---- STATE ----
+  const STEPS = [
+    {x:0, label:'Forward: f(0) = ?', reverse:false, explain:''},
+    {x:1, label:'f(1) = ?', reverse:false, explain:''},
+    {x:2, label:'f(2) = ?', reverse:false, explain:''},
+    {x:null, label:'Reverse: f(α) = target → α = ?', reverse:true, explain:'α = (target − b) ÷ a'},
+    {x:null, label:'Is α unique?', reverse:true, explain:'Each y comes from exactly one x — linear functions are one-to-one (strictly increasing or decreasing).'},
+    {x:null, label:'Always possible?', reverse:true, explain:'Yes! For any y, α = (y−b)/a works. The inverse function is f⁻¹(y) = (y−b)/a.'}
+  ];
+  const TOTAL = STEPS.length;
+  let pA=3,pB=2,pTarget=17;
+  let step=0,prediction=null,revealed=false,mode='predict';
+
+  const $=id=>document.getElementById(id);
+  const eqDisp=$('eqDisplay'), predictY=$('predictY'), predictLabel=$('predictLabel');
+  const pHelper=$('predictHelper'), xJar=$('xJar'), yJar=$('yJar');
+  const targetJar=$('targetJar'), alphaJar=$('alphaJar'), reverseJars=$('reverseJars');
+  const statusBox=$('statusBox'), checkBtn=$('checkBtn'), resetBtn=$('resetBtn');
+  const stepDots=$('stepDots'), predictField=$('predictField');
+  const reflectCard=$('reflectCard'), exploreCard=$('exploreCard');
+  const heroEq=$('heroEq'), heroTarget=$('heroTarget'), reasonBox=$('reasonBox');
+  const pAIn=$('pA'),pBIn=$('pB'),pTIn=$('pTarget');
+
+  for(let i=1;i<=TOTAL;i++){const d=document.createElement('div');d.className='step-dot';d.textContent=i;d.id='step-'+i;stepDots.appendChild(d);}
+
+  function getY(x){return pA*x+pB;}
+  function getAlpha(){return (pTarget-pB)/pA;}
+
+  function fmt(v){return Number.isInteger(v)?v:v.toFixed(3);}
+
+  function updateAll(){
+    const eqStr='f(x) = '+(pA===0?'0':(pA===1?'':(pA===-1?'−':pA))+'x')+(pB>0?' + '+pB:pB<0?' − '+Math.abs(pB):'');
+    eqDisp.textContent=eqStr;
+    heroEq.textContent=eqStr;
+    heroTarget.textContent='f(α) = '+pTarget+' → α = ?';
+    if(step>=TOTAL){
+      predictY.disabled=true;
+      xJar.textContent='✔'; yJar.textContent='✔'; alphaJar.textContent=getAlpha().toFixed(3);
+      return;
+    }
+    const s=STEPS[step];
+    if(s.reverse){
+      predictY.disabled=false;
+      predictLabel.innerHTML='Guess α: f(α) = <span class="val">'+pTarget+'</span>';
+      pHelper.textContent='α = ('+pTarget+' − '+pB+') ÷ '+pA+' = ?';
+      xJar.textContent='α'; yJar.textContent='?';
+      targetJar.textContent=pTarget; alphaJar.textContent='?';
+      reverseJars.style.display='flex';
+      predictY.placeholder='What is α?';
+    } else {
+      predictY.disabled=false;
+      predictLabel.innerHTML='Day <span class="val">'+s.x+'</span>';
+      pHelper.textContent='f('+s.x+') = '+pA+'×'+s.x+' + '+pB+' = ?';
+      xJar.textContent=s.x; yJar.textContent='?';
+      reverseJars.style.display='none';
+      predictY.placeholder='What is f(x)?';
+    }
+  }
+
+  function setStatus(html,cls){statusBox.innerHTML=html;statusBox.className='status'+(cls?' '+cls:'');}
+  function showReason(text){reasonBox.textContent=text;reasonBox.classList.add('show');}
+
+  function markDots(){
+    document.querySelectorAll('.step-dot').forEach(d=>d.classList.remove('active'));
+    for(let i=0;i<step&&i<TOTAL;i++){const d=$('step-'+(i+1));if(d){d.classList.add('done');if(i===TOTAL-2||i===TOTAL-1)d.classList.add('solution');}}
+    if(step<TOTAL){const d=$('step-'+(step+1));if(d)d.classList.add('active');}
+  }
+
+  function resetGame(){
+    step=0; prediction=null; revealed=false; mode='predict';
+    pA=parseFloat(pAIn.value)||0; pB=parseFloat(pBIn.value)||0; pTarget=parseFloat(pTIn.value)||0;
+    predictY.value=0; predictY.disabled=false;
+    checkBtn.disabled=false; checkBtn.textContent='Predict & Reveal';
+    document.querySelectorAll('.step-dot').forEach(d=>d.classList.remove('done','solution','active'));
+    const f=$('step-1');if(f)f.classList.add('active');
+    reflectCard.classList.add('hidden'); exploreCard.classList.add('hidden');
+    reasonBox.classList.remove('show');
+    reverseJars.style.display='none';
+    updateAll(); markDots(); render();
+    setStatus('Day <strong>0</strong>: f(x) = '+pA+'x + '+pB+'. Total verses?');
+  }
+
+  $('pA').addEventListener('input',resetGame);
+  $('pB').addEventListener('input',resetGame);
+  $('pTarget').addEventListener('input',resetGame);
+  resetBtn.addEventListener('click',resetGame);
+
+  function onCheck(){
+    if(mode==='done')return;
+    if(step>=TOTAL){
+      mode='done'; checkBtn.disabled=true;
+      const alpha=getAlpha();
+      setStatus('Done! α = ('+pTarget+' − '+pB+') ÷ '+pA+' = '+alpha.toFixed(3)+'. The inverse function is f⁻¹(y) = (y − '+pB+') ÷ '+pA+'.','feedback-target');
+      render();
+      setTimeout(()=>{reflectCard.classList.remove('hidden');reflectCard.scrollIntoView({behavior:'smooth',block:'nearest'});},500);
+      return;
+    }
+    if(revealed){
+      step++; revealed=false; prediction=null; predictY.value=0;
+      if(step>=TOTAL){
+        checkBtn.textContent='Finish';
+        setStatus('All steps done! Click <strong>Finish</strong> to reflect.','feedback-target');
+      } else {
+        const s=STEPS[step];
+        checkBtn.textContent='Predict & Reveal';
+        if(s.reverse) setStatus('Now reverse! f(α) = '+pTarget+'. What is α?');
+        else setStatus('Day <strong>'+s.x+'</strong>: f('+s.x+') = ?');
+      }
+      updateAll(); markDots(); render();
+      return;
+    }
+    const py=parseFloat(predictY.value);
+    if(isNaN(py)){setStatus('Enter a number.');return;}
+    prediction=py;
+    const s=STEPS[step];
+    revealed=true;
+    reasonBox.classList.remove('show');
+
+    if(s.reverse){
+      if(pA===0){
+        if(pB===pTarget) setStatus('a = 0 means f(x) = '+pB+' is constant. Every x gives f(x) = '+pB+'. Not invertible!','feedback-target');
+        else setStatus('a = 0 means f(x) = '+pB+' is constant. No x gives f(x) = '+pTarget+'. Not invertible!','feedback-target');
+        revealed=true;
+        markDots(); render();
+        return;
+      }
+      const alpha=getAlpha();
+      const diff=Math.abs(py-alpha);
+      let msg,cls;
+      const tol=Math.max(0.5,Math.abs(alpha)*0.08);
+      if(diff<tol){msg='Correct! α = '+alpha.toFixed(3)+'. ';cls='feedback-good';}
+      else{msg='You guessed α = '+py+' (off by '+diff.toFixed(1)+'). α = '+alpha.toFixed(3)+'. ';cls='feedback-mid';}
+      alphaJar.textContent=alpha.toFixed(3);
+      yJar.textContent=pTarget;
+      if(step===3){
+        msg+='α = ('+pTarget+' − '+pB+') ÷ '+pA+' = '+alpha.toFixed(3);
+        showReason(s.explain);
+      }
+      if(step===4){
+        msg+='Linear functions are one-to-one.';
+        showReason(s.explain);
+      }
+      if(step===5){
+        msg+='The inverse function f⁻¹(y) = (y−b)/a always works when a ≠ 0.';
+        showReason(s.explain);
+      }
+      setStatus(msg,cls);
+    } else {
+      const y=getY(s.x);
+      const diff=Math.abs(py-y);
+      let msg,cls;
+      const tol=Math.max(0.5,Math.abs(y)*0.08);
+      if(diff<tol){msg='Good! f('+s.x+') = '+y.toFixed(3)+'. ';cls='feedback-good';}
+      else{msg='You guessed '+py+' (off by '+diff.toFixed(1)+'). f('+s.x+') = '+y.toFixed(3)+'. ';cls='feedback-mid';}
+      yJar.textContent=y.toFixed(3);
+      if(step+1>=3) checkBtn.textContent='Next → Reverse';
+      else checkBtn.textContent='Next input';
+      setStatus(msg,cls);
+    }
+    markDots(); render();
+  }
+  checkBtn.addEventListener('click',onCheck);
+  predictY.addEventListener('keydown',e=>{if(e.key==='Enter')onCheck();});
+
+  // ---- SVG RENDERING ----
+  const svg=$('graphSvg'),svgNS="http://www.w3.org/2000/svg";
+  const M={l:55,r:30,t:30,b:55},PW=640-M.l-M.r,PH=500-M.t-M.b;
+
+  function niceMax(v){if(v<=0)return 10;const m=Math.pow(10,Math.floor(Math.log10(v)));const n=v/m;if(n<=1)return 1*m;if(n<=2)return 2*m;if(n<=4)return 4*m;if(n<=5)return 5*m;return 10*m;}
+  function niceMin(v){if(v>=0)return 0;const m=Math.pow(10,Math.floor(Math.log10(Math.abs(v))));const n=Math.abs(v)/m;if(n<=1)return -1*m;if(n<=2)return -2*m;if(n<=4)return -4*m;if(n<=5)return -5*m;return -10*m;}
+
+  function getBounds(){
+    const xs=[0,1,2];
+    const alpha = pA !== 0 ? getAlpha() : 5;
+    const allY=[pTarget,0,pB];
+    for(let xi=0;xi<=Math.max(2,Math.ceil(Math.min(alpha,20)+2));xi+=0.2) allY.push(getY(xi));
+    allY.push(pTarget);
+    const xMin=0, xMax=Math.max(3,Math.min(Math.ceil(alpha+2), 20));
+    const ys=allY.filter(y=>isFinite(y));
+    const yLo=Math.min(...ys), yHi=Math.max(...ys), yPad=Math.max(3,(yHi-yLo)*0.2);
+    return {xMin,xMax:xMax,yMin:niceMin(yLo-yPad),yMax:niceMax(yHi+yPad)};
+  }
+
+  function render(){
+    while(svg.firstChild) svg.removeChild(svg.firstChild);
+    const bounds=getBounds();
+    const xR=bounds.xMax-bounds.xMin, yR=bounds.yMax-bounds.yMin;
+    const xSc=PW/xR, ySc=PH/yR;
+    function toS(dx,dy){return{x:M.l+(dx-bounds.xMin)*xSc,y:M.t+PH-(dy-bounds.yMin)*ySc};}
+
+    const oPos = toS(0,0);
+    const hasXAxis = 0>=bounds.yMin && 0<=bounds.yMax;
+    const hasYAxis = 0>=bounds.xMin && 0<=bounds.xMax;
+    const axY = hasXAxis ? oPos.y : M.t+PH;
+    const axX = hasYAxis ? oPos.x : M.l;
+
+    // grid
+    const xSt=Math.max(1,niceMax(xR/6)), ySt=niceMax(yR/6);
+    for(let v=Math.ceil(bounds.xMin/xSt)*xSt;v<=bounds.xMax;v+=xSt){
+      if(Math.abs(v)<0.01)continue;const p=toS(v,0);
+      if(p.x>=M.l&&p.x<=M.l+PW){
+        svg.appendChild(mkL(p.x,M.t,p.x,M.t+PH,'#E4DCC4',1));
+        const t=mkT(p.x,axY+18,''+v,'tick-label');
+        t.setAttribute('text-anchor','middle');svg.appendChild(t);
+      }
+    }
+    for(let v=Math.ceil(bounds.yMin/ySt)*ySt;v<=bounds.yMax;v+=ySt){
+      if(Math.abs(v)<0.01)continue;const p=toS(0,v);
+      if(p.y>=M.t&&p.y<=M.t+PH){
+        svg.appendChild(mkL(M.l,p.y,M.l+PW,p.y,'#E4DCC4',1));
+        const t=mkT(axX-8,p.y+3,''+v,'tick-label');
+        t.setAttribute('text-anchor','end');svg.appendChild(t);
+      }
+    }
+
+    // axes at (0,0)
+    if(hasXAxis) svg.appendChild(mkL(M.l,axY,M.l+PW,axY,'#26332B',1.5));
+    if(hasYAxis) svg.appendChild(mkL(axX,M.t,axX,M.t+PH,'#26332B',1.5));
+
+    // axis labels at the data axes
+    const xlb=mkT(M.l+PW/2,axY+42,'x','axis-label');
+    xlb.setAttribute('text-anchor','middle');svg.appendChild(xlb);
+    const ylb=mkT(axX-42,M.t+PH/2,'f(x)','axis-label');
+    ylb.setAttribute('text-anchor','middle');ylb.setAttribute('transform','rotate(-90 '+(axX-42)+' '+(M.t+PH/2)+')');svg.appendChild(ylb);
+
+    // f(x) = ax + b line
+    const lx1=bounds.xMin, lx2=bounds.xMax;
+    const lp1=toS(lx1,getY(lx1)), lp2=toS(lx2,getY(lx2));
+    if(lp2.x>=M.l&&lp1.x<=M.l+PW){
+      const cl1=Math.max(lp1.x,M.l), cl2=Math.min(lp2.x,M.l+PW);
+      const frac=(cl2-lp1.x)/(lp2.x-lp1.x);
+      svg.appendChild(mkL(cl1,lp1.y+(lp2.y-lp1.y)*(cl1-lp1.x)/(lp2.x-lp1.x),cl2,lp1.y+(lp2.y-lp1.y)*frac,'#1F6F5C',2.5));
+    }
+
+    // forward points
+    if(step>0){
+      for(let i=0;i<Math.min(step,3);i++){
+        const p=toS(STEPS[i].x,getY(STEPS[i].x));
+        if(p.x<M.l||p.x>M.l+PW||p.y<M.t||p.y>M.t+PH)continue;
+        const c=document.createElementNS(svgNS,'circle');
+        c.setAttribute('cx',p.x);c.setAttribute('cy',p.y);c.setAttribute('r',6);
+        c.setAttribute('fill','#1F6F5C');c.setAttribute('stroke','#FFFDF7');c.setAttribute('stroke-width','2');
+        svg.appendChild(c);
+        const lab=mkT(p.x+8,p.y-8,'('+STEPS[i].x+','+getY(STEPS[i].x).toFixed(1)+')','tick-label');
+        svg.appendChild(lab);
+      }
+    }
+
+    // target line (after forward steps done)
+    if(step>=2){
+      const tP=toS(0,pTarget);
+      if(tP.y>=M.t-5&&tP.y<=M.t+PH+5){
+        const hl=mkL(M.l,tP.y,M.l+PW,tP.y,'#B8860B',1.5);
+        hl.setAttribute('stroke-dasharray','6 4');svg.appendChild(hl);
+        const lab=mkT(M.l+PW-5,tP.y-6,'y = '+pTarget,'tick-label');
+        lab.setAttribute('text-anchor','end');lab.setAttribute('fill','#B8860B');lab.setAttribute('font-weight','600');
+        svg.appendChild(lab);
+      }
+    }
+
+    // prediction marker (forward)
+    if(revealed&&step<3&&step>=0){
+      const s=STEPS[step];
+      const py=parseFloat(predictY.value);
+      if(!isNaN(py)){
+        const sp=toS(s.x,py), tsp=toS(s.x,getY(s.x));
+        if(sp.y>=M.t-5&&sp.y<=M.t+PH+5){
+          const gd=mkL(sp.x,sp.y,tsp.x,tsp.y,'#7B5EA7',1.5);
+          gd.setAttribute('stroke-dasharray','4 3');gd.setAttribute('stroke-opacity','0.5');
+          svg.appendChild(gd);
+          const c=document.createElementNS(svgNS,'circle');
+          c.setAttribute('cx',sp.x);c.setAttribute('cy',sp.y);c.setAttribute('r',7);
+          c.setAttribute('fill','#7B5EA7');c.setAttribute('fill-opacity','0.9');
+          c.setAttribute('stroke','#FFFDF7');c.setAttribute('stroke-width','2');
+          svg.appendChild(c);
+          const lab=mkT(sp.x+8,sp.y-10,'you: '+py,'tick-label');
+          lab.setAttribute('fill','#7B5EA7');lab.setAttribute('font-weight','600');
+          svg.appendChild(lab);
+        }
+      }
+    }
+
+    // prediction marker (reverse α)
+    if(revealed&&step>=3&&step<TOTAL){
+      const alpha=getAlpha();
+      const py=parseFloat(predictY.value);
+      if(!isNaN(py)){
+        const sp=toS(py,pTarget), tsp=toS(alpha,pTarget);
+        if(sp.x>=M.l-5&&sp.x<=M.l+PW+5&&sp.y>=M.t-5&&sp.y<=M.t+PH+5){
+          const gd=mkL(sp.x,sp.y,tsp.x,tsp.y,'#7B5EA7',1.5);
+          gd.setAttribute('stroke-dasharray','4 3');gd.setAttribute('stroke-opacity','0.5');
+          svg.appendChild(gd);
+          const c=document.createElementNS(svgNS,'circle');
+          c.setAttribute('cx',sp.x);c.setAttribute('cy',sp.y);c.setAttribute('r',7);
+          c.setAttribute('fill','#7B5EA7');c.setAttribute('fill-opacity','0.9');
+          c.setAttribute('stroke','#FFFDF7');c.setAttribute('stroke-width','2');
+          svg.appendChild(c);
+          const lab=mkT(sp.x+8,sp.y-10,'you: '+py,'tick-label');
+          lab.setAttribute('fill','#7B5EA7');lab.setAttribute('font-weight','600');
+          svg.appendChild(lab);
+        }
+      }
+    }
+
+    // solution α point (appears when reverse section begins)
+    if(step>=3){
+      const alpha=getAlpha();
+      const sp=toS(alpha,pTarget);
+      if(sp.x>=M.l-5&&sp.x<=M.l+PW+5&&sp.y>=M.t-5&&sp.y<=M.t+PH+5){
+        const hl=document.createElementNS(svgNS,'circle');
+        hl.setAttribute('cx',sp.x);hl.setAttribute('cy',sp.y);hl.setAttribute('r',14);
+        hl.setAttribute('fill','none');hl.setAttribute('stroke','#B8860B');
+        hl.setAttribute('stroke-width','2.5');hl.setAttribute('stroke-opacity','0.6');
+        svg.appendChild(hl);
+        const c=document.createElementNS(svgNS,'circle');
+        c.setAttribute('cx',sp.x);c.setAttribute('cy',sp.y);c.setAttribute('r',8);
+        c.setAttribute('fill','#B8860B');c.setAttribute('stroke','#FFFDF7');c.setAttribute('stroke-width','2');
+        svg.appendChild(c);
+        const lab=mkT(sp.x+10,sp.y-16,'\u2605 ('+(Number.isInteger(alpha)?alpha:alpha.toFixed(2))+','+pTarget+')','tick-label');
+        lab.setAttribute('fill','#B8860B');lab.setAttribute('font-weight','700');
+        svg.appendChild(lab);
+      }
+    }
+
+    // origin
+    if(0>=bounds.yMin&&0<=bounds.yMax&&0>=bounds.xMin&&0<=bounds.xMax){
+      const o=toS(0,0); const oc=document.createElementNS(svgNS,'circle');
+      oc.setAttribute('cx',o.x);oc.setAttribute('cy',o.y);oc.setAttribute('r',3.5);
+      oc.setAttribute('fill','#26332B');svg.appendChild(oc);
+    }
+  }
+  function mkL(x1,y1,x2,y2,sw,w){const l=document.createElementNS(svgNS,'line');l.setAttribute('x1',x1);l.setAttribute('y1',y1);l.setAttribute('x2',x2);l.setAttribute('y2',y2);l.setAttribute('stroke',sw);l.setAttribute('stroke-width',w);return l;}
+  function mkT(x,y,t,c){const tx=document.createElementNS(svgNS,'text');tx.setAttribute('x',x);tx.setAttribute('y',y);tx.setAttribute('class',c);tx.textContent=t;return tx;}
+
+  // ---- QUIZ ----
+  document.querySelectorAll('.q .options').forEach(group=>{
+    group.querySelectorAll('.opt').forEach(btn=>{
+      btn.addEventListener('click',()=>{
+        const correct=btn.dataset.correct==='true';
+        group.querySelectorAll('.opt').forEach(b=>{b.disabled=true;if(b.dataset.correct==='true')b.classList.add('correct');});
+        if(!correct)btn.classList.add('wrong');
+        if(group.parentElement.id==='q5'&&correct){
+          setTimeout(()=>{exploreCard.classList.remove('hidden');exploreCard.scrollIntoView({behavior:'smooth',block:'nearest'});rebuildExplore();},400);
+        }
+      });
+    });
+  });
+
+  // ---- EXPLORE ----
+  const eA=$('expA'),eB=$('expB'),eT=$('expTarget');
+  const eEq=$('exploreEq'),eSol=$('exploreSolution');
+  function rebuildExplore(){
+    const a=parseFloat(eA.value)||0,b=parseFloat(eB.value)||0,tt=parseFloat(eT.value);
+    if(isNaN(tt)) return;
+    eEq.textContent='f(x) = '+(a===0?'0':(a===1?'':(a===-1?'−':a))+'x')+(b>0?' + '+b:b<0?' − '+Math.abs(b):'');
+    if(a===0){
+      if(b===tt) eSol.innerHTML='<div class="solution-banner">a = 0, constant function f(x) = '+b+'. Every x gives f(x) = '+b+'. Not invertible!</div>';
+      else eSol.innerHTML='<div class="solution-banner">a = 0, constant function f(x) = '+b+'. No x gives f(x) = '+tt+'. Not invertible!</div>';
+    } else {
+      const alpha=(tt-b)/a;
+      eSol.innerHTML='<div class="solution-banner two">f(α) = '+tt+' → α = <strong>'+(Number.isInteger(alpha)?alpha:alpha.toFixed(4))+'</strong> &nbsp;|&nbsp; f⁻¹(y) = (y − '+b+') ÷ '+a+'</div>';
+    }
+  }
+  [eA,eB,eT].forEach(el=>el.addEventListener('input',rebuildExplore));
+
+  // init
+  $('step-1').classList.add('active');
+  resetGame();
+})();
+</script>
+</body>
+</html>

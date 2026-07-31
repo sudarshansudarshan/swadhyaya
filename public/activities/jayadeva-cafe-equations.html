@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jayadeva's Cafe — Solving 3A + C = 1200, A + 2C = 1000</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=IBM+Plex+Mono:wght@500;600&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#FAF5E8; --paper-line:#D8CFB6; --ink:#26332B; --ink-soft:#5B6B60;
+    --adult:#0E7490; --adult-soft:#CFFAFE;
+    --child:#B5502E; --child-soft:#FBEFE8;
+    --eq1:#B8860B; --eq1-soft:#F3E9CE;
+    --eq2:#7B2D8E; --eq2-soft:#F3E5F7;
+    --good:#1F6F5C; --good-soft:#DCEDE7;
+    --card:#FFFDF7; --shadow:0 2px 10px rgba(38,51,43,0.08);
+  }
+  *{box-sizing:border-box;} html,body{margin:0;padding:0;}
+  body{
+    background:repeating-linear-gradient(#FAF5E8 0px,#FAF5E8 27px,var(--paper-line) 28px),var(--paper);
+    background-size:100% 28px; color:var(--ink);
+    font-family:'Source Sans 3',sans-serif; min-height:100vh; padding:28px 16px 60px;
+  }
+  .wrap{max-width:1080px;margin:0 auto;}
+
+  header.hero{
+    background:var(--card); border:1px solid var(--paper-line);
+    border-radius:14px; box-shadow:var(--shadow);
+    padding:26px 28px 22px; margin-bottom:20px;
+  }
+  .eyebrow{font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);margin:0 0 6px;}
+  h1{font-family:'Caveat',cursive;font-weight:700;font-size:42px;margin:0 0 10px;line-height:1.05;}
+  header.hero p{max-width:760px;line-height:1.55;font-size:15.5px;margin:0 0 8px;}
+  .scenario{
+    background:var(--paper); border:1px dashed var(--paper-line);
+    border-radius:10px; padding:12px 16px; margin-top:10px;
+    font-size:14px; line-height:1.6;
+  }
+  .scenario strong{color:var(--adult);}
+  .scenario em{color:var(--child);font-style:normal;font-weight:700;}
+  .rule-badge{
+    display:inline-flex; gap:12px; align-items:center; flex-wrap:wrap;
+    background:var(--paper); border:1px dashed var(--paper-line);
+    border-radius:10px; padding:10px 14px; margin-top:10px;
+    font-family:'IBM Plex Mono',monospace; font-size:13px;
+  }
+  .rule-badge .pill{display:inline-flex;align-items:center;gap:6px;padding:3px 9px;border-radius:20px;font-weight:600;}
+  .pill.eq1{background:var(--eq1-soft);color:var(--eq1);}
+  .pill.eq2{background:var(--eq2-soft);color:var(--eq2);}
+  .pill.ask{background:var(--adult-soft);color:var(--adult);}
+
+  .grid-layout{display:grid;grid-template-columns:340px 1fr;gap:20px;align-items:start;}
+  @media (max-width:840px){.grid-layout{grid-template-columns:1fr;}}
+
+  .card{background:var(--card);border:1px solid var(--paper-line);border-radius:14px;box-shadow:var(--shadow);padding:20px;}
+  .panel-title{font-family:'Caveat',cursive;font-weight:700;font-size:24px;margin:0 0 4px;}
+  .panel-sub{font-size:13px;color:var(--ink-soft);margin:0 0 14px;line-height:1.4;}
+
+  .equations-box{
+    background:var(--paper); border:1px solid var(--paper-line);
+    border-radius:10px; padding:14px 12px; margin-bottom:14px;
+    font-family:'IBM Plex Mono',monospace; font-size:15px; font-weight:600;
+    text-align:center; line-height:1.8;
+  }
+  .equations-box .eq{
+    display:inline-block; padding:4px 12px; border-radius:8px;
+    margin:3px 4px;
+  }
+  .equations-box .eq.e1{background:var(--eq1-soft);color:var(--eq1);}
+  .equations-box .eq.e2{background:var(--eq2-soft);color:var(--eq2);}
+
+  .field{margin-bottom:12px;}
+  .field label{display:flex;justify-content:space-between;font-size:13.5px;font-weight:600;margin-bottom:6px;}
+  .field label span.val{font-family:'IBM Plex Mono',monospace;color:var(--adult);font-weight:600;}
+  .xy-row{display:flex;gap:8px;}
+  .xy-row .xy-field{flex:1;}
+  .xy-row .xy-field label{font-size:11.5px;color:var(--ink-soft);margin-bottom:3px;text-transform:uppercase;letter-spacing:.04em;font-weight:700;}
+  input[type=number]{
+    width:100%; padding:9px 10px; border-radius:8px;
+    border:1px solid var(--paper-line);
+    font-family:'IBM Plex Mono',monospace; font-size:16px;
+    background:var(--paper); color:var(--ink);
+    -moz-appearance:textfield;
+  }
+  input[type=number]::-webkit-inner-spin-button,
+  input[type=number]::-webkit-outer-spin-button{-webkit-appearance:none;margin:0;}
+  input[type=number]:focus{
+    outline:2px solid var(--adult); outline-offset:-1px;
+    border-color:var(--adult); background:var(--card);
+  }
+  .helper{font-size:12px;color:var(--ink-soft);margin-top:6px;line-height:1.4;}
+  .helper span.k{font-family:'IBM Plex Mono',monospace;color:var(--ink);font-weight:600;}
+
+  .jars{display:flex;gap:10px;margin-bottom:14px;}
+  .jar{flex:1;text-align:center;padding:10px 6px;border-radius:10px;border:1px solid var(--paper-line);}
+  .jar.a-jar{background:var(--adult-soft);}
+  .jar.c-jar{background:var(--child-soft);}
+  .jar .name{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;}
+  .jar.a-jar .name{color:var(--adult);}
+  .jar.c-jar .name{color:var(--child);}
+  .jar .amt{font-family:'IBM Plex Mono',monospace;font-size:18px;font-weight:600;margin-top:4px;}
+
+  .check-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px;}
+  .check-row .check-cell{
+    padding:8px 6px; border-radius:8px;
+    font-family:'IBM Plex Mono',monospace; font-size:13px; text-align:center;
+    background:var(--paper); border:1px solid var(--paper-line);
+    font-weight:600;
+  }
+  .check-row .check-cell.passed{background:var(--good-soft);border-color:var(--good);color:var(--good);}
+  .check-row .check-cell.failed{background:var(--child-soft);border-color:var(--child);color:var(--child);}
+
+  button{
+    font-family:'Source Sans 3',sans-serif; font-weight:600; font-size:14.5px;
+    border:none; border-radius:9px; padding:11px 16px; cursor:pointer;
+    width:100%; transition:transform .08s ease, filter .15s ease;
+  }
+  button:active{transform:translateY(1px);}
+  button:disabled{opacity:.4;cursor:not-allowed;}
+  .btn-primary{background:var(--adult);color:#fff;}
+  .btn-primary:hover:not(:disabled){filter:brightness(1.08);}
+  .btn-secondary{background:var(--paper);color:var(--ink);border:1px solid var(--paper-line);margin-top:8px;}
+  .btn-secondary:hover:not(:disabled){background:#F0E9D6;}
+
+  .status{
+    font-size:13.5px; line-height:1.5; padding:12px;
+    border-radius:9px; background:var(--paper);
+    border:1px solid var(--paper-line); margin-bottom:14px; min-height:20px;
+  }
+  .status.feedback-good{background:var(--good-soft);border-color:var(--good);color:var(--good);font-weight:600;}
+  .status.feedback-mid{background:var(--adult-soft);border-color:var(--adult);color:var(--adult);font-weight:600;}
+  .status.feedback-warm{background:var(--eq1-soft);border-color:var(--eq1);color:var(--eq1);font-weight:600;}
+
+  .steps{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap;}
+  .step-dot{
+    width:26px;height:26px;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:600;
+    border:1.5px solid var(--paper-line);color:var(--ink-soft);background:var(--paper);
+  }
+  .step-dot.done{background:var(--adult);border-color:var(--adult);color:#fff;}
+
+  .graph-card{display:flex;flex-direction:column;}
+  .legend{display:flex;gap:18px;flex-wrap:wrap;margin:6px 0 12px;font-size:12.5px;font-family:'IBM Plex Mono',monospace;}
+  .legend span{display:inline-flex;align-items:center;gap:6px;}
+  .line-eq1{width:18px;height:3px;background:var(--eq1);display:inline-block;}
+  .line-eq2{width:18px;height:3px;background:var(--eq2);display:inline-block;border-top:2px dashed var(--eq2);background:transparent;}
+  .dot.guess{background:var(--adult);}
+  .dot.solution{background:var(--good);}
+
+  svg{width:100%;height:auto;display:block;}
+  .axis-label{font-family:'IBM Plex Mono',monospace;font-size:12px;fill:var(--ink-soft);}
+  .tick-label{font-family:'IBM Plex Mono',monospace;font-size:10px;fill:var(--ink-soft);}
+
+  .reflect,.explore{margin-top:20px;padding-top:16px;border-top:1px dashed var(--paper-line);}
+  .reflect.hidden,.explore.hidden{display:none;}
+  .q{margin-bottom:16px;}
+  .q p.qtext{font-weight:600;margin:0 0 8px;font-size:14.5px;}
+  .options{display:flex;gap:8px;flex-wrap:wrap;}
+  .opt{
+    padding:8px 14px;border-radius:8px;border:1px solid var(--paper-line);
+    background:var(--paper);font-size:13.5px;cursor:pointer;font-weight:600;
+  }
+  .opt.correct{background:var(--good-soft);border-color:var(--good);color:var(--good);}
+  .opt.wrong{background:var(--child-soft);border-color:var(--child);color:var(--child);}
+  .opt:disabled{cursor:default;}
+
+  .explore .panel-title{font-size:22px;}
+  .explore-inputs{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0 12px;}
+  .explore-inputs .field{margin-bottom:0;}
+  .explore-eq{
+    background:var(--paper); border:1px solid var(--paper-line);
+    border-radius:8px; padding:10px; margin-bottom:10px;
+    font-family:'IBM Plex Mono',monospace; font-size:13px; text-align:center;
+  }
+
+  footer.note{text-align:center;font-size:12px;color:var(--ink-soft);margin-top:26px;font-family:'IBM Plex Mono',monospace;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <p class="eyebrow">Linear Equations · Simultaneous Systems</p>
+    <h1>Jayadeva's Cafe — Solving 3A + C = 1200, A + 2C = 1000</h1>
+    <p>The manager at Jayadeva's Cafe watches two tables. He wants to know how much an <strong>Adult</strong> consumes on average and how much a <strong>Child</strong> consumes — but he only has the totals. Two tables, two equations, two unknowns. Find A and C.</p>
+    <div class="scenario">
+      <strong>Table 1:</strong> 3 adults + 1 child &nbsp;→&nbsp; bill = ₹1200<br>
+      <strong>Table 2:</strong> 1 adult + 2 children &nbsp;→&nbsp; bill = ₹1000<br>
+      <em>Find A (adult consumption) and C (child consumption).</em>
+    </div>
+    <div class="rule-badge">
+      <span class="pill eq1">3A + 1C = 1200</span>
+      <span class="pill eq2">1A + 2C = 1000</span>
+      <span class="pill ask">find A and C</span>
+    </div>
+  </header>
+
+  <div class="grid-layout">
+
+    <!-- LEFT CONTROL PANEL -->
+    <div class="card">
+      <p class="panel-title">Guess and verify</p>
+      <p class="panel-sub">Type your guess for A and C. The system checks whether both equations are satisfied.</p>
+
+      <div class="equations-box">
+        <div><span class="eq e1">3A + C = 1200</span></div>
+        <div><span class="eq e2">A + 2C = 1000</span></div>
+      </div>
+
+      <div class="field">
+        <label>Guess <span class="val">A (adult)</span> and <span class="val">C (child)</span></label>
+        <div class="xy-row">
+          <div class="xy-field"><label>A</label><input type="number" id="inA" step="any" value="200"></div>
+          <div class="xy-field"><label>C</label><input type="number" id="inC" step="any" value="400"></div>
+        </div>
+        <div class="helper" id="computeHelper">Plug in: 3·<span class="k">A</span> + 1·<span class="k">C</span> = ? &nbsp;|&nbsp; 1·<span class="k">A</span> + 2·<span class="k">C</span> = ?</div>
+      </div>
+
+      <div class="check-row">
+        <div class="check-cell" id="checkEq1">3A + C = ?</div>
+        <div class="check-cell" id="checkEq2">A + 2C = ?</div>
+      </div>
+
+      <div class="jars">
+        <div class="jar a-jar"><div class="name">A · adult</div><div class="amt" id="aJar">?</div></div>
+        <div class="jar c-jar"><div class="name">C · child</div><div class="amt" id="cJar">?</div></div>
+      </div>
+
+      <div class="steps" id="stepDots"></div>
+
+      <div class="status" id="statusBox">Type a guess for A and C. Press <strong>Verify</strong> to see if both equations hold.</div>
+
+      <button class="btn-primary" id="verifyBtn">Verify both equations</button>
+      <button class="btn-secondary" id="resetBtn">Start over</button>
+    </div>
+
+    <!-- RIGHT GRAPH -->
+    <div class="card graph-card">
+      <p class="panel-title">Two lines, one intersection</p>
+      <div class="legend">
+        <span><span class="line-eq1"></span>3A + C = 1200</span>
+        <span><span class="line-eq2"></span>A + 2C = 1000</span>
+        <span><i class="dot guess"></i>your guess (A, C)</span>
+        <span><i class="dot solution"></i>solution (when found)</span>
+      </div>
+      <p class="panel-sub" style="margin:6px 0 10px;">Each equation is a line on the A–C plane. The intersection of the two lines is the unique (A, C) that satisfies both.</p>
+      <svg id="graphSvg" viewBox="0 0 640 500" xmlns="http://www.w3.org/2000/svg"></svg>
+    </div>
+  </div>
+
+  <!-- REFLECTION QUIZ -->
+  <div class="card reflect hidden" id="reflectCard">
+    <p class="panel-title">What do you notice?</p>
+    <p class="panel-sub">Once both lines are drawn, the answer is wherever they meet. Now check the math.</p>
+
+    <div class="q" id="q1">
+      <p class="qtext">1. The two equations have how many solutions in (A, C)?</p>
+      <div class="options">
+        <button class="opt" data-correct="false">Infinitely many — any (A, C) is fine</button>
+        <button class="opt" data-correct="false">Zero — the equations contradict each other</button>
+        <button class="opt" data-correct="true">Exactly one — the two lines meet at a single point</button>
+      </div>
+    </div>
+
+    <div class="q" id="q2">
+      <p class="qtext">2. What is the adult consumption A?</p>
+      <div class="options">
+        <button class="opt" data-correct="false">A = 100</button>
+        <button class="opt" data-correct="true">A = 280</button>
+        <button class="opt" data-correct="false">A = 360</button>
+        <button class="opt" data-correct="false">A = 400</button>
+      </div>
+    </div>
+
+    <div class="q" id="q3">
+      <p class="qtext">3. The classic school-book method (elimination) goes:</p>
+      <div class="options">
+        <button class="opt" data-correct="false">Add the two equations — that gives 4A + 3C = 2200, which solves immediately</button>
+        <button class="opt" data-correct="true">Multiply eq 2 by 3 to get 3A + 6C = 3000; subtract eq 1 to cancel A; solve 5C = 1800, so C = 360</button>
+        <button class="opt" data-correct="false">Just divide the two equations — 3A + C divided by A + 2C equals 1.2, solve from there</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- EXPLORE MODE -->
+  <div class="card explore hidden" id="exploreCard">
+    <p class="panel-title">Now you try: change the bills</p>
+    <p class="panel-sub">Edit the right-hand sides (the totals) and watch the intersection point slide along both lines.</p>
+
+    <div class="explore-inputs">
+      <div class="field">
+        <label>Bill of table 1 (3A + 1C)</label>
+        <input type="number" id="expBill1" min="0" max="3000" step="50" value="1200">
+      </div>
+      <div class="field">
+        <label>Bill of table 2 (1A + 2C)</label>
+        <input type="number" id="expBill2" min="0" max="3000" step="50" value="1000">
+      </div>
+    </div>
+
+    <div class="explore-eq" id="exploreEq">Solution: A = 280, C = 360</div>
+
+    <div class="helper">Try <strong>1200 → 1500</strong> (table 1 spends more) — what happens to A and C? Try a degenerate case like <strong>both bills the same proportion</strong> — do the lines still meet?</div>
+  </div>
+
+  <footer class="note">Built for solving simultaneous equations · two equations, two unknowns, one intersection · verify by plugging back into both</footer>
+</div>
+
+<script>
+(function(){
+  const svgNS = "http://www.w3.org/2000/svg";
+  const svg = document.getElementById('graphSvg');
+  const M = {l: 70, r: 20, t: 30, b: 50};
+  const PW = 640 - M.l - M.r;
+  const PH = 500 - M.t - M.b;
+
+  // ---- STATE ----
+  // Main mode coefficients are fixed: 3A + C = 1200, A + 2C = 1000
+  // In explore mode these can change.
+  let eq1Bill = 1200, eq2Bill = 1000;
+  const a11 = 3, a12 = 1, a21 = 1, a22 = 2;
+
+  function solve(){
+    // Cramer's rule for the 2x2 system a11*A + a12*C = b1, a21*A + a22*C = b2
+    const D = a11*a22 - a12*a21;
+    if(Math.abs(D) < 1e-9) return null;
+    return {
+      A: (eq1Bill*a22 - a12*eq2Bill) / D,
+      C: (a11*eq2Bill - eq1Bill*a21) / D
+    };
+  }
+
+  // ---- DOM ----
+  const inA = document.getElementById('inA');
+  const inC = document.getElementById('inC');
+  const aJar = document.getElementById('aJar');
+  const cJar = document.getElementById('cJar');
+  const computeHelper = document.getElementById('computeHelper');
+  const statusBox = document.getElementById('statusBox');
+  const verifyBtn = document.getElementById('verifyBtn');
+  const resetBtn = document.getElementById('resetBtn');
+  const checkEq1 = document.getElementById('checkEq1');
+  const checkEq2 = document.getElementById('checkEq2');
+  const stepDots = document.getElementById('stepDots');
+  const reflectCard = document.getElementById('reflectCard');
+  const exploreCard = document.getElementById('exploreCard');
+
+  for(let i=1;i<=3;i++){
+    const d = document.createElement('div');
+    d.className='step-dot';
+    d.textContent=i;
+    d.id='step-'+i;
+    stepDots.appendChild(d);
+  }
+
+  function formatNum(v){
+    if(Math.abs(v) < 1e-9) return '0';
+    if(Number.isInteger(v)) return v.toString();
+    return (Math.round(v*10)/10).toString();
+  }
+
+  function updateLive(){
+    const A = parseFloat(inA.value);
+    const C = parseFloat(inC.value);
+    if(isNaN(A) || isNaN(C)){
+      aJar.textContent = '?';
+      cJar.textContent = '?';
+      checkEq1.textContent = '3A + C = ?';
+      checkEq2.textContent = 'A + 2C = ?';
+      checkEq1.className = 'check-cell';
+      checkEq2.className = 'check-cell';
+      computeHelper.innerHTML = `Plug in: 3·<span class="k">A</span> + 1·<span class="k">C</span> = ? &nbsp;|&nbsp; 1·<span class="k">A</span> + 2·<span class="k">C</span> = ?`;
+      render();
+      return;
+    }
+    aJar.textContent = formatNum(A);
+    cJar.textContent = formatNum(C);
+    const lhs1 = a11*A + a12*C;
+    const lhs2 = a21*A + a22*C;
+    const diff1 = lhs1 - eq1Bill;
+    const diff2 = lhs2 - eq2Bill;
+    const tol = 0.05;
+    const ok1 = Math.abs(diff1) < tol;
+    const ok2 = Math.abs(diff2) < tol;
+    checkEq1.textContent = `3A + C = ${formatNum(lhs1)} (target ${eq1Bill})`;
+    checkEq2.textContent = `A + 2C = ${formatNum(lhs2)} (target ${eq2Bill})`;
+    checkEq1.className = 'check-cell' + (ok1 ? ' passed' : ' failed');
+    checkEq2.className = 'check-cell' + (ok2 ? ' passed' : ' failed');
+    computeHelper.innerHTML = `3·<span class="k">${formatNum(A)}</span> + 1·<span class="k">${formatNum(C)}</span> = <span style="color:var(--eq1);font-weight:700;">${formatNum(lhs1)}</span> (want 1200) &nbsp;|&nbsp; 1·<span class="k">${formatNum(A)}</span> + 2·<span class="k">${formatNum(C)}</span> = <span style="color:var(--eq2);font-weight:700;">${formatNum(lhs2)}</span> (want 1000)`;
+    render();
+  }
+
+  function setStatus(html, cls){
+    statusBox.innerHTML = html;
+    statusBox.className = 'status' + (cls ? (' '+cls) : '');
+  }
+
+  function verify(){
+    const A = parseFloat(inA.value);
+    const C = parseFloat(inC.value);
+    if(isNaN(A) || isNaN(C)){
+      setStatus('Enter numbers for both A and C first.');
+      return;
+    }
+    const lhs1 = a11*A + a12*C;
+    const lhs2 = a21*A + a22*C;
+    const ok1 = Math.abs(lhs1 - eq1Bill) < 0.05;
+    const ok2 = Math.abs(lhs2 - eq2Bill) < 0.05;
+
+    // Find which step dot to mark
+    const stepIdx = (ok1 ? 1 : 0) + (ok2 ? 1 : 0) + 1; // 1, 2, or 3
+    // Actually we want up to 3 dot milestones: found eq1 ✓, found eq2 ✓, both ✓
+    if(ok1){
+      const d = document.getElementById('step-1');
+      if(d) d.classList.add('done');
+    }
+    if(ok2){
+      const d = document.getElementById('step-2');
+      if(d) d.classList.add('done');
+    }
+    if(ok1 && ok2){
+      const d = document.getElementById('step-3');
+      if(d) d.classList.add('done');
+    }
+
+    let msg, cls;
+    if(ok1 && ok2){
+      msg = `🎯 Both equations satisfied! <strong>A = ${formatNum(A)}, C = ${formatNum(C)}</strong> is the solution. Verify: 3·${formatNum(A)} + ${formatNum(C)} = ${eq1Bill} ✓ and ${formatNum(A)} + 2·${formatNum(C)} = ${eq2Bill} ✓.`;
+      cls = 'feedback-good';
+    } else if(ok1 && !ok2){
+      msg = `Eq 1 ✓ (3A + C = ${eq1Bill}) but eq 2 ✗ (A + 2C = ${formatNum(lhs2)}, need ${eq2Bill}). Adjust C upward to satisfy eq 2.`;
+      cls = 'feedback-warm';
+    } else if(!ok1 && ok2){
+      msg = `Eq 2 ✓ (A + 2C = ${eq2Bill}) but eq 1 ✗ (3A + C = ${formatNum(lhs1)}, need ${eq1Bill}). Adjust A upward to satisfy eq 1.`;
+      cls = 'feedback-warm';
+    } else {
+      const totalErr = Math.abs(lhs1 - eq1Bill) + Math.abs(lhs2 - eq2Bill);
+      msg = `Neither equation holds. <strong>3A + C</strong> = ${formatNum(lhs1)} (want 1200, off by ${Math.abs(lhs1 - 1200).toFixed(0)}). <strong>A + 2C</strong> = ${formatNum(lhs2)} (want 1000, off by ${Math.abs(lhs2 - 1000).toFixed(0)}).`;
+      cls = 'feedback-mid';
+    }
+    setStatus(msg, cls);
+
+    // unlock reflection after both ok
+    if(ok1 && ok2){
+      reflectCard.classList.remove('hidden');
+      reflectCard.scrollIntoView({behavior:'smooth', block:'nearest'});
+    }
+  }
+
+  verifyBtn.addEventListener('click', verify);
+  inA.addEventListener('input', updateLive);
+  inC.addEventListener('input', updateLive);
+
+  function resetGame(){
+    inA.value = '200'; inC.value = '400';
+    document.querySelectorAll('.step-dot').forEach(d => d.classList.remove('done'));
+    reflectCard.classList.add('hidden');
+    exploreCard.classList.add('hidden');
+    eq1Bill = 1200; eq2Bill = 1000;
+    setStatus('Type a guess for A and C. Press <strong>Verify</strong> to see if both equations hold.');
+    updateLive();
+  }
+  resetBtn.addEventListener('click', resetGame);
+
+  // Enter key submits
+  inA.addEventListener('keydown', (e)=>{ if(e.key === 'Enter') verify(); });
+  inC.addEventListener('keydown', (e)=>{ if(e.key === 'Enter') verify(); });
+
+  // ---- SVG rendering ----
+  function getBounds(){
+    // Two lines: 3A + C = b1 (y from b1 to (b1/3, 0)) and A + 2C = b2 (y from b2/2 to (b2, 0))
+    const candidates = [];
+    candidates.push({x: 0, y: eq1Bill});         // eq1 y-intercept
+    candidates.push({x: eq1Bill/3, y: 0});       // eq1 x-intercept
+    candidates.push({x: 0, y: eq2Bill/2});       // eq2 y-intercept
+    candidates.push({x: eq2Bill, y: 0});         // eq2 x-intercept
+    const sol = solve();
+    if(sol){
+      candidates.push({x: sol.A, y: sol.C});
+    }
+    const A = parseFloat(inA.value);
+    const C = parseFloat(inC.value);
+    if(!isNaN(A) && !isNaN(C)){
+      candidates.push({x: A, y: C});
+    }
+    const xs = candidates.map(p => p.x);
+    const ys = candidates.map(p => p.y);
+    let xMin = 0, xMax = Math.max(...xs, 100);
+    let yMin = 0, yMax = Math.max(...ys, 100);
+    // Add a small padding on left
+    xMin = Math.min(xMin, 0);
+    yMin = Math.min(yMin, 0);
+    // Ensure solution fits with margin
+    xMax = Math.max(xMax, 1300);
+    yMax = Math.max(yMax, 1300);
+    return {xMin, xMax, yMin, yMax};
+  }
+
+  function render(){
+    while(svg.firstChild) svg.removeChild(svg.firstChild);
+
+    const bounds = getBounds();
+    const xR = bounds.xMax - bounds.xMin;
+    const yR = bounds.yMax - bounds.yMin;
+    const xSc = PW / xR;
+    const ySc = PH / yR;
+
+    function toS(dx, dy){
+      return {
+        x: M.l + (dx - bounds.xMin) * xSc,
+        y: M.t + PH - (dy - bounds.yMin) * ySc
+      };
+    }
+
+    const originSvg = toS(0, 0);
+
+    // ---- Grid ----
+    const xStep = niceMax(xR / 8);
+    const yStep = niceMax(yR / 6);
+    for(let v = Math.ceil(bounds.xMin / xStep) * xStep; v <= bounds.xMax; v += xStep){
+      if(v === 0) continue;
+      const p = toS(v, 0);
+      if(p.x < M.l - 1 || p.x > M.l + PW + 1) continue;
+      svg.appendChild(mkL(p.x, M.t, p.x, M.t + PH, '#E4DCC4', 1));
+      const t = mkT(p.x, originSvg.y + 16, '' + Math.round(v), 'tick-label');
+      t.setAttribute('text-anchor', 'middle');
+      svg.appendChild(t);
+    }
+    for(let v = Math.ceil(bounds.yMin / yStep) * yStep; v <= bounds.yMax; v += yStep){
+      if(v === 0) continue;
+      const p = toS(0, v);
+      if(p.y < M.t - 1 || p.y > M.t + PH + 1) continue;
+      svg.appendChild(mkL(M.l, p.y, M.l + PW, p.y, '#E4DCC4', 1));
+      const t = mkT(M.l - 6, p.y + 3, '' + Math.round(v), 'tick-label');
+      t.setAttribute('text-anchor', 'end');
+      svg.appendChild(t);
+    }
+
+    // ---- Axes through (0,0) ----
+    if(0 >= bounds.yMin && 0 <= bounds.yMax){
+      svg.appendChild(mkL(M.l, originSvg.y, M.l + PW, originSvg.y, '#26332B', 1.5));
+    }
+    if(0 >= bounds.xMin && 0 <= bounds.xMax){
+      svg.appendChild(mkLine2(originSvg.x, M.t, originSvg.x, M.t + PH, '#26332B', 1.5));
+    }
+
+    // axis labels
+    const xlab = mkT(M.l + PW/2, M.t + PH + 42, 'A (adult)', 'axis-label');
+    xlab.setAttribute('text-anchor', 'middle');
+    svg.appendChild(xlab);
+    const ylab = mkT(16, M.t + PH/2, 'C (child)', 'axis-label');
+    ylab.setAttribute('text-anchor', 'middle');
+    ylab.setAttribute('transform', `rotate(-90 16 ${M.t + PH/2})`);
+    svg.appendChild(ylab);
+
+    // ---- Lines ----
+    function drawLine(eqFn, color, label, dash){
+      // find points where line crosses plot edges
+      const points = [];
+      // sample many x
+      for(let x = bounds.xMin; x <= bounds.xMax; x += (bounds.xMax - bounds.xMin)/200){
+        const y = eqFn(x);
+        if(!isFinite(y)) continue;
+        points.push({x, y});
+      }
+      if(points.length < 2) return;
+      // clip to plot rect (approximately: clip y to bounds)
+      let d = '';
+      let started = false;
+      for(let i = 0; i < points.length; i++){
+        const sp = toS(points[i].x, points[i].y);
+        if(sp.x < M.l - 5 || sp.x > M.l + PW + 5 || sp.y < M.t - 5 || sp.y > M.t + PH + 5){
+          if(started){ d += ' '; started = false; }
+          continue;
+        }
+        d += (started ? ' L ' : 'M ') + sp.x + ' ' + sp.y + ' ';
+        started = true;
+      }
+      const path = document.createElementNS(svgNS, 'path');
+      path.setAttribute('d', d);
+      path.setAttribute('stroke', color);
+      path.setAttribute('stroke-width', '2.5');
+      path.setAttribute('fill', 'none');
+      if(dash) path.setAttribute('stroke-dasharray', '6 4');
+      svg.appendChild(path);
+    }
+    drawLine(x => (eq1Bill - 3*x)/1, '#B8860B', '3A + C = 1200');     // eq1
+    drawLine(x => (eq2Bill - 1*x)/2, '#7B2D8E', 'A + 2C = 1000', true); // eq2 (dashed)
+
+    // ---- Solution marker ----
+    const sol = solve();
+    if(sol && sol.A >= bounds.xMin && sol.A <= bounds.xMax && sol.C >= bounds.yMin && sol.C <= bounds.yMax){
+      const sp = toS(sol.A, sol.C);
+      // halo
+      const halo = document.createElementNS(svgNS, 'circle');
+      halo.setAttribute('cx', sp.x); halo.setAttribute('cy', sp.y);
+      halo.setAttribute('r', 14);
+      halo.setAttribute('fill', 'none');
+      halo.setAttribute('stroke', '#1F6F5C');
+      halo.setAttribute('stroke-width', '2');
+      halo.setAttribute('stroke-opacity', '0.5');
+      svg.appendChild(halo);
+      const c = document.createElementNS(svgNS, 'circle');
+      c.setAttribute('cx', sp.x); c.setAttribute('cy', sp.y);
+      c.setAttribute('r', 7);
+      c.setAttribute('fill', '#1F6F5C');
+      c.setAttribute('stroke', '#FFFDF7');
+      c.setAttribute('stroke-width', '2');
+      svg.appendChild(c);
+      const lab = mkT(sp.x + 10, sp.y - 10, `(${formatNum(sol.A)}, ${formatNum(sol.C)})`, 'tick-label');
+      lab.setAttribute('font-weight', '700');
+      lab.setAttribute('fill', '#1F6F5C');
+      svg.appendChild(lab);
+    }
+
+    // ---- User guess marker ----
+    const A = parseFloat(inA.value);
+    const C = parseFloat(inC.value);
+    if(!isNaN(A) && !isNaN(C) && A >= bounds.xMin && A <= bounds.xMax && C >= bounds.yMin && C <= bounds.yMax){
+      const sp = toS(A, C);
+      const c = document.createElementNS(svgNS, 'circle');
+      c.setAttribute('cx', sp.x); c.setAttribute('cy', sp.y);
+      c.setAttribute('r', 6);
+      c.setAttribute('fill', '#0E7490');
+      c.setAttribute('fill-opacity', '0.6');
+      c.setAttribute('stroke', '#0E7490');
+      c.setAttribute('stroke-width', '2');
+      svg.appendChild(c);
+      const lab = mkT(sp.x + 8, sp.y - 8, `(${formatNum(A)}, ${formatNum(C)})`, 'tick-label');
+      lab.setAttribute('fill', '#0E7490');
+      lab.setAttribute('font-weight', '600');
+      svg.appendChild(lab);
+    }
+  }
+
+  function mkL(x1, y1, x2, y2, stroke, w){
+    const l = document.createElementNS(svgNS, 'line');
+    l.setAttribute('x1', x1); l.setAttribute('y1', y1);
+    l.setAttribute('x2', x2); l.setAttribute('y2', y2);
+    l.setAttribute('stroke', stroke); l.setAttribute('stroke-width', w);
+    return l;
+  }
+  function mkLine2(x1, y1, x2, y2, stroke, w){
+    // avoid name collision with mkL
+    return mkL(x1, y1, x2, y2, stroke, w);
+  }
+  function mkT(x, y, text, cls){
+    const t = document.createElementNS(svgNS, 'text');
+    t.setAttribute('x', x); t.setAttribute('y', y);
+    t.setAttribute('class', cls);
+    t.textContent = text;
+    return t;
+  }
+  function niceMax(v){
+    if(v <= 0) return 10;
+    const mag = Math.pow(10, Math.floor(Math.log10(v)));
+    const norm = v / mag;
+    let n;
+    if(norm <= 1) n = 1;
+    else if(norm <= 2) n = 2;
+    else if(norm <= 2.5) n = 2.5;
+    else if(norm <= 5) n = 5;
+    else n = 10;
+    return n * mag;
+  }
+
+  // ---- QUIZ ----
+  document.querySelectorAll('.q .options').forEach(group => {
+    group.querySelectorAll('.opt').forEach(btn => {
+      btn.addEventListener('click', ()=>{
+        const correct = btn.dataset.correct === 'true';
+        group.querySelectorAll('.opt').forEach(b => {
+          b.disabled = true;
+          if(b.dataset.correct === 'true') b.classList.add('correct');
+        });
+        if(!correct) btn.classList.add('wrong');
+        if(group.parentElement.id === 'q3' && correct){
+          setTimeout(()=>{
+            exploreCard.classList.remove('hidden');
+            exploreCard.scrollIntoView({behavior:'smooth', block:'nearest'});
+            rebuildExplore();
+          }, 400);
+        }
+      });
+    });
+  });
+
+  // ---- EXPLORE ----
+  const expBill1 = document.getElementById('expBill1');
+  const expBill2 = document.getElementById('expBill2');
+  const exploreEq = document.getElementById('exploreEq');
+
+  function rebuildExplore(){
+    const b1 = parseFloat(expBill1.value);
+    const b2 = parseFloat(expBill2.value);
+    if(isNaN(b1) || isNaN(b2)) return;
+    eq1Bill = b1;
+    eq2Bill = b2;
+    const s = solve();
+    if(s){
+      exploreEq.textContent = `Solution: A = ${formatNum(s.A)}, C = ${formatNum(s.C)}`;
+    } else {
+      exploreEq.textContent = 'No unique solution (the two lines are parallel or coincident)';
+    }
+    render();
+  }
+  [expBill1, expBill2].forEach(inp => {
+    inp.addEventListener('input', rebuildExplore);
+  });
+
+  // init
+  updateLive();
+})();
+</script>
+</body>
+</html>

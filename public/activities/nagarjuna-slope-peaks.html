@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nāgārjuna's Peaks — Comparing Slopes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=IBM+Plex+Mono:wght@500;600&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/plotly.js/2.32.0/plotly.min.js"></script>
+<style>
+  :root{
+    --paper:#FAF5E8; --paper-line:#D8CFB6; --ink:#26332B; --ink-soft:#5B6B60;
+    --l1:#1F6F5C; --l2:#B8860B; --l3:#B5502E; --custom:#7B5EA7; --mystery:#6B6B6B;
+    --card:#FFFDF7; --shadow:0 2px 10px rgba(38,51,43,0.08);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background: repeating-linear-gradient(#FAF5E8 0px,#FAF5E8 27px,var(--paper-line) 28px), var(--paper);
+    background-size:100% 28px;
+    color:var(--ink); font-family:'Source Sans 3',sans-serif;
+    min-height:100vh; padding:28px 16px 60px;
+  }
+  .wrap{max-width:1120px;margin:0 auto;}
+  header.hero{background:var(--card); border:1px solid var(--paper-line); border-radius:14px; box-shadow:var(--shadow); padding:26px 28px 22px; margin-bottom:20px;}
+  .eyebrow{font-family:'IBM Plex Mono',monospace; font-size:12px; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-soft); margin:0 0 6px;}
+  h1{font-family:'Caveat',cursive; font-weight:700; font-size:42px; margin:0 0 10px; line-height:1.05;}
+  header.hero p{max-width:700px; line-height:1.55; font-size:15.5px; margin:0 0 8px;}
+
+  .grid-layout{display:grid; grid-template-columns:320px 1fr; gap:20px; align-items:start; margin-bottom:20px;}
+  @media (max-width:840px){ .grid-layout{grid-template-columns:1fr;} }
+  .card{background:var(--card); border:1px solid var(--paper-line); border-radius:14px; box-shadow:var(--shadow); padding:20px;}
+  .panel-title{font-family:'Caveat',cursive; font-weight:700; font-size:24px; margin:0 0 4px;}
+  .panel-sub{font-size:13px; color:var(--ink-soft); margin:0 0 14px; line-height:1.4;}
+
+  .line-toggle{
+    display:flex; align-items:center; gap:10px; padding:10px 12px; border-radius:9px;
+    border:1.5px solid var(--paper-line); margin-bottom:10px; cursor:pointer; user-select:none;
+    background:var(--paper); transition:background .12s ease, border-color .12s ease;
+  }
+  .line-toggle.active{ background:#fff; }
+  .line-toggle input{ accent-color: var(--ink); width:16px; height:16px; }
+  .swatch{ width:14px; height:14px; border-radius:4px; flex-shrink:0; }
+  .line-toggle .eq{ font-family:'IBM Plex Mono',monospace; font-weight:600; font-size:15px; }
+  .line-toggle .desc{ font-size:11.5px; color:var(--ink-soft); margin-left:auto; }
+
+  table.pts{ width:100%; border-collapse:collapse; margin-top:6px; font-family:'IBM Plex Mono',monospace; font-size:12.5px; }
+  table.pts th, table.pts td{ border:1px solid var(--paper-line); padding:5px 6px; text-align:center; }
+  table.pts th{ background:var(--paper); font-weight:600; }
+
+  .field{ margin-bottom:16px; }
+  .field label{ display:flex; justify-content:space-between; font-size:13.5px; font-weight:600; margin-bottom:6px; }
+  .field label span.val{ font-family:'IBM Plex Mono',monospace; color:var(--custom); font-weight:600; }
+  input[type=range]{ width:100%; accent-color: var(--custom); }
+
+  .eq-box{
+    font-family:'IBM Plex Mono',monospace; font-size:20px; font-weight:600; text-align:center;
+    background:var(--paper); border:1px solid var(--paper-line); border-radius:10px; padding:12px; margin:8px 0 16px; color:var(--custom);
+  }
+
+  button{ font-family:'Source Sans 3',sans-serif; font-weight:600; font-size:14.5px; border:none; border-radius:9px; padding:11px 16px; cursor:pointer; width:100%; transition:transform .08s ease, filter .15s ease; }
+  button:active{ transform:translateY(1px); }
+  button:disabled{ opacity:.4; cursor:not-allowed; }
+  .btn-primary{ background:var(--l1); color:#fff; }
+  .btn-primary:hover:not(:disabled){ filter:brightness(1.08); }
+  .btn-secondary{ background:var(--paper); color:var(--ink); border:1px solid var(--paper-line); margin-top:8px; }
+  .btn-secondary:hover:not(:disabled){ background:#F0E9D6; }
+
+  .status{ font-size:13.5px; line-height:1.55; padding:12px; border-radius:9px; background:var(--paper); border:1px solid var(--paper-line); margin-bottom:14px; min-height:20px; }
+  .status.good{ background:#E1EFE9; border-color:var(--l1); color:var(--l1); font-weight:600; }
+  .status.mid{ background:#EFE6F6; border-color:var(--custom); color:var(--custom); font-weight:600; }
+
+  .toggle-row{ display:flex; align-items:center; gap:8px; font-size:13px; margin-bottom:14px; }
+  .toggle-row input{ accent-color: var(--custom); }
+
+  .legend{ display:flex; gap:14px; flex-wrap:wrap; margin:6px 0 10px; font-size:12.5px; font-family:'IBM Plex Mono',monospace; }
+  .legend span{ display:inline-flex; align-items:center; gap:6px; }
+  .dot{ width:10px; height:10px; border-radius:50%; display:inline-block; }
+
+  #mainPlot, #gamePlot{ width:100%; height:440px; }
+
+  .rounds{ display:flex; gap:6px; margin-bottom:10px; flex-wrap:wrap; }
+  .round-dot{ width:24px; height:24px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-family:'IBM Plex Mono',monospace; font-size:11px; font-weight:600; border:1.5px solid var(--paper-line); color:var(--ink-soft); background:var(--paper); }
+  .round-dot.done{ background:var(--l1); border-color:var(--l1); color:#fff; }
+
+  .reflect{ margin-top:20px; }
+  .reflect.hidden{ display:none; }
+  .q{ margin-bottom:16px; }
+  .q p.qtext{ font-weight:600; margin:0 0 8px; font-size:14.5px; }
+  .options{ display:flex; gap:8px; flex-wrap:wrap; }
+  .opt{ padding:8px 14px; border-radius:8px; border:1px solid var(--paper-line); background:var(--paper); font-size:13.5px; cursor:pointer; font-weight:600; }
+  .opt.correct{ background:#E1EFE9; border-color:var(--l1); color:var(--l1); }
+  .opt.wrong{ background:#F6DCD4; border-color:var(--l3); color:#8C3A1F; }
+  .opt:disabled{ cursor:default; }
+
+  footer.note{ text-align:center; font-size:12px; color:var(--ink-soft); margin-top:26px; font-family:'IBM Plex Mono',monospace; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <p class="eyebrow">Intuition Builder · Slope of a Line</p>
+    <h1>Nāgārjuna's Peaks — Comparing Slopes</h1>
+    <p>Nāgārjuna compares three mountain paths, each steeper than the last. All start at the same base camp (0,0) — but they climb at different rates. Toggle each one on, watch how the numbers behave, then build your own path and try to match a mystery one just by eye.</p>
+  </header>
+
+  <div class="grid-layout">
+    <div class="card">
+      <p class="panel-title">The three lines</p>
+      <p class="panel-sub">Turn each one on and off. Watch the table of points update as you go.</p>
+
+      <label class="line-toggle active" id="toggle-l1">
+        <input type="checkbox" checked data-line="l1">
+        <i class="swatch" style="background:var(--l1);"></i>
+        <span class="eq">y = x</span>
+        <span class="desc">slope 1</span>
+      </label>
+      <label class="line-toggle active" id="toggle-l2">
+        <input type="checkbox" checked data-line="l2">
+        <i class="swatch" style="background:var(--l2);"></i>
+        <span class="eq">y = 2x</span>
+        <span class="desc">slope 2</span>
+      </label>
+      <label class="line-toggle active" id="toggle-l3">
+        <input type="checkbox" checked data-line="l3">
+        <i class="swatch" style="background:var(--l3);"></i>
+        <span class="eq">y = 10x</span>
+        <span class="desc">slope 10</span>
+      </label>
+
+      <table class="pts" id="ptsTable"></table>
+    </div>
+
+    <div class="card">
+      <p class="panel-title">The graph</p>
+      <div class="legend">
+        <span><i class="dot" style="background:var(--l1);"></i>y = x</span>
+        <span><i class="dot" style="background:var(--l2);"></i>y = 2x</span>
+        <span><i class="dot" style="background:var(--l3);"></i>y = 10x</span>
+      </div>
+      <div id="mainPlot"></div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-bottom:20px;">
+    <p class="panel-title">Build your own line</p>
+    <p class="panel-sub">Type any equation of the form y = mx + c using the sliders, and see it plotted live alongside the three lines above.</p>
+
+    <div class="field">
+      <label>Slope (m) <span class="val" id="customMVal">3</span></label>
+      <input type="range" id="customM" min="-10" max="10" step="0.5" value="3">
+    </div>
+    <div class="field">
+      <label>Intercept (c) <span class="val" id="customCVal">0</span></label>
+      <input type="range" id="customC" min="-10" max="10" step="0.5" value="0">
+    </div>
+    <div class="eq-box" id="customEqBox">y = 3x</div>
+    <div class="toggle-row">
+      <input type="checkbox" id="showCustom" checked>
+      <label for="showCustom">Show my line on the graph above</label>
+    </div>
+  </div>
+
+  <div class="grid-layout">
+    <div class="card">
+      <p class="panel-title">Guess the mystery line</p>
+      <p class="panel-sub">A hidden line is drawn in gray. Move the sliders below until your purple line lands exactly on top of it.</p>
+
+      <div class="rounds" id="rounds"></div>
+
+      <div class="status" id="gameStatus">Round 1: adjust the sliders until your line matches the gray one.</div>
+
+      <div class="field">
+        <label>Your slope (m) <span class="val" id="guessMVal">0</span></label>
+        <input type="range" id="guessM" min="-10" max="10" step="0.5" value="0">
+      </div>
+      <div class="field" id="guessCField" style="display:none;">
+        <label>Your intercept (c) <span class="val" id="guessCVal">0</span></label>
+        <input type="range" id="guessC" min="-6" max="6" step="0.5" value="0">
+      </div>
+      <div class="eq-box" id="guessEqBox">y = 0x</div>
+
+      <div class="toggle-row">
+        <input type="checkbox" id="includeIntercept">
+        <label for="includeIntercept">Bonus: also hide an intercept (y = mx + c)</label>
+      </div>
+
+      <button class="btn-primary" id="checkGuessBtn">Check my line</button>
+      <button class="btn-secondary" id="newRoundBtn">New mystery line</button>
+    </div>
+
+    <div class="card">
+      <p class="panel-title">Live comparison</p>
+      <div class="legend">
+        <span><i class="dot" style="background:var(--mystery);"></i>mystery line</span>
+        <span><i class="dot" style="background:var(--custom);"></i>your line</span>
+      </div>
+      <div id="gamePlot"></div>
+    </div>
+  </div>
+
+  <div class="card reflect hidden" id="reflectCard">
+    <p class="panel-title">What did you notice?</p>
+
+    <div class="q" id="q1">
+      <p class="qtext">1. As the slope m gets bigger (2, then 10), the line gets…</p>
+      <div class="options">
+        <button class="opt" data-correct="false">flatter, closer to the x-axis</button>
+        <button class="opt" data-correct="true">steeper, closer to the y-axis</button>
+        <button class="opt" data-correct="false">no change at all</button>
+      </div>
+    </div>
+
+    <div class="q" id="q2">
+      <p class="qtext">2. What do y = x, y = 2x and y = 10x all have in common on the graph?</p>
+      <div class="options">
+        <button class="opt" data-correct="false">they're parallel and never meet</button>
+        <button class="opt" data-correct="true">they all pass through the origin (0,0)</button>
+        <button class="opt" data-correct="false">they all cross the y-axis at 1</button>
+      </div>
+    </div>
+
+    <div class="q" id="q3">
+      <p class="qtext">3. If a line is y = mx (no added constant), setting x = 0 always gives…</p>
+      <div class="options">
+        <button class="opt" data-correct="true">y = 0, so it passes through the origin</button>
+        <button class="opt" data-correct="false">y = m</button>
+        <button class="opt" data-correct="false">it depends on m</button>
+      </div>
+    </div>
+  </div>
+
+  <footer class="note">Nāgārjuna's peaks · every line y = mx passes through (0,0); m controls steepness, c (if present) shifts it up or down</footer>
+</div>
+
+<script>
+(function(){
+  const X_RANGE = [-4,4];
+  const sampleXs = [-3,-2,-1,0,1,2,3];
+
+  // ---------- MAIN PLOT: the three preset lines ----------
+  const lineDefs = {
+    l1: {m:1, color:'#1F6F5C', name:'y = x'},
+    l2: {m:2, color:'#B8860B', name:'y = 2x'},
+    l3: {m:10, color:'#B5502E', name:'y = 10x'}
+  };
+  let visible = {l1:true, l2:true, l3:true};
+  let customM = 3, customC = 0, showCustom = true;
+
+  function mainLayout(){
+    return {
+      margin:{l:45,r:20,t:20,b:40},
+      xaxis:{range:[-4,4], gridcolor:'#E4DCC4', zeroline:true, zerolinecolor:'#26332B', title:'x'},
+      yaxis:{range:[-12,12], gridcolor:'#E4DCC4', zeroline:true, zerolinecolor:'#26332B', title:'y'},
+      plot_bgcolor:'#FFFDF7', paper_bgcolor:'#FFFDF7',
+      font:{family:'IBM Plex Mono, monospace', size:11, color:'#26332B'},
+      showlegend:false
+    };
+  }
+
+  function eqString(m,c){
+    const mAbs = Math.abs(m);
+    const mPart = m===0 ? '0' : (mAbs===1 ? (m>0?'x':'−x') : `${m}x`);
+    const cPart = c===0 ? '' : (c>0 ? ` + ${c}` : ` − ${Math.abs(c)}`);
+    return `y = ${mPart}${cPart}`;
+  }
+
+  function drawMain(){
+    const traces = [];
+    Object.keys(lineDefs).forEach(key=>{
+      if(!visible[key]) return;
+      const {m,color} = lineDefs[key];
+      traces.push({
+        x:X_RANGE, y:X_RANGE.map(x=>m*x),
+        mode:'lines', type:'scatter', line:{color, width:2.5}
+      });
+    });
+    if(showCustom){
+      traces.push({
+        x:X_RANGE, y:X_RANGE.map(x=>customM*x+customC),
+        mode:'lines', type:'scatter', line:{color:'#7B5EA7', width:2.5, dash:'dash'}
+      });
+    }
+    Plotly.react('mainPlot', traces, mainLayout(), {displayModeBar:false, responsive:true});
+    updateTable();
+  }
+
+  function updateTable(){
+    const table = document.getElementById('ptsTable');
+    const activeLines = Object.keys(lineDefs).filter(k=>visible[k]);
+    let html = '<tr><th>x</th>' + activeLines.map(k=>`<th style="color:${lineDefs[k].color}">${lineDefs[k].name}</th>`).join('') + '</tr>';
+    sampleXs.forEach(x=>{
+      html += `<tr><td>${x}</td>` + activeLines.map(k=>`<td>${lineDefs[k].m*x}</td>`).join('') + '</tr>';
+    });
+    table.innerHTML = html;
+  }
+
+  document.querySelectorAll('.line-toggle input').forEach(inp=>{
+    inp.addEventListener('change', ()=>{
+      const key = inp.dataset.line;
+      visible[key] = inp.checked;
+      inp.closest('.line-toggle').classList.toggle('active', inp.checked);
+      drawMain();
+    });
+  });
+
+  const customMSlider = document.getElementById('customM');
+  const customCSlider = document.getElementById('customC');
+  const customMVal = document.getElementById('customMVal');
+  const customCVal = document.getElementById('customCVal');
+  const customEqBox = document.getElementById('customEqBox');
+  const showCustomBox = document.getElementById('showCustom');
+
+  customMSlider.addEventListener('input', ()=>{
+    customM = parseFloat(customMSlider.value);
+    customMVal.textContent = customM;
+    customEqBox.textContent = eqString(customM, customC);
+    drawMain();
+  });
+  customCSlider.addEventListener('input', ()=>{
+    customC = parseFloat(customCSlider.value);
+    customCVal.textContent = customC;
+    customEqBox.textContent = eqString(customM, customC);
+    drawMain();
+  });
+  showCustomBox.addEventListener('change', ()=>{
+    showCustom = showCustomBox.checked;
+    drawMain();
+  });
+
+  // ---------- MYSTERY LINE GAME ----------
+  const SLOPE_POOL = [-5,-3,-2,-1,-0.5,0.5,1,2,3,4,5,7,10];
+  const INTERCEPT_POOL = [-4,-3,-2,-1,1,2,3,4];
+  let round = 1;
+  let targetM = 2, targetC = 0;
+  let includeIntercept = false;
+  let guessM = 0, guessC = 0;
+  let solvedRounds = 0;
+
+  const roundsEl = document.getElementById('rounds');
+  const gameStatus = document.getElementById('gameStatus');
+  const guessMSlider = document.getElementById('guessM');
+  const guessCSlider = document.getElementById('guessC');
+  const guessCField = document.getElementById('guessCField');
+  const guessMVal = document.getElementById('guessMVal');
+  const guessCVal = document.getElementById('guessCVal');
+  const guessEqBox = document.getElementById('guessEqBox');
+  const includeInterceptBox = document.getElementById('includeIntercept');
+  const checkGuessBtn = document.getElementById('checkGuessBtn');
+  const newRoundBtn = document.getElementById('newRoundBtn');
+  const reflectCard = document.getElementById('reflectCard');
+
+  for(let i=1;i<=5;i++){
+    const d = document.createElement('div');
+    d.className='round-dot'; d.textContent=i; d.id='round-'+i;
+    roundsEl.appendChild(d);
+  }
+
+  function pickRandom(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
+
+  function gameLayout(){
+    return {
+      margin:{l:45,r:20,t:20,b:40},
+      xaxis:{range:[-4,4], gridcolor:'#E4DCC4', zeroline:true, zerolinecolor:'#26332B', title:'x'},
+      yaxis:{range:[-12,12], gridcolor:'#E4DCC4', zeroline:true, zerolinecolor:'#26332B', title:'y'},
+      plot_bgcolor:'#FFFDF7', paper_bgcolor:'#FFFDF7',
+      font:{family:'IBM Plex Mono, monospace', size:11, color:'#26332B'},
+      showlegend:false
+    };
+  }
+
+  function drawGame(revealTarget){
+    const traces = [];
+    traces.push({
+      x:X_RANGE, y:X_RANGE.map(x=>targetM*x+targetC),
+      mode:'lines', type:'scatter',
+      line:{color: revealTarget ? '#B5502E' : '#6B6B6B', width: revealTarget ? 3 : 2.5, dash: revealTarget ? 'solid':'dot'}
+    });
+    traces.push({
+      x:X_RANGE, y:X_RANGE.map(x=>guessM*x+guessC),
+      mode:'lines', type:'scatter', line:{color:'#7B5EA7', width:2.5}
+    });
+    Plotly.react('gamePlot', traces, gameLayout(), {displayModeBar:false, responsive:true});
+  }
+
+  function newRound(){
+    targetM = pickRandom(SLOPE_POOL);
+    targetC = includeIntercept ? pickRandom(INTERCEPT_POOL) : 0;
+    guessM = 0; guessC = 0;
+    guessMSlider.value = 0; guessCSlider.value = 0;
+    guessMVal.textContent = 0; guessCVal.textContent = 0;
+    guessEqBox.textContent = eqString(0,0);
+    guessCField.style.display = includeIntercept ? 'flex' : 'none';
+    checkGuessBtn.disabled = false;
+    gameStatus.className = 'status';
+    gameStatus.innerHTML = `Round ${round}: adjust the slider${includeIntercept?'s':''} until your purple line matches the gray one.`;
+    drawGame(false);
+  }
+
+  guessMSlider.addEventListener('input', ()=>{
+    guessM = parseFloat(guessMSlider.value);
+    guessMVal.textContent = guessM;
+    guessEqBox.textContent = eqString(guessM, guessC);
+    drawGame(false);
+  });
+  guessCSlider.addEventListener('input', ()=>{
+    guessC = parseFloat(guessCSlider.value);
+    guessCVal.textContent = guessC;
+    guessEqBox.textContent = eqString(guessM, guessC);
+    drawGame(false);
+  });
+  includeInterceptBox.addEventListener('change', ()=>{
+    includeIntercept = includeInterceptBox.checked;
+    newRound();
+  });
+
+  checkGuessBtn.addEventListener('click', ()=>{
+    const mMatch = Math.abs(guessM - targetM) < 0.01;
+    const cMatch = Math.abs(guessC - targetC) < 0.01;
+    drawGame(true);
+    if(mMatch && cMatch){
+      gameStatus.className = 'status good';
+      gameStatus.innerHTML = `Nailed it! The mystery line was <strong>${eqString(targetM,targetC)}</strong>.`;
+      const dot = document.getElementById('round-'+round);
+      if(dot) dot.classList.add('done');
+      solvedRounds++;
+      checkGuessBtn.disabled = true;
+      if(round>=5){
+        setTimeout(()=>{
+          reflectCard.classList.remove('hidden');
+          reflectCard.scrollIntoView({behavior:'smooth', block:'nearest'});
+        }, 600);
+      }
+    } else {
+      let hint = '';
+      if(!mMatch) hint += guessM < targetM ? 'Your line is too flat — increase the slope. ' : 'Your line is too steep — decrease the slope. ';
+      if(includeIntercept && !cMatch) hint += guessC < targetC ? 'Shift it up.' : 'Shift it down.';
+      gameStatus.className = 'status mid';
+      gameStatus.innerHTML = `Not quite yet. ${hint}`;
+    }
+  });
+
+  newRoundBtn.addEventListener('click', ()=>{
+    if(round<5 && checkGuessBtn.disabled){
+      round++;
+    } else if(!checkGuessBtn.disabled){
+      // allow skipping without solving, but don't advance the round counter past current
+    } else {
+      round = 1;
+      solvedRounds = 0;
+      document.querySelectorAll('.round-dot').forEach(d=>d.classList.remove('done'));
+      reflectCard.classList.add('hidden');
+    }
+    newRound();
+  });
+
+  // quiz
+  document.querySelectorAll('.q .options').forEach(group=>{
+    group.querySelectorAll('.opt').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        const correct = btn.dataset.correct === 'true';
+        group.querySelectorAll('.opt').forEach(b=>{
+          b.disabled = true;
+          if(b.dataset.correct==='true') b.classList.add('correct');
+        });
+        if(!correct) btn.classList.add('wrong');
+      });
+    });
+  });
+
+  // init
+  drawMain();
+  newRound();
+})();
+</script>
+</body>
+</html>

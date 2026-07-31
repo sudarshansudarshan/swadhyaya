@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>City Chain — 3-State Markov Chain</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=IBM+Plex+Mono:wght@500;600&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#FAF5E8; --paper-line:#D8CFB6; --ink:#26332B; --ink-soft:#5B6B60;
+    --fn:#1F6F5C; --fn-soft:#DCEDE7; --pt:#7B5EA7; --pt-soft:#EAE3F5;
+    --target:#B8860B; --target-soft:#F3E9CE; --d1:#B5502E; --d1-soft:#FBEFE8;
+    --card:#FFFDF7; --shadow:0 2px 10px rgba(38,51,43,0.08);
+    --cP:#1F6F5C; --cPb:#DCEDE7; --cA:#7B5EA7; --cAb:#EAE3F5; --cR:#B8860B; --cRb:#F3E9CE;
+  }
+  *{box-sizing:border-box;} html,body{margin:0;padding:0;}
+  body{
+    background:repeating-linear-gradient(#FAF5E8 0px,#FAF5E8 27px,var(--paper-line) 28px),var(--paper);
+    background-size:100% 28px; color:var(--ink); font-family:'Source Sans 3',sans-serif;
+    min-height:100vh; padding:28px 16px 60px;
+  }
+  .wrap{max-width:1080px;margin:0 auto;}
+  header.hero{background:var(--card);border:1px solid var(--paper-line);border-radius:14px;box-shadow:var(--shadow);padding:26px 28px 22px;margin-bottom:20px;}
+  .eyebrow{font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);margin:0 0 6px;}
+  h1{font-family:'Caveat',cursive;font-weight:700;font-size:38px;margin:0 0 10px;line-height:1.05;}
+  header.hero p{max-width:680px;line-height:1.55;font-size:15.5px;margin:0 0 8px;}
+  .dim-grid{display:flex;gap:14px;flex-wrap:wrap;margin-top:12px;}
+  .dim-grid span{font-family:'IBM Plex Mono',monospace;font-size:13px;padding:8px 14px;border-radius:8px;font-weight:600;border:1px solid var(--paper-line);background:var(--paper);}
+  .grid-layout{display:grid;grid-template-columns:300px 1fr;gap:20px;align-items:start;}
+  @media (max-width:800px){.grid-layout{grid-template-columns:1fr;}}
+  .card{background:var(--card);border:1px solid var(--paper-line);border-radius:14px;box-shadow:var(--shadow);padding:20px;}
+  .panel-title{font-family:'Caveat',cursive;font-weight:700;font-size:24px;margin:0 0 4px;}
+  .panel-sub{font-size:13px;color:var(--ink-soft);margin:0 0 14px;line-height:1.4;}
+  .field{margin-bottom:14px;}
+  .field label{display:flex;justify-content:space-between;font-size:13.5px;font-weight:600;margin-bottom:6px;}
+  .field label span.val{font-family:'IBM Plex Mono',monospace;font-weight:600;color:var(--pt);}
+  input[type=number]{width:100%;padding:9px 10px;border-radius:8px;border:1px solid var(--paper-line);font-family:'IBM Plex Mono',monospace;font-size:16px;background:var(--paper);color:var(--ink);}
+  input[type=number]:focus{outline:2px solid var(--pt);outline-offset:-1px;border-color:var(--pt);}
+  .helper{font-size:12px;color:var(--ink-soft);margin-top:4px;line-height:1.4;}
+  button{font-family:'Source Sans 3',sans-serif;font-weight:600;font-size:14.5px;border:none;border-radius:9px;padding:11px 16px;cursor:pointer;width:100%;transition:transform .08s ease,filter .15s ease;}
+  button:active{transform:translateY(1px);}button:disabled{opacity:.4;cursor:not-allowed;}
+  .btn-primary{background:var(--fn);color:#fff;}.btn-primary:hover:not(:disabled){filter:brightness(1.08);}
+  .btn-secondary{background:var(--paper);color:var(--ink);border:1px solid var(--paper-line);margin-top:8px;}
+  .btn-secondary:hover:not(:disabled){background:#F0E9D6;}
+  .status{font-size:13.5px;line-height:1.5;padding:12px;border-radius:9px;background:var(--paper);border:1px solid var(--paper-line);margin-bottom:14px;min-height:20px;}
+  .status.feedback-good{background:var(--fn-soft);border-color:var(--fn);color:var(--fn);font-weight:600;}
+  .status.feedback-mid{background:var(--pt-soft);border-color:var(--pt);color:var(--pt);font-weight:600;}
+  .status.feedback-target{background:var(--target-soft);border-color:var(--target);color:var(--target);font-weight:600;}
+  .steps{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap;}
+  .step-dot{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:600;border:1.5px solid var(--paper-line);color:var(--ink-soft);background:var(--paper);}
+  .step-dot.done{background:var(--fn);border-color:var(--fn);color:#fff;}
+  .step-dot.solution{background:var(--target);border-color:var(--target);color:#fff;}
+  .step-dot.active{border-color:var(--pt);color:var(--pt);background:var(--pt-soft);}
+  .reflect,.explore{margin-top:20px;padding-top:16px;border-top:1px dashed var(--paper-line);}
+  .reflect.hidden,.explore.hidden{display:none;}
+  .q{margin-bottom:16px;}.q p.qtext{font-weight:600;margin:0 0 8px;font-size:14.5px;}
+  .options{display:flex;gap:8px;flex-wrap:wrap;}
+  .opt{padding:8px 14px;border-radius:8px;border:1px solid var(--paper-line);background:var(--paper);font-size:13.5px;cursor:pointer;font-weight:600;}
+  .opt.correct{background:var(--fn-soft);border-color:var(--fn);color:var(--fn);}
+  .opt.wrong{background:#F6DCD4;border-color:var(--d1);color:#8C3A1F;}
+  .opt:disabled{cursor:default;}
+  .explore .panel-title{font-size:22px;}
+  footer.note{text-align:center;font-size:12px;color:var(--ink-soft);margin-top:26px;font-family:'IBM Plex Mono',monospace;}
+
+  .matrix-display{font-family:'IBM Plex Mono',monospace;font-size:14px;text-align:center;padding:10px;border-radius:8px;background:var(--paper);border:1px solid var(--paper-line);margin-bottom:14px;line-height:1.8;}
+  .matrix-display .mat{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;margin:0 4px;}
+  .matrix-display .mat .mrow{display:flex;gap:8px;padding:1px 8px;}
+  .matrix-display .mat .mel{font-weight:600;text-align:center;min-width:26px;}
+  .matrix-display .hdr{display:inline-flex;flex-direction:column;vertical-align:middle;font-size:11px;color:var(--ink-soft);margin-right:2px;}
+  .matrix-display .hdr span{text-align:center;padding:1px 3px;}
+  .matrix-display .mlabel{color:var(--ink-soft);font-size:11px;}
+
+  .diagram-wrap{display:flex;justify-content:center;margin-bottom:10px;}
+  .diagram-wrap svg{width:100%;height:auto;max-height:280px;}
+
+  .bar-wrap{margin:12px 0;border-radius:8px;overflow:hidden;border:1px solid var(--paper-line);display:flex;height:32px;font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:600;}
+  .bar-wrap .bar{display:flex;align-items:center;justify-content:center;transition:width .4s ease;min-width:0;color:#fff;}
+  .bar-wrap .bar.p{background:var(--cP);}
+  .bar-wrap .bar.a{background:var(--cA);}
+  .bar-wrap .bar.r{background:var(--cR);}
+
+  .calc-box{font-family:'IBM Plex Mono',monospace;font-size:13px;line-height:1.7;padding:12px;border-radius:8px;background:var(--paper);border:1px solid var(--paper-line);margin-top:10px;}
+  .calc-box .highlight{color:var(--fn);font-weight:700;}
+  .calc-box .highlight2{color:var(--pt);font-weight:700;}
+  .calc-box .highlight3{color:var(--target);font-weight:700;}
+  .calc-box .step-label{font-size:11px;color:var(--ink-soft);font-weight:600;}
+  .calc-box .eq{margin:2px 0;}
+
+  .conv-table{border-collapse:collapse;font-size:11px;width:100%;margin-top:4px;}
+  .conv-table th{font-size:9px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.05em;padding:2px 3px;border-bottom:1px solid var(--paper-line);text-align:right;}
+  .conv-table th:first-child{text-align:center;}
+  .conv-table td{padding:2px 3px;text-align:right;border-bottom:1px solid var(--paper-line);}
+  .conv-table td:first-child{text-align:center;color:var(--ink-soft);}
+  .conv-table .steady-row td{border-bottom:2px solid var(--ink);font-weight:700;}
+  .conv-table .cP{color:var(--cP);} .conv-table .cA{color:var(--cA);} .conv-table .cR{color:var(--cR);}
+
+  .explore-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin:10px 0;}
+  .explore-grid .field{margin-bottom:0;}
+  .explore-grid .field label{font-size:10px;}
+  .explore-grid .field input{font-size:12px;padding:5px 6px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <p class="eyebrow">Markov Chains · 3 States</p>
+    <h1>The City Chain — Where Will People Be?</h1>
+    <p>People move between three locations — <strong>Park (P)</strong>, <strong>Apartment (A)</strong>, and <strong>Restaurant (R)</strong> — each day with fixed probabilities. This 3-state Markov chain has a unique steady state. After many days, the fraction in each location stabilizes, independent of the start.</p>
+    <div class="dim-grid">
+      <span style="background:var(--cPb);border-color:var(--cP);color:var(--cP);">Park</span>
+      <span style="background:var(--cAb);border-color:var(--cA);color:var(--cA);">Apartment</span>
+      <span style="background:var(--cRb);border-color:var(--cR);color:var(--cR);">Restaurant</span>
+      <span style="background:var(--target-soft);border-color:var(--target);color:var(--target);">πP = π</span>
+    </div>
+  </header>
+
+  <div class="grid-layout">
+    <div class="card">
+      <p class="panel-title" id="stepTitle">The City Chain</p>
+      <p class="panel-sub" id="stepSub">Three locations, fixed movement probabilities.</p>
+
+      <div class="matrix-display" id="matrixDisplay">
+        <span class="mlabel">Transition matrix P</span><br>
+        <span class="hdr"><span> </span><span style="color:var(--cP);">P</span><span style="color:var(--cA);">A</span><span style="color:var(--cR);">R</span></span>
+        <span class="mat">
+          <span class="mrow"><span class="mel" style="color:var(--cP);">0.5</span><span class="mel" style="color:var(--cA);">0.3</span><span class="mel" style="color:var(--cR);">0.2</span></span>
+          <span class="mrow"><span class="mel" style="color:var(--cP);">0.5</span><span class="mel" style="color:var(--cA);">0.1</span><span class="mel" style="color:var(--cR);">0.4</span></span>
+          <span class="mrow"><span class="mel" style="color:var(--cP);">0.1</span><span class="mel" style="color:var(--cA);">0.8</span><span class="mel" style="color:var(--cR);">0.1</span></span>
+        </span>
+        <br><span style="font-size:11px;color:var(--ink-soft);">row = current, col = next</span>
+      </div>
+
+      <div id="stepContent"></div>
+
+      <div class="steps" id="stepDots"></div>
+
+      <div class="status" id="statusBox">Step 1 of 7 — Examine the city chain.</div>
+
+      <button class="btn-primary" id="checkBtn">Reveal</button>
+      <button class="btn-secondary" id="resetBtn">Start Over</button>
+    </div>
+
+    <div class="card">
+      <p class="panel-title" id="rightTitle">Transition Diagram</p>
+      <p class="panel-sub" id="rightSub">Arrows show how people move each day.</p>
+      <div class="diagram-wrap">
+        <svg viewBox="-10 -35 420 310" id="diagramSvg"></svg>
+      </div>
+      <div id="distributionDisplay"></div>
+    </div>
+  </div>
+
+  <!-- REFLECTION QUIZ -->
+  <div class="card reflect hidden" id="reflectCard">
+    <p class="panel-title">3-State Markov Chains</p>
+    <p class="panel-sub">The steady-state distribution π satisfies πP = π with Σπ = 1.</p>
+
+    <div class="q" id="q1">
+      <p class="qtext">1. How many unknowns and equations does a 3-state chain have?</p>
+      <div class="options">
+        <button class="opt" data-correct="true">3 unknowns (π_P, π_A, π_R) — 2 independent equations from πP=π plus π_P+π_A+π_R=1 gives 3 equations.</button>
+        <button class="opt" data-correct="false">2 unknowns, 2 equations</button>
+        <button class="opt" data-correct="false">3 unknowns, but only 1 equation</button>
+      </div>
+    </div>
+
+    <div class="q" id="q2">
+      <p class="qtext">2. What fraction of people end up at the Park?</p>
+      <div class="options">
+        <button class="opt" data-correct="false">1/3 ≈ 33.3%</button>
+        <button class="opt" data-correct="true">49/122 ≈ 40.2%</button>
+        <button class="opt" data-correct="false">43/122 ≈ 35.2%</button>
+      </div>
+    </div>
+
+    <div class="q" id="q3">
+      <p class="qtext">3. Does the initial location affect the steady state?</p>
+      <div class="options">
+        <button class="opt" data-correct="true">No — for an irreducible, aperiodic chain, the stationary distribution is unique regardless of starting state.</button>
+        <button class="opt" data-correct="false">Yes, people cluster near where they started</button>
+        <button class="opt" data-correct="false">Only if one probability is 1</button>
+      </div>
+    </div>
+
+    <div class="q" id="q4">
+      <p class="qtext">4. Out of 1000 people at equilibrium, about how many are at the Restaurant?</p>
+      <div class="options">
+        <button class="opt" data-correct="false">402</button>
+        <button class="opt" data-correct="false">352</button>
+        <button class="opt" data-correct="true">246 (1000 × 30/122 ≈ 246)</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- EXPLORE MODE -->
+  <div class="card explore hidden" id="exploreCard">
+    <p class="panel-title">Explore Your Own 3-State Chain</p>
+    <p class="panel-sub">Adjust transition probabilities and see the steady state change instantly.</p>
+
+    <div class="explore-grid">
+      <div class="field"><label>P(P→P)</label><input type="number" id="e00" value="0.5" min="0" max="1" step="0.05"></div>
+      <div class="field"><label>P(P→A)</label><input type="number" id="e01" value="0.3" min="0" max="1" step="0.05"></div>
+      <div class="field"><label>P(P→R)</label><input type="number" id="e02" value="0.2" min="0" max="1" step="0.05"></div>
+      <div class="field"><label>P(A→P)</label><input type="number" id="e10" value="0.5" min="0" max="1" step="0.05"></div>
+      <div class="field"><label>P(A→A)</label><input type="number" id="e11" value="0.1" min="0" max="1" step="0.05"></div>
+      <div class="field"><label>P(A→R)</label><input type="number" id="e12" value="0.4" min="0" max="1" step="0.05"></div>
+      <div class="field"><label>P(R→P)</label><input type="number" id="e20" value="0.1" min="0" max="1" step="0.05"></div>
+      <div class="field"><label>P(R→A)</label><input type="number" id="e21" value="0.8" min="0" max="1" step="0.05"></div>
+      <div class="field"><label>P(R→R)</label><input type="number" id="e22" value="0.1" min="0" max="1" step="0.05"></div>
+    </div>
+    <div class="helper" style="margin-bottom:8px;">Each row must sum to 1. Values are auto-normalized.</div>
+
+    <div id="expResult" style="font-family:'IBM Plex Mono',monospace;font-size:13px;line-height:1.8;background:var(--paper);border:1px solid var(--paper-line);border-radius:10px;padding:14px;"></div>
+  </div>
+
+  <footer class="note">3-state Markov chain · π = [49/122, 43/122, 30/122] ≈ [0.402, 0.352, 0.246]</footer>
+</div>
+
+<script>
+(function(){
+  const $ = id => document.getElementById(id);
+
+  const P = 0, A = 1, R = 2;
+  const TP = [[0.5, 0.3, 0.2], [0.5, 0.1, 0.4], [0.1, 0.8, 0.1]];
+  const LABELS = ['Park', 'Apartment', 'Restaurant'];
+  const CLS = ['p', 'a', 'r'];
+  const CLRS = ['var(--cP)', 'var(--cA)', 'var(--cR)'];
+  const CLRBG = ['var(--cPb)', 'var(--cAb)', 'var(--cRb)'];
+
+  const STEPS = [
+    { label:'The City Chain', desc:'Three locations. Fixed movement probabilities.', key:'intro' },
+    { label:'Start at Park', desc:'1000 people start at the Park. Where tomorrow?', key:'fromP', start:P },
+    { label:'Start at Apartment', desc:'1000 people start at the Apartment. Where tomorrow?', key:'fromA', start:A },
+    { label:'Start at Restaurant', desc:'1000 people start at the Restaurant. Where tomorrow?', key:'fromR', start:R },
+    { label:'Convergence', desc:'All three paths settle to the same numbers.', key:'converge' },
+    { label:'Steady State', desc:'Set up πP = π and solve for all three.', key:'steady' },
+    { label:'Equilibrium', desc:'Apply π to 1000 people.', key:'equil' },
+  ];
+  const TOTAL = STEPS.length;
+  let step = 0;
+  let revealed = false;
+
+  const stepDots = $('stepDots');
+  const statusBox = $('statusBox');
+  const checkBtn = $('checkBtn');
+  const resetBtn = $('resetBtn');
+  const reflectCard = $('reflectCard');
+  const exploreCard = $('exploreCard');
+  const stepTitle = $('stepTitle');
+  const stepSub = $('stepSub');
+  const stepContent = $('stepContent');
+  const rightTitle = $('rightTitle');
+  const rightSub = $('rightSub');
+  const diagramSvg = $('diagramSvg');
+  const distributionDisplay = $('distributionDisplay');
+
+  for(let i=1;i<=TOTAL;i++){
+    const d = document.createElement('div');
+    d.className='step-dot'; d.textContent=i; d.id='step-'+i;
+    stepDots.appendChild(d);
+  }
+
+  function getSD(){ return STEPS[step]; }
+  function fmt(n){ return Math.round(n*100)/100; }
+
+  // ----- SVG Diagram -----
+  function drawDiagram(){
+    const svg = diagramSvg;
+    const w = 400, h = 260;
+    svg.innerHTML = '';
+
+    const ns = 'http://www.w3.org/2000/svg';
+
+    const defs = document.createElementNS(ns,'defs');
+    ['arrP','arrA','arrR','arrG'].forEach(id=>{
+      const mk = document.createElementNS(ns,'marker');
+      mk.setAttribute('id',id);
+      mk.setAttribute('viewBox','0 0 10 10');
+      mk.setAttribute('refX', id==='arrG' ? 10 : 9);
+      mk.setAttribute('refY','5');
+      mk.setAttribute('markerWidth','7'); mk.setAttribute('markerHeight','7');
+      mk.setAttribute('orient','auto');
+      const p = document.createElementNS(ns,'path');
+      p.setAttribute('d','M 0 0 L 10 5 L 0 10 z');
+      const m = {arrP:'var(--cP)',arrA:'var(--cA)',arrR:'var(--cR)',arrG:'var(--ink-soft)'};
+      p.setAttribute('fill',m[id]);
+      mk.appendChild(p); defs.appendChild(mk);
+    });
+    svg.appendChild(defs);
+
+    // node positions: Park top, Apartment bottom-left, Restaurant bottom-right
+    const cx = [200, 100, 300];
+    const cy = [60, 185, 185];
+    const r = 34;
+
+    for(let i=0;i<3;i++){
+      const c = document.createElementNS(ns,'circle');
+      c.setAttribute('cx',cx[i]); c.setAttribute('cy',cy[i]);
+      c.setAttribute('r',r);
+      c.setAttribute('fill',CLRBG[i]); c.setAttribute('stroke',CLRS[i]);
+      c.setAttribute('stroke-width','2.5');
+      svg.appendChild(c);
+      const t = document.createElementNS(ns,'text');
+      t.setAttribute('x',cx[i]); t.setAttribute('y',cy[i]+4);
+      t.setAttribute('text-anchor','middle'); t.setAttribute('font-size','14');
+      t.setAttribute('font-weight','700');
+      t.setAttribute('fill',CLRS[i]);
+      t.setAttribute('font-family','Source Sans 3,sans-serif');
+      t.textContent = LABELS[i];
+      svg.appendChild(t);
+    }
+
+    // self-loops
+    const slY = [-38, -38, -38];
+    const slTxtY = [-58, -58, -58];
+    for(let i=0;i<3;i++){
+      const x = cx[i], y = cy[i];
+      const p = document.createElementNS(ns,'path');
+      p.setAttribute('d',`M ${x-20} ${y+slY[i]} C ${x-20} ${y+slY[i]-28}, ${x+20} ${y+slY[i]-28}, ${x+20} ${y+slY[i]}`);
+      p.setAttribute('fill','none'); p.setAttribute('stroke','var(--ink-soft)');
+      p.setAttribute('stroke-width','1.5'); p.setAttribute('marker-end','url(#arrG)');
+      svg.appendChild(p);
+      const t = document.createElementNS(ns,'text');
+      t.setAttribute('x',x); t.setAttribute('y',y+slTxtY[i]);
+      t.setAttribute('text-anchor','middle'); t.setAttribute('font-size','12');
+      t.setAttribute('font-weight','600'); t.setAttribute('fill','var(--ink)');
+      t.setAttribute('font-family','IBM Plex Mono,monospace');
+      t.textContent = TP[i][i].toFixed(1);
+      svg.appendChild(t);
+    }
+
+    // cross transitions
+    const edges = [
+      { from:P, to:A, dx:-36, dy:30, off:-12, marker:'arrA' },
+      { from:P, to:R, dx:36, dy:30, off:12, marker:'arrR' },
+      { from:A, to:P, dx:36, dy:-30, off:-12, marker:'arrP' },
+      { from:A, to:R, dx:68, dy:0, off:-14, marker:'arrR' },
+      { from:R, to:P, dx:-36, dy:-30, off:12, marker:'arrP' },
+      { from:R, to:A, dx:-68, dy:0, off:14, marker:'arrA' },
+    ];
+    for(let e of edges){
+      const fi = e.from, ti = e.to;
+      const x1 = cx[fi], y1 = cy[fi], x2 = cx[ti], y2 = cy[ti];
+      const midX = (x1+x2)/2, midY = (y1+y2)/2;
+      const dx = x2-x1, dy = y2-y1;
+      const len = Math.sqrt(dx*dx+dy*dy);
+      const ux = dx/len, uy = dy/len;
+      const sx = x1 + ux*r + uy*e.off;
+      const sy = y1 + uy*r - ux*e.off;
+      const ex = x2 - ux*r + uy*e.off;
+      const ey = y2 - uy*r - ux*e.off;
+
+      const line = document.createElementNS(ns,'line');
+      line.setAttribute('x1',sx); line.setAttribute('y1',sy);
+      line.setAttribute('x2',ex); line.setAttribute('y2',ey);
+      line.setAttribute('stroke','var(--ink-soft)'); line.setAttribute('stroke-width','1.5');
+      line.setAttribute('marker-end','url(#'+e.marker+')');
+      svg.appendChild(line);
+
+      const prob = TP[fi][ti];
+      const tx = midX + uy*(e.off-12);
+      const ty = midY - ux*(e.off-12);
+      const t = document.createElementNS(ns,'text');
+      t.setAttribute('x',tx); t.setAttribute('y',ty+3);
+      t.setAttribute('text-anchor','middle'); t.setAttribute('font-size','11');
+      t.setAttribute('font-weight','600'); t.setAttribute('fill','var(--ink)');
+      t.setAttribute('font-family','IBM Plex Mono,monospace');
+      t.textContent = prob.toFixed(1);
+      svg.appendChild(t);
+    }
+  }
+
+  // ----- Distribution bar -----
+  function renderBar(counts, label){
+    const total = counts[0]+counts[1]+counts[2];
+    const pcts = counts.map(c => Math.max((c/total*100), 0.5));
+    let html = `<div class="bar-wrap">`;
+    html += `<div class="bar p" style="width:${pcts[0]}%">${Math.round(counts[0])}</div>`;
+    html += `<div class="bar a" style="width:${pcts[1]}%">${Math.round(counts[1])}</div>`;
+    html += `<div class="bar r" style="width:${pcts[2]}%">${Math.round(counts[2])}</div>`;
+    html += `</div>`;
+    html += `<div style="display:flex;justify-content:space-between;font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--ink-soft);margin-bottom:4px;">`;
+    html += `<span style="color:var(--cP);font-weight:600;">P: ${Math.round(counts[0])}</span>`;
+    html += `<span style="color:var(--cA);font-weight:600;">A: ${Math.round(counts[1])}</span>`;
+    html += `<span style="color:var(--cR);font-weight:600;">R: ${Math.round(counts[2])}</span>`;
+    html += `</div>`;
+    if(label) html += `<div style="font-size:11px;color:var(--ink-soft);text-align:center;">${label}</div>`;
+    distributionDisplay.innerHTML = html;
+  }
+
+  function simulate(startVec, steps){
+    let d = startVec.slice();
+    const rows = [];
+    for(let s=0;s<=steps;s++){
+      rows.push({step:s, d:d.slice()});
+      const next = [0,0,0];
+      for(let i=0;i<3;i++)
+        for(let j=0;j<3;j++)
+          next[j] += d[i] * TP[i][j];
+      d = next;
+    }
+    return rows;
+  }
+
+  // ----- Step Content -----
+  function renderStep(){
+    const sd = getSD();
+    stepTitle.textContent = sd.label;
+    stepSub.textContent = sd.desc;
+
+    let html = '';
+
+    if(sd.key === 'intro'){
+      html = `<div class="calc-box">Each day, people move between the Park, Apartment, and Restaurant with fixed probabilities. After many days, the fraction at each location stabilizes to a steady state.</div>`;
+      rightTitle.textContent = 'Transition Diagram';
+      rightSub.textContent = 'Arrows show movement probabilities between locations.';
+      distributionDisplay.innerHTML = '';
+    } else if(sd.key === 'fromP' || sd.key === 'fromA' || sd.key === 'fromR'){
+      const start = sd.start;
+      const dist = [0,0,0];
+      dist[start] = 1000;
+      const next = [0,0,0];
+      for(let j=0;j<3;j++)
+        next[j] = Math.round(dist[start] * TP[start][j]);
+      const startLabel = LABELS[start];
+
+      html = `<div class="calc-box">`;
+      html += `<div class="step-label">Starting state: all 1000 people are at ${startLabel}</div><br>`;
+      for(let j=0;j<3;j++){
+        const p = TP[start][j];
+        html += `${LABELS[j]} tomorrow = ${p}·1000 = <span class="${j===P?'highlight':j===A?'highlight2':'highlight3'}">${next[j]}</span>`;
+        if(j<2) html += `<br>`;
+      }
+      html += `<br><br>After 1 day: `;
+      html += `<span class="highlight">${next[P]} at Park</span>, `;
+      html += `<span class="highlight2">${next[A]} at Apartment</span>, `;
+      html += `<span class="highlight3">${next[R]} at Restaurant</span>`;
+      html += `</div>`;
+
+      rightTitle.textContent = `One Step from ${startLabel}`;
+      rightSub.textContent = `${next[P]} P, ${next[A]} A, ${next[R]} R after 1 day.`;
+      renderBar(next, `After 1 step starting from ${startLabel}`);
+    } else if(sd.key === 'converge'){
+      const fromP = simulate([1000,0,0], 6);
+      const fromA = simulate([0,1000,0], 6);
+      const fromR = simulate([0,0,1000], 6);
+      const steadyD = [1000*49/122, 1000*43/122, 1000*30/122];
+
+      html = `<div class="calc-box">`;
+      html += `<div class="step-label">Day-by-day convergence from all three starts</div>`;
+      html += `<div style="display:flex;flex-direction:column;gap:10px;margin-top:8px;">`;
+
+      const starts = [
+        {label:'Start Park', rows:fromP, color:'var(--cP)'},
+        {label:'Start Apartment',  rows:fromA, color:'var(--cA)'},
+        {label:'Start Restaurant', rows:fromR, color:'var(--cR)'},
+      ];
+      for(let si=0;si<3;si++){
+        const s = starts[si];
+        html += `<div><div style="font-weight:600;font-size:10px;margin-bottom:1px;color:${s.color};">${s.label}</div>`;
+        html += `<table class="conv-table"><thead><tr><th>Day</th><th>P</th><th>A</th><th>R</th></tr></thead><tbody>`;
+        for(let ri=0;ri<s.rows.length;ri++){
+          const r = s.rows[ri];
+          const isLast = ri === s.rows.length-1;
+          html += `<tr${isLast?' class="steady-row"':''}>`;
+          html += `<td>${r.step}</td>`;
+          for(let j=0;j<3;j++){
+            const v = r.d[j];
+            html += `<td class="${j===P?'cP':j===A?'cA':'cR'}">${v.toFixed(r.step<=4?0:1)}</td>`;
+          }
+          html += `</tr>`;
+        }
+        html += `<tr class="steady-row"><td>∞</td>`;
+        for(let j=0;j<3;j++)
+          html += `<td class="${j===P?'cP':j===A?'cA':'cR'}">${steadyD[j].toFixed(1)}</td>`;
+        html += `</tr>`;
+        html += `</tbody></table></div>`;
+      }
+
+      html += `</div><br>`;
+      html += `<span style="font-size:11px;">All three starting locations converge to the same distribution — the chain <strong>forgets</strong> its starting state.</span>`;
+      html += `</div>`;
+
+      rightTitle.textContent = 'Convergence';
+      rightSub.textContent = 'All three paths converge to [402, 352, 246].';
+      renderBar(steadyD, 'Steady state (per 1000)');
+    } else if(sd.key === 'steady'){
+      html = `<div class="calc-box">`;
+      html += `<div class="step-label">Stationary distribution π = [π_P, π_A, π_R] solves πP = π</div><br>`;
+      html += `<div class="eq">π_P = 0.5·π_P + 0.5·π_A + 0.1·π_R</div>`;
+      html += `<div class="eq">π_A = 0.3·π_P + 0.1·π_A + 0.8·π_R</div>`;
+      html += `<div class="eq">π_R = 0.2·π_P + 0.4·π_A + 0.1·π_R</div><br>`;
+      html += `<div class="eq">From eq 1: 0.5·π_P = 0.5·π_A + 0.1·π_R → π_P = π_A + 0.2·π_R</div>`;
+      html += `<div class="eq">From eq 2: 0.9·π_A = 0.3·π_P + 0.8·π_R → π_A = (1/3)·π_P + (8/9)·π_R</div><br>`;
+      html += `<div class="eq">Substitute π_P: π_A = (1/3)(π_A + 0.2·π_R) + (8/9)·π_R</div>`;
+      html += `<div class="eq">→ (2/3)·π_A = (1/15 + 8/9)·π_R = 43/45 · π_R</div>`;
+      html += `<div class="eq">→ π_A = (43/30)·π_R, &nbsp; π_P = (43/30 + 1/5)·π_R = (49/30)·π_R</div><br>`;
+      html += `<div class="eq">π_P + π_A + π_R = 1</div>`;
+      html += `<div class="eq">→ (49/30 + 43/30 + 30/30)·π_R = 1 → (122/30)·π_R = 1</div>`;
+      html += `<div class="eq">→ <strong>π_R = 30/122</strong>, &nbsp; <strong>π_A = 43/122</strong>, &nbsp; <strong>π_P = 49/122</strong></div>`;
+      html += `</div>`;
+      rightTitle.textContent = 'Steady State';
+      rightSub.textContent = 'π = [49/122, 43/122, 30/122]';
+      renderBar([1000*49/122, 1000*43/122, 1000*30/122], 'Steady state (per 1000)');
+    } else if(sd.key === 'equil'){
+      const pP = Math.round(1000*49/122);
+      const pA = Math.round(1000*43/122);
+      const pR = Math.round(1000*30/122);
+      html = `<div class="calc-box">`;
+      html += `<div class="step-label">Equilibrium distribution for 1000 people</div><br>`;
+      html += `Park: 1000 × 49/122 = <span class="highlight">${pP}</span><br>`;
+      html += `Apartment: 1000 × 43/122 = <span class="highlight2">${pA}</span><br>`;
+      html += `Restaurant: 1000 × 30/122 = <span class="highlight3">${pR}</span><br><br>`;
+      html += `Regardless of the starting location, after many steps:<br>`;
+      html += `<span style="font-size:16px;">~<strong style="color:var(--cP);">${pP} at Park</strong>, ~<strong style="color:var(--cA);">${pA} at Apartment</strong>, ~<strong style="color:var(--cR);">${pR} at Restaurant</strong></span><br><br>`;
+      html += `The chain forgets where it started — only the transition probabilities matter.`;
+      html += `</div>`;
+      rightTitle.textContent = 'Equilibrium';
+      rightSub.textContent = `~${pP} P, ~${pA} A, ~${pR} R out of 1000`;
+      renderBar([pP, pA, pR], 'Equilibrium distribution');
+    }
+
+    stepContent.innerHTML = html;
+
+    if(step >= TOTAL){
+      checkBtn.disabled = true; checkBtn.textContent = 'Complete';
+    } else if(revealed){
+      checkBtn.textContent = 'Next Step';
+    } else {
+      checkBtn.textContent = 'Reveal';
+    }
+  }
+
+  function markDots(){
+    document.querySelectorAll('.step-dot').forEach(d=>d.classList.remove('active'));
+    for(let i=0;i<step&&i<TOTAL;i++){
+      const d=$('step-'+(i+1)); if(d) d.classList.add('done');
+    }
+    if(step < TOTAL){ const d=$('step-'+(step+1)); if(d) d.classList.add('active'); }
+  }
+
+  function setStatus(html, cls){
+    statusBox.innerHTML = html;
+    statusBox.className = 'status' + (cls ? ' '+cls : '');
+  }
+
+  function advance(){
+    if(step>=TOTAL){
+      checkBtn.disabled=true;
+      setTimeout(()=>{reflectCard.classList.remove('hidden');exploreCard.classList.remove('hidden');reflectCard.scrollIntoView({behavior:'smooth',block:'nearest'});},500);
+      setStatus('Complete! Explore your own 3-state chain below.','feedback-target');
+      return;
+    }
+    revealed = true;
+    const sd = getSD();
+    let msg;
+    if(sd.key === 'intro') msg = 'Three locations to move between. Let\'s see what happens in one day.';
+    else if(sd.key === 'fromP') msg = 'From Park: 500 stay, 300 go to Apartment, 200 to Restaurant.';
+    else if(sd.key === 'fromA') msg = 'From Apartment: 500 go to Park, 100 stay, 400 to Restaurant.';
+    else if(sd.key === 'fromR') msg = 'From Restaurant: 100 go to Park, 800 to Apartment, 100 stay.';
+    else if(sd.key === 'converge') msg = 'All three paths converge: ~402 Park, ~352 Apartment, ~246 Restaurant.';
+    else if(sd.key === 'steady') msg = 'π_P = 49/122, π_A = 43/122, π_R = 30/122.';
+    else msg = `~402 Park, ~352 Apartment, ~246 Restaurant — independent of the start!`;
+    setStatus(msg,'feedback-good');
+    markDots(); renderStep();
+  }
+
+  function nextStep(){
+    if(!revealed){
+      advance();
+    } else {
+      step++; revealed = false;
+      if(step<TOTAL){
+        const sd = getSD();
+        setStatus(`Step ${step+1}: ${sd.desc}`);
+        renderStep(); markDots();
+      } else {
+        setStatus('All steps complete!','feedback-target');
+        checkBtn.disabled = true;
+        setTimeout(()=>{reflectCard.classList.remove('hidden');exploreCard.classList.remove('hidden');reflectCard.scrollIntoView({behavior:'smooth',block:'nearest'});},500);
+      }
+    }
+  }
+
+  checkBtn.addEventListener('click', nextStep);
+
+  resetBtn.addEventListener('click', ()=>{
+    step=0; revealed=false;
+    checkBtn.disabled=false;
+    reflectCard.classList.add('hidden');
+    exploreCard.classList.add('hidden');
+    document.querySelectorAll('.step-dot').forEach(d=>d.classList.remove('done','solution','active'));
+    const f=$('step-1'); if(f) f.classList.add('active');
+    renderStep(); markDots();
+    setStatus('Step 1 of 7 — Examine the city chain.');
+  });
+
+  // ---- EXPLORE ----
+  const eInps = [];
+  for(let i=0;i<9;i++) eInps.push($('e'+Math.floor(i/3)+''+(i%3)));
+  const expResult = $('expResult');
+
+  function normalizeRow(rowIdx){
+    let sum = 0;
+    for(let j=0;j<3;j++) sum += parseFloat(eInps[rowIdx*3+j].value)||0;
+    if(sum === 0) sum = 1;
+    for(let j=0;j<3;j++){
+      const v = parseFloat(eInps[rowIdx*3+j].value)||0;
+      eInps[rowIdx*3+j].value = (v/sum).toFixed(2);
+    }
+  }
+
+  function renderExplore(){
+    const m = [];
+    for(let i=0;i<3;i++){
+      m[i] = [];
+      for(let j=0;j<3;j++) m[i][j] = parseFloat(eInps[i*3+j].value)||0;
+    }
+
+    // compute steady state
+    // πP = m[0][0]*πP + m[1][0]*πA + m[2][0]*πR
+    // πA = m[0][1]*πP + m[1][1]*πA + m[2][1]*πR
+    // πR = m[0][2]*πP + m[1][2]*πA + m[2][2]*πR
+    // πP + πA + πR = 1
+    //
+    // (1-m[0][0])*πP - m[1][0]*πA - m[2][0]*πR = 0
+    // -m[0][1]*πP + (1-m[1][1])*πA - m[2][1]*πR = 0
+    // πP + πA + πR = 1
+    //
+    // Solve 3x3 system via Cramer's rule or elimination
+    // Using the fact that we want eigenvector of P^T for eigenvalue 1
+    // We'll solve: (I - P^T)π = 0 with sum π = 1
+    // I - P^T = [[1-m00, -m10, -m20], [-m01, 1-m11, -m21], [-m02, -m12, 1-m22]]
+    // Replace last row with [1,1,1] and RHS with [0,0,1]
+
+    const a = [
+      [1-m[0][0], -m[1][0], -m[2][0], 0],
+      [-m[0][1], 1-m[1][1], -m[2][1], 0],
+      [1, 1, 1, 1],
+    ];
+    // Gaussian elimination
+    for(let col=0;col<3;col++){
+      let maxRow = col;
+      for(let row=col+1;row<3;row++)
+        if(Math.abs(a[row][col]) > Math.abs(a[maxRow][col])) maxRow = row;
+      [a[col], a[maxRow]] = [a[maxRow], a[col]];
+      const piv = a[col][col];
+      if(Math.abs(piv) < 1e-12) continue;
+      for(let j=col;j<=3;j++) a[col][j] /= piv;
+      for(let row=0;row<3;row++){
+        if(row === col) continue;
+        const f = a[row][col];
+        for(let j=col;j<=3;j++) a[row][j] -= f * a[col][j];
+      }
+    }
+    const pi = [a[0][3], a[1][3], a[2][3]];
+
+    let html = `<div style="margin-bottom:6px;"><span style="color:var(--ink-soft);font-size:12px;">Steady state:</span></div>`;
+    html += `<div style="display:flex;gap:12px;font-size:13px;font-weight:600;">`;
+    html += `<span style="color:var(--cP);">Park: ${(pi[P]*100).toFixed(1)}%</span>`;
+    html += `<span style="color:var(--cA);">Apt: ${(pi[A]*100).toFixed(1)}%</span>`;
+    html += `<span style="color:var(--cR);">Rest: ${(pi[R]*100).toFixed(1)}%</span>`;
+    html += `</div>`;
+
+    const pcts = pi.map(p => Math.max(p*100, 0.5));
+    html += `<div class="bar-wrap" style="height:26px;font-size:11px;">`;
+    html += `<div class="bar p" style="width:${pcts[P]}%">${(pi[P]*1000).toFixed(0)}</div>`;
+    html += `<div class="bar a" style="width:${pcts[A]}%">${(pi[A]*1000).toFixed(0)}</div>`;
+    html += `<div class="bar r" style="width:${pcts[R]}%">${(pi[R]*1000).toFixed(0)}</div>`;
+    html += `</div>`;
+
+    html += `<div style="margin-top:8px;font-size:12px;color:var(--ink-soft);">`;
+    html += `Per 1000: <strong style="color:var(--cP);">~${Math.round(pi[P]*1000)} Park</strong>, `;
+    html += `<strong style="color:var(--cA);">~${Math.round(pi[A]*1000)} Apartment</strong>, `;
+    html += `<strong style="color:var(--cR);">~${Math.round(pi[R]*1000)} Restaurant</strong>`;
+    html += `</div>`;
+
+    // small diagram
+    const ns = 'http://www.w3.org/2000/svg';
+    const svg = document.createElementNS(ns,'svg');
+    svg.setAttribute('viewBox','-10 -30 380 250');
+    svg.style.width = '100%'; svg.style.height = 'auto';
+    svg.style.marginTop = '10px';
+
+    const defs = document.createElementNS(ns,'defs');
+    ['e0','e1','e2','e3'].forEach(id=>{
+      const mk = document.createElementNS(ns,'marker');
+      mk.setAttribute('id','ex-'+id);
+      mk.setAttribute('viewBox','0 0 10 10');
+      mk.setAttribute('refX','9'); mk.setAttribute('refY','5');
+      mk.setAttribute('markerWidth','6'); mk.setAttribute('markerHeight','6');
+      mk.setAttribute('orient','auto');
+      const p = document.createElementNS(ns,'path');
+      p.setAttribute('d','M 0 0 L 10 5 L 0 10 z');
+      p.setAttribute('fill','var(--ink-soft)');
+      mk.appendChild(p); defs.appendChild(mk);
+    });
+    svg.appendChild(defs);
+
+    const ecx = [180, 80, 280], ecy = [50, 170, 170], er = 28;
+    for(let i=0;i<3;i++){
+      const c = document.createElementNS(ns,'circle');
+      c.setAttribute('cx',ecx[i]); c.setAttribute('cy',ecy[i]);
+      c.setAttribute('r',er);
+      c.setAttribute('fill',CLRBG[i]); c.setAttribute('stroke',CLRS[i]);
+      c.setAttribute('stroke-width','2');
+      svg.appendChild(c);
+      const t = document.createElementNS(ns,'text');
+      t.setAttribute('x',ecx[i]); t.setAttribute('y',ecy[i]+3);
+      t.setAttribute('text-anchor','middle'); t.setAttribute('font-size','12');
+      t.setAttribute('font-weight','700'); t.setAttribute('fill',CLRS[i]);
+      t.setAttribute('font-family','Source Sans 3,sans-serif');
+      t.textContent = i===P?'P':i===A?'A':'R';
+      svg.appendChild(t);
+    }
+
+    // self-loops
+    for(let i=0;i<3;i++){
+      const x = ecx[i], y = ecy[i];
+      const p = document.createElementNS(ns,'path');
+      p.setAttribute('d',`M ${x-16} ${y-22} C ${x-16} ${y-44}, ${x+16} ${y-44}, ${x+16} ${y-22}`);
+      p.setAttribute('fill','none'); p.setAttribute('stroke','var(--ink-soft)');
+      p.setAttribute('stroke-width','1.2'); p.setAttribute('marker-end','url(#ex-e3)');
+      svg.appendChild(p);
+      const t = document.createElementNS(ns,'text');
+      t.setAttribute('x',x); t.setAttribute('y',y-46);
+      t.setAttribute('text-anchor','middle'); t.setAttribute('font-size','10');
+      t.setAttribute('font-weight','600'); t.setAttribute('fill','var(--ink)');
+      t.setAttribute('font-family','IBM Plex Mono,monospace');
+      t.textContent = m[i][i].toFixed(2);
+      svg.appendChild(t);
+    }
+
+    const eedges = [
+      {f:0,t:1,o:-10},{f:0,t:2,o:10},{f:1,t:0,o:-10},{f:1,t:2,o:-12},{f:2,t:0,o:10},{f:2,t:1,o:12}
+    ];
+    for(let e of eedges){
+      const fi = e.f, ti = e.t;
+      const dx = ecx[ti]-ecx[fi], dy = ecy[ti]-ecy[fi];
+      const len = Math.sqrt(dx*dx+dy*dy);
+      if(len === 0) continue;
+      const ux = dx/len, uy = dy/len;
+      const sx = ecx[fi] + ux*er + uy*e.o;
+      const sy = ecy[fi] + uy*er - ux*e.o;
+      const ex = ecx[ti] - ux*er + uy*e.o;
+      const ey = ecy[ti] - uy*er - ux*e.o;
+      const l = document.createElementNS(ns,'line');
+      l.setAttribute('x1',sx); l.setAttribute('y1',sy);
+      l.setAttribute('x2',ex); l.setAttribute('y2',ey);
+      l.setAttribute('stroke','var(--ink-soft)'); l.setAttribute('stroke-width','1.2');
+      l.setAttribute('marker-end','url(#ex-e0)');
+      svg.appendChild(l);
+      const mx = (sx+ex)/2, my = (sy+ey)/2;
+      const t = document.createElementNS(ns,'text');
+      t.setAttribute('x',mx + uy*(e.o-8)); t.setAttribute('y',my - ux*(e.o-8)+3);
+      t.setAttribute('text-anchor','middle'); t.setAttribute('font-size','9');
+      t.setAttribute('font-weight','600'); t.setAttribute('fill','var(--ink)');
+      t.setAttribute('font-family','IBM Plex Mono,monospace');
+      t.textContent = m[fi][ti].toFixed(2);
+      svg.appendChild(t);
+    }
+
+    expResult.innerHTML = html;
+    expResult.appendChild(svg);
+  }
+
+  for(let inp of eInps) inp.addEventListener('input', ()=>{
+    for(let r=0;r<3;r++) normalizeRow(r);
+    renderExplore();
+  });
+
+  // ---- QUIZ ----
+  document.querySelectorAll('.q .options').forEach(group=>{
+    group.querySelectorAll('.opt').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        const correct = btn.dataset.correct === 'true';
+        group.querySelectorAll('.opt').forEach(b=>{
+          b.disabled = true;
+          if(b.dataset.correct==='true') b.classList.add('correct');
+        });
+        if(!correct) btn.classList.add('wrong');
+      });
+    });
+  });
+
+  // ---- INIT ----
+  (function init(){
+    const f=$('step-1'); if(f) f.classList.add('active');
+    drawDiagram();
+    renderStep(); markDots();
+    setStatus('Step 1 of 7 — Examine the city chain.');
+    renderExplore();
+  })();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nāgārjuna's Matrix Function — M: ℝ² → ℝ²</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=IBM+Plex+Mono:wght@500;600&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#FAF5E8; --paper-line:#D8CFB6; --ink:#26332B; --ink-soft:#5B6B60;
+    --mat:#7B2D8E; --mat-soft:#F3E5F7;
+    --input:#0E7490; --input-soft:#CFFAFE;
+    --accent:#1F6F5C; --accent-soft:#DCEDE7;
+    --inv:#B5502E; --inv-soft:#FBEFE8;
+    --card:#FFFDF7; --shadow:0 2px 10px rgba(38,51,43,0.08);
+  }
+  *{box-sizing:border-box;} html,body{margin:0;padding:0;}
+  body{
+    background:repeating-linear-gradient(#FAF5E8 0px,#FAF5E8 27px,var(--paper-line) 28px),var(--paper);
+    background-size:100% 28px; color:var(--ink);
+    font-family:'Source Sans 3',sans-serif; min-height:100vh; padding:28px 16px 60px;
+  }
+  .wrap{max-width:1080px;margin:0 auto;}
+
+  header.hero{
+    background:var(--card); border:1px solid var(--paper-line);
+    border-radius:14px; box-shadow:var(--shadow);
+    padding:26px 28px 22px; margin-bottom:20px;
+  }
+  .eyebrow{font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);margin:0 0 6px;}
+  h1{font-family:'Caveat',cursive;font-weight:700;font-size:42px;margin:0 0 10px;line-height:1.05;}
+  header.hero p{max-width:720px;line-height:1.55;font-size:15.5px;margin:0 0 8px;}
+  .rule-badge{
+    display:inline-flex; gap:12px; align-items:center; flex-wrap:wrap;
+    background:var(--paper); border:1px dashed var(--paper-line);
+    border-radius:10px; padding:10px 14px; margin-top:12px;
+    font-family:'IBM Plex Mono',monospace; font-size:13px;
+  }
+  .rule-badge .pill{display:inline-flex;align-items:center;gap:6px;padding:3px 9px;border-radius:20px;font-weight:600;}
+  .pill.mat{background:var(--mat-soft);color:var(--mat);}
+  .pill.def{background:var(--input-soft);color:var(--input);}
+  .pill.inv{background:var(--inv-soft);color:var(--inv);}
+
+  .grid-layout{display:grid;grid-template-columns:340px 1fr;gap:20px;align-items:start;}
+  @media (max-width:840px){.grid-layout{grid-template-columns:1fr;}}
+
+  .card{background:var(--card);border:1px solid var(--paper-line);border-radius:14px;box-shadow:var(--shadow);padding:20px;}
+  .panel-title{font-family:'Caveat',cursive;font-weight:700;font-size:24px;margin:0 0 4px;}
+  .panel-sub{font-size:13px;color:var(--ink-soft);margin:0 0 14px;line-height:1.4;}
+
+  /* Big matrix display */
+  .matrix-display{
+    background:var(--mat-soft); border:1.5px solid var(--mat);
+    border-radius:12px; padding:14px 16px; margin-bottom:14px;
+    font-family:'IBM Plex Mono',monospace;
+    text-align:center; line-height:1.4;
+    color:var(--mat);
+  }
+  .matrix-display .label{font-size:12px;text-transform:uppercase;letter-spacing:.05em;font-weight:700;display:block;margin-bottom:8px;}
+  .matrix-display .name{font-size:13px;color:var(--ink-soft);font-weight:600;margin-bottom:6px;}
+  .matrix-display .matrix-row{display:inline-block;text-align:center;}
+  .matrix-display .big-matrix{
+    display:inline-block; vertical-align:middle;
+    border-left:2.5px solid var(--mat); border-right:2.5px solid var(--mat);
+    padding:4px 12px; margin:0 8px; line-height:1.2;
+  }
+  .matrix-display .big-matrix .row{display:block;font-size:22px;font-weight:700;color:var(--mat);}
+  .matrix-display .equals{font-size:22px;font-weight:700;color:var(--ink);margin:0 6px;vertical-align:middle;}
+  .matrix-display .result{font-size:20px;color:var(--ink);vertical-align:middle;}
+
+  /* Smaller matrix for explore mode */
+  .small-matrix{
+    display:inline-block;
+    border-left:2px solid var(--ink-soft); border-right:2px solid var(--ink-soft);
+    padding:2px 8px; line-height:1.1; vertical-align:middle;
+    font-family:'IBM Plex Mono',monospace;
+  }
+  .small-matrix .row{display:block;font-size:14px;font-weight:600;color:var(--ink);}
+
+  .field{margin-bottom:12px;}
+  .field label{display:flex;justify-content:space-between;font-size:13.5px;font-weight:600;margin-bottom:6px;}
+  .field label span.val{font-family:'IBM Plex Mono',monospace;color:var(--inv);font-weight:600;}
+  .xy-row{display:flex;gap:8px;}
+  .xy-row .xy-field{flex:1;}
+  .xy-row .xy-field label{font-size:11.5px;color:var(--ink-soft);margin-bottom:3px;text-transform:uppercase;letter-spacing:.04em;font-weight:700;}
+  input[type=number]{
+    width:100%; padding:9px 10px; border-radius:8px;
+    border:1px solid var(--paper-line);
+    font-family:'IBM Plex Mono',monospace; font-size:16px;
+    background:var(--paper); color:var(--ink);
+    -moz-appearance:textfield;
+  }
+  input[type=number]::-webkit-inner-spin-button,
+  input[type=number]::-webkit-outer-spin-button{-webkit-appearance:none;margin:0;}
+  input[type=number]:focus{
+    outline:2px solid var(--mat); outline-offset:-1px;
+    border-color:var(--mat); background:var(--card);
+  }
+  .helper{font-size:12px;color:var(--ink-soft);margin-top:6px;line-height:1.4;}
+  .helper span.k{font-family:'IBM Plex Mono',monospace;color:var(--ink);font-weight:600;}
+
+  .jars{display:flex;gap:10px;margin-bottom:14px;}
+  .jar{flex:1;text-align:center;padding:10px 6px;border-radius:10px;border:1px solid var(--paper-line);}
+  .jar.in-jar{background:var(--input-soft);}
+  .jar.out-jar{background:var(--inv-soft);}
+  .jar .name{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;}
+  .jar.in-jar .name{color:var(--input);}
+  .jar.out-jar .name{color:var(--inv);}
+  .jar .amt{font-family:'IBM Plex Mono',monospace;font-size:17px;font-weight:600;margin-top:4px;}
+
+  button{
+    font-family:'Source Sans 3',sans-serif; font-weight:600; font-size:14.5px;
+    border:none; border-radius:9px; padding:11px 16px; cursor:pointer;
+    width:100%; transition:transform .08s ease, filter .15s ease;
+  }
+  button:active{transform:translateY(1px);}
+  button:disabled{opacity:.4;cursor:not-allowed;}
+  .btn-primary{background:var(--mat);color:#fff;}
+  .btn-primary:hover:not(:disabled){filter:brightness(1.08);}
+  .btn-secondary{background:var(--paper);color:var(--ink);border:1px solid var(--paper-line);margin-top:8px;}
+  .btn-secondary:hover:not(:disabled){background:#F0E9D6;}
+
+  .mode-row{display:flex;gap:6px;margin-bottom:14px;}
+  .mode-btn{
+    flex:1; padding:9px 8px; border-radius:8px;
+    border:1.5px solid var(--paper-line); background:var(--paper);
+    font-family:'Source Sans 3',sans-serif; font-weight:600; font-size:13px;
+    cursor:pointer; color:var(--ink-soft); text-align:center;
+  }
+  .mode-btn.active{background:var(--mat-soft);border-color:var(--mat);color:var(--mat);}
+
+  .graph-card{display:flex;flex-direction:column;}
+  .legend{display:flex;gap:18px;flex-wrap:wrap;margin:6px 0 12px;font-size:12.5px;font-family:'IBM Plex Mono',monospace;}
+  .legend span{display:inline-flex;align-items:center;gap:6px;}
+  .dot{width:10px;height:10px;border-radius:50%;display:inline-block;}
+  .dot.input{background:var(--input);}
+  .dot.output{background:var(--inv);}
+  .dot.origin{background:var(--ink);}
+
+  svg{width:100%;height:auto;display:block;cursor:crosshair;}
+  .axis-label{font-family:'IBM Plex Mono',monospace;font-size:12px;fill:var(--ink-soft);}
+  .tick-label{font-family:'IBM Plex Mono',monospace;font-size:10px;fill:var(--ink-soft);}
+
+  .steps{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap;}
+  .step-dot{
+    width:24px;height:24px;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:600;
+    border:1.5px solid var(--paper-line);color:var(--ink-soft);background:var(--paper);
+  }
+  .step-dot.done{background:var(--mat);border-color:var(--mat);color:#fff;}
+
+  .reflect,.explore{margin-top:20px;padding-top:16px;border-top:1px dashed var(--paper-line);}
+  .reflect.hidden,.explore.hidden{display:none;}
+  .q{margin-bottom:16px;}
+  .q p.qtext{font-weight:600;margin:0 0 8px;font-size:14.5px;}
+  .options{display:flex;gap:8px;flex-wrap:wrap;}
+  .opt{
+    padding:8px 14px;border-radius:8px;border:1px solid var(--paper-line);
+    background:var(--paper);font-size:13.5px;cursor:pointer;font-weight:600;
+  }
+  .opt.correct{background:var(--accent-soft);border-color:var(--accent);color:var(--accent);}
+  .opt.wrong{background:var(--inv-soft);border-color:var(--inv);color:var(--inv);}
+  .opt:disabled{cursor:default;}
+
+  .explore .panel-title{font-size:22px;}
+  .explore-inputs{display:flex;gap:12px;flex-wrap:wrap;margin:10px 0 14px;}
+  .explore-inputs .field{flex:1;min-width:100px;margin-bottom:0;}
+  .explore-eq{
+    background:var(--mat-soft); border:1.5px solid var(--mat);
+    border-radius:10px; padding:12px; margin-bottom:10px;
+    font-family:'IBM Plex Mono',monospace; font-size:18px; font-weight:600;
+    text-align:center; color:var(--mat);
+  }
+
+  .arrow-teal{fill:none;stroke:var(--input);stroke-width:2.5;stroke-linecap:round;}
+  .arrow-inv{fill:none;stroke:var(--inv);stroke-width:2.5;stroke-linecap:round;}
+  .arrow-mute{fill:none;stroke:var(--mat);stroke-width:1.5;stroke-linecap:round;opacity:0.55;}
+  .arrow-e1{fill:none;stroke:#5B6B60;stroke-width:1.2;stroke-linecap:round;opacity:0.45;stroke-dasharray:5 3;}
+  .arrow-e2{fill:none;stroke:#5B6B60;stroke-width:1.2;stroke-linecap:round;opacity:0.45;stroke-dasharray:5 3;}
+  .dragging{cursor:grabbing !important;}
+
+  footer.note{text-align:center;font-size:12px;color:var(--ink-soft);margin-top:26px;font-family:'IBM Plex Mono',monospace;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <p class="eyebrow">Linear Algebra · Matrices as Functions</p>
+    <h1>Nāgārjuna's Matrix Function — M: ℝ² → ℝ²</h1>
+    <p>You have seen ϕ(x, y) = (2x + 3y, 3x + 4y). The same function can be written as a <strong>matrix</strong>. The matrix itself <em>is</em> the function. Here, the matrix M is the function — applying M to a vector is matrix multiplication.</p>
+    <div class="rule-badge">
+      <span class="pill mat">M = (2&nbsp;3; 3&nbsp;4)</span>
+      <span>acts as</span>
+      <span class="pill def">M : ℝ² → ℝ²</span>
+      <span>·</span>
+      <span class="pill inv">det(M) = −1 ≠ 0 ⇒ M⁻¹ exists</span>
+    </div>
+  </header>
+
+  <div class="grid-layout">
+
+    <!-- LEFT CONTROL PANEL -->
+    <div class="card">
+      <p class="panel-title">Apply the matrix M</p>
+      <p class="panel-sub">Pick a direction and a vector. Click or drag in the graph — or type below.</p>
+
+      <!-- Big matrix display -->
+      <div class="matrix-display">
+        <span class="label">the function</span>
+        <span class="name">M (v) =</span>
+        <span class="big-matrix">
+          <span class="row">2&nbsp;&nbsp;3</span>
+          <span class="row">3&nbsp;&nbsp;4</span>
+        </span>
+        <span class="equals">·</span>
+        <span class="big-matrix">
+          <span class="row" id="vRow1">x</span>
+          <span class="row" id="vRow2">y</span>
+        </span>
+        <span class="equals">=</span>
+        <span class="result" id="resultRow">
+          (2<span id="rSym">x</span> + 3<span id="rSym">y</span>,&nbsp;
+          3<span id="rSym">x</span> + 4<span id="rSym">y</span>)
+        </span>
+      </div>
+
+      <div class="mode-row">
+        <button class="mode-btn active" id="modeForward">Forward M</button>
+        <button class="mode-btn" id="modeInverse">Inverse M⁻¹</button>
+      </div>
+
+      <div class="field">
+        <label id="modeLabel">Vector <span class="val" id="modeVal">v</span></label>
+        <div class="xy-row">
+          <div class="xy-field"><label>x</label><input type="number" id="inX" step="any" value="1"></div>
+          <div class="xy-field"><label>y</label><input type="number" id="inY" step="any" value="0"></div>
+        </div>
+        <div class="helper" id="computeHelper">M(<span class="k">1</span>, <span class="k">0</span>) = (2·<span class="k">1</span> + 3·<span class="k">0</span>, 3·<span class="k">1</span> + 4·<span class="k">0</span>) = (2, 3)</div>
+      </div>
+
+      <div class="jars">
+        <div class="jar in-jar"><div class="name" id="inLabel">v</div><div class="amt" id="inJar">(1, 0)</div></div>
+        <div class="jar out-jar"><div class="name" id="outLabel">M(v)</div><div class="amt" id="outJar">(2, 3)</div></div>
+      </div>
+
+      <button class="btn-secondary" id="resetBtn">Reset to (1, 0)</button>
+
+      <div class="compare-box" style="margin-top:14px; padding:14px; border-radius:10px; background:var(--mat-soft); border:1px solid var(--mat); font-size:13.5px; line-height:1.55;">
+        <h4 style="margin:0 0 6px; font-family:'Caveat',cursive; font-size:20px; color:var(--mat);">Why a matrix IS a function</h4>
+        A function takes input, returns output. The matrix M takes a 2D vector and returns another 2D vector. So M is a function ℝ² → ℝ² — written concisely as the matrix itself, no need to invent a name like ϕ.
+      </div>
+    </div>
+
+    <!-- RIGHT GRAPH -->
+    <div class="card graph-card">
+      <p class="panel-title">The action of M on ℝ²</p>
+      <div class="legend">
+        <span><i class="dot input"></i>your vector v</span>
+        <span><i class="dot output"></i>M(v) or M⁻¹(v)</span>
+        <span style="color:var(--mat);">■ image of unit square</span>
+      </div>
+      <p class="panel-sub" style="margin:6px 0 10px;">Click anywhere on the plane to drop v there. Drag the teal tip — its purple image follows. The purple parallelogram shows where the unit square (corners 0,0 · 1,0 · 1,1 · 0,1) lands under M.</p>
+      <svg id="graphSvg" viewBox="0 0 640 500" xmlns="http://www.w3.org/2000/svg"></svg>
+    </div>
+  </div>
+
+  <!-- REFLECTION QUIZ -->
+  <div class="card reflect hidden" id="reflectCard">
+    <p class="panel-title">What do you notice?</p>
+    <p class="panel-sub">A few rounds done. Now answer these.</p>
+
+    <div class="q" id="q1">
+      <p class="qtext">1. Why can we call the matrix itself a function?</p>
+      <div class="options">
+        <button class="opt" data-correct="false">Because matrices are numbers</button>
+        <button class="opt" data-correct="true">Because it takes a vector (input) and returns a vector (output) — that is exactly what a function does</button>
+        <button class="opt" data-correct="false">Because it has rows and columns</button>
+      </div>
+    </div>
+
+    <div class="q" id="q2">
+      <p class="qtext">2. What is det(M) for M = ((2, 3), (3, 4))?</p>
+      <div class="options">
+        <button class="opt" data-correct="false">0 — the matrix is singular</button>
+        <button class="opt" data-correct="true">−1 — the matrix is invertible, M⁻¹ exists</button>
+        <button class="opt" data-correct="false">17 — the matrix has norm 17</button>
+      </div>
+    </div>
+
+    <div class="q" id="q3">
+      <p class="qtext">3. Apply M to v = (3, 1):</p>
+      <div class="options">
+        <button class="opt" data-correct="false">M(v) = (9, 13)</button>
+        <button class="opt" data-correct="true">M(v) = (9, 13)</button>
+        <button class="opt" data-correct="false">M(v) = (8, 11)</button>
+        <button class="opt" data-correct="false">M(v) = (6, 4)</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- EXPLORE MODE -->
+  <div class="card explore hidden" id="exploreCard">
+    <p class="panel-title">Change the matrix</p>
+    <p class="panel-sub">Edit any entry of M and see how the parallelogram and the image change.</p>
+
+    <div class="explore-inputs">
+      <div class="field">
+        <label>a (row 1, col 1)</label>
+        <input type="number" id="expA" step="0.5" value="2">
+      </div>
+      <div class="field">
+        <label>b (row 1, col 2)</label>
+        <input type="number" id="expB" step="0.5" value="3">
+      </div>
+      <div class="field">
+        <label>c (row 2, col 1)</label>
+        <input type="number" id="expC" step="0.5" value="3">
+      </div>
+      <div class="field">
+        <label>d (row 2, col 2)</label>
+        <input type="number" id="expD" step="0.5" value="4">
+      </div>
+    </div>
+
+    <div class="explore-eq" id="exploreEq">M = (2&nbsp;3; 3&nbsp;4)</div>
+
+    <div class="helper" style="margin-bottom:10px;">
+      det(M) = <span id="expDet" style="font-family:'IBM Plex Mono',monospace;font-weight:700;color:var(--mat);">−1</span>.
+      Try <strong>a = d = 1, b = c = 0</strong> — that's the identity matrix. Try <strong>a = 2, d = 2, b = c = 0</strong> — pure scaling. Watch what happens to the parallelogram.
+    </div>
+  </div>
+
+  <footer class="note">Built for understanding matrices as functions · M : ℝ² → ℝ² · applying M = matrix multiplication · det(M) ≠ 0 ⇔ M⁻¹ exists</footer>
+</div>
+
+<script>
+(function(){
+  const svgNS = "http://www.w3.org/2000/svg";
+  const svg = document.getElementById('graphSvg');
+  const M = {l: 60, r: 20, t: 30, b: 50};
+  const PW = 640 - M.l - M.r;
+  const PH = 500 - M.t - M.b;
+
+  // ---- STATE ----
+  let a = 2, b = 3, c = 3, d = 4;
+  let mode = 'forward';     // 'forward' | 'inverse'
+  let isDragging = null;
+  let roundsDone = 0;
+
+  // ---- DOM ----
+  const inX = document.getElementById('inX');
+  const inY = document.getElementById('inY');
+  const inJar = document.getElementById('inJar');
+  const outJar = document.getElementById('outJar');
+  const inLabel = document.getElementById('inLabel');
+  const outLabel = document.getElementById('outLabel');
+  const modeVal = document.getElementById('modeVal');
+  const computeHelper = document.getElementById('computeHelper');
+  const modeLabel = document.getElementById('modeLabel');
+  const resetBtn = document.getElementById('resetBtn');
+  const modeForward = document.getElementById('modeForward');
+  const modeInverse = document.getElementById('modeInverse');
+  const reflectCard = document.getElementById('reflectCard');
+  const exploreCard = document.getElementById('exploreCard');
+
+  function det(){ return a*d - b*c; }
+
+  function applyM(x, y){
+    return { x: a*x + b*y, y: c*x + d*y };
+  }
+
+  function applyMInv(u, v){
+    const D = det();
+    if(Math.abs(D) < 1e-9) return null;
+    return {
+      x: ( d*u - b*v) / D,
+      y: (-c*u + a*v) / D
+    };
+  }
+
+  function formatNum(v){
+    if(Math.abs(v) < 1e-9) return '0';
+    if(Number.isInteger(v)) return v.toString();
+    return (Math.round(v*100)/100).toString();
+  }
+
+  function onVectorChange(){
+    const ix = parseFloat(inX.value);
+    const iy = parseFloat(inY.value);
+    if(isNaN(ix) || isNaN(iy)){
+      inJar.textContent = '(?, ?)';
+      outJar.textContent = '(?, ?)';
+      computeHelper.innerHTML = `M(<span class="k">x</span>, <span class="k">y</span>) = (2·<span class="k">x</span> + 3·<span class="k">y</span>, 3·<span class="k">x</span> + 4·<span class="k">y</span>)`;
+      render();
+      return;
+    }
+    inJar.textContent = `(${formatNum(ix)}, ${formatNum(iy)})`;
+    if(mode === 'forward'){
+      const out = applyM(ix, iy);
+      outJar.textContent = `(${formatNum(out.x)}, ${formatNum(out.y)})`;
+      computeHelper.innerHTML = `M(<span class="k">${formatNum(ix)}</span>, <span class="k">${formatNum(iy)}</span>) = (${a}·<span class="k">${formatNum(ix)}</span> + ${b}·<span class="k">${formatNum(iy)}</span>, ${c}·<span class="k">${formatNum(ix)}</span> + ${d}·<span class="k">${formatNum(iy)}</span>) = (<span style="color:var(--inv);font-weight:700;">${formatNum(out.x)}</span>, <span style="color:var(--inv);font-weight:700;">${formatNum(out.y)}</span>)`;
+      roundsDone++;
+    } else {
+      const out = applyMInv(ix, iy);
+      if(out === null){
+        outJar.textContent = 'no M⁻¹';
+        computeHelper.innerHTML = `det(M) = 0 — M⁻¹ does not exist.`;
+      } else {
+        outJar.textContent = `(${formatNum(out.x)}, ${formatNum(out.y)})`;
+        computeHelper.innerHTML = `M⁻¹(<span class="k">${formatNum(ix)}</span>, <span class="k">${formatNum(iy)}</span>) = ((${d}·<span class="k">${formatNum(ix)}</span> − ${b}·<span class="k">${formatNum(iy)}</span>) / ${det()}, (${-c}·<span class="k">${formatNum(ix)}</span> + ${a}·<span class="k">${formatNum(iy)}</span>) / ${det()}) = (<span style="color:var(--inv);font-weight:700;">${formatNum(out.x)}</span>, <span style="color:var(--inv);font-weight:700;">${formatNum(out.y)}</span>)`;
+      }
+    }
+    render();
+    if(roundsDone >= 3){
+      reflectCard.classList.remove('hidden');
+    }
+  }
+
+  function updateModeUI(){
+    if(mode === 'forward'){
+      modeForward.classList.add('active');
+      modeInverse.classList.remove('active');
+      modeLabel.innerHTML = 'Vector <span class="val" id="modeVal">v</span> — output M(v)';
+      inLabel.textContent = 'v';
+      outLabel.textContent = 'M(v)';
+    } else {
+      modeForward.classList.remove('active');
+      modeInverse.classList.add('active');
+      modeLabel.innerHTML = 'Vector <span class="val" id="modeVal">w</span> — find v with M(v) = w';
+      inLabel.textContent = 'w';
+      outLabel.textContent = 'M⁻¹(w)';
+    }
+    onVectorChange();
+  }
+
+  function setMode(newMode){
+    mode = newMode;
+    updateModeUI();
+  }
+
+  modeForward.addEventListener('click', ()=> setMode('forward'));
+  modeInverse.addEventListener('click', ()=> setMode('inverse'));
+  inX.addEventListener('input', onVectorChange);
+  inY.addEventListener('input', onVectorChange);
+
+  function resetGame(){
+    inX.value = '1'; inY.value = '0';
+    setMode('forward');
+    reflectCard.classList.add('hidden');
+    exploreCard.classList.add('hidden');
+    roundsDone = 0;
+    render();
+  }
+  resetBtn.addEventListener('click', resetGame);
+
+  // ---- SVG rendering ----
+  function getBounds(){
+    const allPts = [];
+    // Image of the unit square (parallelogram) vertices
+    allPts.push(applyM(0, 0));
+    allPts.push(applyM(1, 0));
+    allPts.push(applyM(1, 1));
+    allPts.push(applyM(0, 1));
+    const ix = parseFloat(inX.value);
+    const iy = parseFloat(inY.value);
+    if(!isNaN(ix) && !isNaN(iy)){
+      if(mode === 'forward'){
+        allPts.push({x: ix, y: iy});
+        allPts.push(applyM(ix, iy));
+      } else {
+        const inv = applyMInv(ix, iy);
+        if(inv){
+          allPts.push({x: ix, y: iy});
+          allPts.push(inv);
+        }
+      }
+    }
+    const xs = allPts.map(p => p.x);
+    const ys = allPts.map(p => p.y);
+    const xR = Math.max(Math.abs(Math.min(...xs)), Math.abs(Math.max(...xs)));
+    const yR = Math.max(Math.abs(Math.min(...ys)), Math.abs(Math.max(...ys)));
+    const R = Math.min(30, Math.max(xR, yR, 10, 1));
+    return {xMin: -R, xMax: R, yMin: -R, yMax: R};
+  }
+
+  function render(){
+    while(svg.firstChild) svg.removeChild(svg.firstChild);
+
+    const bounds = getBounds();
+    const xR = bounds.xMax - bounds.xMin;
+    const yR = bounds.yMax - bounds.yMin;
+    const xSc = PW / xR;
+    const ySc = PH / yR;
+
+    function toS(dx, dy){
+      return {
+        x: M.l + (dx - bounds.xMin) * xSc,
+        y: M.t + PH - (dy - bounds.yMin) * ySc
+      };
+    }
+
+    const originSvg = toS(0, 0);
+
+    // ---- 1. Faint unit grid ----
+    const xStep = Math.max(1, Math.round(xR / 6));
+    const yStep = Math.max(1, Math.round(yR / 6));
+    for(let v = Math.ceil(bounds.xMin / xStep) * xStep; v <= bounds.xMax; v += xStep){
+      const p = toS(v, 0);
+      if(p.x < M.l - 1 || p.x > M.l + PW + 1) continue;
+      const isAxis = Math.abs(v) < 0.01;
+      const ln = mkL(p.x, M.t, p.x, M.t + PH, isAxis ? '#C8BEA0' : '#E4DCC4', isAxis ? 1 : 0.8);
+      if(!isAxis) ln.setAttribute('stroke-dasharray', '2 3');
+      ln.setAttribute('stroke-opacity', '0.6');
+      svg.appendChild(ln);
+    }
+    for(let v = Math.ceil(bounds.yMin / yStep) * yStep; v <= bounds.yMax; v += yStep){
+      const p = toS(0, v);
+      if(p.y < M.t - 1 || p.y > M.t + PH + 1) continue;
+      const isAxis = Math.abs(v) < 0.01;
+      const ln = mkL(M.l, p.y, M.l + PW, p.y, isAxis ? '#C8BEA0' : '#E4DCC4', isAxis ? 1 : 0.8);
+      if(!isAxis) ln.setAttribute('stroke-dasharray', '2 3');
+      ln.setAttribute('stroke-opacity', '0.6');
+      svg.appendChild(ln);
+    }
+
+    // ---- 2. Image of the unit square (purple parallelogram) ----
+    const sqVerts = [
+      applyM(0, 0), applyM(1, 0), applyM(1, 1), applyM(0, 1)
+    ].map(p => toS(p.x, p.y));
+    const sqInBounds = sqVerts.every(p =>
+      p.x >= M.l - 5 && p.x <= M.l + PW + 5 && p.y >= M.t - 5 && p.y <= M.t + PH + 5
+    );
+    if(sqInBounds){
+      const path = document.createElementNS(svgNS, 'path');
+      const d = `M ${sqVerts[0].x} ${sqVerts[0].y} L ${sqVerts[1].x} ${sqVerts[1].y} L ${sqVerts[2].x} ${sqVerts[2].y} L ${sqVerts[3].x} ${sqVerts[3].y} Z`;
+      path.setAttribute('d', d);
+      path.setAttribute('fill', '#7B2D8E');
+      path.setAttribute('fill-opacity', '0.16');
+      path.setAttribute('stroke', '#7B2D8E');
+      path.setAttribute('stroke-width', '2');
+      path.setAttribute('stroke-opacity', '0.85');
+      svg.appendChild(path);
+      const sqLabelPos = {
+        x: (sqVerts[3].x + sqVerts[2].x) / 2,
+        y: (sqVerts[3].y + sqVerts[2].y) / 2
+      };
+      const sqLabel = mkT(sqLabelPos.x, sqLabelPos.y - 4, 'image of unit square', 'tick-label');
+      sqLabel.setAttribute('text-anchor', 'middle');
+      sqLabel.setAttribute('fill', '#7B2D8E');
+      sqLabel.setAttribute('font-weight', '700');
+      sqLabel.setAttribute('font-size', '10');
+      sqLabel.setAttribute('font-style', 'italic');
+      svg.appendChild(sqLabel);
+    }
+
+    // ---- 3. Arrow drawing helper ----
+    function drawVectorArrow(fromX, fromY, toX, toY, color, className, label){
+      const sp1 = toS(fromX, fromY);
+      const sp2 = toS(toX, toY);
+      const dx = sp2.x - sp1.x, dy = sp2.y - sp1.y;
+      const len = Math.sqrt(dx*dx + dy*dy);
+      if(len < 1) return;
+      const ux = dx/len, uy = dy/len;
+      const tipX = sp2.x - ux * 4;
+      const tipY = sp2.y - uy * 4;
+      const shaft = mkL(sp1.x, sp1.y, tipX, tipY, color, 0);
+      shaft.setAttribute('class', className);
+      svg.appendChild(shaft);
+      const head = 8;
+      const ax = sp2.x, ay = sp2.y;
+      const left = { x: ax - head*ux + head*0.4*uy, y: ay - head*uy - head*0.4*ux };
+      const right = { x: ax - head*ux - head*0.4*uy, y: ay - head*uy + head*0.4*ux };
+      const headPath = document.createElementNS(svgNS, 'path');
+      headPath.setAttribute('d', `M ${ax} ${ay} L ${left.x} ${left.y} L ${right.x} ${right.y} Z`);
+      headPath.setAttribute('fill', color);
+      svg.appendChild(headPath);
+      const dot = document.createElementNS(svgNS, 'circle');
+      dot.setAttribute('cx', sp2.x); dot.setAttribute('cy', sp2.y);
+      dot.setAttribute('r', 3);
+      dot.setAttribute('fill', color);
+      svg.appendChild(dot);
+      if(label){
+        const off = 14;
+        const lx = ax + ux*off;
+        const ly = ay + uy*off - 6;
+        const t = mkT(lx, ly, label, 'tick-label');
+        t.setAttribute('text-anchor', (ux > 0.1 ? 'start' : (ux < -0.1 ? 'end' : 'middle')));
+        t.setAttribute('fill', color);
+        t.setAttribute('font-weight', '700');
+        t.setAttribute('font-size', '12');
+        svg.appendChild(t);
+      }
+    }
+
+    // ---- 4. Image of basis vectors (no labels — parallelogram already labels them) ----
+    drawVectorArrow(0, 0, applyM(1, 0).x, applyM(1, 0).y, '#7B2D8E', 'arrow-mute', null);
+    drawVectorArrow(0, 0, applyM(0, 1).x, applyM(0, 1).y, '#7B2D8E', 'arrow-mute', null);
+
+    // ---- 5. Original basis vectors (e1, e2) — subtle dashed, no labels ----
+    drawVectorArrow(0, 0, 1, 0, '#5B6B60', 'arrow-e1', null);
+    drawVectorArrow(0, 0, 0, 1, '#5B6B60', 'arrow-e2', null);
+
+    // ---- 6. Origin marker ----
+    const oc = document.createElementNS(svgNS, 'circle');
+    oc.setAttribute('cx', originSvg.x); oc.setAttribute('cy', originSvg.y);
+    oc.setAttribute('r', 4);
+    oc.setAttribute('fill', '#26332B');
+    svg.appendChild(oc);
+    const ol = mkT(originSvg.x + 6, originSvg.y + 14, '(0, 0)', 'tick-label');
+    ol.setAttribute('font-weight', '600');
+    ol.setAttribute('fill', '#26332B');
+    svg.appendChild(ol);
+
+    // ---- 7. Current vector and its image ----
+    const ix = parseFloat(inX.value);
+    const iy = parseFloat(inY.value);
+    if(!isNaN(ix) && !isNaN(iy)){
+      let inputVec, outputVec, inputLabel, outputLabel;
+      if(mode === 'forward'){
+        inputVec = {x: ix, y: iy};
+        outputVec = applyM(ix, iy);
+        inputLabel = `v = (${formatNum(ix)}, ${formatNum(iy)})`;
+        outputLabel = `M(v) = (${formatNum(outputVec.x)}, ${formatNum(outputVec.y)})`;
+      } else {
+        const inv = applyMInv(ix, iy);
+        if(inv){
+          inputVec = inv;
+          outputVec = {x: ix, y: iy};
+          inputLabel = `M⁻¹(w) = (${formatNum(inv.x)}, ${formatNum(inv.y)})`;
+          outputLabel = `w = (${formatNum(ix)}, ${formatNum(iy)})`;
+        }
+      }
+      if(inputVec && outputVec){
+        drawVectorArrow(0, 0, inputVec.x, inputVec.y, '#0E7490', 'arrow-teal', inputLabel);
+        drawVectorArrow(0, 0, outputVec.x, outputVec.y, '#B5502E', 'arrow-inv', outputLabel);
+        const sp1 = toS(inputVec.x, inputVec.y);
+        const sp2 = toS(outputVec.x, outputVec.y);
+        const conn = mkL(sp1.x, sp1.y, sp2.x, sp2.y, '#5B6B60', 1.2);
+        conn.setAttribute('stroke-dasharray', '4 3');
+        conn.setAttribute('stroke-opacity', '0.5');
+        svg.appendChild(conn);
+      }
+    }
+
+    // axis labels
+    const xlab = mkT(M.l + PW/2, M.t + PH + 42, 'x', 'axis-label');
+    xlab.setAttribute('text-anchor', 'middle');
+    svg.appendChild(xlab);
+    const ylab = mkT(14, M.t + PH/2, 'y', 'axis-label');
+    ylab.setAttribute('text-anchor', 'middle');
+    ylab.setAttribute('transform', `rotate(-90 14 ${M.t + PH/2})`);
+    svg.appendChild(ylab);
+  }
+
+  function mkL(x1, y1, x2, y2, stroke, w){
+    const l = document.createElementNS(svgNS, 'line');
+    l.setAttribute('x1', x1); l.setAttribute('y1', y1);
+    l.setAttribute('x2', x2); l.setAttribute('y2', y2);
+    l.setAttribute('stroke', stroke); l.setAttribute('stroke-width', w);
+    return l;
+  }
+  function mkT(x, y, text, cls){
+    const t = document.createElementNS(svgNS, 'text');
+    t.setAttribute('x', x); t.setAttribute('y', y);
+    t.setAttribute('class', cls);
+    t.textContent = text;
+    return t;
+  }
+
+  // ---- Interactive graph control (click/drag) ----
+  function pixelToData(px, py){
+    const b = getBounds();
+    const xR = b.xMax - b.xMin;
+    const yR = b.yMax - b.yMin;
+    const xSc = PW / xR, ySc = PH / yR;
+    return {
+      x: b.xMin + (px - M.l) / xSc,
+      y: b.yMin + (M.t + PH - py) / ySc
+    };
+  }
+  function round2(v){ return Math.round(v * 100) / 100; }
+
+  function getCurrentTipPositions(){
+    const ix = parseFloat(inX.value);
+    const iy = parseFloat(inY.value);
+    if(isNaN(ix) || isNaN(iy)) return {input: null, output: null};
+    if(mode === 'forward'){
+      return {input: {x: ix, y: iy}, output: applyM(ix, iy)};
+    } else {
+      const inv = applyMInv(ix, iy);
+      if(inv) return {input: inv, output: {x: ix, y: iy}};
+      return {input: null, output: null};
+    }
+  }
+  function setInputs(x, y){
+    inX.value = String(round2(x));
+    inY.value = String(round2(y));
+    roundsDone = 0; // dragging shouldn't count as a reveal
+    onVectorChange();
+  }
+  function pickTarget(p, tips){
+    if(!tips.input && !tips.output) return null;
+    const dIn = tips.input ? Math.hypot(p.x - tips.input.x, p.y - tips.input.y) : Infinity;
+    const dOut = tips.output ? Math.hypot(p.x - tips.output.x, p.y - tips.output.y) : Infinity;
+    const threshold = 0.6;
+    if(dIn <= threshold && dIn <= dOut) return 'input';
+    if(dOut <= threshold) return 'output';
+    return null;
+  }
+  function eventToPixel(e){
+    const rect = svg.getBoundingClientRect();
+    const sx = 640 / rect.width;
+    const sy = 500 / rect.height;
+    return {
+      px: (e.clientX - rect.left) * sx,
+      py: (e.clientY - rect.top) * sy
+    };
+  }
+
+  svg.addEventListener('mousedown', (e)=>{
+    const {px, py} = eventToPixel(e);
+    const data = pixelToData(px, py);
+    const tips = getCurrentTipPositions();
+    const hit = pickTarget(data, tips);
+    if(hit === 'input'){
+      isDragging = 'input';
+    } else if(hit === 'output'){
+      isDragging = 'output';
+    } else {
+      isDragging = 'input';
+      setInputs(data.x, data.y);
+    }
+    svg.classList.add('dragging');
+    e.preventDefault();
+  });
+
+  svg.addEventListener('mousemove', (e)=>{
+    if(!isDragging){
+      const {px, py} = eventToPixel(e);
+      const data = pixelToData(px, py);
+      const hit = pickTarget(data, getCurrentTipPositions());
+      svg.style.cursor = hit ? 'grab' : 'crosshair';
+    }
+  });
+
+  document.addEventListener('mousemove', (e)=>{
+    if(!isDragging) return;
+    const rect = svg.getBoundingClientRect();
+    const sx = 640 / rect.width, sy = 500 / rect.height;
+    const px = (e.clientX - rect.left) * sx;
+    const py = (e.clientY - rect.top) * sy;
+    const cx = Math.max(M.l, Math.min(M.l + PW, px));
+    const cy = Math.max(M.t, Math.min(M.t + PH, py));
+    const data = pixelToData(cx, cy);
+
+    if(isDragging === 'input'){
+      if(mode === 'forward'){
+        setInputs(data.x, data.y);
+      } else {
+        const w = applyM(data.x, data.y);
+        setInputs(w.x, w.y);
+      }
+    } else if(isDragging === 'output'){
+      if(mode === 'forward'){
+        const inv = applyMInv(data.x, data.y);
+        if(inv) setInputs(inv.x, inv.y);
+      } else {
+        setInputs(data.x, data.y);
+      }
+    }
+  });
+
+  document.addEventListener('mouseup', ()=>{
+    if(!isDragging) return;
+    isDragging = null;
+    svg.classList.remove('dragging');
+  });
+  svg.addEventListener('mouseleave', ()=>{
+    svg.style.cursor = 'crosshair';
+  });
+
+  // ---- QUIZ ----
+  document.querySelectorAll('.q .options').forEach(group => {
+    group.querySelectorAll('.opt').forEach(btn => {
+      btn.addEventListener('click', ()=>{
+        const correct = btn.dataset.correct === 'true';
+        group.querySelectorAll('.opt').forEach(b => {
+          b.disabled = true;
+          if(b.dataset.correct === 'true') b.classList.add('correct');
+        });
+        if(!correct) btn.classList.add('wrong');
+        if(group.parentElement.id === 'q3' && correct){
+          setTimeout(()=>{
+            exploreCard.classList.remove('hidden');
+            exploreCard.scrollIntoView({behavior:'smooth', block:'nearest'});
+            rebuildExplore();
+          }, 400);
+        }
+      });
+    });
+  });
+
+  // ---- EXPLORE ----
+  const expA = document.getElementById('expA');
+  const expB = document.getElementById('expB');
+  const expC = document.getElementById('expC');
+  const expD = document.getElementById('expD');
+  const expEq = document.getElementById('exploreEq');
+  const expDet = document.getElementById('expDet');
+
+  function rebuildExplore(){
+    const na = parseFloat(expA.value);
+    const nb = parseFloat(expB.value);
+    const nc = parseFloat(expC.value);
+    const nd = parseFloat(expD.value);
+    if([na, nb, nc, nd].some(v => isNaN(v))) return;
+    a = na; b = nb; c = nc; d = nd;
+    const D = det();
+    expDet.textContent = formatNum(D);
+    expEq.textContent = `M = (${formatNum(a)}&nbsp;${formatNum(b)}; ${formatNum(c)}&nbsp;${formatNum(d)})`;
+    render();
+  }
+  [expA, expB, expC, expD].forEach(inp => {
+    inp.addEventListener('input', rebuildExplore);
+  });
+
+  // init
+  setMode('forward');
+  render();
+})();
+</script>
+</body>
+</html>
