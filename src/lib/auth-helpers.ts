@@ -4,20 +4,9 @@
  */
 import { redirect } from 'next/navigation';
 import { headers } from 'next/headers';
-import { auth, devAuthHeader } from './auth';
+import { auth, devAuthHeader, type SessionUser } from './auth';
 import { prisma } from './prisma';
 import type { Permission } from './permissions';
-
-export type SessionUser = {
-  id: string;
-  email: string;
-  name: string | null;
-  image: string | null;
-  role: 'STUDENT' | 'INSTRUCTOR' | 'ADMIN';
-  isAdmin: boolean;
-  isInstructor: boolean;
-  instructorId: string | null;
-};
 
 export async function getCurrentUser(): Promise<SessionUser | null> {
   // Dev auth bypass

@@ -146,6 +146,17 @@ export const { handlers, auth, signIn, signOut } = NextAuth(authConfig);
  * Useful for local viewing without samagama.in OAuth.
  * Header format: `x-dev-user: admin@iitrpr.ac.in` (auto-creates user).
  */
+export type SessionUser = {
+  id: string;
+  email: string;
+  name: string | null;
+  image: string | null;
+  role: 'STUDENT' | 'INSTRUCTOR' | 'ADMIN';
+  isAdmin: boolean;
+  isInstructor: boolean;
+  instructorId: string | null;
+};
+
 export async function devAuthHeader(req: Request): Promise<SessionUser | null> {
   if (process.env.SWADHYAYA_DEV_AUTH !== '1') return null;
   const email = req.headers.get('x-dev-user');
