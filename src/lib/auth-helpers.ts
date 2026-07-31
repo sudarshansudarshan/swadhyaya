@@ -3,7 +3,8 @@
  * Server-side enforcement of role-based access.
  */
 import { redirect } from 'next/navigation';
-import { auth } from './auth';
+import { headers } from 'next/headers';
+import { auth, devAuthHeader } from './auth';
 import { prisma } from './prisma';
 import type { Permission } from './permissions';
 
@@ -19,6 +20,16 @@ export type SessionUser = {
 };
 
 export async function getCurrentUser(): Promise<SessionUser | null> {
+  // Dev auth bypass
+  if (process.env.SWADHYAYA_DEV_AUTH === '1') {
+    try {
+      const h = await headers();
+      const fakeReq = new Request('http://localhost', { headers: h });
+      const devUser = await devAuthHeader(fakeReq);
+      if (devUser) return devUser;
+    } catch {}
+  }
+
   const session = await auth();
   if (!session?.user) return null;
 

@@ -140,3 +140,30 @@ export const authConfig: NextAuthConfig = {
 };
 
 export const { handlers, auth, signIn, signOut } = NextAuth(authConfig);
+
+/**
+ * Dev auth: when SWADHYAYA_DEV_AUTH=1, allow header-based authentication.
+ * Useful for local viewing without samagama.in OAuth.
+ * Header format: `x-dev-user: admin@iitrpr.ac.in` (auto-creates user).
+ */
+export async function devAuthHeader(req: Request): Promise<SessionUser | null> {
+  if (process.env.SWADHYAYA_DEV_AUTH !== '1') return null;
+  const email = req.headers.get('x-dev-user');
+  if (!email) return null;
+  const lower = email.toLowerCase();
+  const isAdmin = lower === 'admin@iitrpr.ac.in' || lower.startsWith('admin');
+  const existing = await prisma.user.findUnique({ where: { email: lower } });
+  const user = existing ?? (await prisma.user.create({
+    data: { email: lower, name: lower.split('@')[0], role: isAdmin ? 'ADMIN' : 'STUDENT' },
+  }));
+  return {
+    id: user.id,
+    email: user.email,
+    name: user.name,
+    image: user.image,
+    role: user.role,
+    isAdmin: user.role === 'ADMIN',
+    isInstructor: user.role === 'INSTRUCTOR',
+    instructorId: null,
+  };
+}

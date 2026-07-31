@@ -1,13 +1,6 @@
-/**
- * SSE stream endpoint — listens to a Vercel KV channel and streams events to the client.
- *
- * Usage: GET /api/realtime/[channel]
- *
- * Note: Vercel Edge Runtime doesn't support long-lived connections in Hobby plan.
- * Use Node runtime (max 5min connection) or use Vercel Pro for longer.
- */
 import { kv } from '@vercel/kv';
 import { type NextRequest } from 'next/server';
+import { subscribeLocal } from '@/lib/realtime';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -18,11 +11,12 @@ export async function GET(
 ) {
   const { channel } = await params;
   const encoder = new TextEncoder();
+  const useInProcess = process.env.USE_IN_PROCESS_PUBSUB === '1';
 
   const stream = new ReadableStream({
     async start(controller) {
-      let lastSeenTs = Date.now();
       let closed = false;
+      let lastSeenTs = Date.now();
 
       const sendEvent = (data: any) => {
         if (closed) return;
@@ -36,6 +30,29 @@ export async function GET(
 
       sendEvent({ type: 'connected', channel, ts: Date.now() });
 
+      // In-process subscription (local dev)
+      if (useInProcess) {
+        const unsub = subscribeLocal(channel, (evt) => {
+          sendEvent(evt);
+        });
+        const ping = setInterval(() => {
+          if (closed) return;
+          try {
+            controller.enqueue(encoder.encode(`: ping ${Date.now()}\n\n`));
+          } catch {}
+        }, 5000);
+        req.signal.addEventListener('abort', () => {
+          closed = true;
+          unsub();
+          clearInterval(ping);
+          try {
+            controller.close();
+          } catch {}
+        });
+        return;
+      }
+
+      // Vercel KV (production)
       const interval = setInterval(async () => {
         if (closed) return;
         try {
@@ -44,7 +61,6 @@ export async function GET(
             const ts = parseInt(k.split(':')[2] ?? '0', 10);
             return ts > lastSeenTs;
           });
-
           for (const key of newKeys) {
             const evt = await kv.get(key);
             if (evt) {
@@ -54,23 +70,20 @@ export async function GET(
             }
             await kv.del(key);
           }
-
           controller.enqueue(encoder.encode(`: ping ${Date.now()}\n\n`));
         } catch (err) {
           console.error('SSE error:', err);
         }
       }, 1000);
 
-      const cleanup = () => {
+      req.signal.addEventListener('abort', () => {
         if (closed) return;
         closed = true;
         clearInterval(interval);
         try {
           controller.close();
         } catch {}
-      };
-
-      req.signal.addEventListener('abort', cleanup);
+      });
     },
   });
 
