@@ -52,7 +52,7 @@ export async function getActiveUsers(): Promise<any[]> {
   if (useInProcess || !kv) return [];
   const keys = await kv.keys('hb:*');
   if (!keys.length) return [];
-  const values = await Promise.all(keys.map((k) => kv.get(k)));
+  const values = await Promise.all(keys.map((k: string) => kv.get(k)));
   return values.filter((v: any): v is any => v !== null);
 }
 
