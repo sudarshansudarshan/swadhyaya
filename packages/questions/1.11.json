@@ -1,0 +1,546 @@
+{
+  "id": "1.11",
+  "moduleId": 1,
+  "number": 11,
+  "title": "g(x) = x³ − x² − 10x + 2, g(x) = −22",
+  "vocabulary": {
+    "allowed": [
+      "cubic",
+      "polynomial",
+      "root",
+      "x³",
+      "multiple",
+      "roots.",
+      "Vocabulary",
+      "forbidden:",
+      "matrix",
+      "derivative."
+    ],
+    "forbidden": [
+      "matrix",
+      "derivative."
+    ]
+  },
+  "questions": [
+    {
+      "id": "1.11.q1",
+      "topicId": "1.11",
+      "prompt": "What *degree* is the polynomial g(x) = x³ − x² − 10x + 2?",
+      "options": [
+        {
+          "text": "Three",
+          "correct": true
+        },
+        {
+          "text": "Two only",
+          "correct": false
+        },
+        {
+          "text": "One only",
+          "correct": false
+        },
+        {
+          "text": "Zero only",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: The highest power of x is x³. Step 2: So degree = 3 — a cubic. Step 3: This \"degree = highest power\" rule applies to all polynomials. Step 4: This \"degree 3 → cubic\" naming is used throughout algebra — and in Mission 11 for *cubic eigenvalue problems*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.11.q2",
+      "topicId": "1.11",
+      "prompt": "Why does a cubic polynomial have *at most* 3 real roots?",
+      "options": [
+        {
+          "text": "Degree three gives three",
+          "correct": true
+        },
+        {
+          "text": "Degree one only",
+          "correct": false
+        },
+        {
+          "text": "Random number roots",
+          "correct": false
+        },
+        {
+          "text": "No roots at all",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: The *Fundamental Theorem of Algebra* says degree n has at most n roots. Step 2: So cubic (degree 3) has at most 3 roots. Step 3: It can have 1 or 3 real roots (or 0 if all complex). Step 4: This \"degree = max roots\" rule is the foundation of polynomial theory — used in Q3.9 for *characteristic polynomial*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.11.q3",
+      "topicId": "1.11",
+      "prompt": "What does it mean for α to be a *root* of g?",
+      "options": [
+        {
+          "text": "g(α) equals zero",
+          "correct": true
+        },
+        {
+          "text": "g(α) equals one",
+          "correct": false
+        },
+        {
+          "text": "g(α) is random",
+          "correct": false
+        },
+        {
+          "text": "g(α) is undefined",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: A root makes the polynomial zero. Step 2: g(α) = 0 means α is a root. Step 3: The trap \"g(α) = 1\" misses the zero. Step 4: This \"root = zero of polynomial\" is the foundation of *finding roots* — used in Q1.10 for quadratics and here for cubics.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.11.q4",
+      "topicId": "1.11",
+      "prompt": "If g(α) = −22 and we want a *root*, what must change?",
+      "options": [
+        {
+          "text": "Move equation first",
+          "correct": true
+        },
+        {
+          "text": "Skip the root hunt",
+          "correct": false
+        },
+        {
+          "text": "g must be zero",
+          "correct": false
+        },
+        {
+          "text": "Random check only",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: g(α) = −22 is not the root equation. Step 2: To find root, solve g(α) = 0, not −22. Step 3: The value −22 is just a target output, not \"where root lies\". Step 4: This \"root = zero of polynomial\" is the same rule as Q3 above.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.11.q5",
+      "topicId": "1.11",
+      "prompt": "Why can a cubic have *fewer* than 3 real roots?",
+      "options": [
+        {
+          "text": "Some complex roots",
+          "correct": true
+        },
+        {
+          "text": "All real always",
+          "correct": false
+        },
+        {
+          "text": "No roots at all",
+          "correct": false
+        },
+        {
+          "text": "Always three roots",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: The 3 roots can be a mix of real and complex. Step 2: Sometimes 1 real and 2 complex. Step 3: Sometimes 3 real. Step 4: This \"real roots among complex roots\" is the seed of *complex eigenvalues* in Mission 14.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.11.q6",
+      "topicId": "1.11",
+      "prompt": "What does the *graph* of a cubic look like?",
+      "options": [
+        {
+          "text": "S-shaped curve",
+          "correct": true
+        },
+        {
+          "text": "U-shaped parabola",
+          "correct": false
+        },
+        {
+          "text": "Straight line only",
+          "correct": false
+        },
+        {
+          "text": "Circle shape",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: g(x) = x³ − ... has x³ term. Step 2: x³ is S-shaped — going down for negative x, up for positive x. Step 3: The full cubic keeps this general shape with some wiggles. Step 4: This \"S-shape\" picture is the seed of *cubic splines* in *computer graphics*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.11.q7",
+      "topicId": "1.11",
+      "prompt": "Why might a cubic have *exactly 1* real root?",
+      "options": [
+        {
+          "text": "Tangent at others",
+          "correct": true
+        },
+        {
+          "text": "Crosses x-axis once",
+          "correct": false
+        },
+        {
+          "text": "Curve is flat only",
+          "correct": false
+        },
+        {
+          "text": "Curve is a line",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: If the cubic's local max and min are *both* above or *both* below the x-axis, it crosses x-axis only once. Step 2: The other two roots are complex (tangent at complex values). Step 3: This \"tangent to x-axis at complex roots\" is the *discriminant* test for cubics.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.11.q8",
+      "topicId": "1.11",
+      "prompt": "What is the *discriminant* of a polynomial, conceptually?",
+      "options": [
+        {
+          "text": "Number type check",
+          "correct": true
+        },
+        {
+          "text": "Slope of curve",
+          "correct": false
+        },
+        {
+          "text": "Y-intercept only",
+          "correct": false
+        },
+        {
+          "text": "Maximum point",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: The discriminant is a number computed from polynomial coefficients. Step 2: Its sign tells us about root types (real, complex, repeated). Step 3: For cubics: positive discriminant → 3 real roots; negative → 1 real + 2 complex; zero → repeated root. Step 4: This \"discriminant sign → root pattern\" is the seed of *classification* in algebra.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.11.q9",
+      "topicId": "1.11",
+      "prompt": "Why is the cubic's behaviour at *very large x* dominated by x³?",
+      "options": [
+        {
+          "text": "Highest power wins",
+          "correct": true
+        },
+        {
+          "text": "Lower powers win",
+          "correct": false
+        },
+        {
+          "text": "All equal here",
+          "correct": false
+        },
+        {
+          "text": "Random behaviour",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: For large x, x³ grows much faster than x² or x. Step 2: So x³ dominates the polynomial's behaviour. Step 3: The lower-order terms become negligible. Step 4: This \"leading term dominates\" is the *asymptotic* behaviour, used in *computational complexity* and *numerical analysis*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.11.q10",
+      "topicId": "1.11",
+      "prompt": "For very negative x, where does the cubic g(x) = x³ − ... go?",
+      "options": [
+        {
+          "text": "Toward negative infinity",
+          "correct": true
+        },
+        {
+          "text": "Toward positive infinity",
+          "correct": false
+        },
+        {
+          "text": "Stays at zero",
+          "correct": false
+        },
+        {
+          "text": "Stays at one",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: x³ for negative x is negative. Step 2: As x → −∞, x³ → −∞. Step 3: So g(x) → −∞. Step 4: The trap \"positive infinity\" describes positive x. Step 5: This \"cubic goes to −∞ on left, +∞ on right\" is the *end behaviour* that ensures at least one real root.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.11.q11",
+      "topicId": "1.11",
+      "prompt": "Why must every cubic have *at least* one real root?",
+      "options": [
+        {
+          "text": "End behaviour forces",
+          "correct": true
+        },
+        {
+          "text": "Could have none",
+          "correct": false
+        },
+        {
+          "text": "Random roots only",
+          "correct": false
+        },
+        {
+          "text": "No roots at all",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: A cubic goes from −∞ to +∞ (or vice versa) continuously. Step 2: So it must cross y = 0 somewhere — by the *Intermediate Value Theorem*. Step 3: That crossing is a real root. Step 4: This \"continuous + opposite ends → at least one root\" is the foundation of existence theorems in calculus.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.11.q12",
+      "topicId": "1.11",
+      "prompt": "If a cubic has a *double root* at x = 2, what does the graph look like at x = 2?",
+      "options": [
+        {
+          "text": "Tangent to x-axis",
+          "correct": true
+        },
+        {
+          "text": "Crossing x-axis",
+          "correct": false
+        },
+        {
+          "text": "Far above x-axis",
+          "correct": false
+        },
+        {
+          "text": "Far below x-axis",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: A double root means the graph *touches* the x-axis at that point. Step 2: It doesn't cross — it just touches and bounces back. Step 3: The slope is zero at a double root. Step 4: This \"touch and bounce\" geometry is the *multiplicity* of roots — used in Q3.11 for *repeated eigenvalues*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.11.q13",
+      "topicId": "1.11",
+      "prompt": "Why is finding *exact* roots of cubics harder than quadratics?",
+      "options": [
+        {
+          "text": "Cubic more complex",
+          "correct": true
+        },
+        {
+          "text": "Cubic same as quad",
+          "correct": false
+        },
+        {
+          "text": "Cubic trivial only",
+          "correct": false
+        },
+        {
+          "text": "Cubic has no roots",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Quadratic solutions use square roots — closed form. Step 2: Cubics need *cube roots* and a more complex formula. Step 3: Higher degrees need even more complex formulas (or numerical methods). Step 4: This \"complexity grows with degree\" is why *numerical root-finding* (Newton's method) is widely used.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.11.q14",
+      "topicId": "1.11",
+      "prompt": "What does *x³* itself look like on a graph?",
+      "options": [
+        {
+          "text": "S-curve through origin",
+          "correct": true
+        },
+        {
+          "text": "U-shape up only",
+          "correct": false
+        },
+        {
+          "text": "Straight line up",
+          "correct": false
+        },
+        {
+          "text": "Horizontal flat",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: x³ = 0 at x = 0, so passes through origin. Step 2: For x > 0, x³ > 0 (positive); for x < 0, x³ < 0 (negative). Step 3: This gives an S-shape symmetric about origin. Step 4: This \"odd function\" property (x³(−x) = −x³(x)) is the seed of *odd functions* in *Fourier series*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.11.q15",
+      "topicId": "1.11",
+      "prompt": "Why can a cubic have *three* real roots?",
+      "options": [
+        {
+          "text": "S-shape crosses thrice",
+          "correct": true
+        },
+        {
+          "text": "S-shape crosses once",
+          "correct": false
+        },
+        {
+          "text": "S-shape crosses twice",
+          "correct": false
+        },
+        {
+          "text": "Never three roots",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: The S-shape of a cubic can cross the x-axis up to 3 times. Step 2: If local max is above and local min is below (or vice versa), there are 3 crossings. Step 3: Each crossing is a real root. Step 4: This \"3-crossing case\" requires *two turning points* on the curve — local max and local min.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.11.q16",
+      "topicId": "1.11",
+      "prompt": "Why does adding −x² to x³ *bend* the curve?",
+      "options": [
+        {
+          "text": "Different degrees",
+          "correct": true
+        },
+        {
+          "text": "Same degree always",
+          "correct": false
+        },
+        {
+          "text": "Random bending",
+          "correct": false
+        },
+        {
+          "text": "No bending here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: x³ alone is a pure S-shape. Step 2: Adding −x² introduces a quadratic component. Step 3: This bends the curve, creating local extrema. Step 4: The trap \"no bending\" describes pure x³. Step 5: This \"sum of degrees creates wiggles\" is the *Fourier synthesis* — adding sines/cosines builds complex waveforms.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.11.q17",
+      "topicId": "1.11",
+      "prompt": "What is the *graph* of g(x) = x³ − x² − 10x + 2 at x = 0?",
+      "options": [
+        {
+          "text": "At y equals two",
+          "correct": true
+        },
+        {
+          "text": "At y equals zero",
+          "correct": false
+        },
+        {
+          "text": "At y equals ten",
+          "correct": false
+        },
+        {
+          "text": "At y equals minus ten",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: g(0) = 0³ − 0² − 10(0) + 2 = 2. Step 2: So g(0) = 2. Step 3: The y-intercept of the cubic is at (0, 2). Step 4: This \"y-intercept = constant term\" rule applies to all polynomials. Step 5: Used in *intercepts* of curves throughout Mission 3.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.11.q18",
+      "topicId": "1.11",
+      "prompt": "What if g(x) had *no* x³ term (degree 2) — how many real roots at most?",
+      "options": [
+        {
+          "text": "Two at most",
+          "correct": true
+        },
+        {
+          "text": "Three at most",
+          "correct": false
+        },
+        {
+          "text": "Four at most",
+          "correct": false
+        },
+        {
+          "text": "One at most",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Quadratic (degree 2) has at most 2 roots. Step 2: That's why Q1.10 gave ± for quadratics. Step 3: Cubic with x³ gives up to 3 roots. Step 4: This \"degree = max roots\" rule is consistent across all polynomials. Step 5: We will use this in Q3.9 for *characteristic polynomials*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.11.q19",
+      "topicId": "1.11",
+      "prompt": "Why do we say a cubic has *one* real root sometimes?",
+      "options": [
+        {
+          "text": "Two are complex",
+          "correct": true
+        },
+        {
+          "text": "Three are real",
+          "correct": false
+        },
+        {
+          "text": "None are real",
+          "correct": false
+        },
+        {
+          "text": "Random pattern",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: When discriminant is negative, the cubic has 1 real root and 2 complex (conjugate) roots. Step 2: Complex roots come in conjugate pairs. Step 3: So odd-degree polynomials always have at least one real root. Step 4: This \"complex roots in conjugate pairs\" is the seed of *complex eigenvalues* (Mission 14).",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.11.q20",
+      "topicId": "1.11",
+      "prompt": "What if we wanted to find where g(x) = x³ − x² − 10x + 2 equals −22 — what type of equation is this?",
+      "options": [
+        {
+          "text": "Cubic equation",
+          "correct": true
+        },
+        {
+          "text": "Quadratic equation",
+          "correct": false
+        },
+        {
+          "text": "Linear equation",
+          "correct": false
+        },
+        {
+          "text": "No equation",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: g(x) = −22 means x³ − x² − 10x + 2 = −22. Step 2: This is a cubic equation (degree 3). Step 3: Solving it requires cubic techniques. Step 4: This \"g(x) = value\" interpretation is the *general equation* form, used throughout Mission 11.\n\n---",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    }
+  ]
+}

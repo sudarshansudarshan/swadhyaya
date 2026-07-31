@@ -1,0 +1,552 @@
+{
+  "id": "1.9",
+  "moduleId": 1,
+  "number": 9,
+  "title": "f(x) = x² − 10, find f(5)",
+  "vocabulary": {
+    "allowed": [
+      "function",
+      "input",
+      "output",
+      "evaluate",
+      "square",
+      "x²",
+      "f(5)",
+      "f(α).",
+      "Vocabulary",
+      "forbidden:",
+      "matrix",
+      "inverse",
+      "(Q1.8)",
+      "derivative."
+    ],
+    "forbidden": [
+      "matrix",
+      "inverse",
+      "(Q1.8)",
+      "derivative."
+    ]
+  },
+  "questions": [
+    {
+      "id": "1.9.q1",
+      "topicId": "1.9",
+      "prompt": "What does it mean to *evaluate* f(5) for f(x) = x² − 10?",
+      "options": [
+        {
+          "text": "Substitute x = 5",
+          "correct": true
+        },
+        {
+          "text": "Skip the input",
+          "correct": false
+        },
+        {
+          "text": "Add 5 to x",
+          "correct": false
+        },
+        {
+          "text": "Avoid the function",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: f(5) means \"the output of f when the input is 5\". Step 2: Substitute x = 5 into x² − 10: 5² − 10 = 25 − 10 = 15. Step 3: So f(5) = 15. Step 4: The trap \"skip the input\" misses the substitution. Step 5: This \"evaluate = substitute\" rule is the workhorse of *function evaluation*, extended to *matrix-vector products* in Mission 7.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.9.q2",
+      "topicId": "1.9",
+      "prompt": "What is the *graph* shape of f(x) = x² − 10?",
+      "options": [
+        {
+          "text": "U-shaped parabola",
+          "correct": true
+        },
+        {
+          "text": "Straight line up",
+          "correct": false
+        },
+        {
+          "text": "Horizontal line",
+          "correct": false
+        },
+        {
+          "text": "Circle shape",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: x² is a parabola opening upward. Step 2: The \"−10\" shifts it down by 10 units. Step 3: The shape remains a U-shape. Step 4: The trap \"straight line\" describes linear functions (no x²). Step 5: This \"x² → parabola\" connection is the seed of *quadratic functions* and *quadratic forms* in Mission 12.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.9.q3",
+      "topicId": "1.9",
+      "prompt": "At x = 0, what is f(0) for f(x) = x² − 10?",
+      "options": [
+        {
+          "text": "Negative ten",
+          "correct": true
+        },
+        {
+          "text": "Zero only",
+          "correct": false
+        },
+        {
+          "text": "Positive ten",
+          "correct": false
+        },
+        {
+          "text": "One only",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: f(0) = 0² − 10 = 0 − 10 = −10. Step 2: So f(0) = −10. Step 3: This is the y-intercept of the parabola. Step 4: The trap \"zero\" ignores the constant term. Step 5: This \"y-intercept of parabola\" is the *vertex height* of x² when no shifts — the starting height before any x value is applied.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.9.q4",
+      "topicId": "1.9",
+      "prompt": "Why does f(x) = x² − 10 give the *same* value for x = 3 and x = −3?",
+      "options": [
+        {
+          "text": "Squares erase sign",
+          "correct": true
+        },
+        {
+          "text": "Squares flip sign",
+          "correct": false
+        },
+        {
+          "text": "Negative input only",
+          "correct": false
+        },
+        {
+          "text": "Random sign here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: f(3) = 9 − 10 = −1. Step 2: f(−3) = 9 − 10 = −1. Step 3: Same value because (−3)² = 9 = 3². Step 4: Squaring makes negative inputs positive. Step 5: This \"x² symmetric about 0\" property is why parabolas are symmetric, and why *quadratic forms* have sign-erasing behaviour — central to *positive definite matrices* in Mission 12.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.9.q5",
+      "topicId": "1.9",
+      "prompt": "Where does f(x) = x² − 10 *cross* the x",
+      "options": [
+        {
+          "text": "At two points",
+          "correct": true
+        },
+        {
+          "text": "At origin only",
+          "correct": false
+        },
+        {
+          "text": "At no points",
+          "correct": false
+        },
+        {
+          "text": "At one point only",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Set f(x) = 0: x² − 10 = 0. Step 2: x² = 10. Step 3: x = √10 or x = −√10. Step 4: So two x-axis crossings. Step 5: The trap \"one point\" misses the ±. Step 6: This \"two crossings\" comes from the ± when taking square roots — central to *quadratic equation solutions* (Mission 4 → 10).",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.9.q6",
+      "topicId": "1.9",
+      "prompt": "What is the *minimum* value of f(x) = x² − 10?",
+      "options": [
+        {
+          "text": "Negative ten",
+          "correct": true
+        },
+        {
+          "text": "Zero only",
+          "correct": false
+        },
+        {
+          "text": "Positive ten",
+          "correct": false
+        },
+        {
+          "text": "No minimum",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: x² ≥ 0 always. Step 2: So f(x) = x² − 10 ≥ −10. Step 3: Minimum value = −10, achieved at x = 0. Step 4: The trap \"zero\" confuses minimum with x-intercept. Step 5: This \"x² has minimum at 0\" property is the seed of *optimisation* — used in *gradient descent* (Mission 13) and *least squares*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.9.q7",
+      "topicId": "1.9",
+      "prompt": "Why is f(x) = x² − 10 *not* a linear function?",
+      "options": [
+        {
+          "text": "Has x² term",
+          "correct": true
+        },
+        {
+          "text": "Has x only",
+          "correct": false
+        },
+        {
+          "text": "Has constant only",
+          "correct": false
+        },
+        {
+          "text": "Has no inputs",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Linear functions have only first-degree terms (x, not x²). Step 2: x² is a second-degree term. Step 3: So f is not linear. Step 4: The trap \"x only\" describes linear. Step 5: This \"x² ≠ linear\" property is the seed of *degree of polynomial*, which we use to classify curves — lines, parabolas, cubics.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.9.q8",
+      "topicId": "1.9",
+      "prompt": "How does f(x) = x² − 10 differ from g(x) = x² + 10 visually?",
+      "options": [
+        {
+          "text": "Shifts vertically",
+          "correct": true
+        },
+        {
+          "text": "Tilts differently",
+          "correct": false
+        },
+        {
+          "text": "Becomes linear",
+          "correct": false
+        },
+        {
+          "text": "Becomes cubic",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Both have the same x² shape. Step 2: f has minimum −10, g has minimum +10. Step 3: So f is shifted *down* by 10 relative to g (and g shifted up relative to f). Step 4: The trap \"tilts differently\" describes slope change — irrelevant for parabolas. Step 5: This \"shift parabola\" is the *vertical translation*, just like shifting lines in Q1.5.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.9.q9",
+      "topicId": "1.9",
+      "prompt": "What does f(5) = 15 *mean* for the graph of f?",
+      "options": [
+        {
+          "text": "Point (5, 15) on graph",
+          "correct": true
+        },
+        {
+          "text": "Point (15, 5) on graph",
+          "correct": false
+        },
+        {
+          "text": "Slope equals fifteen",
+          "correct": false
+        },
+        {
+          "text": "Y-intercept fifteen",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: f(5) = 15 means when x = 5, y = 15. Step 2: So (5, 15) is a point on the graph. Step 3: The trap (15, 5) reverses the coordinates. Step 4: This \"f(x) = y means (x, y) on graph\" rule is the bridge from algebra to geometry — the same convention we use for *matrix-vector products* (Mission 7).",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.9.q10",
+      "topicId": "1.9",
+      "prompt": "Why does f(x) = x² − 10 *grow fast* for large x?",
+      "options": [
+        {
+          "text": "Squared term grows",
+          "correct": true
+        },
+        {
+          "text": "Linear term grows",
+          "correct": false
+        },
+        {
+          "text": "Constant grows only",
+          "correct": false
+        },
+        {
+          "text": "No growth at all",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: At x = 100: f(100) = 100² − 10 = 10,000 − 10 = 9,990. Step 2: x² grows much faster than x for large x. Step 3: So f grows very fast. Step 4: The trap \"linear term grows\" misses the x². Step 5: This \"polynomial growth rate\" is the seed of *complexity analysis* in computer science — quadratic is slower than linear at scale.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.9.q11",
+      "topicId": "1.9",
+      "prompt": "What does the *graph* of f(x) = x² − 10 look like at x = 0?",
+      "options": [
+        {
+          "text": "Lowest point",
+          "correct": true
+        },
+        {
+          "text": "Highest point",
+          "correct": false
+        },
+        {
+          "text": "Crossing x-axis",
+          "correct": false
+        },
+        {
+          "text": "Crossing y-axis",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: f(0) = −10, which is the minimum value. Step 2: The graph has its lowest point at (0, −10). Step 3: The trap \"highest point\" describes a downward parabola. Step 4: This \"vertex of parabola\" concept is used in *optimisation* — finding the minimum or maximum of quadratic functions.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.9.q12",
+      "topicId": "1.9",
+      "prompt": "Why is f(x) = x² − 10 *symmetric* about the y",
+      "options": [
+        {
+          "text": "Squared term symmetric",
+          "correct": true
+        },
+        {
+          "text": "Linear term symmetric",
+          "correct": false
+        },
+        {
+          "text": "Constant symmetric only",
+          "correct": false
+        },
+        {
+          "text": "No symmetry here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: f(x) = x² − 10 has same value at x and −x. Step 2: This is because x² = (−x)². Step 3: So the graph is symmetric about the y-axis. Step 4: The trap \"linear\" misses the quadratic nature. Step 5: This \"symmetry about y-axis\" is the geometric meaning of *even functions*, used in *Fourier series* for cosine terms.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.9.q13",
+      "topicId": "1.9",
+      "prompt": "What does the *input* to a function represent, conceptually?",
+      "options": [
+        {
+          "text": "The chosen value",
+          "correct": true
+        },
+        {
+          "text": "The output value",
+          "correct": false
+        },
+        {
+          "text": "The graph paper",
+          "correct": false
+        },
+        {
+          "text": "The slope number",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: The input is the value we feed into the function. Step 2: We choose the input; the function returns the output. Step 3: For f(x) = x² − 10, the input x is what we choose. Step 4: This \"input vs output\" distinction is the foundation of *functions*, used in *machine learning* (features → predictions) and *matrix algebra* (input vector → output vector).",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.9.q14",
+      "topicId": "1.9",
+      "prompt": "What does the *output* of a function represent, conceptually?",
+      "options": [
+        {
+          "text": "Computed result",
+          "correct": true
+        },
+        {
+          "text": "Random number only",
+          "correct": false
+        },
+        {
+          "text": "The graph paper",
+          "correct": false
+        },
+        {
+          "text": "The chosen input",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: The output is what the function computes from the input. Step 2: For f(x) = x² − 10, the output is x² − 10. Step 3: The trap \"chosen input\" reverses input and output. Step 4: This \"output = computed\" rule is the workhorse of *deterministic computation* — same input always gives same output.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.9.q15",
+      "topicId": "1.9",
+      "prompt": "If f(x) = x² − 10 and f(x) = 6, what are the input values?",
+      "options": [
+        {
+          "text": "Two values ±4",
+          "correct": true
+        },
+        {
+          "text": "One value only",
+          "correct": false
+        },
+        {
+          "text": "Three values only",
+          "correct": false
+        },
+        {
+          "text": "No values at all",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Solve x² − 10 = 6. Step 2: x² = 16. Step 3: x = 4 or x = −4. Step 4: So two input values. Step 5: The trap \"one value\" misses the ±. Step 6: This \"two solutions\" comes from the ± of square roots, used in Q1.10 next.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.9.q16",
+      "topicId": "1.9",
+      "prompt": "How is f(x) = x² − 10 *different* from a line?",
+      "options": [
+        {
+          "text": "It curves up",
+          "correct": true
+        },
+        {
+          "text": "It goes straight",
+          "correct": false
+        },
+        {
+          "text": "It stays flat",
+          "correct": false
+        },
+        {
+          "text": "It goes vertical",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: f(x) = x² − 10 is a parabola — curves. Step 2: A line goes straight. Step 3: So f curves, lines don't. Step 4: The trap \"goes straight\" describes linear. Step 5: This \"curved ≠ linear\" distinction is the foundation of *degree of polynomial* — x is degree 1 (linear), x² is degree 2 (quadratic).",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.9.q17",
+      "topicId": "1.9",
+      "prompt": "What is the *vertex* of the parabola f(x) = x² − 10?",
+      "options": [
+        {
+          "text": "At (0, −10)",
+          "correct": true
+        },
+        {
+          "text": "At (0, 10)",
+          "correct": false
+        },
+        {
+          "text": "At (−10, 0)",
+          "correct": false
+        },
+        {
+          "text": "At (10, 0)",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: The vertex is the lowest point (since parabola opens up). Step 2: For f(x) = x² − 10, vertex is at (0, −10). Step 3: The x-coordinate of vertex is where derivative is 0 (or, for x², at x = 0). Step 4: This \"vertex = minimum\" concept is used in *optimisation* — finding the bottom of a parabola.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.9.q18",
+      "topicId": "1.9",
+      "prompt": "What if the function were f(x) = −x² − 10 — how would the parabola open?",
+      "options": [
+        {
+          "text": "Opens downward",
+          "correct": true
+        },
+        {
+          "text": "Opens upward",
+          "correct": false
+        },
+        {
+          "text": "Opens to right",
+          "correct": false
+        },
+        {
+          "text": "Opens to left",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Negative coefficient of x² flips the parabola. Step 2: f(x) = −x² − 10 opens downward. Step 3: Maximum is at (0, −10); values decrease away from it. Step 4: The trap \"opens upward\" describes positive coefficient. Step 5: This \"sign of leading coefficient\" controls parabola direction — used in *convex optimisation* to distinguish maxima from minima.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.9.q19",
+      "topicId": "1.9",
+      "prompt": "Why is f(x) = x² − 10 *always* above −10?",
+      "options": [
+        {
+          "text": "x² is nonneg",
+          "correct": true
+        },
+        {
+          "text": "x² is negative",
+          "correct": false
+        },
+        {
+          "text": "x² is random",
+          "correct": false
+        },
+        {
+          "text": "x² is zero only",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: x² ≥ 0 for all real x. Step 2: So x² − 10 ≥ −10 for all x. Step 3: The graph never goes below −10. Step 4: This \"x² ≥ 0\" property is the seed of *positive semidefinite matrices* — matrices where v^T A v ≥ 0 for all v, central to Mission 12.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.9.q20",
+      "topicId": "1.9",
+      "prompt": "What if you evaluated f(√10) — what value would you get?",
+      "options": [
+        {
+          "text": "Zero value",
+          "correct": true
+        },
+        {
+          "text": "Ten value",
+          "correct": false
+        },
+        {
+          "text": "Negative ten",
+          "correct": false
+        },
+        {
+          "text": "Random value",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: f(√10) = (√10)² − 10 = 10 − 10 = 0. Step 2: So f(√10) = 0. Step 3: This is one of the two x-axis crossings (the other is f(−√10) = 0). Step 4: This \"f(√10) = 0\" is the *root* of the function — and we will study how to *find* roots in Q1.10 using square roots.\n\n---",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    }
+  ]
+}

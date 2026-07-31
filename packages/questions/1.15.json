@@ -1,0 +1,548 @@
+{
+  "id": "1.15",
+  "moduleId": 1,
+  "number": 15,
+  "title": "Matrix as a function A: ℝ² → ℝ²",
+  "vocabulary": {
+    "allowed": [
+      "matrix",
+      "function",
+      "input",
+      "output",
+      "mapping",
+      "ℝ²",
+      "transformation",
+      "linear.",
+      "Vocabulary",
+      "forbidden:",
+      "kernel",
+      "eigenvector."
+    ],
+    "forbidden": [
+      "kernel",
+      "eigenvector."
+    ]
+  },
+  "questions": [
+    {
+      "id": "1.15.q1",
+      "topicId": "1.15",
+      "prompt": "Why is a square matrix A both an *array of numbers* and a *function*?",
+      "options": [
+        {
+          "text": "Acts on vectors",
+          "correct": true
+        },
+        {
+          "text": "Just a number array",
+          "correct": false
+        },
+        {
+          "text": "Just a function",
+          "correct": false
+        },
+        {
+          "text": "Just a list",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: A 2×2 matrix A can be viewed as an array [[a, b], [c, d]]. Step 2: But it also defines a map x → A · x, which is a function ℝ² → ℝ². Step 3: So matrix = data + function. Step 4: This \"dual nature\" is what makes matrices powerful. Step 5: Used throughout Missions 7–16.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.15.q2",
+      "topicId": "1.15",
+      "prompt": "When A · x is computed, what is *x* conceptually?",
+      "options": [
+        {
+          "text": "An input vector",
+          "correct": true
+        },
+        {
+          "text": "A matrix entry",
+          "correct": false
+        },
+        {
+          "text": "A scalar only",
+          "correct": false
+        },
+        {
+          "text": "A function name",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: x is a column vector [x₁, x₂]. Step 2: A · x produces a new column vector. Step 3: So x is the input to A. Step 4: The trap \"matrix entry\" confuses x with a single number. Step 5: This \"vector input\" convention is used in *neural networks* (input features) and *physics* (position vectors).",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.15.q3",
+      "topicId": "1.15",
+      "prompt": "Why is the matrix",
+      "options": [
+        {
+          "text": "A times x linear",
+          "correct": true
+        },
+        {
+          "text": "Quadratic in x",
+          "correct": false
+        },
+        {
+          "text": "Cubic in x",
+          "correct": false
+        },
+        {
+          "text": "Random in x",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: A · (αx + βy) = α(A · x) + β(A · y) for any scalars α, β. Step 2: This is the *linearity* property. Step 3: Step 1 holds because matrix multiplication distributes over addition. Step 4: This \"linear in input\" is the central property of *linear maps*, used in Mission 12.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.15.q4",
+      "topicId": "1.15",
+      "prompt": "What does it mean that A sends ℝ² to ℝ²?",
+      "options": [
+        {
+          "text": "Same dim in-out",
+          "correct": true
+        },
+        {
+          "text": "Different dims",
+          "correct": false
+        },
+        {
+          "text": "Larger to smaller",
+          "correct": false
+        },
+        {
+          "text": "Random dims",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: A 2×2 matrix takes a 2D vector and produces a 2D vector. Step 2: So input and output are both in ℝ². Step 3: This is the *square matrix* property — domain and codomain have the same dimension. Step 4: Used in Mission 7 to define *linear operators*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.15.q5",
+      "topicId": "1.15",
+      "prompt": "Why does A · (x + y) = A · x + A · y?",
+      "options": [
+        {
+          "text": "Distributive law",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Squared pattern",
+          "correct": false
+        },
+        {
+          "text": "Cubed pattern",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Matrix multiplication distributes over vector addition. Step 2: This is because A · x is a sum of (column × component) products. Step 3: So A · (x + y) = A · x + A · y. Step 4: This *distributivity* is one of the linearity axioms. Step 5: Used in *linear regression* to predict sum of features.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.15.q6",
+      "topicId": "1.15",
+      "prompt": "What does A · 0 equal?",
+      "options": [
+        {
+          "text": "Zero vector",
+          "correct": true
+        },
+        {
+          "text": "Random vector",
+          "correct": false
+        },
+        {
+          "text": "The matrix A",
+          "correct": false
+        },
+        {
+          "text": "The vector x",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: A · 0 = A · [0, 0] = [0, 0] = 0. Step 2: So zero vector maps to zero. Step 3: This is the *homogeneity* property (A · (αx) = α(A · x)). Step 4: Step 3 confirms linear maps preserve the origin. Step 5: Used in Mission 12 for *kernel* tests.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.15.q7",
+      "topicId": "1.15",
+      "prompt": "If A = [[1, 0], [0, 1]] (identity matrix), what does A · x do?",
+      "options": [
+        {
+          "text": "Returns x itself",
+          "correct": true
+        },
+        {
+          "text": "Doubles x here",
+          "correct": false
+        },
+        {
+          "text": "Zeros x always",
+          "correct": false
+        },
+        {
+          "text": "Skips x always",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Identity matrix I · x = x. Step 2: So I acts as the identity function. Step 3: The trap \"doubles\" describes 2I, not I. Step 4: This \"I = identity\" property is the multiplicative identity for matrices. Step 5: Used in Mission 7 to define *identity matrix*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.15.q8",
+      "topicId": "1.15",
+      "prompt": "Why is A · x a *column vector* result?",
+      "options": [
+        {
+          "text": "Matrix times column",
+          "correct": true
+        },
+        {
+          "text": "Matrix times row",
+          "correct": false
+        },
+        {
+          "text": "Row times row",
+          "correct": false
+        },
+        {
+          "text": "Random result",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: (m×n) · (n×1) = (m×1). Step 2: So result is m×1 — a column vector. Step 3: The trap \"row\" is for (1×n) · (n×m) = (1×m). Step 4: This \"column vector result\" is the standard convention. Step 5: Used in *data science* where features are columns.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.15.q9",
+      "topicId": "1.15",
+      "prompt": "What is A · e₁ (where e₁ = [1, 0])?",
+      "options": [
+        {
+          "text": "First column of A",
+          "correct": true
+        },
+        {
+          "text": "Second column of A",
+          "correct": false
+        },
+        {
+          "text": "All zeros only",
+          "correct": false
+        },
+        {
+          "text": "Random vector",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: A · [1, 0] = (column 1) · 1 + (column 2) · 0 = column 1. Step 2: So A · e₁ = first column. Step 3: This \"evaluate at basis\" technique extracts columns. Step 4: Used in Q1.13 to build matrices from linear maps. Step 5: Used in Mission 7 for *column space*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.15.q10",
+      "topicId": "1.15",
+      "prompt": "Why does A · x *combine* columns of A using x?",
+      "options": [
+        {
+          "text": "Linear combination",
+          "correct": true
+        },
+        {
+          "text": "Random mixing",
+          "correct": false
+        },
+        {
+          "text": "Product only",
+          "correct": false
+        },
+        {
+          "text": "Sum only",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: A · x = x₁ · col₁ + x₂ · col₂ + ... + xₙ · colₙ. Step 2: This is a linear combination of columns. Step 3: Step 2 follows from the definition of matrix-vector product. Step 4: This \"linear combination of columns\" is the foundation of *span* (Mission 3) and *column space* (Mission 16).",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.15.q11",
+      "topicId": "1.15",
+      "prompt": "What does A · x represent *geometrically*?",
+      "options": [
+        {
+          "text": "Transformation",
+          "correct": true
+        },
+        {
+          "text": "Random move",
+          "correct": false
+        },
+        {
+          "text": "Static point",
+          "correct": false
+        },
+        {
+          "text": "Squared point",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: A · x takes vector x and *transforms* it. Step 2: Examples: rotation, scaling, reflection, shear. Step 3: Each matrix represents some geometric transformation. Step 4: This \"matrix = transformation\" view is used in *computer graphics* and *physics*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.15.q12",
+      "topicId": "1.15",
+      "prompt": "Why is A · x *same shape* as x?",
+      "options": [
+        {
+          "text": "Square matrix",
+          "correct": true
+        },
+        {
+          "text": "Rectangular matrix",
+          "correct": false
+        },
+        {
+          "text": "Matrix larger",
+          "correct": false
+        },
+        {
+          "text": "Matrix smaller",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: For square A (n×n) and x (n×1), result is (n×1) — same shape as x. Step 2: For rectangular A (m×n), x (n×1), result is (m×1) — different shape. Step 3: This \"square preserves shape\" is the *square matrix* property. Step 4: Used in Mission 7 to define *linear operators* (square matrices as maps from ℝⁿ to ℝⁿ).",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.15.q13",
+      "topicId": "1.15",
+      "prompt": "Why are matrices useful for *batch* computations?",
+      "options": [
+        {
+          "text": "Process all at once",
+          "correct": true
+        },
+        {
+          "text": "One at a time",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Never batch",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: A matrix A can act on multiple vectors at once if we stack them as columns. Step 2: So A · X (where X has columns x₁, ..., xₖ) processes all k vectors simultaneously. Step 3: This is *batch processing* — used heavily in *machine learning* (processing many examples together). Step 4: The GPU uses this for parallel computation.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.15.q14",
+      "topicId": "1.15",
+      "prompt": "What does the *graph* of A · x look like as x varies?",
+      "options": [
+        {
+          "text": "Transformed region",
+          "correct": true
+        },
+        {
+          "text": "Static line only",
+          "correct": false
+        },
+        {
+          "text": "Random scatter",
+          "correct": false
+        },
+        {
+          "text": "No shape",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: As x varies over a region (like a square), A · x varies over the *transformed* region (like a parallelogram). Step 2: This \"input region → output region\" picture is the geometric meaning of A. Step 3: Step 1 is used in *computer graphics* to transform shapes. Step 4: Used in Mission 14 for *singular value decomposition* of regions.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.15.q15",
+      "topicId": "1.15",
+      "prompt": "Why is A · (c · x) = c · (A · x)?",
+      "options": [
+        {
+          "text": "Scalar homogeneity",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Squared here",
+          "correct": false
+        },
+        {
+          "text": "Cubed here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: A · (c · x) = c · (A · x). Step 2: This is the *homogeneity* property — scaling input scales output by same factor. Step 3: Step 2 holds because matrix-vector product is bilinear. Step 4: This is the second linearity axiom. Step 5: Used in Mission 12 for *linear map* definition.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.15.q16",
+      "topicId": "1.15",
+      "prompt": "Why is A · (A · x) meaningful?",
+      "options": [
+        {
+          "text": "Apply twice",
+          "correct": true
+        },
+        {
+          "text": "Random result",
+          "correct": false
+        },
+        {
+          "text": "Squared x only",
+          "correct": false
+        },
+        {
+          "text": "Cubed x only",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: A · x is a new vector. Step 2: A · (A · x) applies A again. Step 3: This is A² · x — matrix multiplication twice. Step 4: This \"apply A repeatedly\" is the seed of *matrix powers*. Step 5: Used in *Markov chains* (transition matrix A applied k times) and *dynamical systems*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.15.q17",
+      "topicId": "1.15",
+      "prompt": "Can two different matrices give the *same* function?",
+      "options": [
+        {
+          "text": "No, one-to-one",
+          "correct": true
+        },
+        {
+          "text": "Yes, sometimes",
+          "correct": false
+        },
+        {
+          "text": "Only for 2×2",
+          "correct": false
+        },
+        {
+          "text": "Only for 3×3",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: A matrix is determined by its action on a basis. Step 2: Different matrices act differently on at least one basis vector. Step 3: So one matrix = one function. Step 4: This \"matrix ↔ function\" bijection is the central identity of linear algebra. Step 5: Used in *representation theory*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.15.q18",
+      "topicId": "1.15",
+      "prompt": "What if A were *non",
+      "options": [
+        {
+          "text": "3D output vector",
+          "correct": true
+        },
+        {
+          "text": "2D output vector",
+          "correct": false
+        },
+        {
+          "text": "1D output only",
+          "correct": false
+        },
+        {
+          "text": "No output",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: For A 3×2 and x 2×1, A · x is 3×1 — a 3D vector. Step 2: So A maps ℝ² → ℝ³ — different input/output dimensions. Step 3: This is a *rectangular matrix* map. Step 4: Used in Q2.4 for *overdetermined systems* and in *neural networks* (changing dimensions between layers).",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.15.q19",
+      "topicId": "1.15",
+      "prompt": "Why is the matrix",
+      "options": [
+        {
+          "text": "Universal building",
+          "correct": true
+        },
+        {
+          "text": "Random op only",
+          "correct": false
+        },
+        {
+          "text": "Used once only",
+          "correct": false
+        },
+        {
+          "text": "Used never",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Matrix-vector products encode linear maps. Step 2: Matrix-matrix products are compositions of linear maps. Step 3: Scalar products, projections, transformations — all use it. Step 4: This \"universal operation\" makes linear algebra the *language of data*. Step 5: Used in *machine learning*, *physics*, *economics* universally.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.15.q20",
+      "topicId": "1.15",
+      "prompt": "What if A sent ℝ² to ℝ² but *flipped* every vector — what kind of matrix?",
+      "options": [
+        {
+          "text": "Reflection matrix",
+          "correct": true
+        },
+        {
+          "text": "Identity matrix",
+          "correct": false
+        },
+        {
+          "text": "Zero matrix only",
+          "correct": false
+        },
+        {
+          "text": "Random matrix",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: A reflection matrix reflects vectors across a line. Step 2: For example, [[1, 0], [0, −1]] reflects across the x-axis. Step 3: This is a *reflection transformation*. Step 4: Reflection has det = −1, a special matrix type. Step 5: Used in *physics* (parity transformations) and *graphics* (mirroring).\n\n---",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    }
+  ]
+}

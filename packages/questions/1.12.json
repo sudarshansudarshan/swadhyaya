@@ -1,0 +1,548 @@
+{
+  "id": "1.12",
+  "moduleId": 1,
+  "number": 12,
+  "title": "ℝ, ℝ² and ℝ³",
+  "vocabulary": {
+    "allowed": [
+      "real",
+      "numbers",
+      "tuple",
+      "vector",
+      "dimension",
+      "ℝ²",
+      "ℝ³",
+      "coordinates.",
+      "Vocabulary",
+      "forbidden:",
+      "matrix",
+      "kernel."
+    ],
+    "forbidden": [
+      "matrix",
+      "kernel."
+    ]
+  },
+  "questions": [
+    {
+      "id": "1.12.q1",
+      "topicId": "1.12",
+      "prompt": "What does the symbol ℝ stand for?",
+      "options": [
+        {
+          "text": "Real numbers",
+          "correct": true
+        },
+        {
+          "text": "Complex numbers",
+          "correct": false
+        },
+        {
+          "text": "Integers only",
+          "correct": false
+        },
+        {
+          "text": "Random numbers",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: ℝ is the set of all real numbers — every number on the number line. Step 2: Includes positive, negative, zero, fractions, irrationals (like π). Step 3: The trap \"complex\" describes ℂ. Step 4: This \"ℝ = real numbers\" notation is used throughout linear algebra — and in Mission 11 for *real vector spaces*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.12.q2",
+      "topicId": "1.12",
+      "prompt": "What is ℝ² (R",
+      "options": [
+        {
+          "text": "Pairs of real numbers",
+          "correct": true
+        },
+        {
+          "text": "Single real numbers",
+          "correct": false
+        },
+        {
+          "text": "Triples of numbers",
+          "correct": false
+        },
+        {
+          "text": "Sets of numbers",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: ℝ² = ℝ × ℝ — the set of all ordered pairs (x, y) where x, y ∈ ℝ. Step 2: Geometrically, this is the *plane*. Step 3: The trap \"single\" describes ℝ¹ = ℝ. Step 4: This \"ℝ² = plane\" identification is the foundation of *2D coordinate geometry*, used throughout Missions 1–16.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.12.q3",
+      "topicId": "1.12",
+      "prompt": "What is ℝ³ (R",
+      "options": [
+        {
+          "text": "Triples of real numbers",
+          "correct": true
+        },
+        {
+          "text": "Pairs of numbers",
+          "correct": false
+        },
+        {
+          "text": "Single numbers",
+          "correct": false
+        },
+        {
+          "text": "Empty set only",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: ℝ³ = ℝ × ℝ × ℝ — all triples (x, y, z) with x, y, z ∈ ℝ. Step 2: Geometrically, this is *3D space*. Step 3: The trap \"pairs\" describes ℝ². Step 4: This \"ℝ³ = 3D space\" identification is the foundation of *3D coordinate geometry*, used in computer graphics and physics.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.12.q4",
+      "topicId": "1.12",
+      "prompt": "Why is ℝ⁰ (R",
+      "options": [
+        {
+          "text": "Single point only",
+          "correct": true
+        },
+        {
+          "text": "Plane only here",
+          "correct": false
+        },
+        {
+          "text": "3D space here",
+          "correct": false
+        },
+        {
+          "text": "Line only here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: ℝ⁰ has zero coordinates — only the empty tuple (). Step 2: So ℝ⁰ = {()}, a single point. Step 3: This \"0-dimensional\" object is the *origin*, a special point. Step 4: This \"ℝ⁰ = single point\" idea is the seed of *dimension counting* in linear algebra (Mission 3).",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.12.q5",
+      "topicId": "1.12",
+      "prompt": "What is the *dimension* of ℝⁿ?",
+      "options": [
+        {
+          "text": "n",
+          "correct": true
+        },
+        {
+          "text": "Two only",
+          "correct": false
+        },
+        {
+          "text": "Three only",
+          "correct": false
+        },
+        {
+          "text": "One only",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: ℝⁿ is n-dimensional — n coordinates per point. Step 2: ℝ¹ is 1D (line), ℝ² is 2D (plane), ℝ³ is 3D (space). Step 3: So dimension = n. Step 4: This \"dimension = number of coordinates\" rule is the foundation of *vector space dimension*, used throughout Missions 3 and 16.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.12.q6",
+      "topicId": "1.12",
+      "prompt": "Why does an *element* of ℝ² look like (a, b)?",
+      "options": [
+        {
+          "text": "Two coordinates",
+          "correct": true
+        },
+        {
+          "text": "One coordinate",
+          "correct": false
+        },
+        {
+          "text": "Three coordinates",
+          "correct": false
+        },
+        {
+          "text": "No coordinates",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: ℝ² elements have 2 coordinates. Step 2: Written as (a, b) or [a, b]. Step 3: Geometrically, this is a point in the plane. Step 4: This \"ordered pair\" notation is the same as in Q1.1 with (R, L) — the convention \"first coordinate, second coordinate\".",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.12.q7",
+      "topicId": "1.12",
+      "prompt": "Why does an *element* of ℝ³ look like (a, b, c)?",
+      "options": [
+        {
+          "text": "Three coordinates",
+          "correct": true
+        },
+        {
+          "text": "Two coordinates",
+          "correct": false
+        },
+        {
+          "text": "One coordinate",
+          "correct": false
+        },
+        {
+          "text": "Four coordinates",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: ℝ³ elements have 3 coordinates. Step 2: Written as (a, b, c). Step 3: Geometrically, this is a point in 3D space. Step 4: This \"triple\" notation is used in Q3.4 for vectors in ℝ³.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.12.q8",
+      "topicId": "1.12",
+      "prompt": "What does *dimension* mean, intuitively?",
+      "options": [
+        {
+          "text": "Number of directions",
+          "correct": true
+        },
+        {
+          "text": "Number of points",
+          "correct": false
+        },
+        {
+          "text": "Number of colours",
+          "correct": false
+        },
+        {
+          "text": "Number of pages",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Dimension = number of independent directions you can move. Step 2: ℝ¹ has 1 direction (along a line). ℝ² has 2 directions (in a plane). Step 3: This \"directions = dimensions\" is the geometric meaning of dimension. Step 4: Used in *degrees of freedom* in physics and *independent parameters* in linear algebra (Mission 16).",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.12.q9",
+      "topicId": "1.12",
+      "prompt": "Why can a *line* be drawn in ℝ² but ℝ¹ has no width?",
+      "options": [
+        {
+          "text": "ℝ¹ is one D",
+          "correct": true
+        },
+        {
+          "text": "ℝ¹ has width",
+          "correct": false
+        },
+        {
+          "text": "ℝ¹ is two D",
+          "correct": false
+        },
+        {
+          "text": "ℝ¹ is three D",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: ℝ¹ is 1-dimensional — only one direction. Step 2: A \"line\" in ℝ¹ has only length, no width. Step 3: ℝ² has 2 directions — a \"line\" there can have width (a 2D region). Step 4: This \"dimension = how much room\" idea is used in *volume* calculations.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.12.q10",
+      "topicId": "1.12",
+      "prompt": "Why is the *plane* the natural setting for ℝ²?",
+      "options": [
+        {
+          "text": "Two directions fit",
+          "correct": true
+        },
+        {
+          "text": "One direction fits",
+          "correct": false
+        },
+        {
+          "text": "Three directions fit",
+          "correct": false
+        },
+        {
+          "text": "No direction fits",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: A plane has 2 independent directions (e.g., x and y). Step 2: This matches ℝ²'s 2 dimensions. Step 3: So ℝ² is naturally the plane. Step 4: The trap \"three\" describes 3D space. Step 5: This \"match dimensions to geometry\" is the *coordinate geometry* foundation — used in all 2D graphics.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.12.q11",
+      "topicId": "1.12",
+      "prompt": "What is a *tuple*, conceptually?",
+      "options": [
+        {
+          "text": "Ordered collection",
+          "correct": true
+        },
+        {
+          "text": "Random set only",
+          "correct": false
+        },
+        {
+          "text": "Single number here",
+          "correct": false
+        },
+        {
+          "text": "Unordered list",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: A tuple is an ordered list of items. Step 2: (1, 2) ≠ (2, 1) — order matters. Step 3: The trap \"unordered\" describes a set, not a tuple. Step 4: This \"ordered\" property is essential — it matches *coordinates* and *vectors*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.12.q12",
+      "topicId": "1.12",
+      "prompt": "Why is a *vector* in ℝ² the same as a point in ℝ²?",
+      "options": [
+        {
+          "text": "Both have coords",
+          "correct": true
+        },
+        {
+          "text": "They are unrelated",
+          "correct": false
+        },
+        {
+          "text": "Only points fit",
+          "correct": false
+        },
+        {
+          "text": "Only vectors fit",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: A vector in ℝ² is an ordered pair (a, b). Step 2: A point in ℝ² is also (a, b). Step 3: Same notation — different interpretation. Step 4: Vectors can be added, scaled; points can be subtracted (to get vectors). Step 5: This \"point-vector duality\" is the foundation of *vector algebra* in Mission 3.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.12.q13",
+      "topicId": "1.12",
+      "prompt": "Can a *vector* in ℝ³ be drawn as an arrow in 3D space?",
+      "options": [
+        {
+          "text": "Yes, an arrow",
+          "correct": true
+        },
+        {
+          "text": "No, not possible",
+          "correct": false
+        },
+        {
+          "text": "Only as a dot",
+          "correct": false
+        },
+        {
+          "text": "Only as a circle",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: A vector (a, b, c) can be drawn as an arrow from origin to point (a, b, c). Step 2: This works in any ℝⁿ. Step 3: Geometric pictures help understanding. Step 4: This \"arrow visualisation\" is used in *physics* (force vectors) and *computer graphics*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.12.q14",
+      "topicId": "1.12",
+      "prompt": "Why is ℝ¹ the *number line*?",
+      "options": [
+        {
+          "text": "One coord = line",
+          "correct": true
+        },
+        {
+          "text": "Two coords = line",
+          "correct": false
+        },
+        {
+          "text": "Three coords = line",
+          "correct": false
+        },
+        {
+          "text": "Random shape",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: One coordinate gives a position on a line. Step 2: So ℝ¹ is naturally visualised as a number line. Step 3: Every real number is a point on the line. Step 4: This \"1D = line\" identification is the start of coordinate geometry, used since Descartes.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.12.q15",
+      "topicId": "1.12",
+      "prompt": "What does ℝⁿ mean for n = 100?",
+      "options": [
+        {
+          "text": "100 coordinates",
+          "correct": true
+        },
+        {
+          "text": "Two coordinates",
+          "correct": false
+        },
+        {
+          "text": "Three coordinates",
+          "correct": false
+        },
+        {
+          "text": "One coordinate",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: ℝ¹⁰⁰ has 100 coordinates per point. Step 2: Used in *machine learning* (feature vectors). Step 3: Hard to visualise but mathematically consistent. Step 4: This \"high-dimensional spaces\" idea is the foundation of *machine learning* and *statistics* — data often lives in ℝ¹⁰⁰ or ℝ¹⁰⁰⁰.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.12.q16",
+      "topicId": "1.12",
+      "prompt": "Why are ℝ, ℝ², ℝ³ *examples* of vector spaces?",
+      "options": [
+        {
+          "text": "All have structure",
+          "correct": true
+        },
+        {
+          "text": "Only R is vector",
+          "correct": false
+        },
+        {
+          "text": "Only R² is vector",
+          "correct": false
+        },
+        {
+          "text": "Only R³ is vector",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Vector spaces need: addition and scalar multiplication, with axioms. Step 2: ℝ, ℝ², ℝ³ all support these operations. Step 3: So they are vector spaces. Step 4: This \"vector space structure\" is the central object of *linear algebra* — Mission 3 onwards.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.12.q17",
+      "topicId": "1.12",
+      "prompt": "How is ℝ² *different* from ℝ³ in real life?",
+      "options": [
+        {
+          "text": "ℝ² is flat plane",
+          "correct": true
+        },
+        {
+          "text": "ℝ² is solid cube",
+          "correct": false
+        },
+        {
+          "text": "ℝ² is a single point",
+          "correct": false
+        },
+        {
+          "text": "ℝ² is a single line",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: ℝ² is 2D — like a flat sheet of paper. Step 2: ℝ³ is 3D — like a room or box. Step 3: Real life happens in 3D, but we draw on 2D surfaces. Step 4: This \"2D vs 3D visualisation\" is the basis of *computer graphics* — 3D scenes projected onto 2D screens.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.12.q18",
+      "topicId": "1.12",
+      "prompt": "What if ℝ had *only* integers (not all reals) — how would the set change?",
+      "options": [
+        {
+          "text": "Lose fractions",
+          "correct": true
+        },
+        {
+          "text": "Stay the same",
+          "correct": false
+        },
+        {
+          "text": "Add more points",
+          "correct": false
+        },
+        {
+          "text": "Become complex",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Integers (ℤ) miss fractions and irrationals. Step 2: So ℤ has fewer points than ℝ. Step 3: The set ℤ is \"discrete\" — gaps between integers. Step 4: ℝ is \"continuous\" — no gaps. Step 5: This \"discrete vs continuous\" distinction is the foundation of *number theory* vs *real analysis*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.12.q19",
+      "topicId": "1.12",
+      "prompt": "Why is ℝ² called the *Cartesian plane*?",
+      "options": [
+        {
+          "text": "After Descartes",
+          "correct": true
+        },
+        {
+          "text": "Random name only",
+          "correct": false
+        },
+        {
+          "text": "After Pythagoras",
+          "correct": false
+        },
+        {
+          "text": "After Newton only",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: René Descartes introduced the (x, y) coordinate system. Step 2: The plane with x and y axes is called the *Cartesian plane*. Step 3: The trap \"Pythagoras\" describes the *Pythagorean theorem*, not coordinates. Step 4: This historical naming reminds us *analytic geometry* was Descartes' invention.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.12.q20",
+      "topicId": "1.12",
+      "prompt": "What if a vector had *negative* coordinates in ℝ², like (−1, −2) — could we draw it?",
+      "options": [
+        {
+          "text": "Yes, in 3rd quadrant",
+          "correct": true
+        },
+        {
+          "text": "No, cannot draw",
+          "correct": false
+        },
+        {
+          "text": "Only at origin",
+          "correct": false
+        },
+        {
+          "text": "Only on x-axis",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: (−1, −2) has both x and y negative. Step 2: That's the third quadrant (bottom-left). Step 3: The arrow goes from origin into the third quadrant. Step 4: This \"negative coordinates = opposite quadrants\" is consistent throughout geometry. Step 5: Used in Q3.5 for *negative scalar multiples* of vectors.\n\n---",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    }
+  ]
+}

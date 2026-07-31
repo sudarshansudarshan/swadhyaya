@@ -1,0 +1,548 @@
+{
+  "id": "1.16",
+  "moduleId": 1,
+  "number": 16,
+  "title": "Null space / kernel of A = [[1, 2], [2, 4]]",
+  "vocabulary": {
+    "allowed": [
+      "kernel",
+      "null",
+      "space",
+      "send",
+      "to",
+      "zero",
+      "A·x",
+      "line",
+      "plane",
+      "vectors.",
+      "Vocabulary",
+      "forbidden:",
+      "eigenvector."
+    ],
+    "forbidden": [
+      "eigenvector."
+    ]
+  },
+  "questions": [
+    {
+      "id": "1.16.q1",
+      "topicId": "1.16",
+      "prompt": "What is the *kernel* (or *null space*) of a matrix A?",
+      "options": [
+        {
+          "text": "Vectors x with Ax=0",
+          "correct": true
+        },
+        {
+          "text": "Vectors x with Ax=1",
+          "correct": false
+        },
+        {
+          "text": "Random vectors only",
+          "correct": false
+        },
+        {
+          "text": "No vectors at all",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: The kernel of A is the set of all vectors x such that A · x = 0 (zero vector). Step 2: These are the inputs that map to zero output. Step 3: The trap \"Ax = 1\" is unrelated. Step 4: This \"kernel = preimage of 0\" is the foundation of *kernel theory*, used throughout Missions 12–16.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.16.q2",
+      "topicId": "1.16",
+      "prompt": "Why is the kernel of A = [[1, 2], [2, 4]] a *line* (not just origin)?",
+      "options": [
+        {
+          "text": "Row 2 = 2 · Row 1",
+          "correct": true
+        },
+        {
+          "text": "Row 2 independent",
+          "correct": false
+        },
+        {
+          "text": "Rows are random",
+          "correct": false
+        },
+        {
+          "text": "Rows are zero",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Row 2 [2, 4] = 2 · row 1 [1, 2]. So row 2 is redundant. Step 2: Only row 1 is independent: x + 2y = 0. Step 3: That equation defines a *line* through origin. Step 4: So kernel is a line. Step 5: This \"row dependency → 1D kernel\" is the foundation of *rank-nullity*, Mission 16.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.16.q3",
+      "topicId": "1.16",
+      "prompt": "What is the *equation* of the kernel of A = [[1, 2], [2, 4]]?",
+      "options": [
+        {
+          "text": "x + 2y = 0",
+          "correct": true
+        },
+        {
+          "text": "x + y = 0 only",
+          "correct": false
+        },
+        {
+          "text": "2x + y = 0 only",
+          "correct": false
+        },
+        {
+          "text": "No equation here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: A · [x, y] = [x + 2y, 2x + 4y]. Step 2: For A · [x, y] = 0, need x + 2y = 0 and 2x + 4y = 0. Step 3: But second equation is just 2 times the first, so only x + 2y = 0 is independent. Step 4: So kernel = {(x, y) : x + 2y = 0}. Step 5: This \"extract kernel equation\" technique is the start of *null space computation*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.16.q4",
+      "topicId": "1.16",
+      "prompt": "Why does every matrix have at least the *zero vector* in its kernel?",
+      "options": [
+        {
+          "text": "A·0 = 0 always",
+          "correct": true
+        },
+        {
+          "text": "A·0 = 1 here",
+          "correct": false
+        },
+        {
+          "text": "A·0 random",
+          "correct": false
+        },
+        {
+          "text": "A·0 undefined",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: A · 0 = 0 for any matrix A. Step 2: So 0 is always in the kernel. Step 3: This \"trivial element\" is always part of the kernel. Step 4: The kernel might contain *more* — like a whole line for our matrix. Step 5: This \"kernel contains 0\" is the seed of *subspace* (Mission 3) — the kernel is always a subspace.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.16.q5",
+      "topicId": "1.16",
+      "prompt": "If the kernel of A is a *line*, what is the *dimension* of the kernel?",
+      "options": [
+        {
+          "text": "One",
+          "correct": true
+        },
+        {
+          "text": "Two only",
+          "correct": false
+        },
+        {
+          "text": "Zero only",
+          "correct": false
+        },
+        {
+          "text": "Three only",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: A line through origin is 1-dimensional. Step 2: So kernel has dimension 1. Step 3: This is called the *nullity* of A. Step 4: For our 2×2 matrix with row dependency, nullity = 1. Step 5: Used in Mission 16 for *rank-nullity theorem* (rank + nullity = n).",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.16.q6",
+      "topicId": "1.16",
+      "prompt": "What does it *mean* geometrically that the kernel is a line through origin?",
+      "options": [
+        {
+          "text": "Collapse direction",
+          "correct": true
+        },
+        {
+          "text": "No collapse here",
+          "correct": false
+        },
+        {
+          "text": "Random collapse",
+          "correct": false
+        },
+        {
+          "text": "No collapse at all",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: The kernel is the set of vectors that get *collapsed* to zero by A. Step 2: For our A, all vectors on the line x + 2y = 0 collapse to zero. Step 3: So A \"collapses\" this 1D direction. Step 4: Geometrically, A maps the 2D plane to a 1D line. Step 5: This \"kernel = collapsed dimension\" is the geometric meaning of *singular matrices*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.16.q7",
+      "topicId": "1.16",
+      "prompt": "Why does A = [[1, 2], [2, 4]] have a *non",
+      "options": [
+        {
+          "text": "det = zero",
+          "correct": true
+        },
+        {
+          "text": "det nonzero",
+          "correct": false
+        },
+        {
+          "text": "det = one only",
+          "correct": false
+        },
+        {
+          "text": "det = two only",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: det(A) = (1)(4) − (2)(2) = 4 − 4 = 0. Step 2: So det = 0, meaning A is *singular*. Step 3: Singular matrices have non-trivial kernels. Step 4: This \"det = 0 → nontrivial kernel\" is the central test. Step 5: Used in Mission 14 for *Cramer's rule* failure.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.16.q8",
+      "topicId": "1.16",
+      "prompt": "How do you *find* the kernel of A?",
+      "options": [
+        {
+          "text": "Solve A·x = 0",
+          "correct": true
+        },
+        {
+          "text": "Sum the entries",
+          "correct": false
+        },
+        {
+          "text": "Multiply rows",
+          "correct": false
+        },
+        {
+          "text": "Skip the kernel",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: The kernel is the set of x with A · x = 0. Step 2: So solving A · x = 0 finds all kernel vectors. Step 3: The trap \"sum entries\" is unrelated. Step 4: This \"solve homogeneous system\" technique is the workhorse of *kernel computation*. Step 5: Used in Mission 7 with *row reduction*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.16.q9",
+      "topicId": "1.16",
+      "prompt": "Why does the kernel of A form a *subspace*?",
+      "options": [
+        {
+          "text": "Closed under add/scale",
+          "correct": true
+        },
+        {
+          "text": "Random set only",
+          "correct": false
+        },
+        {
+          "text": "Always a circle",
+          "correct": false
+        },
+        {
+          "text": "Always a point",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: If A · x = 0 and A · y = 0, then A · (x + y) = 0 + 0 = 0. Step 2: So kernel closed under addition. Step 3: A · (cx) = c · A · x = c · 0 = 0, so closed under scaling. Step 4: So kernel is a *subspace* (closed under both operations). Step 5: This \"kernel is a subspace\" is the central theorem of linear algebra — Mission 12.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.16.q10",
+      "topicId": "1.16",
+      "prompt": "If A · v = 0 and A · w = 0, what about A · (v + w)?",
+      "options": [
+        {
+          "text": "Also zero",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Nonzero only",
+          "correct": false
+        },
+        {
+          "text": "Undefined here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: A · (v + w) = A · v + A · w = 0 + 0 = 0. Step 2: So v + w is also in kernel. Step 3: This is the *closure* property. Step 4: Step 3 is what makes the kernel a subspace. Step 5: Used in Mission 3 for *linear subspace* definition.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.16.q11",
+      "topicId": "1.16",
+      "prompt": "If A · v = 0, what about A · (3v)?",
+      "options": [
+        {
+          "text": "Also zero",
+          "correct": true
+        },
+        {
+          "text": "Three zero here",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Undefined here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: A · (3v) = 3 · A · v = 3 · 0 = 0. Step 2: So 3v is also in kernel. Step 3: This is *closure under scaling*. Step 4: Step 3 is the second subspace axiom. Step 5: Used in Mission 12 for *linear subspace* definition.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.16.q12",
+      "topicId": "1.16",
+      "prompt": "What is a *basis* for the kernel of A = [[1, 2], [2, 4]]?",
+      "options": [
+        {
+          "text": "[(−2, 1)]",
+          "correct": true
+        },
+        {
+          "text": "[(1, 0)]",
+          "correct": false
+        },
+        {
+          "text": "[(0, 1)]",
+          "correct": false
+        },
+        {
+          "text": "[(1, 1)]",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Kernel = {(x, y) : x + 2y = 0}. Step 2: Set y = t: x = −2t, so (x, y) = (−2t, t) = t · (−2, 1). Step 3: So kernel = span{ (−2, 1) }. Step 4: Basis = { (−2, 1) }. Step 5: This \"basis from parametrisation\" technique is the start of *null space basis* computation.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.16.q13",
+      "topicId": "1.16",
+      "prompt": "Why is (−2, 1) the basis for the kernel?",
+      "options": [
+        {
+          "text": "Spans all kernel",
+          "correct": true
+        },
+        {
+          "text": "Random pick",
+          "correct": false
+        },
+        {
+          "text": "Outside kernel only",
+          "correct": false
+        },
+        {
+          "text": "Always x-axis",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Every kernel vector is (−2t, t) = t · (−2, 1). Step 2: So (−2, 1) generates the entire kernel via scalar multiples. Step 3: That's the *span* of one vector — a line. Step 4: This \"single-vector basis\" is the simplest case of *spanning set* (Mission 3).",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.16.q14",
+      "topicId": "1.16",
+      "prompt": "What does the kernel tell us about *solving* A · x = b?",
+      "options": [
+        {
+          "text": "Solvable if b⊥kernel*",
+          "correct": true
+        },
+        {
+          "text": "Always solvable",
+          "correct": false
+        },
+        {
+          "text": "Never solvable",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: A · x = b has a solution iff b is \"compatible\" with the kernel structure. Step 2: Specifically, b must be orthogonal (or at least consistent) with the kernel. Step 3: This is *Fredholm alternative* — solvable iff b is in the image. Step 4: Used in *partial differential equations* and *integral equations*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.16.q15",
+      "topicId": "1.16",
+      "prompt": "If A has *trivial* kernel (only zero), what does that mean?",
+      "options": [
+        {
+          "text": "Invertible",
+          "correct": true
+        },
+        {
+          "text": "Non-invertible",
+          "correct": false
+        },
+        {
+          "text": "Always det zero",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Trivial kernel = only 0. Step 2: This means A · x = 0 only for x = 0. Step 3: A is one-to-one. Step 4: One-to-one ↔ invertible. Step 5: This \"trivial kernel ↔ invertible\" is the central theorem — Mission 12.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.16.q16",
+      "topicId": "1.16",
+      "prompt": "Why is the kernel of A = [[1, 2], [2, 4]] *one*",
+      "options": [
+        {
+          "text": "One free variable",
+          "correct": true
+        },
+        {
+          "text": "Two free vars",
+          "correct": false
+        },
+        {
+          "text": "Three free vars",
+          "correct": false
+        },
+        {
+          "text": "No free vars",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: x + 2y = 0 has two variables, one equation. Step 2: So one variable is free (say y = t). Step 3: One free variable ↔ 1D kernel. Step 4: This \"free variables ↔ kernel dimension\" is the start of *dimension counting*. Step 5: Used in Mission 16 for *rank-nullity theorem*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.16.q17",
+      "topicId": "1.16",
+      "prompt": "What is the *image* (or *range*) of A?",
+      "options": [
+        {
+          "text": "Set of Ax outputs",
+          "correct": true
+        },
+        {
+          "text": "Set of inputs x",
+          "correct": false
+        },
+        {
+          "text": "Random outputs only",
+          "correct": false
+        },
+        {
+          "text": "Set of matrices",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: The image of A is { A · x : x ∈ ℝⁿ }. Step 2: These are all possible outputs. Step 3: The trap \"inputs\" describes the *domain*. Step 4: This \"image = set of outputs\" is the foundation of *range/column space*, Mission 16.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.16.q18",
+      "topicId": "1.16",
+      "prompt": "What if A were the zero matrix — what would the kernel be?",
+      "options": [
+        {
+          "text": "All of ℝ²",
+          "correct": true
+        },
+        {
+          "text": "Just origin",
+          "correct": false
+        },
+        {
+          "text": "Just x-axis",
+          "correct": false
+        },
+        {
+          "text": "Just y-axis",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Zero matrix A = 0 sends every vector to 0. Step 2: So A · x = 0 for *every* x. Step 3: Kernel = all of ℝ². Step 4: The trap \"just origin\" describes the opposite — invertible matrices. Step 5: This \"zero matrix has full kernel\" is the extreme case of *rank deficiency*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.16.q19",
+      "topicId": "1.16",
+      "prompt": "Why is the kernel of A *related* to the columns of A?",
+      "options": [
+        {
+          "text": "Row dependency",
+          "correct": true
+        },
+        {
+          "text": "Random relation",
+          "correct": false
+        },
+        {
+          "text": "Sum of columns",
+          "correct": false
+        },
+        {
+          "text": "No relation",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Kernel is related to *row dependencies* of A. Step 2: For A = [[1, 2], [2, 4]], row 2 = 2 · row 1 — a row dependency. Step 3: That dependency gives the kernel. Step 4: Step 3 is the *rank* test: rank 1 matrix has 1D kernel. Step 5: Used in Mission 16 for *rank-nullity theorem*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.16.q20",
+      "topicId": "1.16",
+      "prompt": "What if we had a 3×3 matrix with two independent row dependencies — what dimension kernel?",
+      "options": [
+        {
+          "text": "Two",
+          "correct": true
+        },
+        {
+          "text": "Three only",
+          "correct": false
+        },
+        {
+          "text": "One only",
+          "correct": false
+        },
+        {
+          "text": "Zero only",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: 3×3 matrix with 2 independent row dependencies means rank = 1. Step 2: Nullity = 3 − 1 = 2. Step 3: So 2D kernel (a plane). Step 4: This \"rank + nullity = n\" is *rank-nullity theorem*, Mission 16. Step 5: Used in *control theory* and *differential equations*.\n\n---\n\n# End of Mission 1\n\n> 16 topics × 20 questions = **320 questions** complete.\n> Total conceptual/visual questions across M1, M2, M3 in plan: **760**.\n> Continue with Mission 2 (Hill Cipher, Baker's Cafe, Overdetermined systems, Matrix form, Guessing/error, Markov Chain figs) and Mission 3 (Vectors, perpendicular, null space, span, row/col space, range, collapse).",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    }
+  ]
+}

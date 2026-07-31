@@ -1,0 +1,547 @@
+{
+  "id": "1.13",
+  "moduleId": 1,
+  "number": 13,
+  "title": "φ(x, y) = (2x + 3y, 3x + 4y)",
+  "vocabulary": {
+    "allowed": [
+      "function",
+      "mapping",
+      "input",
+      "output",
+      "transformation",
+      "matrix",
+      "coefficients.",
+      "Vocabulary",
+      "forbidden:",
+      "determinant",
+      "eigenvector."
+    ],
+    "forbidden": [
+      "determinant",
+      "eigenvector."
+    ]
+  },
+  "questions": [
+    {
+      "id": "1.13.q1",
+      "topicId": "1.13",
+      "prompt": "What kind of object is φ(x, y) = (2x + 3y, 3x + 4y)?",
+      "options": [
+        {
+          "text": "Linear map ℝ²→ℝ²",
+          "correct": true
+        },
+        {
+          "text": "Quadratic function",
+          "correct": false
+        },
+        {
+          "text": "Cubic function",
+          "correct": false
+        },
+        {
+          "text": "Random formula",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: φ takes (x, y) and produces a new (something, something). Step 2: Both outputs are *linear combinations* of x and y. Step 3: So φ is a linear function from ℝ² to ℝ². Step 4: The trap \"quadratic\" misses the lack of x², y². Step 5: This \"linear map between vector spaces\" is the foundation of *linear algebra* — Mission 7 onwards.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.13.q2",
+      "topicId": "1.13",
+      "prompt": "Why is φ(x, y) = (2x + 3y, 3x + 4y) called a *linear* map?",
+      "options": [
+        {
+          "text": "Linear combinations",
+          "correct": true
+        },
+        {
+          "text": "Quadratic terms here",
+          "correct": false
+        },
+        {
+          "text": "Cubic terms here",
+          "correct": false
+        },
+        {
+          "text": "Random here only",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Each output is a *linear combination* of x and y. Step 2: 2x + 3y is linear in (x, y). Step 3: 3x + 4y is also linear. Step 4: No squared or cubed terms. Step 5: So φ is a linear map.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.13.q3",
+      "topicId": "1.13",
+      "prompt": "What does the *matrix* of φ look like?",
+      "options": [
+        {
+          "text": "[[2, 3], [3, 4]]",
+          "correct": true
+        },
+        {
+          "text": "[[2, 3, 4]]",
+          "correct": false
+        },
+        {
+          "text": "[2, 3, 3, 4]",
+          "correct": false
+        },
+        {
+          "text": "[[2], [3], [3], [4]]",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: The matrix collects coefficients: row 1 from 2x + 3y is [2, 3]; row 2 from 3x + 4y is [3, 4]. Step 2: So matrix is [[2, 3], [3, 4]]. Step 3: The trap \"row vector\" misses 2D structure. Step 4: This \"matrix = coefficients\" link is the foundation of *matrix algebra*, Mission 7.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.13.q4",
+      "topicId": "1.13",
+      "prompt": "What is φ(1, 0)?",
+      "options": [
+        {
+          "text": "(2, 3)",
+          "correct": true
+        },
+        {
+          "text": "(1, 0)",
+          "correct": false
+        },
+        {
+          "text": "(3, 4)",
+          "correct": false
+        },
+        {
+          "text": "(0, 0)",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: φ(1, 0) = (2·1 + 3·0, 3·1 + 4·0) = (2, 3). Step 2: So φ sends (1, 0) to (2, 3). Step 3: The trap \"(1, 0)\" treats φ as identity, which it isn't. Step 4: This \"evaluate at basis vector\" technique is how we extract matrix columns — used in Mission 7.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.13.q5",
+      "topicId": "1.13",
+      "prompt": "What is φ(0, 1)?",
+      "options": [
+        {
+          "text": "(3, 4)",
+          "correct": true
+        },
+        {
+          "text": "(0, 1)",
+          "correct": false
+        },
+        {
+          "text": "(2, 3)",
+          "correct": false
+        },
+        {
+          "text": "(0, 0)",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: φ(0, 1) = (2·0 + 3·1, 3·0 + 4·1) = (3, 4). Step 2: So φ sends (0, 1) to (3, 4). Step 3: This is the *second column* of the matrix [[2, 3], [3, 4]]. Step 4: This \"evaluate at basis vectors\" gives the matrix — the inverse of Q4.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.13.q6",
+      "topicId": "1.13",
+      "prompt": "Why does φ(1, 0) give the *first column* of the matrix?",
+      "options": [
+        {
+          "text": "φ of basis vec",
+          "correct": true
+        },
+        {
+          "text": "Random pick only",
+          "correct": false
+        },
+        {
+          "text": "Sum of all cols",
+          "correct": false
+        },
+        {
+          "text": "Last row only",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: (1, 0) is the first standard basis vector e₁. Step 2: φ(e₁) = first column of the matrix. Step 3: This is because matrix multiplication A · e₁ picks out column 1. Step 4: The trap \"sum\" describes row sums, not column extraction. Step 5: This \"evaluate at basis\" is the standard way to *build* matrices from linear maps.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.13.q7",
+      "topicId": "1.13",
+      "prompt": "What is the *output type* of φ?",
+      "options": [
+        {
+          "text": "Pair of numbers",
+          "correct": true
+        },
+        {
+          "text": "Single number",
+          "correct": false
+        },
+        {
+          "text": "Triple of numbers",
+          "correct": false
+        },
+        {
+          "text": "Matrix here only",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: φ(x, y) = (something, something) — two outputs. Step 2: So φ produces a pair (in ℝ²). Step 3: The trap \"single number\" describes ℝ → ℝ functions. Step 4: This \"output type = ℝ²\" matches the function's codomain. Step 5: We will use this *codomain* concept in Mission 12 for *surjectivity*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.13.q8",
+      "topicId": "1.13",
+      "prompt": "Why does φ have *matrix form* A · x?",
+      "options": [
+        {
+          "text": "Linear combination",
+          "correct": true
+        },
+        {
+          "text": "Random mapping",
+          "correct": false
+        },
+        {
+          "text": "Quadratic form",
+          "correct": false
+        },
+        {
+          "text": "Cubic form",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: A · x is a linear combination of columns of A, weighted by components of x. Step 2: φ(1, 0) = column 1; φ(0, 1) = column 2; general (x, y) = x · col 1 + y · col 2. Step 3: This matches φ(x, y) = (2x + 3y, 3x + 4y). Step 4: So φ has matrix form. Step 5: This \"matrix form of linear map\" is the bridge between Q1.7 (systems) and Q1.13 (mappings).",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.13.q9",
+      "topicId": "1.13",
+      "prompt": "Why does the matrix [[2, 3], [3, 4]] have a *symmetric* structure?",
+      "options": [
+        {
+          "text": "Equal off-diag",
+          "correct": true
+        },
+        {
+          "text": "All zeros only",
+          "correct": false
+        },
+        {
+          "text": "Diagonal pattern",
+          "correct": false
+        },
+        {
+          "text": "Random structure",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Off-diagonal entry (1, 2) = 3 = off-diagonal entry (2, 1). Step 2: This is the *symmetric matrix* property: A^T = A. Step 3: The trap \"diagonal\" describes a different matrix type. Step 4: This \"symmetry\" means the linear map behaves nicely — *self-adjoint* — with real eigenvalues. Step 5: Used in Mission 14 for *spectral theorem*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.13.q10",
+      "topicId": "1.13",
+      "prompt": "What does it *mean* for φ to send (x, y) to (2x + 3y, 3x + 4y)?",
+      "options": [
+        {
+          "text": "Maps input pair",
+          "correct": true
+        },
+        {
+          "text": "Skips input pair",
+          "correct": false
+        },
+        {
+          "text": "Adds two numbers",
+          "correct": false
+        },
+        {
+          "text": "Removes input",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: φ takes an input pair (x, y) and produces an output pair. Step 2: The output is computed via the linear formula. Step 3: So φ is a *map* between input and output. Step 4: This \"map\" intuition is the foundation of *function* concept, used throughout algebra.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.13.q11",
+      "topicId": "1.13",
+      "prompt": "Why is φ(x, y) = (2x + 3y, 3x + 4y) the *same* kind of object as the system 2x + 3y = ?, 3x + 4y = ?",
+      "options": [
+        {
+          "text": "Same coefficients",
+          "correct": true
+        },
+        {
+          "text": "Different coefs",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Same letters",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: The system uses coefficients 2, 3, 3, 4. Step 2: The map φ uses the same coefficients. Step 3: So they are algebraically the same. Step 4: The only difference is interpretation: system asks \"what x, y give output?\", map asks \"what output for these x, y?\". Step 5: This \"system vs map\" duality is the seed of *inverse matrix* thinking.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.13.q12",
+      "topicId": "1.13",
+      "prompt": "What is φ(2, 1)?",
+      "options": [
+        {
+          "text": "(7, 10)",
+          "correct": true
+        },
+        {
+          "text": "(5, 7)",
+          "correct": false
+        },
+        {
+          "text": "(2, 3)",
+          "correct": false
+        },
+        {
+          "text": "(3, 4)",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: φ(2, 1) = (2·2 + 3·1, 3·2 + 4·1) = (4 + 3, 6 + 4) = (7, 10). Step 2: So φ(2, 1) = (7, 10). Step 3: This is \"evaluating the map at a specific input\". Step 4: Used in *matrix-vector multiplication* throughout Mission 7.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.13.q13",
+      "topicId": "1.13",
+      "prompt": "Why does φ(0, 0) = (0, 0)?",
+      "options": [
+        {
+          "text": "Both outputs zero",
+          "correct": true
+        },
+        {
+          "text": "Outputs random",
+          "correct": false
+        },
+        {
+          "text": "Outputs nonzero",
+          "correct": false
+        },
+        {
+          "text": "Outputs skip",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: φ(0, 0) = (2·0 + 3·0, 3·0 + 4·0) = (0, 0). Step 2: So origin maps to origin. Step 3: This is a property of *linear maps* — origin is always fixed. Step 4: This \"origin preserved\" property is used in Mission 12 to detect linear maps (vs affine).",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.13.q14",
+      "topicId": "1.13",
+      "prompt": "Why is φ a *map from ℝ² to ℝ²*?",
+      "options": [
+        {
+          "text": "Input ℝ², output ℝ²",
+          "correct": true
+        },
+        {
+          "text": "Input ℝ, output ℝ²",
+          "correct": false
+        },
+        {
+          "text": "Input ℝ², output ℝ",
+          "correct": false
+        },
+        {
+          "text": "Random types",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Input is a pair (x, y) — element of ℝ². Step 2: Output is a pair — element of ℝ². Step 3: So φ: ℝ² → ℝ². Step 4: This notation is standard in math — domain and codomain specified. Step 5: Used in *function signatures* throughout linear algebra.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.13.q15",
+      "topicId": "1.13",
+      "prompt": "If φ(x, y) = (2x + 3y, 3x + 4y), what is the *image* of the point (1, 1)?",
+      "options": [
+        {
+          "text": "(5, 7)",
+          "correct": true
+        },
+        {
+          "text": "(2, 3)",
+          "correct": false
+        },
+        {
+          "text": "(3, 4)",
+          "correct": false
+        },
+        {
+          "text": "(1, 1)",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: φ(1, 1) = (2·1 + 3·1, 3·1 + 4·1) = (2 + 3, 3 + 4) = (5, 7). Step 2: So the image is (5, 7). Step 3: The trap \"(1, 1)\" treats φ as identity. Step 4: This \"image\" terminology is the same as \"output\" — used in Mission 12 for *range / image of a linear map*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.13.q16",
+      "topicId": "1.13",
+      "prompt": "Why is φ *determined* by its action on (1, 0) and (0, 1)?",
+      "options": [
+        {
+          "text": "Span basis",
+          "correct": true
+        },
+        {
+          "text": "Random basis",
+          "correct": false
+        },
+        {
+          "text": "Sum of inputs",
+          "correct": false
+        },
+        {
+          "text": "Product inputs",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Every (x, y) = x · (1, 0) + y · (0, 1). Step 2: So (x, y) is a linear combination of (1, 0) and (0, 1). Step 3: For a linear map, φ(x, y) = x · φ(1, 0) + y · φ(0, 1). Step 4: Knowing φ(1, 0) and φ(0, 1) determines φ everywhere. Step 5: This \"basis determines linear map\" is the foundation of *linear algebra* — used throughout Missions 7, 12, 14.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.13.q17",
+      "topicId": "1.13",
+      "prompt": "Can φ be *written* as a single matrix",
+      "options": [
+        {
+          "text": "Yes, A · x",
+          "correct": true
+        },
+        {
+          "text": "No, only as sum",
+          "correct": false
+        },
+        {
+          "text": "Only as product",
+          "correct": false
+        },
+        {
+          "text": "Only as pair here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: With A = [[2, 3], [3, 4]] and x = [x, y], A · x = [2x + 3y, 3x + 4y] = φ(x, y). Step 2: So φ(x, y) = A · x. Step 3: This \"map = matrix product\" is the unified language of *linear algebra*. Step 4: We will use this notation throughout Missions 7–16.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.13.q18",
+      "topicId": "1.13",
+      "prompt": "What if φ had been (x + y, x − y) — what would the matrix be?",
+      "options": [
+        {
+          "text": "[[1, 1], [1, −1]]",
+          "correct": true
+        },
+        {
+          "text": "[[1, 1], [1, 1]]",
+          "correct": false
+        },
+        {
+          "text": "[[1, 0], [0, 1]]",
+          "correct": false
+        },
+        {
+          "text": "[[1, 1], [0, 1]]",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: First output 1·x + 1·y → row [1, 1]. Step 2: Second output 1·x + (−1)·y → row [1, −1]. Step 3: So matrix is [[1, 1], [1, −1]]. Step 4: This \"extract coefficients into matrix\" is a standard procedure.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.13.q19",
+      "topicId": "1.13",
+      "prompt": "Why are φ's outputs *always* linear combinations of inputs?",
+      "options": [
+        {
+          "text": "No squared terms",
+          "correct": true
+        },
+        {
+          "text": "Squared terms here",
+          "correct": false
+        },
+        {
+          "text": "Cubed terms here",
+          "correct": false
+        },
+        {
+          "text": "Random terms",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: 2x + 3y has no x², y², xy terms. Step 2: 3x + 4y has no such terms either. Step 3: So outputs are linear in inputs. Step 4: This \"no nonlinear terms\" is the *linearity* condition. Step 5: Used in *linear regression* to ensure predictions are linear combinations of features.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.13.q20",
+      "topicId": "1.13",
+      "prompt": "What if φ had been *quadratic*, like φ(x, y) = (x² + y, 2x + y²) — would it still have matrix form?",
+      "options": [
+        {
+          "text": "No, nonlinear",
+          "correct": true
+        },
+        {
+          "text": "Yes, still matrix",
+          "correct": false
+        },
+        {
+          "text": "Matrix larger now",
+          "correct": false
+        },
+        {
+          "text": "Matrix smaller now",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: x² and y² are nonlinear terms. Step 2: So φ is not a linear map. Step 3: Nonlinear maps do not have a simple A · x matrix form. Step 4: This \"linear ↔ matrix form\" is the boundary of linear algebra. Step 5: Nonlinear maps need other techniques (kernel methods, neural networks) — explored in later courses.\n\n---",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    }
+  ]
+}

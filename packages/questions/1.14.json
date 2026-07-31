@@ -1,0 +1,544 @@
+{
+  "id": "1.14",
+  "moduleId": 1,
+  "number": 14,
+  "title": "Is φ invertible?",
+  "vocabulary": {
+    "allowed": [
+      "invertible",
+      "inverse",
+      "one-to-one",
+      "onto",
+      "determinant",
+      "unique.",
+      "Vocabulary",
+      "forbidden:",
+      "eigenvector."
+    ],
+    "forbidden": [
+      "eigenvector."
+    ]
+  },
+  "questions": [
+    {
+      "id": "1.14.q1",
+      "topicId": "1.14",
+      "prompt": "What does it mean for φ to be *invertible*?",
+      "options": [
+        {
+          "text": "Has an inverse map",
+          "correct": true
+        },
+        {
+          "text": "Has no outputs",
+          "correct": false
+        },
+        {
+          "text": "Has random map",
+          "correct": false
+        },
+        {
+          "text": "Has no inputs",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: A map is invertible if it has an inverse — a map φ⁻¹ such that φ⁻¹(φ(x)) = x and φ(φ⁻¹(y)) = y. Step 2: So invertible ↔ has inverse. Step 3: This is the same idea as Q1.8 for functions. Step 4: Used in *matrix invertibility* in Mission 14.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.14.q2",
+      "topicId": "1.14",
+      "prompt": "Why is *one",
+      "options": [
+        {
+          "text": "Unique inverse only",
+          "correct": true
+        },
+        {
+          "text": "Many inputs same",
+          "correct": false
+        },
+        {
+          "text": "Random inputs",
+          "correct": false
+        },
+        {
+          "text": "No inputs",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: If two inputs map to the same output, the inverse doesn't know which to pick. Step 2: One-to-one means unique input per output. Step 3: So inverse can be well-defined. Step 4: This \"one-to-one ↔ invertible\" is the foundation of *injectivity* in Mission 12.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.14.q3",
+      "topicId": "1.14",
+      "prompt": "What is the *determinant* of A = [[2, 3], [3, 4]]?",
+      "options": [
+        {
+          "text": "Negative one",
+          "correct": true
+        },
+        {
+          "text": "Positive one",
+          "correct": false
+        },
+        {
+          "text": "Two only",
+          "correct": false
+        },
+        {
+          "text": "Zero only",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: det(A) = (2)(4) − (3)(3) = 8 − 9 = −1. Step 2: So det = −1. Step 3: The trap \"one\" misses the subtraction. Step 4: This \"determinant = ad − bc\" formula is the *2×2 determinant*, used to test invertibility. Step 5: For 2×2 A = [[a, b], [c, d]], det = ad − bc.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.14.q4",
+      "topicId": "1.14",
+      "prompt": "Why does det(A) ≠ 0 imply A is invertible?",
+      "options": [
+        {
+          "text": "Volume nonzero",
+          "correct": true
+        },
+        {
+          "text": "Volume is zero",
+          "correct": false
+        },
+        {
+          "text": "Volume random",
+          "correct": false
+        },
+        {
+          "text": "Volume is large",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: The determinant measures the *volume scaling factor* of the linear map. Step 2: If det ≠ 0, the map scales volume by a nonzero amount — doesn't collapse to zero. Step 3: Non-collapse ↔ invertible. Step 4: This \"det = volume scaling\" is the geometric interpretation, used throughout *differential geometry* and *measure theory*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.14.q5",
+      "topicId": "1.14",
+      "prompt": "For φ(x, y) = (2x + 3y, 3x + 4y), is it invertible?",
+      "options": [
+        {
+          "text": "Yes, det nonzero",
+          "correct": true
+        },
+        {
+          "text": "No, det is zero",
+          "correct": false
+        },
+        {
+          "text": "Yes, det is zero",
+          "correct": false
+        },
+        {
+          "text": "Random answer",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: det = −1 (from Q3), which is nonzero. Step 2: So φ is invertible. Step 3: The trap \"no\" misses the nonzero det. Step 4: This \"nonzero det → invertible\" is the test for matrix invertibility. Step 5: We will use this in Mission 14 for *Cramer's rule* and *inverse formula*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.14.q6",
+      "topicId": "1.14",
+      "prompt": "What would the matrix φ⁻¹ look like for A = [[2, 3], [3, 4]]?",
+      "options": [
+        {
+          "text": "[[−4, 3], [3, −2]]",
+          "correct": true
+        },
+        {
+          "text": "[[4, −3], [−3, 2]]",
+          "correct": false
+        },
+        {
+          "text": "[[2, 3], [3, 4]]",
+          "correct": false
+        },
+        {
+          "text": "[[1, 0], [0, 1]]",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: For 2×2 A = [[a, b], [c, d]] with det ≠ 0, A⁻¹ = (1/det) · [[d, −b], [−c, a]]. Step 2: For A = [[2, 3], [3, 4]] with det = −1: A⁻¹ = (−1) · [[4, −3], [−3, 2]] = [[−4, 3], [3, −2]]. Step 3: This \"swap diagonal, negate off-diagonal, divide by det\" is the *2×2 inverse formula*. Step 4: Used in Mission 14 for explicit inversion.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.14.q7",
+      "topicId": "1.14",
+      "prompt": "Why is the *determinant* called the *volume scaling factor*?",
+      "options": [
+        {
+          "text": "Scales volume",
+          "correct": true
+        },
+        {
+          "text": "Scales length only",
+          "correct": false
+        },
+        {
+          "text": "Scales angle only",
+          "correct": false
+        },
+        {
+          "text": "Scales nothing",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: A linear map stretches/shrinks volume by |det|. Step 2: For A · x, a unit cube becomes a parallelepiped of volume |det|. Step 3: So det measures volume scaling. Step 4: This \"det = volume factor\" is the geometric interpretation, used in *change of variables* in calculus.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.14.q8",
+      "topicId": "1.14",
+      "prompt": "What does *det = 0* mean geometrically?",
+      "options": [
+        {
+          "text": "Map collapses space",
+          "correct": true
+        },
+        {
+          "text": "Map stretches space",
+          "correct": false
+        },
+        {
+          "text": "Map rotates space",
+          "correct": false
+        },
+        {
+          "text": "Map preserves space",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: det = 0 means volume scales to 0. Step 2: So the map collapses some dimension to zero. Step 3: This makes the map non-invertible. Step 4: This \"collapse = non-invertible\" is the geometric meaning of *singular* matrices. Step 5: Used in Q1.16 for *null space*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.14.q9",
+      "topicId": "1.14",
+      "prompt": "For φ with det = −1, what does the *sign* tell us?",
+      "options": [
+        {
+          "text": "Orientation flip",
+          "correct": true
+        },
+        {
+          "text": "No change here",
+          "correct": false
+        },
+        {
+          "text": "Volume doubled",
+          "correct": false
+        },
+        {
+          "text": "Volume halved",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Negative det means the map flips orientation (mirror image). Step 2: Positive det preserves orientation. Step 3: For det = −1, volume preserved but orientation flipped. Step 4: This \"sign = orientation\" is the seed of *orientation-preserving maps* in topology.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.14.q10",
+      "topicId": "1.14",
+      "prompt": "Why is φ⁻¹ · φ = identity?",
+      "options": [
+        {
+          "text": "Undoes each other",
+          "correct": true
+        },
+        {
+          "text": "Doubles each other",
+          "correct": false
+        },
+        {
+          "text": "Triples each other",
+          "correct": false
+        },
+        {
+          "text": "Zeros each other",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: φ⁻¹ undoes φ. Step 2: So φ⁻¹ · φ = I (identity). Step 3: The trap \"doubles\" describes adding, not inverse. Step 4: This \"inverse · original = identity\" rule is the definition of *matrix inverse*. Step 5: Used in Mission 14 for *solving systems* via x = A⁻¹ · b.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.14.q11",
+      "topicId": "1.14",
+      "prompt": "How can you *find* the inverse of a linear map by *solving*?",
+      "options": [
+        {
+          "text": "Solve A·x = eᵢ",
+          "correct": true
+        },
+        {
+          "text": "Just guess",
+          "correct": false
+        },
+        {
+          "text": "Add up entries",
+          "correct": false
+        },
+        {
+          "text": "Skip the inverse",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: To find A⁻¹, solve A · x = eᵢ for each basis vector eᵢ. Step 2: The solution x is the i-th column of A⁻¹. Step 3: This \"solve for each basis vector\" is a constructive method. Step 4: Used in *Gaussian elimination* in Mission 7.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.14.q12",
+      "topicId": "1.14",
+      "prompt": "Why is φ⁻¹ *also* a linear map?",
+      "options": [
+        {
+          "text": "Linear inverse",
+          "correct": true
+        },
+        {
+          "text": "Quadratic inverse",
+          "correct": false
+        },
+        {
+          "text": "Cubic inverse",
+          "correct": false
+        },
+        {
+          "text": "Random inverse",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: The inverse of a linear map is also linear. Step 2: Reason: solving A · x = b gives x = A⁻¹ · b, which is linear in b. Step 3: So φ⁻¹ has matrix form A⁻¹. Step 4: This \"inverse of linear is linear\" property is used in *matrix algebra*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.14.q13",
+      "topicId": "1.14",
+      "prompt": "What if two different inputs of φ give the *same* output — is φ invertible?",
+      "options": [
+        {
+          "text": "No, not invertible",
+          "correct": true
+        },
+        {
+          "text": "Yes, still invertible",
+          "correct": false
+        },
+        {
+          "text": "Only sometimes",
+          "correct": false
+        },
+        {
+          "text": "Always invertible",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: If φ(a) = φ(b) with a ≠ b, then φ is many-to-one. Step 2: Many-to-one maps have no unique inverse. Step 3: So φ is not invertible. Step 4: This \"one-to-one ↔ invertible\" rule applies to all linear maps. Step 5: Used in Q1.16 for *kernel* (where many inputs map to 0).",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.14.q14",
+      "topicId": "1.14",
+      "prompt": "Why does a 2×2 matrix with det = 0 *fail* to be invertible?",
+      "options": [
+        {
+          "text": "Collapses dimension",
+          "correct": true
+        },
+        {
+          "text": "Stretches space",
+          "correct": false
+        },
+        {
+          "text": "Rotates space",
+          "correct": false
+        },
+        {
+          "text": "Skips inputs",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: det = 0 means the map collapses 2D to 1D (or to 0D). Step 2: Once collapsed, you can't go back. Step 3: So no inverse. Step 4: This \"collapse → non-invertible\" is the geometric meaning of *rank-deficient* matrices.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.14.q15",
+      "topicId": "1.14",
+      "prompt": "Can the *identity* map id(x) = x be its own inverse?",
+      "options": [
+        {
+          "text": "Yes, id = id⁻¹",
+          "correct": true
+        },
+        {
+          "text": "No, different map",
+          "correct": false
+        },
+        {
+          "text": "Only sometimes",
+          "correct": false
+        },
+        {
+          "text": "Never here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: id⁻¹(x) = x = id(x). Step 2: So id is its own inverse. Step 3: This is a special *involution* — id² = id. Step 4: The identity matrix I is its own inverse (I · I = I). Step 5: Used in Mission 14 for *trivial inverse*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.14.q16",
+      "topicId": "1.14",
+      "prompt": "Why is *uniqueness* of inverse important in applications?",
+      "options": [
+        {
+          "text": "Predictable undo",
+          "correct": true
+        },
+        {
+          "text": "Random undo only",
+          "correct": false
+        },
+        {
+          "text": "No undo at all",
+          "correct": false
+        },
+        {
+          "text": "Random output",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: In applications, we want the inverse to give the *same* answer every time. Step 2: Uniqueness ensures this. Step 3: Without uniqueness, we couldn't reliably \"undo\" operations. Step 4: This \"predictable undo\" is the foundation of *cryptography* (where inverses decode messages) and *data recovery* (where we invert transforms).",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.14.q17",
+      "topicId": "1.14",
+      "prompt": "Does the *shape* of φ (linear) determine if it has an inverse?",
+      "options": [
+        {
+          "text": "Yes, depends",
+          "correct": true
+        },
+        {
+          "text": "No, always same",
+          "correct": false
+        },
+        {
+          "text": "Only if nonlinear",
+          "correct": false
+        },
+        {
+          "text": "Only if zero",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Not all linear maps are invertible. Step 2: It depends on det (or rank). Step 3: For det ≠ 0, invertible; for det = 0, not. Step 4: This \"linearity alone is not enough\" is the seed of *rank* (Mission 16).",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.14.q18",
+      "topicId": "1.14",
+      "prompt": "What if φ had been (2x + 3y, 4x + 6y) — would it be invertible?",
+      "options": [
+        {
+          "text": "No, det = zero",
+          "correct": true
+        },
+        {
+          "text": "Yes, det nonzero",
+          "correct": false
+        },
+        {
+          "text": "Always invertible",
+          "correct": false
+        },
+        {
+          "text": "Always non-inv",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Matrix would be [[2, 3], [4, 6]]. Step 2: det = (2)(6) − (3)(4) = 12 − 12 = 0. Step 3: So φ is not invertible. Step 4: Reason: row 2 = 2 · row 1, so the map collapses 2D to 1D. Step 5: This \"row dependence → singular\" is the seed of *rank deficiency*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.14.q19",
+      "topicId": "1.14",
+      "prompt": "How is invertibility of φ *tested* algebraically?",
+      "options": [
+        {
+          "text": "Compute det",
+          "correct": true
+        },
+        {
+          "text": "Sum entries",
+          "correct": false
+        },
+        {
+          "text": "Pick any x",
+          "correct": false
+        },
+        {
+          "text": "Pick any y",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: det ≠ 0 ↔ invertible. Step 2: So compute det of the matrix. Step 3: If nonzero, invertible. Step 4: The trap \"sum\" is unrelated to invertibility. Step 5: This \"det test\" is the workhorse of *matrix algebra*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.14.q20",
+      "topicId": "1.14",
+      "prompt": "What if φ had *three* inputs and *three* outputs (3×3 matrix) — would det still test invertibility?",
+      "options": [
+        {
+          "text": "Yes, det ≠ 0",
+          "correct": true
+        },
+        {
+          "text": "No, different test",
+          "correct": false
+        },
+        {
+          "text": "Only sometimes",
+          "correct": false
+        },
+        {
+          "text": "Never testable",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: For any square matrix, det ≠ 0 ↔ invertible. Step 2: Works for 1×1, 2×2, 3×3, n×n. Step 3: Just the formula for det is more complex for 3×3+. Step 4: This \"det test for all n\" is the foundation of *linear algebra*. Step 5: We will study 3×3 det using *cofactor expansion* in Mission 14.\n\n---",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    }
+  ]
+}

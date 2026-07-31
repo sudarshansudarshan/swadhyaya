@@ -1,0 +1,550 @@
+{
+  "id": "1.10",
+  "moduleId": 1,
+  "number": 10,
+  "title": "f(x) = x² − 10, f(α) = 54, find α",
+  "vocabulary": {
+    "allowed": [
+      "square",
+      "root",
+      "sign",
+      "quadratic",
+      "equation",
+      "solve",
+      "f(α)",
+      "both",
+      "signs",
+      "root.",
+      "Vocabulary",
+      "forbidden:",
+      "matrix",
+      "inverse."
+    ],
+    "forbidden": [
+      "matrix",
+      "inverse."
+    ]
+  },
+  "questions": [
+    {
+      "id": "1.10.q1",
+      "topicId": "1.10",
+      "prompt": "To find α such that α² − 10 = 54, what is the *first* algebraic step?",
+      "options": [
+        {
+          "text": "Add 10 both sides",
+          "correct": true
+        },
+        {
+          "text": "Multiply both sides",
+          "correct": false
+        },
+        {
+          "text": "Subtract 54 both",
+          "correct": false
+        },
+        {
+          "text": "Skip to answer",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: α² − 10 = 54. Step 2: Add 10 to both sides: α² = 64. Step 3: Now take square root. Step 4: The trap \"multiply both sides\" is wrong operation. Step 5: This \"isolate the square\" technique is the standard *square root method* for solving quadratics.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.10.q2",
+      "topicId": "1.10",
+      "prompt": "After getting α² = 64, what is the next step?",
+      "options": [
+        {
+          "text": "Take square root",
+          "correct": true
+        },
+        {
+          "text": "Square both sides",
+          "correct": false
+        },
+        {
+          "text": "Add 64 both",
+          "correct": false
+        },
+        {
+          "text": "Skip the root",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: α² = 64 means α = ±√64. Step 2: √64 = 8. Step 3: So α = ±8. Step 4: The trap \"square both\" reverses direction. Step 5: This \"take square root to undo squaring\" is the algebraic inverse operation, used in *inverse functions* (Q1.8).",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.10.q3",
+      "topicId": "1.10",
+      "prompt": "Why are there *two* solutions α = 8 and α = −8 for α² = 64?",
+      "options": [
+        {
+          "text": "Square erases sign",
+          "correct": true
+        },
+        {
+          "text": "Square keeps sign",
+          "correct": false
+        },
+        {
+          "text": "Square flips sign",
+          "correct": false
+        },
+        {
+          "text": "Square doubles sign",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: 8² = 64 and (−8)² = 64. Step 2: Both 8 and −8 square to 64. Step 3: So the equation α² = 64 has two solutions. Step 4: This \"two square roots\" comes from squaring erasing the sign. Step 5: This is why f(x) = x² is *not* one-to-one globally (Q1.8) — same output for two inputs.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.10.q4",
+      "topicId": "1.10",
+      "prompt": "What is the *symbol* for \"plus or minus\" when taking square roots?",
+      "options": [
+        {
+          "text": "The ± symbol",
+          "correct": true
+        },
+        {
+          "text": "The × symbol",
+          "correct": false
+        },
+        {
+          "text": "The = symbol",
+          "correct": false
+        },
+        {
+          "text": "The π symbol",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: ± reads as \"plus or minus\". Step 2: Used to indicate both square roots. Step 3: α² = 64 → α = ±8. Step 4: This ± notation is essential for *quadratic solutions*. Step 5: We will see ± again in Q3.4 for *eigenvalue* discussions — eigenvalues can be positive or negative.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.10.q5",
+      "topicId": "1.10",
+      "prompt": "If α² = 144, what are the possible values of α?",
+      "options": [
+        {
+          "text": "Plus or minus 12",
+          "correct": true
+        },
+        {
+          "text": "Only positive 12",
+          "correct": false
+        },
+        {
+          "text": "Only negative 12",
+          "correct": false
+        },
+        {
+          "text": "No real values",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: α² = 144 → α = ±√144 = ±12. Step 2: So two values: 12 and −12. Step 3: The trap \"only positive\" misses the negative root. Step 4: This ± is consistent across all square root problems.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.10.q6",
+      "topicId": "1.10",
+      "prompt": "Why does solving a quadratic usually give *two* answers?",
+      "options": [
+        {
+          "text": "Degree two equation",
+          "correct": true
+        },
+        {
+          "text": "Degree one only",
+          "correct": false
+        },
+        {
+          "text": "Random answers",
+          "correct": false
+        },
+        {
+          "text": "No answers fit",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: A quadratic (degree 2) equation has at most 2 roots. Step 2: The ± captures both. Step 3: A linear (degree 1) equation has only 1 root. Step 4: This \"degree = max number of roots\" is the *Fundamental Theorem of Algebra* (for quadratics), generalised in Mission 11 for higher-degree polynomials.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.10.q7",
+      "topicId": "1.10",
+      "prompt": "If f(α) = 54 for f(x) = x² − 10, what is the *unsquared* equation first?",
+      "options": [
+        {
+          "text": "α² = 64",
+          "correct": true
+        },
+        {
+          "text": "α = 64",
+          "correct": false
+        },
+        {
+          "text": "α² = 54",
+          "correct": false
+        },
+        {
+          "text": "α² = −54",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: α² − 10 = 54. Step 2: Add 10: α² = 64. Step 3: Now take square root. Step 4: The trap \"α = 64\" skips the square root step. Step 5: This \"isolate the square\" is the standard algebraic move before square root.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.10.q8",
+      "topicId": "1.10",
+      "prompt": "After finding α = ±8, how do you *check* which values work?",
+      "options": [
+        {
+          "text": "Plug back in",
+          "correct": true
+        },
+        {
+          "text": "Just trust them",
+          "correct": false
+        },
+        {
+          "text": "Pick one only",
+          "correct": false
+        },
+        {
+          "text": "Skip checking here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Plug α = 8 back: 8² − 10 = 64 − 10 = 54. ✓ Step 2: Plug α = −8 back: (−8)² − 10 = 64 − 10 = 54. ✓ Step 3: Both work. Step 4: This \"plug back to verify\" is the *substitution check* we used in Q1.4 to verify a point is on a line.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.10.q9",
+      "topicId": "1.10",
+      "prompt": "What does the ± in α = ±8 *mean* geometrically?",
+      "options": [
+        {
+          "text": "Two points symmetric",
+          "correct": true
+        },
+        {
+          "text": "One single point",
+          "correct": false
+        },
+        {
+          "text": "Random points only",
+          "correct": false
+        },
+        {
+          "text": "No point at all",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: α = 8 and α = −8 are two distinct x-values. Step 2: The graph of f(x) = x² − 10 passes through (8, 54) and (−8, 54). Step 3: These are symmetric about the y-axis. Step 4: This \"two intersections with horizontal line y = 54\" is the geometric meaning of ±. Step 5: Used in Q3.4 for *intersections with planes*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.10.q10",
+      "topicId": "1.10",
+      "prompt": "If the equation were α² + 10 = 54, would the solution be different?",
+      "options": [
+        {
+          "text": "α² = 44",
+          "correct": true
+        },
+        {
+          "text": "α² = 64",
+          "correct": false
+        },
+        {
+          "text": "α² = 54",
+          "correct": false
+        },
+        {
+          "text": "α² = −44",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: α² + 10 = 54. Step 2: Subtract 10: α² = 44. Step 3: Different from α² − 10 = 54 which gave α² = 64. Step 4: The trap \"α² = 64\" treats +10 and −10 as same. Step 5: This \"sign matters in algebra\" is the foundation of *solving equations*, used throughout linear systems.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.10.q11",
+      "topicId": "1.10",
+      "prompt": "Why can a quadratic equation have *no* real solutions?",
+      "options": [
+        {
+          "text": "Negative under root",
+          "correct": true
+        },
+        {
+          "text": "Positive under root",
+          "correct": false
+        },
+        {
+          "text": "Zero under root",
+          "correct": false
+        },
+        {
+          "text": "Always solvable",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: For real α, α² ≥ 0 always. Step 2: So α² = negative has no real solutions. Step 3: Example: α² = −4 has no real α. Step 4: This \"negative under square root\" is the seed of *complex numbers* i = √−1, used in *eigenvalue* problems.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.10.q12",
+      "topicId": "1.10",
+      "prompt": "Why does *taking square root* have a ± answer but *squaring* does not?",
+      "options": [
+        {
+          "text": "Square erases sign",
+          "correct": true
+        },
+        {
+          "text": "Square keeps sign",
+          "correct": false
+        },
+        {
+          "text": "Both same here",
+          "correct": false
+        },
+        {
+          "text": "Both erase sign",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Squaring 8 gives 64; squaring −8 also gives 64. Step 2: So squaring is *not* one-to-one. Step 3: But taking square root of 64 gives ±8 — two possibilities. Step 4: This asymmetry between squaring and square-rooting is the *non-injectivity* of f(x) = x², contrasted with the injectivity of linear functions (Q1.8).",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.10.q13",
+      "topicId": "1.10",
+      "prompt": "For α² = 0, what is α?",
+      "options": [
+        {
+          "text": "Only zero",
+          "correct": true
+        },
+        {
+          "text": "Plus or minus zero",
+          "correct": false
+        },
+        {
+          "text": "Any value fits",
+          "correct": false
+        },
+        {
+          "text": "Random value",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: α² = 0 → α = ±√0 = ±0 = 0. Step 2: Both +0 and −0 are just 0. Step 3: So only one solution. Step 4: The trap \"any value\" misses that α² ≥ 0. Step 5: This \"α = 0 is unique\" is the special case when the quadratic has only one root — a *double root*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.10.q14",
+      "topicId": "1.10",
+      "prompt": "How is finding α for f(α) = 54 *like* finding an inverse?",
+      "options": [
+        {
+          "text": "Both solve for input",
+          "correct": true
+        },
+        {
+          "text": "They are unrelated",
+          "correct": false
+        },
+        {
+          "text": "They are random",
+          "correct": false
+        },
+        {
+          "text": "They are impossible",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Finding α is solving for the input. Step 2: Applying the inverse is also solving for the input. Step 3: So they're the same task. Step 4: This \"inverse ↔ back-solve\" link is the bridge between *function evaluation* and *function inverse*, used in Q1.8 and Q1.10.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.10.q15",
+      "topicId": "1.10",
+      "prompt": "What does the equation α² − 10 = 54 *describe*, geometrically?",
+      "options": [
+        {
+          "text": "Where parabola is 54",
+          "correct": true
+        },
+        {
+          "text": "Where line is 54",
+          "correct": false
+        },
+        {
+          "text": "Where circle is 54",
+          "correct": false
+        },
+        {
+          "text": "Where slope is 54",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: α² − 10 = 54 means \"the parabola y = x² − 10 has y = 54\". Step 2: So we find the x-values where the parabola is at height 54. Step 3: The trap \"line\" describes linear equations. Step 4: This \"geometric interpretation\" of equations is the bridge between algebra and graphs, used throughout linear algebra.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.10.q16",
+      "topicId": "1.10",
+      "prompt": "Why does the *graph* of f(x) = x² − 10 cross y = 54 at *two* points?",
+      "options": [
+        {
+          "text": "Parabola opens up",
+          "correct": true
+        },
+        {
+          "text": "Parabola opens down",
+          "correct": false
+        },
+        {
+          "text": "Parabola is a line",
+          "correct": false
+        },
+        {
+          "text": "Parabola is a circle",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: A parabola opening up has its minimum at the vertex. Step 2: At heights above the vertex, the parabola is at two x-values. Step 3: At height 54 (above vertex at −10), there are two x-values. Step 4: This \"two intersections\" geometry is why we get ±.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.10.q17",
+      "topicId": "1.10",
+      "prompt": "If we want *only* positive α for α² = 64, what do we say?",
+      "options": [
+        {
+          "text": "α = 8",
+          "correct": true
+        },
+        {
+          "text": "α = ±8",
+          "correct": false
+        },
+        {
+          "text": "α = 64",
+          "correct": false
+        },
+        {
+          "text": "α = −8",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Positive square root of 64 is 8. Step 2: So α = 8 (positive only). Step 3: The trap \"α = ±8\" includes negative. Step 4: This \"principal square root\" is the *positive root*, used in *real analysis* and *principal value* computations.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.10.q18",
+      "topicId": "1.10",
+      "prompt": "What if the equation were α³ − 10 = 54 — how many real solutions would it have?",
+      "options": [
+        {
+          "text": "Exactly one",
+          "correct": true
+        },
+        {
+          "text": "Two solutions",
+          "correct": false
+        },
+        {
+          "text": "Three solutions",
+          "correct": false
+        },
+        {
+          "text": "No solutions",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: α³ is strictly increasing — every real value gives exactly one output. Step 2: So α³ = 64 has exactly one real solution: α = 4. Step 3: (The other \"roots\" are complex.) Step 4: This \"one real root for cubics\" is the seed of *real-root existence*, used in Q1.11.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.10.q19",
+      "topicId": "1.10",
+      "prompt": "Why does solving α² − 10 = 54 *feel* like guessing α?",
+      "options": [
+        {
+          "text": "Two values possible",
+          "correct": true
+        },
+        {
+          "text": "One value only",
+          "correct": false
+        },
+        {
+          "text": "Random values",
+          "correct": false
+        },
+        {
+          "text": "No values fit",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: ± means there are two candidate values. Step 2: Either could work; the equation itself doesn't pick one. Step 3: Both happen to work for this equation, but for \"α² − 10 = 6\", both ±4 work too. Step 4: This \"two candidates\" feeling is why ± matters — we keep both until a context picks one.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.10.q20",
+      "topicId": "1.10",
+      "prompt": "What if we wanted α² − 10 = 54 but α had to be *between* 0 and 5 — what would α be?",
+      "options": [
+        {
+          "text": "α = 8 (no fit)",
+          "correct": true
+        },
+        {
+          "text": "α = 8 (only one)",
+          "correct": false
+        },
+        {
+          "text": "Both fit range",
+          "correct": false
+        },
+        {
+          "text": "Skip the range",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: α² = 64 → α = ±8. Step 2: Neither 8 nor −8 is between 0 and 5. Step 3: So no valid α in this range. Step 4: This \"range restriction\" is the *domain constraint*, used in *constrained optimisation* and *boundary value problems*.\n\n---",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    }
+  ]
+}
