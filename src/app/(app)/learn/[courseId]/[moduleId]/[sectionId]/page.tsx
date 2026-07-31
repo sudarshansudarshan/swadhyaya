@@ -2,6 +2,7 @@ import { redirect, notFound } from 'next/navigation';
 import Link from 'next/link';
 import { getCurrentUser } from '@/lib/auth-helpers';
 import { prisma } from '@/lib/prisma';
+import { getCourseLockState } from '@/lib/progress';
 import { CheckCircle, Lock, Video, Activity as ActivityIcon, ClipboardCheck } from 'lucide-react';
 
 export default async function SectionPage({
@@ -19,10 +20,27 @@ export default async function SectionPage({
   });
   if (!section) notFound();
 
-  const progress = await prisma.topicProgress.findMany({
-    where: { userId: user.id, itemId: { in: section.items.map((i) => i.id) } },
+  const lockState = await getCourseLockState(user.id, courseId);
+  const moduleState = lockState.modules.get(moduleId);
+  if (moduleState?.locked) redirect(`/learn/${courseId}`);
+  const sectionState = lockState.sections.get(sectionId);
+  if (sectionState?.locked) redirect(`/learn/${courseId}/${moduleId}`);
+
+  const quizItems = section.items.filter((i) => i.type === 'QUIZ');
+  const attempts = quizItems.length
+    ? await prisma.quizAttempt.findMany({
+        where: { userId: user.id, itemId: { in: quizItems.map((i) => i.id) } },
+        orderBy: { submittedAt: 'desc' },
+      })
+    : [];
+  const latestAttempt = new Map<string, { passed: boolean }>();
+  for (const a of attempts) {
+    if (!latestAttempt.has(a.itemId)) latestAttempt.set(a.itemId, a);
+  }
+  const sectionQuizFailed = quizItems.some((i) => {
+    const a = latestAttempt.get(i.id);
+    return a ? !a.passed : false;
   });
-  const progressMap = new Map(progress.map((p) => [p.itemId, p]));
 
   return (
     <div className="space-y-6 max-w-3xl">
@@ -32,22 +50,28 @@ export default async function SectionPage({
         {section.prompt && (
           <p className="mt-2 text-muted-foreground">{section.prompt}</p>
         )}
+        {sectionState?.complete && (
+          <p className="mt-2 text-sm text-emerald-600 flex items-center gap-1">
+            <CheckCircle className="h-4 w-4" /> Section complete
+          </p>
+        )}
       </div>
 
       <div className="space-y-3">
         {section.items.map((item) => {
-          const p = progressMap.get(item.id);
+          const st = lockState.items.get(item.id);
+          const done = st?.done;
           const isDone = item.type === 'VIDEO'
-            ? p?.videoCompleted
+            ? done?.video
             : item.type === 'ACTIVITY'
-            ? p?.activityCompleted
-            : p?.quizCompleted;
+            ? done?.activity
+            : done?.quiz;
+          const locked = st?.locked ?? false;
 
-          const prev = section.items.find((i) => i.order === item.order - 1);
-          const prevDone = !prev || progressMap.get(prev.id)?.[
-            prev.type === 'VIDEO' ? 'videoCompleted' : prev.type === 'ACTIVITY' ? 'activityCompleted' : 'quizCompleted'
-          ];
-          const locked = !!prev && !prevDone;
+          const isFailed =
+            item.type === 'QUIZ'
+              ? latestAttempt.get(item.id) && !latestAttempt.get(item.id)!.passed
+              : item.type === 'VIDEO' && sectionQuizFailed && !done?.video;
 
           const Icon = item.type === 'VIDEO' ? Video : item.type === 'ACTIVITY' ? ActivityIcon : ClipboardCheck;
 
@@ -73,6 +97,11 @@ export default async function SectionPage({
                     {item.type === 'ACTIVITY' && `${item.activityMinSeconds}s minimum`}
                     {item.type === 'QUIZ' && `${item.quizQuestionCount} questions · pass ${item.quizPassThreshold}/${item.quizQuestionCount}`}
                   </div>
+                  {isFailed && (
+                    <div className="text-xs text-red-600 font-medium mt-0.5">
+                      {item.type === 'QUIZ' ? '✗ Incorrect · retake the quiz' : '✗ Incorrect · re-watch the video'}
+                    </div>
+                  )}
                 </div>
               </div>
               <div>
