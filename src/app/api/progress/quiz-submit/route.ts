@@ -39,7 +39,9 @@ export async function POST(req: NextRequest) {
   for (const q of questions) {
     const submitted = answers.find((a: any) => a.questionId === q.id);
     const selectedIndex = submitted?.selectedIndex;
-    const isCorrect = selectedIndex === q.options.findIndex((o: any) => o.correct);
+    const options = q.options as { text: string; correct: boolean }[];
+    const correctIndex = options.findIndex((o) => o.correct);
+    const isCorrect = selectedIndex === correctIndex;
     const isInvalidated = invalidationMap.has(q.id);
 
     if (isInvalidated) {
