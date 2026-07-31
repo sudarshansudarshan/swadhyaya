@@ -2,7 +2,8 @@ import { redirect, notFound } from 'next/navigation';
 import Link from 'next/link';
 import { getCurrentUser } from '@/lib/auth-helpers';
 import { prisma } from '@/lib/prisma';
-import { ChevronRight } from 'lucide-react';
+import { getCourseLockState } from '@/lib/progress';
+import { CheckCircle, ChevronRight, Lock } from 'lucide-react';
 
 export default async function ModulePage({
   params,
@@ -19,6 +20,10 @@ export default async function ModulePage({
   });
   if (!moduleRecord) notFound();
 
+  const lockState = await getCourseLockState(user.id, courseId);
+  const moduleState = lockState.modules.get(moduleId);
+  if (moduleState?.locked) redirect(`/learn/${courseId}`);
+
   return (
     <div className="space-y-6">
       <div>
@@ -27,19 +32,36 @@ export default async function ModulePage({
       </div>
 
       <div className="space-y-2">
-        {moduleRecord.sections.map((s) => (
-          <Link
-            key={s.id}
-            href={`/learn/${courseId}/${moduleRecord.id}/${s.id}`}
-            className="flex items-center justify-between p-4 bg-white border rounded-xl hover:shadow-md transition"
-          >
-            <div>
-              <div className="text-xs text-muted-foreground">Section {s.number}</div>
-              <div className="font-medium">{s.title}</div>
+        {moduleRecord.sections.map((s) => {
+          const st = lockState.sections.get(s.id);
+          const locked = st?.locked ?? false;
+          const complete = st?.complete ?? false;
+          const inner = (
+            <div className="flex items-center justify-between p-4 bg-white border rounded-xl transition">
+              <div>
+                <div className="text-xs text-muted-foreground">Section {s.number}</div>
+                <div className="font-medium">{s.title}</div>
+                {locked && (
+                  <div className="text-xs text-amber-600 mt-1">Complete Section {s.number - 1} to unlock</div>
+                )}
+              </div>
+              <div>
+                {complete ? (
+                  <CheckCircle className="h-5 w-5 text-emerald-500" />
+                ) : locked ? (
+                  <Lock className="h-5 w-5 text-gray-400" />
+                ) : (
+                  <ChevronRight className="h-5 w-5 text-gray-400" />
+                )}
+              </div>
             </div>
-            <ChevronRight className="h-5 w-5 text-gray-400" />
-          </Link>
-        ))}
+          );
+          return locked ? (
+            <div key={s.id} className="opacity-50 cursor-not-allowed">{inner}</div>
+          ) : (
+            <Link key={s.id} href={`/learn/${courseId}/${moduleRecord.id}/${s.id}`} className="block hover:shadow-md">{inner}</Link>
+          );
+        })}
       </div>
     </div>
   );
