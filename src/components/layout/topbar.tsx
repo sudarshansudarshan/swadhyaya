@@ -3,8 +3,9 @@
 import Link from 'next/link';
 import { signOut } from 'next-auth/react';
 import { useState } from 'react';
-import { Search, LogOut } from 'lucide-react';
+import { Search, LogOut, Menu } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import { Sidebar } from './sidebar';
 
 type Props = {
   user: {
@@ -17,6 +18,7 @@ type Props = {
 
 export function Topbar({ user }: Props) {
   const router = useRouter();
+  const [navOpen, setNavOpen] = useState(false);
   const [query, setQuery] = useState('');
   const [results, setResults] = useState<any[]>([]);
   const [showResults, setShowResults] = useState(false);
@@ -37,6 +39,14 @@ export function Topbar({ user }: Props) {
 
   return (
     <header className="border-b bg-white px-6 py-3 flex items-center gap-4">
+      <button
+        onClick={() => setNavOpen(true)}
+        className="p-2 -ml-1 text-gray-600 transition-colors hover:bg-gray-100 rounded-md"
+        title="Menu"
+      >
+        <Menu className="h-5 w-5" />
+      </button>
+      <Sidebar role={user.role} open={navOpen} onClose={() => setNavOpen(false)} />
       {user.role === 'ADMIN' ? (
         <div className="flex-1 max-w-xl relative">
           <div className="flex items-center gap-2 px-3 py-2 border rounded-lg bg-gray-50">
