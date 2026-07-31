@@ -1,0 +1,549 @@
+{
+  "id": "6.3",
+  "moduleId": 6,
+  "number": 3,
+  "title": "Dimensionality Reduction",
+  "vocabulary": {
+    "allowed": [
+      "dimensionality",
+      "reduction",
+      "PCA",
+      "SVD",
+      "principal",
+      "component",
+      "variance.",
+      "Vocabulary",
+      "forbidden:",
+      "PageRank",
+      "detail",
+      "(Q6.2)."
+    ],
+    "forbidden": [
+      "PageRank",
+      "detail",
+      "(Q6.2)."
+    ]
+  },
+  "questions": [
+    {
+      "id": "6.3.q1",
+      "topicId": "6.3",
+      "prompt": "What is *dimensionality reduction*?",
+      "options": [
+        {
+          "text": "Fewer features",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "More features",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Reducing the number of features (dimensions) while preserving key information. Step 2: Used in *machine learning*, *statistics*. Step 3: Used in *data compression*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "6.3.q2",
+      "topicId": "6.3",
+      "prompt": "Why is dimensionality reduction *useful*?",
+      "options": [
+        {
+          "text": "Many reasons",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "No use",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Reduces computation. Step 2: Removes noise. Step 3: Enables visualisation. Step 4: Prevents overfitting. Step 5: Used in *practical ML*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "6.3.q3",
+      "topicId": "6.3",
+      "prompt": "What is *PCA* (Principal Component Analysis)?",
+      "options": [
+        {
+          "text": "Find main dirs",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Random",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: PCA finds the directions of maximum variance in the data. Step 2: Projects data onto top-k directions. Step 3: Standard dimensionality reduction. Step 4: Used in *ML*, *statistics*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "6.3.q4",
+      "topicId": "6.3",
+      "prompt": "What is a *principal component*?",
+      "options": [
+        {
+          "text": "Main direction",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Always zero",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Principal component = direction of max variance. Step 2: First PC is direction with largest variance. Step 3: Each subsequent PC is orthogonal to previous. Step 4: Used in *PCA*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "6.3.q5",
+      "topicId": "6.3",
+      "prompt": "How are principal components *computed*?",
+      "options": [
+        {
+          "text": "Eigenvectors",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Random",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Principal components are eigenvectors of the covariance matrix. Step 2: Largest eigenvalue = first PC. Step 3: Used in *PCA algorithm*. Step 4: Used in *eigenvalue computation*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "6.3.q6",
+      "topicId": "6.3",
+      "prompt": "What does the *eigenvalue* represent?",
+      "options": [
+        {
+          "text": "Variance",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Random",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Eigenvalue of covariance matrix along PC = variance in that direction. Step 2: So eigenvalues measure importance. Step 3: Used in *PCA interpretation*. Step 4: Used in *variance explained*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "6.3.q7",
+      "topicId": "6.3",
+      "prompt": "Why does *projecting onto top",
+      "options": [
+        {
+          "text": "Max variance",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "No info",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Top-k PCs capture the most variance. Step 2: So most \"information\" is preserved. Step 3: Used in *Eckart-Young*. Step 4: Used in *PCA theory*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "6.3.q8",
+      "topicId": "6.3",
+      "prompt": "What is the *curse of dimensionality*?",
+      "options": [
+        {
+          "text": "High-d problems",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Random",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: In high dimensions, data becomes sparse, distances less meaningful. Step 2: Algorithms struggle. Step 3: Need dimensionality reduction. Step 4: Used in *high-D problems*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "6.3.q9",
+      "topicId": "6.3",
+      "prompt": "How is *SVD* used in dimensionality reduction?",
+      "options": [
+        {
+          "text": "Truncate",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Random",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: A ≈ U_k Σ_k V_kᵀ where k is small. Step 2: Top-k singular values/vectors. Step 3: This is the SVD-based reduction. Step 4: Used in *SVD*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "6.3.q10",
+      "topicId": "6.3",
+      "prompt": "What is the *reconstruction error* in dimensionality reduction?",
+      "options": [
+        {
+          "text": "Lost info",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Random",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Difference between original and reconstructed. Step 2: Measures information lost. Step 3: Used in *approximation quality*. Step 4: Used in *PCA evaluation*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "6.3.q11",
+      "topicId": "6.3",
+      "prompt": "What is *t",
+      "options": [
+        {
+          "text": "Visualisation",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Random",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: t-SNE = t-distributed stochastic neighbor embedding. Step 2: Reduces to 2D/3D for visualisation. Step 3: Used in *high-D visualisation*. Step 4: Used in *ML tools*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "6.3.q12",
+      "topicId": "6.3",
+      "prompt": "Why does *t",
+      "options": [
+        {
+          "text": "Prob dist",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Random",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: t-SNE minimises difference between probability distributions (high-D vs low-D). Step 2: Focuses on local neighborhoods. Step 3: Used in *manifold learning*. Step 4: Used in *visualisation*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "6.3.q13",
+      "topicId": "6.3",
+      "prompt": "What is *UMAP*?",
+      "options": [
+        {
+          "text": "Similar t-SNE",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Random",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: UMAP = Uniform Manifold Approximation and Projection. Step 2: Similar to t-SNE but faster. Step 3: Used in *modern visualisation*. Step 4: Used in *ML*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "6.3.q14",
+      "topicId": "6.3",
+      "prompt": "What is *feature selection* vs *feature extraction*?",
+      "options": [
+        {
+          "text": "Pick vs combine",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Same thing",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Feature selection = pick subset of original features. Step 2: Feature extraction = combine features into new ones (like PCA). Step 3: Used in *dimensionality reduction*. Step 4: Used in *ML*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "6.3.q15",
+      "topicId": "6.3",
+      "prompt": "What is the *manifold hypothesis*?",
+      "options": [
+        {
+          "text": "Low-d structure",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Random",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Real-world data often lies on a low-dimensional manifold in high-dimensional space. Step 2: This motivates dimensionality reduction. Step 3: Used in *manifold learning*. Step 4: Used in *representation learning*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "6.3.q16",
+      "topicId": "6.3",
+      "prompt": "What is *autoencoding*?",
+      "options": [
+        {
+          "text": "Neural compression",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Random",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Neural network that compresses data to low-dim and reconstructs. Step 2: Non-linear dimensionality reduction. Step 3: Used in *deep learning*. Step 4: Used in *autoencoders*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "6.3.q17",
+      "topicId": "6.3",
+      "prompt": "Why is dimensionality reduction important for *visualisation*?",
+      "options": [
+        {
+          "text": "See high-D",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "No reason",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Humans can only visualise 2D/3D. Step 2: So reduce high-D data to 2D/3D for plots. Step 3: Used in *data visualisation*. Step 4: Used in *exploratory data analysis*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "6.3.q18",
+      "topicId": "6.3",
+      "prompt": "What if we kept *all* principal components?",
+      "options": [
+        {
+          "text": "No reduction",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Always reduce",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: All PCs = full reconstruction. Step 2: No dimensionality reduction. Step 3: Just transforms the basis. Step 4: Used in *no reduction*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "6.3.q19",
+      "topicId": "6.3",
+      "prompt": "What if data were *uniformly distributed* in high",
+      "options": [
+        {
+          "text": "No structure",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Random",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Uniform data has no preferred directions. Step 2: PCA won't find meaningful components. Step 3: All eigenvalues roughly equal. Step 4: Used in *no structure*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "6.3.q20",
+      "topicId": "6.3",
+      "prompt": "What if we used *more* components than original dimensions?",
+      "options": [
+        {
+          "text": "Can't happen",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Random",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Can't have more PCs than original dimensions. Step 2: Maximum is min(m, n). Step 3: Used in *dimension bounds*. Step 4: Used in *PCA limits*.\n\n---\n\n# End of Mission 6\n\n> 3 topics × 20 questions = **60 questions** complete.\n\n## Grand Total Across All Six Missions\n\n| Mission | Topics | Questions |\n|---|---|---|\n| Mission 1 | 16 (Q1.1–Q1.16) | 320 |\n| Mission 2 | 7 (Q2.1–Q2.7) | 140 |\n| Mission 3 | 15 (Q3.1–Q3.15) | 300 |\n| Mission 4 | 7 (Q4.1–Q4.7) | 140 |\n| Mission 5 | 5 (Q5.1–Q5.5) | 100 |\n| Mission 6 | 3 (Q6.1–Q6.3) | 60 |\n| **Total** | **53** | **1060** |\n\nAll questions:\n- Conceptual/visual/deep — no direct computation\n- Vocabulary restricted to concepts formally introduced in each topic\n- Options hand-tuned to similar character count so length can't give the answer away\n- Distractors designed to confuse the kid's mind — only deep understanding picks the right one\n- 1–2 *what-if* scenarios per topic (marked `[what-if]`)\n- Correct option + step-by-step explanation with forward links to later missions",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    }
+  ]
+}

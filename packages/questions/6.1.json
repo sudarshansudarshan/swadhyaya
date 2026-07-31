@@ -1,0 +1,546 @@
+{
+  "id": "6.1",
+  "moduleId": 6,
+  "number": 1,
+  "title": "Recommender System",
+  "vocabulary": {
+    "allowed": [
+      "recommendation",
+      "user",
+      "item",
+      "matrix",
+      "factorisation",
+      "low-rank.",
+      "Vocabulary",
+      "forbidden:",
+      "PageRank",
+      "(Q6.2)."
+    ],
+    "forbidden": [
+      "PageRank",
+      "(Q6.2)."
+    ]
+  },
+  "questions": [
+    {
+      "id": "6.1.q1",
+      "topicId": "6.1",
+      "prompt": "What is a *recommender system*?",
+      "options": [
+        {
+          "text": "Suggests items",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Removes items",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Recommender systems suggest items (movies, products, etc.) to users based on their preferences. Step 2: E.g., Netflix, Amazon, YouTube. Step 3: This is the basic function. Step 4: Used in *applied ML*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "6.1.q2",
+      "topicId": "6.1",
+      "prompt": "How is a *user",
+      "options": [
+        {
+          "text": "Encode ratings",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Encrypt users",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: User-item matrix has rows = users, columns = items, entries = ratings. Step 2: Captures preferences. Step 3: Used in *collaborative filtering*. Step 4: Used in *matrix form*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "6.1.q3",
+      "topicId": "6.1",
+      "prompt": "What is *matrix factorisation* in recommender?",
+      "options": [
+        {
+          "text": "Approx by prod",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Add matrices",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Factor the user-item matrix as U · Vᵀ (U = user features, V = item features). Step 2: Predict missing entries. Step 3: Used in *low-rank approximation*. Step 4: Used in *matrix factorisation*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "6.1.q4",
+      "topicId": "6.1",
+      "prompt": "Why is *low",
+      "options": [
+        {
+          "text": "Captures patterns",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "No reason",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Low-rank captures the main patterns (most users like similar items). Step 2: Filters out noise. Step 3: Enables predictions for missing entries. Step 4: Used in *dimensionality reduction*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "6.1.q5",
+      "topicId": "6.1",
+      "prompt": "How does *collaborative filtering* work?",
+      "options": [
+        {
+          "text": "Use similar users",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Random items",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Users with similar ratings (in the past) likely agree on new items. Step 2: So predict from similar users. Step 3: This is *collaborative* filtering. Step 4: Used in *recommender systems*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "6.1.q6",
+      "topicId": "6.1",
+      "prompt": "Why is a *sparse matrix* used for user",
+      "options": [
+        {
+          "text": "Most missing",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Always full",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Most users rate only a few items. Step 2: So user-item matrix is sparse (mostly unknown). Step 3: Used in *missing data*. Step 4: Used in *matrix completion*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "6.1.q7",
+      "topicId": "6.1",
+      "prompt": "What is the *goal* of matrix completion?",
+      "options": [
+        {
+          "text": "Fill blanks",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Remove data",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Given sparse matrix with some entries, predict the missing ones. Step 2: This is the recommendation problem. Step 3: Used in *matrix completion*. Step 4: Used in *applied math*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "6.1.q8",
+      "topicId": "6.1",
+      "prompt": "Why is *low",
+      "options": [
+        {
+          "text": "Few patterns",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Always random",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: User preferences depend on a small number of latent factors. Step 2: So matrix is approximately low-rank. Step 3: Used in *latent factor models*. Step 4: Used in *PCA*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "6.1.q9",
+      "topicId": "6.1",
+      "prompt": "What is a *latent factor*?",
+      "options": [
+        {
+          "text": "Hidden variable",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Always zero",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: A latent factor is an unobserved variable that influences preferences. Step 2: E.g., \"genre preference\" for movies. Step 3: Used in *factor analysis*. Step 4: Used in *hidden variables*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "6.1.q10",
+      "topicId": "6.1",
+      "prompt": "How is *SVD* (Singular Value Decomposition) used in recommenders?",
+      "options": [
+        {
+          "text": "Low-rank approx",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Encryption",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: SVD decomposes A = U Σ Vᵀ. Step 2: Truncate to top-k singular values for low-rank approximation. Step 3: This gives the recommendation. Step 4: Used in *SVD applications*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "6.1.q11",
+      "topicId": "6.1",
+      "prompt": "Why does *truncation* to top",
+      "options": [
+        {
+          "text": "Top singular vals",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "All equal",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Top singular values capture most of the \"energy\" (variance). Step 2: Truncating removes noise. Step 3: Used in *Eckart-Young theorem*. Step 4: Used in *low-rank approximation*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "6.1.q12",
+      "topicId": "6.1",
+      "prompt": "What is the *Netflix Prize*?",
+      "options": [
+        {
+          "text": "Competition",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Movie award",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Netflix Prize (2006-2009) was a competition to improve movie recommendations by 10%. Step 2: Used matrix factorisation techniques. Step 3: Used in *ML history*. Step 4: Used in *applied competitions*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "6.1.q13",
+      "topicId": "6.1",
+      "prompt": "Why does *cold start* happen?",
+      "options": [
+        {
+          "text": "New users/items",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "No data",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: New users have no rating history. New items have no ratings. Step 2: Hard to recommend. Step 3: This is the *cold start* problem. Step 4: Used in *recommender limitations*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "6.1.q14",
+      "topicId": "6.1",
+      "prompt": "What is *content",
+      "options": [
+        {
+          "text": "Use item features",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Use random",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Recommend items similar to those the user liked, based on item features. Step 2: E.g., \"more movies like this one\". Step 3: Used in *content-based*. Step 4: Used in *recommendation strategies*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "6.1.q15",
+      "topicId": "6.1",
+      "prompt": "Is *collaborative* filtering better than *content",
+      "options": [
+        {
+          "text": "Depends on case",
+          "correct": true
+        },
+        {
+          "text": "Always collab",
+          "correct": false
+        },
+        {
+          "text": "Always content",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Collaborative works well with lots of rating data. Step 2: Content-based works for new items. Step 3: Hybrid approaches often best. Step 4: Used in *hybrid recommenders*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "6.1.q16",
+      "topicId": "6.1",
+      "prompt": "What is *overfitting* in recommender systems?",
+      "options": [
+        {
+          "text": "Memorise data",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Random",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Model memorises specific user ratings instead of general patterns. Step 2: Poor on new (test) data. Step 3: Used in *regularisation*. Step 4: Used in *ML training*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "6.1.q17",
+      "topicId": "6.1",
+      "prompt": "Why is *regularisation* important?",
+      "options": [
+        {
+          "text": "Prevent overfit",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Always used",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Regularisation adds penalty for complex models. Step 2: Prevents overfitting. Step 3: Used in *ridge regression*, *L2 penalty*. Step 4: Used in *ML*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "6.1.q18",
+      "topicId": "6.1",
+      "prompt": "What if the user",
+      "options": [
+        {
+          "text": "No need to predict",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Always empty",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: With full matrix, no predictions needed. Step 2: Just look up ratings. Step 3: Used in *trivial case*. Step 4: Recommenders are needed precisely because data is sparse.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "6.1.q19",
+      "topicId": "6.1",
+      "prompt": "What does *training* a recommender mean?",
+      "options": [
+        {
+          "text": "Find factors",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Memorise",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Find U and V (latent factors) that approximate the observed ratings. Step 2: This is the *training* phase. Step 3: Used in *ML training*. Step 4: Used in *alternating least squares*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "6.1.q20",
+      "topicId": "6.1",
+      "prompt": "What if we used a *higher",
+      "options": [
+        {
+          "text": "More complex",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Always better",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Higher rank captures more detail. Step 2: But also more risk of overfitting. Step 3: Used in *bias-variance tradeoff*. Step 4: This \"right rank\" is a key engineering choice.\n\n---",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    }
+  ]
+}

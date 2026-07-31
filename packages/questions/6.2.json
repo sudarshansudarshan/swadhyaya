@@ -1,0 +1,547 @@
+{
+  "id": "6.2",
+  "moduleId": 6,
+  "number": 2,
+  "title": "Page Ranking",
+  "vocabulary": {
+    "allowed": [
+      "PageRank",
+      "web",
+      "graph",
+      "link",
+      "eigenvector",
+      "stationary",
+      "distribution.",
+      "Vocabulary",
+      "forbidden:",
+      "PCA",
+      "(Q6.3)."
+    ],
+    "forbidden": [
+      "PCA",
+      "(Q6.3)."
+    ]
+  },
+  "questions": [
+    {
+      "id": "6.2.q1",
+      "topicId": "6.2",
+      "prompt": "What is *PageRank*?",
+      "options": [
+        {
+          "text": "Google algo",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Search engine",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: PageRank is Google's algorithm to rank web pages. Step 2: Based on link structure. Step 3: Foundational to search. Step 4: Used in *web search history*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "6.2.q2",
+      "topicId": "6.2",
+      "prompt": "How is a *web page* represented in PageRank?",
+      "options": [
+        {
+          "text": "Node",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Random",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Each page is a node in a graph. Step 2: Hyperlinks are edges. Step 3: Used in *graph representation*. Step 4: Used in *graph theory*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "6.2.q3",
+      "topicId": "6.2",
+      "prompt": "What does a *link* between pages represent?",
+      "options": [
+        {
+          "text": "Vote",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Random",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: A link from page A to page B is a \"vote\" by A for B. Step 2: More votes = higher rank. Step 3: Used in *ranking*. Step 4: Used in *graph edges*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "6.2.q4",
+      "topicId": "6.2",
+      "prompt": "What is the *transition matrix* in PageRank?",
+      "options": [
+        {
+          "text": "Prob matrix",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Always zero",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: T_{ij} = probability of going from page i to page j. Step 2: Sum of each row = 1. Step 3: Used in *Markov chain*. Step 4: Used in *PageRank*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "6.2.q5",
+      "topicId": "6.2",
+      "prompt": "How does PageRank relate to *Markov chains*?",
+      "options": [
+        {
+          "text": "Random walk",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Always zero",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: PageRank models a random walker who clicks links randomly. Step 2: Steady-state = PageRank. Step 3: Used in *Markov chains* (Q2.6). Step 4: Used in *PageRank*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "6.2.q6",
+      "topicId": "6.2",
+      "prompt": "What is the *stationary distribution*?",
+      "options": [
+        {
+          "text": "Steady state",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Random",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Stationary distribution = distribution that doesn't change under transition. Step 2: For web surfer, this is PageRank. Step 3: Used in *Markov chain theory*. Step 4: Used in *PageRank*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "6.2.q7",
+      "topicId": "6.2",
+      "prompt": "What is the *eigenvector* associated with eigenvalue 1?",
+      "options": [
+        {
+          "text": "Stationary dist",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Random vec",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Stationary distribution π satisfies π · T = π. Step 2: So 1 is eigenvalue, π is eigenvector. Step 3: Used in *eigenvalue equation*. Step 4: Used in *PageRank*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "6.2.q8",
+      "topicId": "6.2",
+      "prompt": "Why is eigenvalue *1* important?",
+      "options": [
+        {
+          "text": "Perron-Frob",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Always zero",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: For stochastic matrices, 1 is always an eigenvalue (Perron-Frobenius). Step 2: The corresponding eigenvector is the stationary distribution. Step 3: Used in *PageRank theory*. Step 4: Used in *Markov theory*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "6.2.q9",
+      "topicId": "6.2",
+      "prompt": "What if the web graph has *disconnected components*?",
+      "options": [
+        {
+          "text": "Multiple stationary",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Always one",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Disconnected components give multiple stationary distributions (one per component). Step 2: PageRank must handle this. Step 3: Used in *connectivity*. Step 4: Used in *Markov chains*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "6.2.q10",
+      "topicId": "6.2",
+      "prompt": "What is the *teleport* or *damping* factor?",
+      "options": [
+        {
+          "text": "Random jump",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Always same",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: With probability d, the surfer jumps to a random page (instead of following a link). Step 2: Avoids getting stuck. Step 3: Used in *teleportation*. Step 4: Used in *PageRank implementation*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "6.2.q11",
+      "topicId": "6.2",
+      "prompt": "Why is the *damping factor* needed?",
+      "options": [
+        {
+          "text": "Handles dead ends",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "No need",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Pages with no outgoing links (dead ends) cause issues. Step 2: Damping factor handles them. Step 3: Ensures unique stationary distribution. Step 4: Used in *PageRank implementation*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "6.2.q12",
+      "topicId": "6.2",
+      "prompt": "What does *PageRank π* represent?",
+      "options": [
+        {
+          "text": "Importance",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Random",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: πᵢ = importance of page i. Step 2: Higher πᵢ → higher rank in search. Step 3: Used in *ranking*. Step 4: Used in *PageRank*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "6.2.q13",
+      "topicId": "6.2",
+      "prompt": "How is PageRank *computed*?",
+      "options": [
+        {
+          "text": "Power iteration",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Always zero",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Apply transition matrix repeatedly to initial vector. Step 2: Converges to stationary distribution. Step 3: Used in *power method*. Step 4: Used in *PageRank algorithm*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "6.2.q14",
+      "topicId": "6.2",
+      "prompt": "Why does *power iteration* converge?",
+      "options": [
+        {
+          "text": "Perron-Frob",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Random",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: For stochastic matrices, the spectral gap ensures convergence to the principal eigenvector. Step 2: Used in *Markov chain theory*. Step 3: Used in *PageRank implementation*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "6.2.q15",
+      "topicId": "6.2",
+      "prompt": "What is the *link structure matrix*?",
+      "options": [
+        {
+          "text": "Adjacency",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Random",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Adjacency matrix A_{ij} = 1 if page i links to j, else 0. Step 2: Captures link structure. Step 3: Used in *graph representation*. Step 4: Used in *PageRank*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "6.2.q16",
+      "topicId": "6.2",
+      "prompt": "Why does PageRank *work in practice*?",
+      "options": [
+        {
+          "text": "Iterates",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Magic",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Power iteration converges fast for large graphs. Step 2: Used in practice for billions of pages. Step 3: Used in *scalability*. Step 4: Used in *PageRank success*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "6.2.q17",
+      "topicId": "6.2",
+      "prompt": "What if a page *buys links* to inflate PageRank?",
+      "options": [
+        {
+          "text": "Detected",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Always works",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Modern search engines detect link schemes. Step 2: Penalties for manipulation. Step 3: Used in *anti-spam*. Step 4: Used in *search quality*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "6.2.q18",
+      "topicId": "6.2",
+      "prompt": "What if every page linked to *every other* page — what would PageRank look like?",
+      "options": [
+        {
+          "text": "Uniform",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Random",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: If every page is connected to every other with equal probability, stationary distribution is uniform. Step 2: All pages have same rank. Step 3: Used in *complete graph*. Step 4: Used in *extreme case*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "6.2.q19",
+      "topicId": "6.2",
+      "prompt": "Is PageRank still used by *Google today*?",
+      "options": [
+        {
+          "text": "One of many",
+          "correct": true
+        },
+        {
+          "text": "Only algo",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Google uses many signals, not just PageRank. Step 2: But PageRank was foundational. Step 3: Used in *modern search*. Step 4: Used in *search history*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "6.2.q20",
+      "topicId": "6.2",
+      "prompt": "What if PageRank were run on a graph with *no edges*?",
+      "options": [
+        {
+          "text": "Uniform random",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "No result",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: No edges → with damping, random jump to any page. Step 2: So uniform distribution. Step 3: Used in *trivial graph*. Step 4: Used in *teleportation*.\n\n---",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    }
+  ]
+}
