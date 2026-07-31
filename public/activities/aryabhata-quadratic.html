@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Function Machine — f(x) = x² − 10</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=IBM+Plex+Mono:wght@500;600&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/plotly.js/2.32.0/plotly.min.js"></script>
+<style>
+  :root{
+    --paper:#FAF5E8; --paper-line:#D8CFB6; --ink:#26332B; --ink-soft:#5B6B60;
+    --fn:#1F6F5C; --fn-soft:#DCEDE7; --pt:#7B5EA7; --pt-soft:#EAE3F5;
+    --target:#B8860B; --target-soft:#F3E9CE; --card:#FFFDF7; --shadow:0 2px 10px rgba(38,51,43,0.08);
+  }
+  *{box-sizing:border-box;} html,body{margin:0;padding:0;}
+  body{
+    background:repeating-linear-gradient(#FAF5E8 0px,#FAF5E8 27px,var(--paper-line) 28px),var(--paper);
+    background-size:100% 28px; color:var(--ink); font-family:'Source Sans 3',sans-serif;
+    min-height:100vh; padding:28px 16px 60px;
+  }
+  .wrap{max-width:1080px;margin:0 auto;}
+  header.hero{background:var(--card);border:1px solid var(--paper-line);border-radius:14px;box-shadow:var(--shadow);padding:26px 28px 22px;margin-bottom:20px;}
+  .eyebrow{font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);margin:0 0 6px;}
+  h1{font-family:'Caveat',cursive;font-weight:700;font-size:42px;margin:0 0 10px;line-height:1.05;}
+  header.hero p{max-width:680px;line-height:1.55;font-size:15.5px;margin:0 0 8px;}
+  .rule-list{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px;}
+  .rule-list span{font-family:'IBM Plex Mono',monospace;font-size:12.5px;background:var(--paper);border:1px dashed var(--paper-line);border-radius:8px;padding:6px 10px;}
+  .rule-list .pill-fn{background:var(--fn-soft);color:var(--fn);border-color:var(--fn);}
+  .rule-list .pill-q{background:var(--pt-soft);color:var(--pt);border-color:var(--pt);}
+  .grid-layout{display:grid;grid-template-columns:300px 1fr;gap:20px;align-items:start;}
+  @media (max-width:800px){.grid-layout{grid-template-columns:1fr;}}
+  .card{background:var(--card);border:1px solid var(--paper-line);border-radius:14px;box-shadow:var(--shadow);padding:20px;}
+  .panel-title{font-family:'Caveat',cursive;font-weight:700;font-size:24px;margin:0 0 4px;}
+  .panel-sub{font-size:13px;color:var(--ink-soft);margin:0 0 14px;line-height:1.4;}
+
+  .eq-highlight{
+    font-family:'IBM Plex Mono',monospace;font-size:24px;font-weight:600;text-align:center;
+    padding:14px;border-radius:10px;margin-bottom:14px;border:1px solid var(--paper-line);
+    background:var(--fn-soft);border-color:var(--fn);color:var(--fn);
+  }
+
+  .field{margin-bottom:14px;}
+  .field label{display:flex;justify-content:space-between;font-size:13.5px;font-weight:600;margin-bottom:6px;}
+  .field label span.val{font-family:'IBM Plex Mono',monospace;font-weight:600;color:var(--pt);}
+  input[type=number]{
+    width:100%;padding:9px 10px;border-radius:8px;border:1px solid var(--paper-line);
+    font-family:'IBM Plex Mono',monospace;font-size:16px;background:var(--paper);color:var(--ink);
+  }
+  input[type=number]:focus{outline:2px solid var(--pt);outline-offset:-1px;border-color:var(--pt);}
+  .helper{font-size:12px;color:var(--ink-soft);margin-top:4px;}
+
+  .jars{display:flex;gap:14px;margin-bottom:16px;}
+  .jar{flex:1;text-align:center;padding:10px 6px;border-radius:10px;border:1px solid var(--paper-line);}
+  .jar.fn-jar{background:var(--fn-soft);}
+  .jar.pt-jar{background:var(--pt-soft);}
+  .jar .name{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;}
+  .jar.fn-jar .name{color:var(--fn);}
+  .jar.pt-jar .name{color:var(--pt);}
+  .jar .amt{font-family:'IBM Plex Mono',monospace;font-size:20px;font-weight:600;margin-top:4px;}
+
+  button{font-family:'Source Sans 3',sans-serif;font-weight:600;font-size:14.5px;border:none;border-radius:9px;padding:11px 16px;cursor:pointer;width:100%;transition:transform .08s ease,filter .15s ease;}
+  button:active{transform:translateY(1px);}
+  button:disabled{opacity:.4;cursor:not-allowed;}
+  .btn-primary{background:var(--fn);color:#fff;}
+  .btn-primary:hover:not(:disabled){filter:brightness(1.08);}
+  .btn-secondary{background:var(--paper);color:var(--ink);border:1px solid var(--paper-line);margin-top:8px;}
+  .btn-secondary:hover:not(:disabled){background:#F0E9D6;}
+
+  .status{font-size:13.5px;line-height:1.5;padding:12px;border-radius:9px;background:var(--paper);border:1px solid var(--paper-line);margin-bottom:14px;min-height:20px;}
+  .status.feedback-good{background:var(--fn-soft);border-color:var(--fn);color:var(--fn);font-weight:600;}
+  .status.feedback-mid{background:var(--pt-soft);border-color:var(--pt);color:var(--pt);font-weight:600;}
+  .status.feedback-target{background:var(--target-soft);border-color:var(--target);color:var(--target);font-weight:600;}
+
+  .graph-card{display:flex;flex-direction:column;}
+  .graph-card .panel-title{margin-bottom:0;}
+  .legend{display:flex;gap:18px;flex-wrap:wrap;margin:6px 0 12px;font-size:12.5px;font-family:'IBM Plex Mono',monospace;}
+  .legend span{display:inline-flex;align-items:center;gap:6px;}
+  .dot{width:10px;height:10px;border-radius:50%;display:inline-block;}
+  .dot.curve{background:var(--fn);height:2px;border-radius:1px;}
+  .dot.pred{background:var(--pt);}
+  .dot.sol{background:var(--target);}
+
+  svg{width:100%;height:auto;display:block;}
+  .axis-label{font-family:'IBM Plex Mono',monospace;font-size:12px;fill:var(--ink-soft);}
+  .tick-label{font-family:'IBM Plex Mono',monospace;font-size:10px;fill:var(--ink-soft);}
+
+  .steps{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap;}
+  .step-dot{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:600;border:1.5px solid var(--paper-line);color:var(--ink-soft);background:var(--paper);}
+  .step-dot.done{background:var(--fn);border-color:var(--fn);color:#fff;}
+  .step-dot.solution{background:var(--target);border-color:var(--target);color:#fff;}
+  .step-dot.active{border-color:var(--pt);color:var(--pt);background:var(--pt-soft);}
+
+  .reflect,.explore{margin-top:20px;padding-top:16px;border-top:1px dashed var(--paper-line);}
+  .reflect.hidden,.explore.hidden{display:none;}
+  .q{margin-bottom:16px;}
+  .q p.qtext{font-weight:600;margin:0 0 8px;font-size:14.5px;}
+  .options{display:flex;gap:8px;flex-wrap:wrap;}
+  .opt{padding:8px 14px;border-radius:8px;border:1px solid var(--paper-line);background:var(--paper);font-size:13.5px;cursor:pointer;font-weight:600;}
+  .opt.correct{background:var(--fn-soft);border-color:var(--fn);color:var(--fn);}
+  .opt.wrong{background:#F6DCD4;border-color:#B5502E;color:#8C3A1F;}
+  .opt:disabled{cursor:default;}
+
+  .explore .panel-title{font-size:22px;}
+  .explore-inputs{display:flex;gap:14px;flex-wrap:wrap;margin:10px 0 14px;}
+  .explore-inputs .field{flex:1;min-width:80px;margin-bottom:0;}
+  .explore-inputs .field label{font-size:11px;}
+  .explore-inputs input[type=number]{font-size:13px;padding:7px 8px;}
+  .explore-cols{display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start;}
+  @media (max-width:700px){.explore-cols{grid-template-columns:1fr;}}
+  .solution-banner{text-align:center;font-weight:700;padding:10px;border-radius:9px;margin:8px 0 14px;font-size:15px;background:var(--target-soft);border:1px solid var(--target);color:var(--target);}
+  .solution-banner.two{background:var(--fn-soft);border-color:var(--fn);color:var(--fn);}
+  .note-box{text-align:center;font-family:'IBM Plex Mono',monospace;font-size:14px;padding:8px;margin:4px 0 10px;color:var(--ink-soft);}
+  footer.note{text-align:center;font-size:12px;color:var(--ink-soft);margin-top:26px;font-family:'IBM Plex Mono',monospace;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <p class="eyebrow">Intuition Builder · Quadratic Functions</p>
+    <h1>Aryabhata's Steps — f(x) = x² − 10</h1>
+    <p>Aryabhata, the ancient mathematician, poses a puzzle: <strong>f(x) = x² − 10</strong> and <strong>f(α) = 54</strong>. Enter numbers into his function, watch the parabola take shape, and discover that this riddle has more than one answer.</p>
+    <div class="rule-list">
+      <span class="pill-fn">f(x) = x² − 10</span>
+      <span class="pill-q">f(α) = 54 → α = ?</span>
+    </div>
+  </header>
+
+  <div class="grid-layout">
+    <div class="card">
+      <p class="panel-title">Aryabhata's function</p>
+      <p class="panel-sub">For each input x, predict what f(x) comes out. Watch the curve take shape.</p>
+
+      <div class="eq-highlight" id="eqDisplay">f(<span id="currentX">4</span>) = <span id="currentXsq">4</span>² − 10 = <span id="currentAns">?</span></div>
+
+      <div class="field">
+        <label>Input x = <span class="val" id="xLabel">4</span></label>
+        <input type="number" id="predictY" step="any" value="0">
+        <div class="helper" id="predictHelper">What is f(<span id="xHelper">4</span>) = <span id="xHelperSq">4</span>² − 10?</div>
+      </div>
+
+      <div class="jars">
+        <div class="jar fn-jar">
+          <div class="name">Input (x)</div>
+          <div class="amt" id="xJar">4</div>
+        </div>
+        <div class="jar pt-jar">
+          <div class="name">Output f(x)</div>
+          <div class="amt" id="yJar">?</div>
+        </div>
+      </div>
+
+      <div class="steps" id="stepDots"></div>
+
+      <div class="status" id="statusBox">Aryabhata feeds <strong>x = 4</strong> into the function. What output f(4) do you expect?</div>
+
+      <button class="btn-primary" id="checkBtn">Predict &amp; Reveal</button>
+      <button class="btn-secondary" id="resetBtn">Start over</button>
+    </div>
+
+    <div class="card graph-card">
+      <p class="panel-title">The curve</p>
+      <div class="legend">
+        <span><i class="dot curve"></i>f(x) = x² − 10</span>
+        <span><i class="dot pred"></i>your prediction</span>
+        <span><i class="dot sol"></i>solution: f(α) = 54</span>
+      </div>
+      <svg id="graphSvg" viewBox="0 0 640 500" xmlns="http://www.w3.org/2000/svg"></svg>
+    </div>
+  </div>
+
+  <!-- REFLECTION QUIZ -->
+  <div class="card reflect hidden" id="reflectCard">
+    <p class="panel-title">What do you notice?</p>
+    <p class="panel-sub">Two different inputs gave the same output: f(8) = 54 and f(−8) = 54. The curve is symmetric.</p>
+
+    <div class="q" id="q1">
+      <p class="qtext">1. f(α) = 54 has how many solutions?</p>
+      <div class="options">
+        <button class="opt" data-correct="false">One — α = 8</button>
+        <button class="opt" data-correct="false">None — no such α</button>
+        <button class="opt" data-correct="true">Two — α = 8 and α = −8</button>
+      </div>
+    </div>
+
+    <div class="q" id="q2">
+      <p class="qtext">2. Why does a quadratic equation like x² − 10 = 54 have two solutions?</p>
+      <div class="options">
+        <button class="opt" data-correct="false">Because 54 is an even number</button>
+        <button class="opt" data-correct="true">Because x² = 64 means x = ±√64 = ±8 — squaring loses the sign</button>
+        <button class="opt" data-correct="false">Because the function is linear</button>
+      </div>
+    </div>
+
+    <div class="q" id="q3">
+      <p class="qtext">3. The vertex (lowest point) of the parabola f(x) = x² − 10 is at…</p>
+      <div class="options">
+        <button class="opt" data-correct="false">(0, 0)</button>
+        <button class="opt" data-correct="true">(0, −10)</button>
+        <button class="opt" data-correct="false">(10, 0)</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- EXPLORE MODE -->
+  <div class="card explore hidden" id="exploreCard">
+    <p class="panel-title">Aryabhata's general form: ax² + bx + c</p>
+    <p class="panel-sub">Change a, b, c freely. Set a target and see which x values hit it. When a ≠ 0, squaring can give 0, 1, or 2 solutions.</p>
+
+    <div class="explore-cols">
+      <div>
+        <div class="explore-inputs">
+          <div class="field"><label>a (x²)</label><input type="number" id="expA" step="0.5" value="1"></div>
+          <div class="field"><label>b (x)</label><input type="number" id="expB" step="0.5" value="0"></div>
+          <div class="field"><label>c</label><input type="number" id="expC" step="0.5" value="-10"></div>
+          <div class="field"><label>target</label><input type="number" id="expTarget" step="0.5" value="54"></div>
+        </div>
+        <div class="eq-highlight" id="exploreEq" style="font-size:20px;padding:10px;">f(x) = x² − 10</div>
+        <div id="exploreSolution"></div>
+        <div class="note-box">Solve ax² + bx + (c − target) = 0 using the quadratic formula</div>
+      </div>
+      <div>
+        <div id="explorePlot" style="width:100%;height:360px;"></div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="note">Built for exploring quadratic functions · Aryabhata's puzzle: squaring erases the sign, so f(x) = k often has two solutions</footer>
+</div>
+
+<script>
+(function(){
+  const svgNS = "http://www.w3.org/2000/svg";
+  const svg = document.getElementById('graphSvg');
+  const margin = {l:60, r:30, t:30, b:50};
+  const plotW = 640 - margin.l - margin.r;
+  const plotH = 500 - margin.t - margin.b;
+
+  // Step data: each step has input x, output f(x) = x² - 10
+  const STEPS = [
+    {x:4,  y:6},
+    {x:8,  y:54},
+    {x:12, y:134},
+    {x:-8, y:54},
+    {x:-4, y:6}
+  ];
+  const TOTAL = STEPS.length;
+  const SOL_X1 = 8, SOL_X2 = -8, SOL_Y = 54;
+
+  let step = 0;
+  let points = [];
+  let prediction = null;
+  let revealed = false;
+  let mode = 'predict';
+
+  const eqDisplay = document.getElementById('eqDisplay');
+  const currentX = document.getElementById('currentX');
+  const currentXsq = document.getElementById('currentXsq');
+  const currentAns = document.getElementById('currentAns');
+  const predictY = document.getElementById('predictY');
+  const xLabel = document.getElementById('xLabel');
+  const predictHelper = document.getElementById('predictHelper');
+  const xHelper = document.getElementById('xHelper');
+  const xHelperSq = document.getElementById('xHelperSq');
+  const xJar = document.getElementById('xJar');
+  const yJar = document.getElementById('yJar');
+  const statusBox = document.getElementById('statusBox');
+  const checkBtn = document.getElementById('checkBtn');
+  const resetBtn = document.getElementById('resetBtn');
+  const stepDots = document.getElementById('stepDots');
+  const reflectCard = document.getElementById('reflectCard');
+  const exploreCard = document.getElementById('exploreCard');
+
+  for(let i=1;i<=TOTAL;i++){
+    const d = document.createElement('div');
+    d.className='step-dot'; d.textContent=i; d.id='step-'+i;
+    stepDots.appendChild(d);
+  }
+
+  function getStepData(i){
+    return STEPS[i !== undefined ? i : step];
+  }
+
+  function updateDisplay(){
+    if(step >= TOTAL){
+      eqDisplay.textContent = `f(α) = 54 → α = ±8`;
+      currentX.textContent = 'α';
+      currentXsq.textContent = 'α';
+      currentAns.textContent = '54';
+      xLabel.textContent = '—';
+      xHelper.textContent = 'α';
+      xHelperSq.textContent = 'α';
+      predictHelper.textContent = 'Both 8 and −8 give f(x) = 54!';
+      predictY.disabled = true;
+      xJar.textContent = '±8';
+      yJar.textContent = '54';
+      return;
+    }
+    const sd = getStepData();
+    predictY.disabled = false;
+    currentX.textContent = sd.x;
+    currentXsq.textContent = sd.x;
+    currentAns.textContent = '?';
+    xLabel.textContent = sd.x;
+    xHelper.textContent = sd.x;
+    xHelperSq.textContent = sd.x;
+    predictHelper.textContent = `What is f(${sd.x}) = ${sd.x}² − 10?`;
+    xJar.textContent = sd.x;
+    yJar.textContent = prediction !== null && revealed ? sd.y : '?';
+  }
+
+  function updateStatus(html, cls){
+    statusBox.innerHTML = html;
+    statusBox.className = 'status' + (cls ? ' '+cls : '');
+  }
+
+  function markStepDots(){
+    document.querySelectorAll('.step-dot').forEach(d => d.classList.remove('active'));
+    for(let i=0; i<step && i<TOTAL; i++){
+      const dot = document.getElementById('step-'+(i+1));
+      if(dot){
+        dot.classList.add('done');
+        if(STEPS[i].y === SOL_Y) dot.classList.add('solution');
+      }
+    }
+    if(step < TOTAL){
+      const next = document.getElementById('step-'+(step+1));
+      if(next) next.classList.add('active');
+    }
+  }
+
+  function onCheck(){
+    if(mode === 'done') return;
+    if(step >= TOTAL){
+      mode = 'done';
+      checkBtn.disabled = true;
+      updateStatus(`<strong>f(8) = 54</strong> and <strong>f(−8) = 54</strong> — so α = 8 or α = −8. Scroll down to reflect.`, 'feedback-target');
+      render();
+      setTimeout(()=>{
+        reflectCard.classList.remove('hidden');
+        reflectCard.scrollIntoView({behavior:'smooth', block:'nearest'});
+      }, 500);
+      return;
+    }
+
+    if(revealed){
+      step++;
+      revealed = false;
+      prediction = null;
+      if(step >= TOTAL){
+        updateStatus('All done! Click <strong>See the solutions</strong> to discover α.', 'feedback-target');
+        checkBtn.textContent = 'See the solutions';
+        updateDisplay();
+        markStepDots();
+        render();
+        return;
+      }
+      markStepDots();
+      updateDisplay();
+      const sd = getStepData();
+      updateStatus(`Aryabhata feeds <strong>x = ${sd.x}</strong> into the function. What output f(${sd.x}) do you expect?`);
+      render();
+      return;
+    }
+
+    // Predict mode
+    const sd = getStepData();
+    const py = parseFloat(predictY.value);
+    if(isNaN(py)){
+      updateStatus('Enter a number for your prediction.');
+      return;
+    }
+    prediction = py;
+    const targetY = sd.y;
+    const diff = Math.abs(py - targetY);
+
+    points.push({x: sd.x, y: targetY});
+    revealed = true;
+
+    const tolerance = 0.5;
+    let msg, cls;
+    if(diff < tolerance){
+      if(targetY === SOL_Y){
+        msg = `Spot on! f(${sd.x}) = ${targetY} — that's the target! <strong>${sd.x}</strong> is one value of α.`;
+        cls = 'feedback-target';
+      } else {
+        msg = `Spot on! f(${sd.x}) = ${targetY}.`;
+        cls = 'feedback-good';
+      }
+    } else {
+      const dir = py > targetY ? 'high' : 'low';
+      msg = `You guessed ${py} (${Math.round(diff)} ${dir}). f(${sd.x}) = ${sd.x}² − 10 = ${targetY}.`;
+      cls = 'feedback-mid';
+    }
+
+    if(targetY === SOL_Y){
+      checkBtn.textContent = 'Next input';
+    } else if(step + 1 >= TOTAL){
+      checkBtn.textContent = 'See the solutions';
+    } else {
+      checkBtn.textContent = 'Next input';
+    }
+
+    yJar.textContent = targetY;
+    currentAns.textContent = targetY;
+    updateStatus(msg, cls);
+    markStepDots();
+    render();
+  }
+
+  checkBtn.addEventListener('click', onCheck);
+
+  resetBtn.addEventListener('click', ()=>{
+    step=0; points=[]; prediction=null; revealed=false; mode='predict';
+    predictY.value=0; predictY.disabled=false;
+    checkBtn.disabled=false; checkBtn.textContent='Predict & Reveal';
+    document.querySelectorAll('.step-dot').forEach(d => d.classList.remove('done','solution','active'));
+    document.getElementById('step-1').classList.add('active');
+    reflectCard.classList.add('hidden'); exploreCard.classList.add('hidden');
+    updateDisplay();
+    updateStatus('Aryabhata feeds <strong>x = 4</strong> into the function. What output f(4) do you expect?');
+    render();
+    document.getElementById('expA').value=1; document.getElementById('expB').value=0; document.getElementById('expC').value=-10; document.getElementById('expTarget').value=54;
+  });
+
+  predictY.addEventListener('keydown', (e)=>{ if(e.key==='Enter') onCheck(); });
+
+  // ---- SVG RENDERING ----
+  function niceMax(v){
+    if(v<=0) return 10;
+    const mag=Math.pow(10,Math.floor(Math.log10(v)));
+    const norm=v/mag;
+    if(norm<=1) return 1*mag; if(norm<=2) return 2*mag; if(norm<=4) return 4*mag; if(norm<=5) return 5*mag; return 10*mag;
+  }
+  function niceMin(v){
+    if(v>=0) return 0;
+    const mag=Math.pow(10,Math.floor(Math.log10(Math.abs(v))));
+    const norm=Math.abs(v)/mag;
+    if(norm<=1) return -1*mag; if(norm<=2) return -2*mag; if(norm<=4) return -4*mag; if(norm<=5) return -5*mag; return -10*mag;
+  }
+
+  function f(x){ return x*x - 10; }
+
+  function getBounds(){
+    const allX=[], allY=[];
+    for(let x=-13;x<=13;x+=1){ allX.push(x); allY.push(f(x)); }
+    points.forEach(p=>{ allX.push(p.x); allY.push(p.y); });
+    allX.push(SOL_X1); allY.push(SOL_Y);
+    allX.push(SOL_X2); allY.push(SOL_Y);
+    return {
+      xMin: niceMin(-13),
+      xMax: niceMax(13),
+      yMin: Math.min(niceMin(Math.min(...allY)-3), -15),
+      yMax: Math.max(niceMax(Math.max(...allY)+5), 60)
+    };
+  }
+
+  function render(){
+    while(svg.firstChild) svg.removeChild(svg.firstChild);
+    const bounds = getBounds();
+    const xRange = bounds.xMax - bounds.xMin;
+    const yRange = bounds.yMax - bounds.yMin;
+    let xScale = plotW / xRange, yScale = plotH / yRange;
+    const scale = Math.min(xScale, yScale);
+    xScale = scale; yScale = scale;
+
+    function toSvg(dx, dy){
+      return {
+        x: margin.l + (dx - bounds.xMin) * xScale,
+        y: margin.t + plotH - (dy - bounds.yMin) * yScale
+      };
+    }
+
+    // grid
+    const xStep = Math.max(2, niceMax(xRange/6));
+    const yStep = Math.max(5, niceMax(yRange/6));
+    for(let v=Math.ceil(bounds.xMin/xStep)*xStep; v<=bounds.xMax; v+=xStep){
+      if(Math.abs(v)<0.001) continue;
+      const p=toSvg(v,0);
+      if(p.x>=margin.l&&p.x<=margin.l+plotW){
+        svg.appendChild(mkLine(p.x,margin.t,p.x,margin.t+plotH,'#E4DCC4',1));
+        const tl=mkText(p.x,margin.t+plotH+20,''+Math.round(v),'tick-label');
+        tl.setAttribute('text-anchor','middle'); svg.appendChild(tl);
+      }
+    }
+    for(let v=Math.ceil(bounds.yMin/yStep)*yStep; v<=bounds.yMax; v+=yStep){
+      if(Math.abs(v)<0.001) continue;
+      const p=toSvg(0,v);
+      if(p.y>=margin.t&&p.y<=margin.t+plotH){
+        svg.appendChild(mkLine(margin.l,p.y,margin.l+plotW,p.y,'#E4DCC4',1));
+        const tl=mkText(margin.l-10,p.y+3,''+(v < -0.5 ? Math.round(v) : (v > 0.5 ? Math.round(v) : '0')),'tick-label');
+        tl.setAttribute('text-anchor','end'); svg.appendChild(tl);
+      }
+    }
+    if(0>=bounds.xMin&&0<=bounds.xMax){
+      const p=toSvg(0,0); svg.appendChild(mkLine(p.x,margin.t,p.x,margin.t+plotH,'#C8BEA0',1));
+    }
+    if(0>=bounds.yMin&&0<=bounds.yMax){
+      const p=toSvg(0,0); svg.appendChild(mkLine(margin.l,p.y,margin.l+plotW,p.y,'#C8BEA0',1));
+    }
+    svg.appendChild(mkLine(margin.l,margin.t+plotH,margin.l+plotW,margin.t+plotH,'#26332B',1.5));
+    svg.appendChild(mkLine(margin.l,margin.t+plotH,margin.l,margin.t,'#26332B',1.5));
+
+    const xlab=mkText(margin.l+plotW/2,margin.t+plotH+42,'x','axis-label');
+    xlab.setAttribute('text-anchor','middle'); svg.appendChild(xlab);
+    const ylab=mkText(16,margin.t+plotH/2,'f(x)','axis-label');
+    ylab.setAttribute('text-anchor','middle'); ylab.setAttribute('transform',`rotate(-90 16 ${margin.t+plotH/2})`);
+    svg.appendChild(ylab);
+
+    // draw the parabola
+    if(bounds.xMax - bounds.xMin > 2){
+      const curvePoints = [];
+      for(let x=bounds.xMin; x<=bounds.xMax; x+=(bounds.xMax-bounds.xMin)/200){
+        const y = f(x);
+        const p = toSvg(x, y);
+        if(p.y >= margin.t-10 && p.y <= margin.t+plotH+10) curvePoints.push(p);
+      }
+      if(curvePoints.length > 1){
+        let d = `M ${curvePoints[0].x} ${curvePoints[0].y}`;
+        for(let i=1; i<curvePoints.length; i++) d += ` L ${curvePoints[i].x} ${curvePoints[i].y}`;
+        const path = document.createElementNS(svgNS,'path');
+        path.setAttribute('d', d);
+        path.setAttribute('stroke', '#1F6F5C');
+        path.setAttribute('stroke-width', '2.5');
+        path.setAttribute('fill', 'none');
+        svg.appendChild(path);
+      }
+    }
+
+    // horizontal line at y=54
+    const targetLineY = toSvg(0, SOL_Y).y;
+    if(targetLineY >= margin.t && targetLineY <= margin.t+plotH){
+      const hl = mkLine(margin.l, targetLineY, margin.l+plotW, targetLineY, '#B8860B', 1.5);
+      hl.setAttribute('stroke-dasharray', '6 4');
+      svg.appendChild(hl);
+      const hlLab = mkText(margin.l+plotW-5, targetLineY-6, 'y = 54', 'tick-label');
+      hlLab.setAttribute('text-anchor', 'end');
+      hlLab.setAttribute('fill', '#B8860B');
+      hlLab.setAttribute('font-weight', '600');
+      svg.appendChild(hlLab);
+    }
+
+    // plotted points
+    points.forEach(p => {
+      const sp = toSvg(p.x, p.y);
+      if(sp.x<margin.l-5||sp.x>margin.l+plotW+5||sp.y<margin.t-5||sp.y>margin.t+plotH+5) return;
+      const isSol = p.y === SOL_Y;
+      const c = document.createElementNS(svgNS,'circle');
+      c.setAttribute('cx',sp.x); c.setAttribute('cy',sp.y); c.setAttribute('r', isSol ? 9 : 7);
+      c.setAttribute('fill', isSol ? '#B8860B' : '#1F6F5C');
+      c.setAttribute('stroke', '#FFFDF7'); c.setAttribute('stroke-width','2');
+      svg.appendChild(c);
+      if(isSol){
+        const halo = document.createElementNS(svgNS,'circle');
+        halo.setAttribute('cx',sp.x); halo.setAttribute('cy',sp.y); halo.setAttribute('r',13);
+        halo.setAttribute('fill','none'); halo.setAttribute('stroke','#B8860B');
+        halo.setAttribute('stroke-width','2'); halo.setAttribute('stroke-opacity','0.4');
+        svg.appendChild(halo);
+      }
+      const lab = mkText(sp.x+10, sp.y-10, `(${p.x},${p.y})${isSol?' ★':''}`, 'tick-label');
+      lab.setAttribute('font-weight', isSol ? '700' : '400');
+      lab.setAttribute('fill', isSol ? '#B8860B' : '#26332B');
+      svg.appendChild(lab);
+    });
+
+    // prediction marker
+    if(!revealed && step < TOTAL){
+      const sd = getStepData();
+      const py = parseFloat(predictY.value);
+      if(!isNaN(py)){
+        const sp = toSvg(sd.x, py);
+        const tsp = toSvg(sd.x, sd.y);
+        if(sp.y >= margin.t && sp.y <= margin.t+plotH){
+          const guide = mkLine(sp.x, sp.y, tsp.x, tsp.y, '#7B5EA7', 1.5);
+          guide.setAttribute('stroke-dasharray','4 3'); guide.setAttribute('stroke-opacity','0.5');
+          svg.appendChild(guide);
+          const c = document.createElementNS(svgNS,'circle');
+          c.setAttribute('cx',sp.x); c.setAttribute('cy',sp.y); c.setAttribute('r',7);
+          c.setAttribute('fill','#7B5EA7'); c.setAttribute('fill-opacity','0.9');
+          c.setAttribute('stroke','#FFFDF7'); c.setAttribute('stroke-width','2');
+          svg.appendChild(c);
+          const lab = mkText(sp.x+10, sp.y-10, `you: ${py}`, 'tick-label');
+          lab.setAttribute('fill','#7B5EA7'); lab.setAttribute('font-weight','600');
+          svg.appendChild(lab);
+        }
+      }
+    }
+
+    // origin
+    if(0>=bounds.xMin&&0<=bounds.xMax&&0>=bounds.yMin&&0<=bounds.yMax){
+      const o=toSvg(0,0);
+      const oc=document.createElementNS(svgNS,'circle');
+      oc.setAttribute('cx',o.x); oc.setAttribute('cy',o.y); oc.setAttribute('r',3.5);
+      oc.setAttribute('fill','#26332B'); svg.appendChild(oc);
+    }
+  }
+
+  function mkLine(x1,y1,x2,y2,stroke,w){
+    const l=document.createElementNS(svgNS,'line');
+    l.setAttribute('x1',x1);l.setAttribute('y1',y1);
+    l.setAttribute('x2',x2);l.setAttribute('y2',y2);
+    l.setAttribute('stroke',stroke);l.setAttribute('stroke-width',w); return l;
+  }
+  function mkText(x,y,text,cls){
+    const t=document.createElementNS(svgNS,'text');
+    t.setAttribute('x',x);t.setAttribute('y',y);t.setAttribute('class',cls);
+    t.textContent=text; return t;
+  }
+
+  // ---- QUIZ ----
+  document.querySelectorAll('.q .options').forEach(group=>{
+    group.querySelectorAll('.opt').forEach(btn=>{
+      btn.addEventListener('click',()=>{
+        const correct=btn.dataset.correct==='true';
+        group.querySelectorAll('.opt').forEach(b=>{b.disabled=true;if(b.dataset.correct==='true')b.classList.add('correct');});
+        if(!correct) btn.classList.add('wrong');
+        if(group.parentElement.id==='q3'&&correct){
+          setTimeout(()=>{exploreCard.classList.remove('hidden');exploreCard.scrollIntoView({behavior:'smooth',block:'nearest'});rebuildExplore();},400);
+        }
+      });
+    });
+  });
+
+  // ---- EXPLORE MODE ----
+  const expA=document.getElementById('expA'), expB=document.getElementById('expB'), expC=document.getElementById('expC'), expTarget=document.getElementById('expTarget');
+  const exploreEq=document.getElementById('exploreEq');
+  const exploreSolution=document.getElementById('exploreSolution');
+  const explorePlot=document.getElementById('explorePlot');
+
+  function eqString(a,b,c){
+    const parts = [];
+    if(a !== 0){
+      if(a === 1) parts.push('x²');
+      else if(a === -1) parts.push('−x²');
+      else parts.push(a + 'x²');
+    }
+    if(b !== 0){
+      if(b > 0){
+        if(parts.length === 0) parts.push(b === 1 ? 'x' : b + 'x');
+        else parts.push('+ ' + (b === 1 ? 'x' : b + 'x'));
+      } else {
+        if(parts.length === 0) parts.push(b === -1 ? '−x' : b + 'x');
+        else parts.push('− ' + (b === -1 ? 'x' : Math.abs(b) + 'x'));
+      }
+    }
+    if(c !== 0){
+      if(c > 0){
+        if(parts.length === 0) parts.push(c);
+        else parts.push('+ ' + c);
+      } else {
+        if(parts.length === 0) parts.push(c);
+        else parts.push('− ' + Math.abs(c));
+      }
+    }
+    if(parts.length === 0) return 'f(x) = 0';
+    return 'f(x) = ' + parts.join(' ');
+  }
+
+  function rebuildExplore(){
+    const a=parseFloat(expA.value)||0, b=parseFloat(expB.value)||0, c=parseFloat(expC.value)||0, t=parseFloat(expTarget.value)||0;
+    exploreEq.textContent = eqString(a,b,c);
+
+    const annot=[];
+    // Solve: ax² + bx + c = t  →  ax² + bx + (c-t) = 0
+    const ct = c - t;
+    let solMsg = '';
+    if(a === 0 && b === 0){
+      // constant function
+      if(Math.abs(c - t) < 0.001) solMsg = `<div class="solution-banner two">f(x) = ${c} is constant. Every x is a solution!</div>`;
+      else solMsg = `<div class="solution-banner">f(x) = ${c} is constant. Target ${t} is never reached.</div>`;
+    } else if(a === 0){
+      // linear: bx + c = t  →  x = (t-c)/b
+      const x = (t - c) / b;
+      solMsg = `<div class="solution-banner two">Linear: one solution — x = <strong>${x.toFixed(3)}</strong></div>`;
+      annot.push({x, y:t});
+    } else {
+      // quadratic formula
+      const disc = b*b - 4*a*ct;
+      const denom = 2*a;
+      if(disc < -0.001){
+        solMsg = `<div class="solution-banner">No real solutions — discriminant = ${disc.toFixed(2)} &lt; 0</div>`;
+      } else if(Math.abs(disc) < 0.001){
+        const x = -b / denom;
+        solMsg = `<div class="solution-banner two">One real solution (repeated) — x = <strong>${x.toFixed(3)}</strong></div>`;
+        annot.push({x, y:t});
+      } else {
+        const sqrtDisc = Math.sqrt(disc);
+        const x1 = (-b + sqrtDisc) / denom;
+        const x2 = (-b - sqrtDisc) / denom;
+        solMsg = `<div class="solution-banner two">Two real solutions: x = <strong>${x1.toFixed(3)}</strong> and x = <strong>${x2.toFixed(3)}</strong></div>`;
+        annot.push({x:x1, y:t});
+        annot.push({x:x2, y:t});
+      }
+    }
+    exploreSolution.innerHTML = solMsg;
+
+    if(typeof Plotly !== 'undefined'){
+      const xs=[], curve=[];
+      const xMin=-12, xMax=12;
+      for(let x=xMin; x<=xMax; x+=0.05){ xs.push(x); curve.push(a*x*x + b*x + c); }
+      const traces=[
+        {x:xs, y:curve, mode:'lines', type:'scatter', line:{color:'#1F6F5C', width:3}, name:eqString(a,b,c).replace('f(x) = ','')},
+        {x:[xMin,xMax], y:[t,t], mode:'lines', type:'scatter', line:{color:'#B8860B', width:2, dash:'dash'}, name:`y=${t}`}
+      ];
+      if(annot.length){
+        traces.push({
+          x:annot.map(p=>p.x), y:annot.map(p=>p.y), mode:'markers+text', type:'scatter',
+          marker:{size:14, color:'#7B5EA7', symbol:'star', line:{color:'#FFFDF7',width:2}},
+          text:annot.map(p=>`(${p.x.toFixed(2)},${p.y})`), textposition:'top center',
+          name:'solutions'
+        });
+      }
+      const allY = curve.concat([t]);
+      const yMin = Math.min(-15, Math.min(...allY)-5);
+      const yMax = Math.max(60, Math.max(...allY)+5);
+      Plotly.react('explorePlot', traces, {
+        margin:{l:40,r:20,t:20,b:40},
+        xaxis:{range:[xMin, xMax], gridcolor:'#E4DCC4', zeroline:true, zerolinecolor:'#26332B', title:'x'},
+        yaxis:{range:[yMin, yMax], gridcolor:'#E4DCC4', zeroline:true, zerolinecolor:'#26332B', title:'f(x)'},
+        plot_bgcolor:'#FFFDF7', paper_bgcolor:'#FFFDF7',
+        font:{family:'IBM Plex Mono, monospace', size:11, color:'#26332B'},
+        showlegend:true, legend:{x:1, y:1, xanchor:'right', yanchor:'top', bgcolor:'rgba(255,253,247,0.9)'}
+      }, {displayModeBar:false, responsive:true});
+    }
+  }
+
+  [expA, expB, expC, expTarget].forEach(el => el.addEventListener('input', rebuildExplore));
+
+  // init
+  document.getElementById('step-1').classList.add('active');
+  updateDisplay();
+  updateStatus('Aryabhata feeds <strong>x = 4</strong> into the function. What output f(4) do you expect?');
+  render();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bharavi's Line — Every Point of the Form β(2, 7, 3)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=IBM+Plex+Mono:wght@500;600&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#FAF5E8; --paper-line:#D8CFB6; --ink:#26332B; --ink-soft:#5B6B60;
+    --xaxis:#B5502E;
+    --yaxis:#1F6F5C;
+    --zaxis:#0E7490;
+    --line:#7B2D8E; --line-soft:#F3E5F7;
+    --point:#B8860B;
+    --accent:#0E7490; --accent-soft:#CFFAFE;
+    --good:#1F6F5C; --good-soft:#DCEDE7;
+    --card:#FFFDF7; --shadow:0 2px 10px rgba(38,51,43,0.08);
+  }
+  *{box-sizing:border-box;} html,body{margin:0;padding:0;}
+  body{
+    background:repeating-linear-gradient(#FAF5E8 0px,#FAF5E8 27px,var(--paper-line) 28px),var(--paper);
+    background-size:100% 28px; color:var(--ink);
+    font-family:'Source Sans 3',sans-serif; min-height:100vh; padding:28px 16px 60px;
+  }
+  .wrap{max-width:1080px;margin:0 auto;}
+
+  header.hero{
+    background:var(--card); border:1px solid var(--paper-line);
+    border-radius:14px; box-shadow:var(--shadow);
+    padding:26px 28px 22px; margin-bottom:20px;
+  }
+  .eyebrow{font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);margin:0 0 6px;}
+  h1{font-family:'Caveat',cursive;font-weight:700;font-size:42px;margin:0 0 10px;line-height:1.05;}
+  header.hero p{max-width:760px;line-height:1.55;font-size:15.5px;margin:0 0 8px;}
+  .rule-badge{
+    display:inline-flex; gap:12px; align-items:center; flex-wrap:wrap;
+    background:var(--paper); border:1px dashed var(--paper-line);
+    border-radius:10px; padding:10px 14px; margin-top:12px;
+    font-family:'IBM Plex Mono',monospace; font-size:13px;
+  }
+  .rule-badge .piece{display:inline-flex;align-items:center;gap:6px;}
+  .rule-badge .var{color:var(--accent);font-weight:700;}
+  .rule-badge .dir{color:var(--line);font-weight:700;}
+  .rule-badge .vec3{
+    border-left:1.5px solid var(--ink); border-right:1.5px solid var(--ink);
+    padding:1px 6px; font-size:12px; line-height:1.0;
+  }
+
+  .grid-layout{display:grid;grid-template-columns:340px 1fr;gap:20px;align-items:start;}
+  @media (max-width:880px){.grid-layout{grid-template-columns:1fr;}}
+
+  .card{background:var(--card);border:1px solid var(--paper-line);border-radius:14px;box-shadow:var(--shadow);padding:20px;}
+  .panel-title{font-family:'Caveat',cursive;font-weight:700;font-size:24px;margin:0 0 4px;}
+  .panel-sub{font-size:13px;color:var(--ink-soft);margin:0 0 14px;line-height:1.4;}
+
+  .point-display{
+    background:var(--accent-soft); border:1.5px solid var(--accent);
+    border-radius:10px; padding:12px 14px; margin-bottom:14px;
+    font-family:'IBM Plex Mono',monospace; font-size:15px; font-weight:600;
+    text-align:center; color:var(--accent); line-height:1.5;
+  }
+  .point-display .formula{margin-bottom:4px;color:var(--ink-soft);font-size:12px;}
+  .point-display .coords{font-size:18px;font-weight:700;}
+  .point-display .coords .ax{color:var(--xaxis);}
+  .point-display .coords .ay{color:var(--yaxis);}
+  .point-display .coords .az{color:var(--zaxis);}
+
+  .field{margin-bottom:12px;}
+  .field label{display:flex;justify-content:space-between;font-size:13.5px;font-weight:600;margin-bottom:6px;}
+  .field label span.val{font-family:'IBM Plex Mono',monospace;color:var(--accent);font-weight:600;}
+  input[type=number]{
+    width:100%; padding:9px 10px; border-radius:8px;
+    border:1px solid var(--paper-line);
+    font-family:'IBM Plex Mono',monospace; font-size:16px;
+    background:var(--paper); color:var(--ink);
+    -moz-appearance:textfield;
+  }
+  input[type=number]::-webkit-inner-spin-button,
+  input[type=number]::-webkit-outer-spin-button{-webkit-appearance:none;margin:0;}
+  input[type=number]:focus{
+    outline:2px solid var(--accent); outline-offset:-1px;
+    border-color:var(--accent); background:var(--card);
+  }
+  .helper{font-size:12px;color:var(--ink-soft);margin-top:6px;line-height:1.4;}
+  .helper span.k{font-family:'IBM Plex Mono',monospace;color:var(--ink);font-weight:600;}
+
+  .sample-row{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap;}
+  .sample-btn{
+    flex:1; min-width:36px;
+    padding:7px 4px; border-radius:8px;
+    border:1px solid var(--paper-line); background:var(--paper);
+    font-family:'IBM Plex Mono',monospace; font-size:13px; font-weight:600;
+    cursor:pointer; color:var(--ink); text-align:center;
+  }
+  .sample-btn:hover{background:var(--accent-soft);border-color:var(--accent);color:var(--accent);}
+  .sample-btn.active{background:var(--accent-soft);border-color:var(--accent);color:var(--accent);}
+
+  .status{
+    font-size:13.5px; line-height:1.5; padding:12px;
+    border-radius:9px; background:var(--paper);
+    border:1px solid var(--paper-line); margin-bottom:14px; min-height:20px;
+  }
+  .status.feedback-good{background:var(--good-soft);border-color:var(--good);color:var(--good);font-weight:600;}
+
+  button{
+    font-family:'Source Sans 3',sans-serif; font-weight:600; font-size:14.5px;
+    border:none; border-radius:9px; padding:11px 16px; cursor:pointer;
+    width:100%; transition:transform .08s ease, filter .15s ease;
+  }
+  button:active{transform:translateY(1px);}
+  button:disabled{opacity:.4;cursor:not-allowed;}
+  .btn-primary{background:var(--accent);color:#fff;}
+  .btn-primary:hover:not(:disabled){filter:brightness(1.08);}
+  .btn-secondary{background:var(--paper);color:var(--ink);border:1px solid var(--paper-line);margin-top:8px;}
+  .btn-secondary:hover:not(:disabled){background:#F0E9D6;}
+
+  .graph-card{display:flex;flex-direction:column;}
+  .legend{display:flex;gap:18px;flex-wrap:wrap;margin:6px 0 12px;font-size:12.5px;font-family:'IBM Plex Mono',monospace;}
+  .legend span{display:inline-flex;align-items:center;gap:6px;}
+  .dot{width:10px;height:10px;border-radius:50%;display:inline-block;}
+  .dot.s-line{background:var(--line);}
+  .dot.s-point{background:var(--point);}
+  .dot.s-sample{background:var(--ink-soft);}
+
+  svg{width:100%;height:auto;display:block;background:var(--paper);border:1px solid var(--paper-line);border-radius:8px;}
+  .axis-label{font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:700;}
+  .tick-label{font-family:'IBM Plex Mono',monospace;font-size:10px;fill:var(--ink-soft);}
+  .subplot-title{font-family:'Caveat',cursive;font-size:20px;fill:var(--ink);font-weight:700;}
+  .subplot-formula{font-family:'IBM Plex Mono',monospace;font-size:12px;fill:var(--ink-soft);}
+
+  .reflect,.explore{margin-top:20px;padding-top:16px;border-top:1px dashed var(--paper-line);}
+  .reflect.hidden,.explore.hidden{display:none;}
+  .q{margin-bottom:16px;}
+  .q p.qtext{font-weight:600;margin:0 0 8px;font-size:14.5px;}
+  .options{display:flex;gap:8px;flex-wrap:wrap;}
+  .opt{
+    padding:8px 14px;border-radius:8px;border:1px solid var(--paper-line);
+    background:var(--paper);font-size:13.5px;cursor:pointer;font-weight:600;
+  }
+  .opt.correct{background:var(--good-soft);border-color:var(--good);color:var(--good);}
+  .opt.wrong{background:#FBEFE8;border-color:#B5502E;color:#8C3A1F;}
+  .opt:disabled{cursor:default;}
+
+  .explore .panel-title{font-size:22px;}
+  .explore-inputs{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 14px;}
+  .explore-inputs .field{flex:1;min-width:80px;margin-bottom:0;}
+  .explore-eq{
+    background:var(--line-soft); border:1px solid var(--line);
+    border-radius:8px; padding:10px; margin-bottom:10px;
+    font-family:'IBM Plex Mono',monospace; font-size:13px; text-align:center; color:var(--line); font-weight:700;
+  }
+
+  footer.note{text-align:center;font-size:12px;color:var(--ink-soft);margin-top:26px;font-family:'IBM Plex Mono',monospace;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <p class="eyebrow">Linear Algebra · Lines through the Origin in 3D</p>
+    <h1>Bharavi's Line — Every Point of the Form β(2, 7, 3)</h1>
+    <p>Pick any real number β. Multiply the direction vector (2, 7, 3) by β — you get a point (2β, 7β, 3β). As β runs over all reals, the point traces a <strong>straight line through the origin</strong>. The line has direction (2, 7, 3), so every point on it has its x, y, z in the ratio 2 : 7 : 3.</p>
+    <div class="rule-badge">
+      <span style="color:var(--ink-soft);">S = {</span>
+      <span class="var">β</span>
+      <span class="dir">·</span>
+      <span class="vec3">
+        <span style="display:block;line-height:1.0;">2</span>
+        <span style="display:block;line-height:1.0;">7</span>
+        <span style="display:block;line-height:1.0;">3</span>
+      </span>
+      <span style="color:var(--ink-soft);">| β ∈ ℝ}</span>
+      <span style="color:var(--ink-soft);">·</span>
+      <span style="color:var(--ink);">every β gives a point (2β, 7β, 3β)</span>
+    </div>
+  </header>
+
+  <div class="grid-layout">
+
+    <!-- LEFT CONTROL PANEL -->
+    <div class="card">
+      <p class="panel-title">Pick β, get a point</p>
+      <p class="panel-sub">Type any β. The point on the line is (2β, 7β, 3β). All three views below update at once.</p>
+
+      <div class="point-display">
+        <div class="formula">β(2, 7, 3) =</div>
+        <div class="coords" id="coords">
+          (<span class="ax">x</span>, <span class="ay">y</span>, <span class="az">z</span>)
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Pick <span class="val">β</span></label>
+        <input type="number" id="inBeta" step="any" value="1">
+        <div class="helper">Try <span class="k">β = 0</span> (the origin), <span class="k">β = 1</span> (the point (2, 7, 3)), <span class="k">β = −1</span> (the opposite side).</div>
+      </div>
+
+      <div class="sample-row">
+        <button class="sample-btn" data-beta="-2">β = −2</button>
+        <button class="sample-btn" data-beta="-1">β = −1</button>
+        <button class="sample-btn" data-beta="0">β = 0</button>
+        <button class="sample-btn" data-beta="1">β = 1</button>
+        <button class="sample-btn" data-beta="2">β = 2</button>
+      </div>
+
+      <div class="status" id="statusBox">Type β or pick a button. The point is (2β, 7β, 3β). It shows up as a gold dot in all three views below.</div>
+
+      <button class="btn-secondary" id="resetBtn">Reset to β = 1</button>
+    </div>
+
+    <!-- RIGHT GRAPH -->
+    <div class="card graph-card">
+      <p class="panel-title">Three 2D views of the same line</p>
+      <div class="legend">
+        <span><i class="dot s-line"></i>line of points (2β, 7β, 3β)</span>
+        <span><i class="dot s-sample"></i>sample points</span>
+        <span><i class="dot s-point"></i>your β</span>
+      </div>
+      <p class="panel-sub" style="margin:6px 0 10px;">A 3D line is hard to see on paper. Instead, look at it from three flat sides — each side shows two of the three coordinates. In <em>every</em> view, the points form a straight line through the origin.</p>
+      <svg id="graphSvg" viewBox="0 0 900 420" xmlns="http://www.w3.org/2000/svg"></svg>
+    </div>
+  </div>
+
+  <!-- REFLECTION QUIZ -->
+  <div class="card reflect hidden" id="reflectCard">
+    <p class="panel-title">What do you notice?</p>
+    <p class="panel-sub">Three views, three straight lines. Now answer these.</p>
+
+    <div class="q" id="q1">
+      <p class="qtext">1. For β = 1, the point on the line is —</p>
+      <div class="options">
+        <button class="opt" data-correct="false">(1, 1, 1) — every coordinate equals β</button>
+        <button class="opt" data-correct="true">(2, 7, 3) — because we multiply (2, 7, 3) by β = 1</button>
+        <button class="opt" data-correct="false">(3, 7, 2) — coordinates in reverse order</button>
+      </div>
+    </div>
+
+    <div class="q" id="q2">
+      <p class="qtext">2. In the "y vs x" view, the line has equation —</p>
+      <div class="options">
+        <button class="opt" data-correct="false">y = 2x (because x-coefficient is 2)</button>
+        <button class="opt" data-correct="false">y = 7x (because y grows by 7)</button>
+        <button class="opt" data-correct="true">y = (7/2)·x (the ratio of y-coefficient to x-coefficient)</button>
+      </div>
+    </div>
+
+    <div class="q" id="q3">
+      <p class="qtext">3. All the points (2β, 7β, 3β) lie on —</p>
+      <div class="options">
+        <button class="opt" data-correct="false">a curved arc in 3D space</button>
+        <button class="opt" data-correct="true">a single straight line through the origin (0, 0, 0), in the direction (2, 7, 3)</button>
+        <button class="opt" data-correct="false">three separate lines in 3D space</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- EXPLORE MODE -->
+  <div class="card explore hidden" id="exploreCard">
+    <p class="panel-title">Now you try: change the direction</p>
+    <p class="panel-sub">The set is β(d₁, d₂, d₃). Type any direction vector and see the three views update.</p>
+
+    <div class="explore-inputs">
+      <div class="field"><label>d₁</label><input type="number" id="expD1" step="0.5" value="2"></div>
+      <div class="field"><label>d₂</label><input type="number" id="expD2" step="0.5" value="7"></div>
+      <div class="field"><label>d₃</label><input type="number" id="expD3" step="0.5" value="3"></div>
+    </div>
+
+    <div class="explore-eq" id="exploreEq">Direction (2, 7, 3) — line through origin</div>
+  </div>
+
+  <footer class="note">Built for 3D lines · every β(2, 7, 3) lies on one straight line through the origin · the line has direction (2, 7, 3)</footer>
+</div>
+
+<script>
+(function(){
+  // ---- STATE ----
+  let d1 = 2, d2 = 7, d3 = 3;
+  let beta = 1;
+
+  // ---- DOM ----
+  const inBeta = document.getElementById('inBeta');
+  const coords = document.getElementById('coords');
+  const statusBox = document.getElementById('statusBox');
+  const resetBtn = document.getElementById('resetBtn');
+  const sampleBtns = document.querySelectorAll('.sample-btn');
+  const reflectCard = document.getElementById('reflectCard');
+  const exploreCard = document.getElementById('exploreCard');
+
+  function formatNum(v){
+    if(Math.abs(v) < 1e-9) return '0';
+    if(Number.isInteger(v)) return v.toString();
+    return (Math.round(v*100)/100).toString();
+  }
+
+  function updateLive(){
+    const b = parseFloat(inBeta.value);
+    if(isNaN(b)){
+      coords.innerHTML = '(<span class="ax">x</span>, <span class="ay">y</span>, <span class="az">z</span>)';
+      render();
+      return;
+    }
+    beta = b;
+    const x = beta * d1;
+    const y = beta * d2;
+    const z = beta * d3;
+    coords.innerHTML = `(<span class="ax">${formatNum(x)}</span>, <span class="ay">${formatNum(y)}</span>, <span class="az">${formatNum(z)}</span>)`;
+    sampleBtns.forEach(btn => {
+      const btnBeta = parseFloat(btn.dataset.beta);
+      btn.classList.toggle('active', Math.abs(btnBeta - beta) < 1e-9);
+    });
+    render();
+  }
+
+  function resetGame(){
+    inBeta.value = '1';
+    beta = 1;
+    d1 = 2; d2 = 7; d3 = 3;
+    reflectCard.classList.add('hidden');
+    exploreCard.classList.add('hidden');
+    updateLive();
+  }
+
+  inBeta.addEventListener('input', updateLive);
+  inBeta.addEventListener('keydown', (e)=>{ if(e.key === 'Enter') updateLive(); });
+  resetBtn.addEventListener('click', resetGame);
+  sampleBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      inBeta.value = btn.dataset.beta;
+      updateLive();
+      reflectCard.classList.remove('hidden');
+    });
+  });
+
+  // ---- SVG rendering — three 2D projections side by side ----
+  const svg = document.getElementById('graphSvg');
+  const svgNS = "http://www.w3.org/2000/svg";
+
+  // Subplot positions within the 900x420 SVG
+  const SUB_W = 270;
+  const SUB_H = 320;
+  const SUB_Y = 60;        // top y for all subplots
+  const SUB_X_A = 30;
+  const SUB_X_B = 315;
+  const SUB_X_C = 600;
+
+  function niceStep(r){
+    if(r <= 1) return 1;
+    const mag = Math.pow(10, Math.floor(Math.log10(r)));
+    const norm = r / mag;
+    let n;
+    if(norm <= 1) n = 1;
+    else if(norm <= 2) n = 2;
+    else if(norm <= 5) n = 5;
+    else n = 10;
+    return n * mag;
+  }
+
+  function drawSubplot(opts){
+    const {ox, oy, xLabel, yLabel, title, formula, xRange, yRange, sampleX, sampleY, userX, userY, slopeFn} = opts;
+    const [xMin, xMax] = xRange;
+    const [yMin, yMax] = yRange;
+    const xR = xMax - xMin, yR = yMax - yMin;
+    const innerW = SUB_W - 50, innerH = SUB_H - 60;
+    const s = Math.min(innerW / xR, innerH / yR);
+    const cx = ox + SUB_W / 2;
+    const cy = oy + SUB_H / 2 + 8;
+    function L(x, y){ return {sx: cx + x * s, sy: cy - y * s}; }
+
+    // Title
+    const t1 = mkT(ox + SUB_W/2, oy + 22, title, 'subplot-title');
+    t1.setAttribute('text-anchor', 'middle');
+    svg.appendChild(t1);
+    // Formula
+    const t2 = mkT(ox + SUB_W/2, oy + 40, formula, 'subplot-formula');
+    t2.setAttribute('text-anchor', 'middle');
+    svg.appendChild(t2);
+
+    // Box outline (subtle)
+    const xL = L(xMin, 0), xR_ = L(xMax, 0);
+    const yT = L(0, yMax), yB = L(0, yMin);
+    // Light border around plot
+    svg.appendChild(mkL(xL.sx, xL.sy, xR_.sx, xR_.sy, '#C8BEA0', 0.5));
+    svg.appendChild(mkL(yT.sx, yT.sy, yB.sx, yB.sy, '#C8BEA0', 0.5));
+
+    // Axes through (0, 0)
+    svg.appendChild(mkL(xL.sx, xL.sy, xR_.sx, xR_.sy, '#26332B', 1.3));
+    svg.appendChild(mkL(yT.sx, yT.sy, yB.sx, yB.sy, '#26332B', 1.3));
+
+    // Tick labels
+    const tStep = niceStep(Math.max(xR, yR) / 4);
+    for(let v = Math.ceil(xMin / tStep) * tStep; v <= xMax; v += tStep){
+      if(Math.abs(v) < tStep * 0.001) continue;
+      const p = L(v, 0);
+      if(p.sx < ox + 10 || p.sx > ox + SUB_W - 10) continue;
+      svg.appendChild(mkL(p.sx, p.sy - 3, p.sx, p.sy + 3, '#5B6B60', 1));
+      const lab = mkT(p.sx, L(0, yMin).sy + 12, formatNum(v), 'tick-label');
+      lab.setAttribute('text-anchor', 'middle');
+      svg.appendChild(lab);
+    }
+    for(let v = Math.ceil(yMin / tStep) * tStep; v <= yMax; v += tStep){
+      if(Math.abs(v) < tStep * 0.001) continue;
+      const p = L(0, v);
+      if(p.sy < oy + 50 || p.sy > oy + SUB_H - 5) continue;
+      svg.appendChild(mkL(p.sx - 3, p.sy, p.sx + 3, p.sy, '#5B6B60', 1));
+      const lab = mkT(L(0, xMin).sx - 6, p.sy + 3, formatNum(v), 'tick-label');
+      lab.setAttribute('text-anchor', 'end');
+      svg.appendChild(lab);
+    }
+
+    // Origin label
+    const op = L(0, 0);
+    const ol = mkT(op.sx - 6, op.sy + 12, '0', 'tick-label');
+    svg.appendChild(ol);
+
+    // Axis labels
+    const xl = mkT(xR_.sx + 4, xR_.sy + 14, xLabel, 'axis-label');
+    svg.appendChild(xl);
+    const yl = mkT(yT.sx - 6, yT.sy - 4, yLabel, 'axis-label');
+    svg.appendChild(yl);
+
+    // The line (from xMin to xMax)
+    const lp1 = L(xMin, slopeFn(xMin));
+    const lp2 = L(xMax, slopeFn(xMax));
+    // Clip to box (otherwise parts may go outside)
+    let l1sx = Math.max(ox + 5, Math.min(ox + SUB_W - 5, lp1.sx));
+    let l1sy = Math.max(oy + 50, Math.min(oy + SUB_H - 5, lp1.sy));
+    let l2sx = Math.max(ox + 5, Math.min(ox + SUB_W - 5, lp2.sx));
+    let l2sy = Math.max(oy + 50, Math.min(oy + SUB_H - 5, lp2.sy));
+    svg.appendChild(mkL(l1sx, l1sy, l2sx, l2sy, '#7B2D8E', 2.5));
+
+    // Sample points
+    for(let i = 0; i < sampleX.length; i++){
+      const sx = sampleX[i], sy = sampleY[i];
+      const p = L(sx, sy);
+      if(p.sx < ox + 8 || p.sx > ox + SUB_W - 8 || p.sy < oy + 50 || p.sy > oy + SUB_H - 8) continue;
+      const c = document.createElementNS(svgNS, 'circle');
+      c.setAttribute('cx', p.sx); c.setAttribute('cy', p.sy);
+      c.setAttribute('r', 3.5);
+      c.setAttribute('fill', '#5B6B60');
+      c.setAttribute('fill-opacity', '0.7');
+      svg.appendChild(c);
+      // Label with β value
+      const lab = mkT(p.sx + 5, p.sy + 3, `β=${formatNum(sx === sampleX[i] ? sy / d2 : sx / d1)}`, 'tick-label');
+      lab.setAttribute('fill', '#5B6B60');
+      lab.setAttribute('font-size', '9');
+      svg.appendChild(lab);
+    }
+
+    // User's current point
+    const up = L(userX, userY);
+    if(up.sx >= ox + 5 && up.sx <= ox + SUB_W - 5 && up.sy >= oy + 50 && up.sy <= oy + SUB_H - 5){
+      const halo = document.createElementNS(svgNS, 'circle');
+      halo.setAttribute('cx', up.sx); halo.setAttribute('cy', up.sy);
+      halo.setAttribute('r', 12);
+      halo.setAttribute('fill', 'none');
+      halo.setAttribute('stroke', '#B8860B');
+      halo.setAttribute('stroke-width', '1.5');
+      halo.setAttribute('stroke-opacity', '0.5');
+      svg.appendChild(halo);
+      const c = document.createElementNS(svgNS, 'circle');
+      c.setAttribute('cx', up.sx); c.setAttribute('cy', up.sy);
+      c.setAttribute('r', 5);
+      c.setAttribute('fill', '#B8860B');
+      c.setAttribute('stroke', '#FFFDF7');
+      c.setAttribute('stroke-width', '2');
+      svg.appendChild(c);
+    }
+  }
+
+  function render(){
+    while(svg.firstChild) svg.removeChild(svg.firstChild);
+
+    const bVals = [-2, -1, 0, 1, 2];
+
+    // Subplot A: y vs x — points (2β, 7β)
+    drawSubplot({
+      ox: SUB_X_A, oy: SUB_Y,
+      xLabel: 'x', yLabel: 'y',
+      title: 'View 1 — y vs x',
+      formula: 'y = (7/2) · x',
+      xRange: [-7, 7], yRange: [-25, 25],
+      sampleX: bVals.map(b => 2*b),
+      sampleY: bVals.map(b => 7*b),
+      userX: 2 * beta,
+      userY: 7 * beta,
+      slopeFn: x => (7/2) * x
+    });
+
+    // Subplot B: z vs x — points (2β, 3β)
+    drawSubplot({
+      ox: SUB_X_B, oy: SUB_Y,
+      xLabel: 'x', yLabel: 'z',
+      title: 'View 2 — z vs x',
+      formula: 'z = (3/2) · x',
+      xRange: [-7, 7], yRange: [-11, 11],
+      sampleX: bVals.map(b => 2*b),
+      sampleY: bVals.map(b => 3*b),
+      userX: 2 * beta,
+      userY: 3 * beta,
+      slopeFn: x => (3/2) * x
+    });
+
+    // Subplot C: z vs y — points (7β, 3β)
+    drawSubplot({
+      ox: SUB_X_C, oy: SUB_Y,
+      xLabel: 'y', yLabel: 'z',
+      title: 'View 3 — z vs y',
+      formula: 'z = (3/7) · y',
+      xRange: [-25, 25], yRange: [-11, 11],
+      sampleX: bVals.map(b => 7*b),
+      sampleY: bVals.map(b => 3*b),
+      userX: 7 * beta,
+      userY: 3 * beta,
+      slopeFn: x => (3/7) * x
+    });
+  }
+
+  function mkL(x1, y1, x2, y2, stroke, w){
+    const l = document.createElementNS(svgNS, 'line');
+    l.setAttribute('x1', x1); l.setAttribute('y1', y1);
+    l.setAttribute('x2', x2); l.setAttribute('y2', y2);
+    l.setAttribute('stroke', stroke); l.setAttribute('stroke-width', w);
+    return l;
+  }
+  function mkT(x, y, text, cls){
+    const t = document.createElementNS(svgNS, 'text');
+    t.setAttribute('x', x); t.setAttribute('y', y);
+    t.setAttribute('class', cls);
+    t.textContent = text;
+    return t;
+  }
+
+  // ---- QUIZ ----
+  document.querySelectorAll('.q .options').forEach(group => {
+    group.querySelectorAll('.opt').forEach(btn => {
+      btn.addEventListener('click', ()=>{
+        const correct = btn.dataset.correct === 'true';
+        group.querySelectorAll('.opt').forEach(b => {
+          b.disabled = true;
+          if(b.dataset.correct === 'true') b.classList.add('correct');
+        });
+        if(!correct) btn.classList.add('wrong');
+        if(group.parentElement.id === 'q3' && correct){
+          setTimeout(()=>{
+            exploreCard.classList.remove('hidden');
+            exploreCard.scrollIntoView({behavior:'smooth', block:'nearest'});
+            rebuildExplore();
+          }, 400);
+        }
+      });
+    });
+  });
+
+  // ---- EXPLORE ----
+  const expD1 = document.getElementById('expD1');
+  const expD2 = document.getElementById('expD2');
+  const expD3 = document.getElementById('expD3');
+  const exploreEq = document.getElementById('exploreEq');
+
+  function rebuildExplore(){
+    const nd1 = parseFloat(expD1.value);
+    const nd2 = parseFloat(expD2.value);
+    const nd3 = parseFloat(expD3.value);
+    if([nd1, nd2, nd3].some(v => isNaN(v))) return;
+    d1 = nd1; d2 = nd2; d3 = nd3;
+    if(d1 === 0 && d2 === 0 && d3 === 0){
+      exploreEq.textContent = 'direction (0, 0, 0) — every point is the same (no line)';
+    } else {
+      exploreEq.textContent = `Direction (${formatNum(d1)}, ${formatNum(d2)}, ${formatNum(d3)}) — line through origin`;
+    }
+    render();
+  }
+  [expD1, expD2, expD3].forEach(inp => {
+    inp.addEventListener('input', rebuildExplore);
+  });
+
+  // init
+  updateLive();
+})();
+</script>
+</body>
+</html>

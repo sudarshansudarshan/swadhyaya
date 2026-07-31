@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bhāskara's Cubic — g(x) = ax³ + bx² + cx + d</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=IBM+Plex+Mono:wght@500;600&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/plotly.js/2.32.0/plotly.min.js"></script>
+<style>
+  :root{
+    --paper:#FAF5E8; --paper-line:#D8CFB6; --ink:#26332B; --ink-soft:#5B6B60;
+    --fn:#1F6F5C; --fn-soft:#DCEDE7; --pt:#7B5EA7; --pt-soft:#EAE3F5;
+    --target:#B8860B; --target-soft:#F3E9CE; --card:#FFFDF7; --shadow:0 2px 10px rgba(38,51,43,0.08);
+  }
+  *{box-sizing:border-box;} html,body{margin:0;padding:0;}
+  body{
+    background:repeating-linear-gradient(#FAF5E8 0px,#FAF5E8 27px,var(--paper-line) 28px),var(--paper);
+    background-size:100% 28px; color:var(--ink); font-family:'Source Sans 3',sans-serif;
+    min-height:100vh; padding:28px 16px 60px;
+  }
+  .wrap{max-width:1080px;margin:0 auto;}
+  header.hero{background:var(--card);border:1px solid var(--paper-line);border-radius:14px;box-shadow:var(--shadow);padding:26px 28px 22px;margin-bottom:20px;}
+  .eyebrow{font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);margin:0 0 6px;}
+  h1{font-family:'Caveat',cursive;font-weight:700;font-size:38px;margin:0 0 10px;line-height:1.05;}
+  header.hero p{max-width:680px;line-height:1.55;font-size:15.5px;margin:0 0 8px;}
+  .rule-list{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px;}
+  .rule-list span{font-family:'IBM Plex Mono',monospace;font-size:12.5px;background:var(--paper);border:1px dashed var(--paper-line);border-radius:8px;padding:6px 10px;}
+  .grid-layout{display:grid;grid-template-columns:300px 1fr;gap:20px;align-items:start;}
+  @media (max-width:800px){.grid-layout{grid-template-columns:1fr;}}
+  .card{background:var(--card);border:1px solid var(--paper-line);border-radius:14px;box-shadow:var(--shadow);padding:20px;}
+  .panel-title{font-family:'Caveat',cursive;font-weight:700;font-size:24px;margin:0 0 4px;}
+  .panel-sub{font-size:13px;color:var(--ink-soft);margin:0 0 14px;line-height:1.4;}
+  .eq-highlight{
+    font-family:'IBM Plex Mono',monospace;font-size:20px;font-weight:600;text-align:center;
+    padding:12px;border-radius:10px;margin-bottom:14px;border:1px solid var(--paper-line);
+    background:var(--fn-soft);border-color:var(--fn);color:var(--fn);line-height:1.3;word-break:break-all;
+  }
+  .field{margin-bottom:14px;}
+  .field label{display:flex;justify-content:space-between;font-size:13.5px;font-weight:600;margin-bottom:6px;}
+  .field label span.val{font-family:'IBM Plex Mono',monospace;font-weight:600;color:var(--pt);}
+  input[type=number]{
+    width:100%;padding:9px 10px;border-radius:8px;border:1px solid var(--paper-line);
+    font-family:'IBM Plex Mono',monospace;font-size:16px;background:var(--paper);color:var(--ink);
+  }
+  input[type=number]:focus{outline:2px solid var(--pt);outline-offset:-1px;border-color:var(--pt);}
+  .helper{font-size:12px;color:var(--ink-soft);margin-top:4px;line-height:1.4;}
+  .param-row{display:flex;gap:8px;margin-bottom:16px;}
+  .param-row .pfield{flex:1;}
+  .param-row .pfield label{font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--ink-soft);margin-bottom:2px;}
+  .param-row .pfield input[type=number]{font-size:13px;padding:6px 7px;}
+  .jars{display:flex;gap:14px;margin-bottom:14px;}
+  .jar{flex:1;text-align:center;padding:10px 6px;border-radius:10px;border:1px solid var(--paper-line);}
+  .jar.fn-jar{background:var(--fn-soft);} .jar.pt-jar{background:var(--pt-soft);}
+  .jar .name{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;}
+  .jar.fn-jar .name{color:var(--fn);} .jar.pt-jar .name{color:var(--pt);}
+  .jar .amt{font-family:'IBM Plex Mono',monospace;font-size:20px;font-weight:600;margin-top:4px;}
+  button{font-family:'Source Sans 3',sans-serif;font-weight:600;font-size:14.5px;border:none;border-radius:9px;padding:11px 16px;cursor:pointer;width:100%;transition:transform .08s ease,filter .15s ease;}
+  button:active{transform:translateY(1px);}button:disabled{opacity:.4;cursor:not-allowed;}
+  .btn-primary{background:var(--fn);color:#fff;}.btn-primary:hover:not(:disabled){filter:brightness(1.08);}
+  .btn-secondary{background:var(--paper);color:var(--ink);border:1px solid var(--paper-line);margin-top:8px;}
+  .btn-secondary:hover:not(:disabled){background:#F0E9D6;}
+  .status{font-size:13.5px;line-height:1.5;padding:12px;border-radius:9px;background:var(--paper);border:1px solid var(--paper-line);margin-bottom:14px;min-height:20px;}
+  .status.feedback-good{background:var(--fn-soft);border-color:var(--fn);color:var(--fn);font-weight:600;}
+  .status.feedback-mid{background:var(--pt-soft);border-color:var(--pt);color:var(--pt);font-weight:600;}
+  .status.feedback-target{background:var(--target-soft);border-color:var(--target);color:var(--target);font-weight:600;}
+  .graph-card{display:flex;flex-direction:column;}
+  .graph-card .panel-title{margin-bottom:0;}
+  .legend{display:flex;gap:18px;flex-wrap:wrap;margin:6px 0 12px;font-size:12.5px;font-family:'IBM Plex Mono',monospace;}
+  .legend span{display:inline-flex;align-items:center;gap:6px;}
+  .dot{width:10px;height:10px;border-radius:50%;display:inline-block;}
+  .dot.curve{background:var(--fn);height:2px;border-radius:1px;}
+  .dot.pred{background:var(--pt);} .dot.sol{background:var(--target);}
+  .graph-wrap{position:relative;}
+  .graph-wrap svg{width:100%;height:auto;display:block;background:#FFFDF7;border:1px solid var(--paper-line);border-radius:8px;}
+  .axis-label{font-family:'IBM Plex Mono',monospace;font-size:12px;fill:var(--ink-soft);}
+  .tick-label{font-family:'IBM Plex Mono',monospace;font-size:10px;fill:var(--ink-soft);}
+  .steps{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap;}
+  .step-dot{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:600;border:1.5px solid var(--paper-line);color:var(--ink-soft);background:var(--paper);}
+  .step-dot.done{background:var(--fn);border-color:var(--fn);color:#fff;}
+  .step-dot.solution{background:var(--target);border-color:var(--target);color:#fff;}
+  .step-dot.active{border-color:var(--pt);color:var(--pt);background:var(--pt-soft);}
+  .reflect,.explore{margin-top:20px;padding-top:16px;border-top:1px dashed var(--paper-line);}
+  .reflect.hidden,.explore.hidden{display:none;}
+  .q{margin-bottom:16px;}.q p.qtext{font-weight:600;margin:0 0 8px;font-size:14.5px;}
+  .options{display:flex;gap:8px;flex-wrap:wrap;}
+  .opt{padding:8px 14px;border-radius:8px;border:1px solid var(--paper-line);background:var(--paper);font-size:13.5px;cursor:pointer;font-weight:600;}
+  .opt.correct{background:var(--fn-soft);border-color:var(--fn);color:var(--fn);}
+  .opt.wrong{background:#F6DCD4;border-color:#B5502E;color:#8C3A1F;}
+  .opt:disabled{cursor:default;}
+  .explore .panel-title{font-size:22px;}
+  .explore-inputs{display:flex;gap:10px;flex-wrap:wrap;margin:10px 0 14px;}
+  .explore-inputs .field{flex:1;min-width:70px;margin-bottom:0;}
+  .explore-inputs .field label{font-size:11px;}
+  .explore-inputs input[type=number]{font-size:13px;padding:7px 8px;}
+  .explore-cols{display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start;}
+  @media (max-width:700px){.explore-cols{grid-template-columns:1fr;}}
+  .solution-banner{text-align:center;font-weight:700;padding:10px;border-radius:9px;margin:8px 0 14px;font-size:15px;background:var(--target-soft);border:1px solid var(--target);color:var(--target);}
+  .solution-banner.two{background:var(--fn-soft);border-color:var(--fn);color:var(--fn);}
+  .note-box{text-align:center;font-family:'IBM Plex Mono',monospace;font-size:13px;padding:8px;margin:4px 0 10px;color:var(--ink-soft);}
+  footer.note{text-align:center;font-size:12px;color:var(--ink-soft);margin-top:26px;font-family:'IBM Plex Mono',monospace;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <p class="eyebrow">Intuition Builder · Cubic Functions</p>
+    <h1>Bhāskara's Cubic — g(x) = ax³ + bx² + cx + d</h1>
+    <p>Bhāskara challenges you: set a cubic and a target. Feed x values into the function, predict outputs, and discover where it hits your target. Cubics can cross a given y-value once, twice, or three times.</p>
+    <div class="rule-list">
+      <span id="heroEq" style="background:var(--fn-soft);color:var(--fn);border-color:var(--fn);">g(x) = x³ − x² − 10x + 2</span>
+      <span id="heroTarget" style="background:var(--pt-soft);color:var(--pt);border-color:var(--pt);">g(x) = −22 → x = ?</span>
+    </div>
+  </header>
+
+  <div class="grid-layout">
+    <div class="card">
+      <p class="panel-title">Bhāskara's cubic</p>
+      <p class="panel-sub">Set your cubic and target, then predict g(x) for each given x.</p>
+
+      <div class="param-row">
+        <div class="pfield"><label>a (x³)</label><input type="number" id="pA" step="0.5" value="1"></div>
+        <div class="pfield"><label>b (x²)</label><input type="number" id="pB" step="0.5" value="-1"></div>
+        <div class="pfield"><label>c (x)</label><input type="number" id="pC" step="0.5" value="-10"></div>
+        <div class="pfield"><label>d</label><input type="number" id="pD" step="0.5" value="2"></div>
+        <div class="pfield"><label>target</label><input type="number" id="pTarget" step="0.5" value="-22"></div>
+      </div>
+
+      <div class="eq-highlight" id="eqDisplay">g(x) = x³ − x² − 10x + 2</div>
+
+      <div class="field">
+        <label>Input x = <span class="val" id="xLabel">0</span></label>
+        <input type="number" id="predictY" step="any" value="0">
+        <div class="helper" id="predictHelper">g(0) = ?</div>
+      </div>
+
+      <div class="jars">
+        <div class="jar fn-jar"><div class="name">Input (x)</div><div class="amt" id="xJar">0</div></div>
+        <div class="jar pt-jar"><div class="name">Output g(x)</div><div class="amt" id="yJar">?</div></div>
+      </div>
+
+      <div class="steps" id="stepDots"></div>
+
+      <div class="status" id="statusBox">Set your cubic and target, then start predicting!</div>
+
+      <button class="btn-primary" id="checkBtn">Predict &amp; Reveal</button>
+      <button class="btn-secondary" id="resetBtn">Reset</button>
+    </div>
+
+    <div class="card graph-card">
+      <p class="panel-title">The curve</p>
+      <div class="legend"><span><i class="dot curve"></i>g(x)</span><span><i class="dot pred"></i>prediction</span><span><i class="dot sol"></i>target</span></div>
+      <div class="graph-wrap"><svg id="graphSvg" viewBox="0 0 640 560" xmlns="http://www.w3.org/2000/svg"><defs><clipPath id="plotClip"><rect x="55" y="30" width="530" height="480"/></clipPath></defs></svg></div>
+    </div>
+  </div>
+
+  <!-- REFLECTION QUIZ -->
+  <div class="card reflect hidden" id="reflectCard">
+    <p class="panel-title">What do you notice?</p>
+    <p class="panel-sub">Every cubic g(x) = ax³ + bx² + cx + d with a ≠ 0 crosses every horizontal line at least once.</p>
+    <div class="q" id="q1">
+      <p class="qtext">1. A cubic equation can have at most how many real solutions?</p>
+      <div class="options">
+        <button class="opt" data-correct="false">1</button>
+        <button class="opt" data-correct="false">2</button>
+        <button class="opt" data-correct="true">3</button>
+      </div>
+    </div>
+    <div class="q" id="q2">
+      <p class="qtext">2. Why does a cubic always have at least one real solution for any target?</p>
+      <div class="options">
+        <button class="opt" data-correct="false">Because it can be factored</button>
+        <button class="opt" data-correct="true">As x → ±∞, g(x) → ±∞ (opposite signs), so it must cross every horizontal line</button>
+        <button class="opt" data-correct="false">Because it has three roots</button>
+      </div>
+    </div>
+    <div class="q" id="q3">
+      <p class="qtext">3. When a &gt; 0, as x → +∞, g(x) → ?</p>
+      <div class="options">
+        <button class="opt" data-correct="true">+∞</button>
+        <button class="opt" data-correct="false">−∞</button>
+        <button class="opt" data-correct="false">0</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- EXPLORE MODE -->
+  <div class="card explore hidden" id="exploreCard">
+    <p class="panel-title">Bhāskara's challenge: change coefficients</p>
+    <p class="panel-sub">Tune a, b, c, d and find all real solutions to the cubic.</p>
+    <div class="explore-cols">
+      <div>
+        <div class="explore-inputs">
+          <div class="field"><label>a (x³)</label><input type="number" id="expA" step="0.5" value="1"></div>
+          <div class="field"><label>b (x²)</label><input type="number" id="expB" step="0.5" value="-1"></div>
+          <div class="field"><label>c (x)</label><input type="number" id="expC" step="0.5" value="-10"></div>
+          <div class="field"><label>d</label><input type="number" id="expD" step="0.5" value="2"></div>
+        </div>
+        <div class="explore-inputs" style="margin-top:4px;">
+          <div class="field" style="flex:2;"><label>target</label><input type="number" id="expTarget" step="0.5" value="-22"></div>
+        </div>
+        <div class="eq-highlight" id="exploreEq" style="font-size:18px;padding:10px;">g(x) = x³ − x² − 10x + 2</div>
+        <div id="exploreSolution"></div>
+        <div class="note-box">Cubics cross each y at least once, at most 3 times</div>
+      </div>
+      <div><div id="explorePlot" style="width:100%;height:360px;"></div></div>
+    </div>
+  </div>
+
+  <footer class="note">Built for exploring cubic functions · Bhāskara's challenge: ax³ + bx² + cx + d = target can have 1, 2, or 3 real solutions</footer>
+</div>
+
+<script>
+(function(){
+  // ---- HELPERS ----
+  function niceMax(v){ if(v<=0)return 10; const m=Math.pow(10,Math.floor(Math.log10(v))); const n=v/m; if(n<=1)return 1*m; if(n<=2)return 2*m; if(n<=4)return 4*m; if(n<=5)return 5*m; return 10*m; }
+  function niceMin(v){ if(v>=0)return 0; const m=Math.pow(10,Math.floor(Math.log10(Math.abs(v)))); const n=Math.abs(v)/m; if(n<=1)return -1*m; if(n<=2)return -2*m; if(n<=4)return -4*m; if(n<=5)return -5*m; return -10*m; }
+
+  function cubicString(a,b,c,d){
+    const parts=[];
+    if(a!==0){ if(a===1)parts.push('x³'); else if(a===-1)parts.push('−x³'); else parts.push(a+'x³'); }
+    if(b!==0){ const s=b>0?(parts.length?'+ ':''):(parts.length?'− ':'−'); const v=Math.abs(b); parts.push(s+(v===1?'x²':v+'x²')); }
+    if(c!==0){ const s=c>0?(parts.length?'+ ':''):(parts.length?'− ':'−'); const v=Math.abs(c); parts.push(s+(v===1?'x':v+'x')); }
+    if(d!==0){ const s=d>0?(parts.length?'+ ':''):(parts.length?'− ':'−'); parts.push(s+Math.abs(d)); }
+    if(!parts.length) return '0'; return parts.join(' ');
+  }
+
+  function g(a,b,c,d,x){ return ((a*x + b)*x + c)*x + d; }
+
+  function findRoots(a,b,c,d,target){
+    const ct = d - target;
+    const roots=[];
+    if(a===0){
+      if(b===0){ if(c!==0) roots.push(-ct/c); return roots; }
+      const disc = c*c - 4*b*ct;
+      if(Math.abs(disc)<1e-10) roots.push(-c/(2*b));
+      else if(disc>0){ roots.push((-c+Math.sqrt(disc))/(2*b)); roots.push((-c-Math.sqrt(disc))/(2*b)); }
+      return roots;
+    }
+    const f=x=>{ const x2=x*x; return a*x2*x + b*x2 + c*x + ct; };
+    const df=x=>{ const x2=x*x; return 3*a*x2 + 2*b*x + c; };
+    const refine=x0=>{ let x=x0; for(let i=0;i<30;i++){ const fx=f(x); if(Math.abs(fx)<1e-12)return x; const dfx=df(x); if(Math.abs(dfx)<1e-12)break; x=x-fx/dfx; } return Math.abs(f(x))<1e-8?x:null; };
+    const seen=[];
+    for(let start=-20;start<=20;start+=0.5){ const r=refine(start); if(r!==null){ const rd=Math.round(r*1e6)/1e6; if(!seen.some(s=>Math.abs(s-rd)<1e-6)) seen.push(rd); } }
+    return seen.sort((a,b)=>a-b);
+  }
+
+  // ---- STATE ----
+  const STEP_X = [0, 2, 3, -3, -4, -3.6];
+  const TOTAL = STEP_X.length;
+  let pA=1,pB=-1,pC=-10,pD=2,pTarget=-22;
+  let step=0,points=[],prediction=null,revealed=false,mode='predict';
+
+  const $ = id => document.getElementById(id);
+  const eqDisp = $('eqDisplay'), curX=$('currentX'), curFn=$('currentFn');
+  const predictY=$('predictY'), xLabel=$('xLabel'), pHelper=$('predictHelper');
+  const xJar=$('xJar'), yJar=$('yJar'), statusBox=$('statusBox');
+  const checkBtn=$('checkBtn'), resetBtn=$('resetBtn'), stepDots=$('stepDots');
+  const reflectCard=$('reflectCard'), exploreCard=$('exploreCard');
+  const heroEq=$('heroEq'), heroTarget=$('heroTarget');
+  const pAIn=$('pA'),pBIn=$('pB'),pCIn=$('pC'),pDIn=$('pD'),pTIn=$('pTarget');
+
+  for(let i=1;i<=TOTAL;i++){ const d=document.createElement('div'); d.className='step-dot'; d.textContent=i; d.id='step-'+i; stepDots.appendChild(d); }
+
+  function getY(x){ return g(pA,pB,pC,pD,x); }
+  function getTargetY(i){ return getY(STEP_X[i!==undefined?i:step]); }
+
+  function updateAll(){
+    const eqStr = cubicString(pA,pB,pC,pD);
+    eqDisp.textContent = 'g(x) = ' + eqStr;
+    heroEq.textContent = 'g(x) = ' + eqStr;
+    heroTarget.textContent = 'g(x) = ' + pTarget + ' → x = ?';
+
+    if(step >= TOTAL){
+      const roots = findRoots(pA,pB,pC,pD,pTarget);
+      const rStr = roots.length ? roots.map(r=>r.toFixed(4)).join(', ') : '—';
+      eqDisp.textContent = 'g(x) = ' + pTarget + ' → x = ' + rStr;
+      xLabel.textContent = '—'; pHelper.textContent = roots.length ? 'Solutions: x = ' + rStr : 'No real solution';
+      predictY.disabled = true;
+      xJar.textContent = '✔'; yJar.textContent = pTarget;
+      return;
+    }
+    predictY.disabled = false;
+    const x = STEP_X[step];
+    xLabel.textContent = x; xJar.textContent = x;
+    yJar.textContent = prediction!==null && revealed ? getY(x).toFixed(3) : '?';
+    const dispX = Number.isInteger(x) ? x : x.toFixed(1);
+    pHelper.textContent = `g(${dispX}) = ${dispX}³·${pA} + ${dispX}²·${pB} + ${dispX}·${pC} + ${pD} = ?`;
+  }
+
+  function setStatus(html,cls){ statusBox.innerHTML=html; statusBox.className='status'+(cls?' '+cls:''); }
+
+  function markDots(){
+    document.querySelectorAll('.step-dot').forEach(d=>d.classList.remove('active'));
+    for(let i=0;i<step&&i<TOTAL;i++){ const d=$('step-'+(i+1)); if(d)d.classList.add('done'); }
+    if(step<TOTAL){ const d=$('step-'+(step+1)); if(d)d.classList.add('active'); }
+  }
+
+  function resetGame(){
+    step=0; points=[]; prediction=null; revealed=false; mode='predict';
+    pA=parseFloat(pAIn.value)||0; pB=parseFloat(pBIn.value)||0;
+    pC=parseFloat(pCIn.value)||0; pD=parseFloat(pDIn.value)||0;
+    pTarget=parseFloat(pTIn.value)||0;
+    predictY.value=0; predictY.disabled=false;
+    checkBtn.disabled=false; checkBtn.textContent='Predict & Reveal';
+    document.querySelectorAll('.step-dot').forEach(d=>d.classList.remove('done','solution','active'));
+    const f=$('step-1'); if(f)f.classList.add('active');
+    reflectCard.classList.add('hidden'); exploreCard.classList.add('hidden');
+    updateAll(); markDots(); render();
+    setStatus(`Feed x = <strong>${STEP_X[0]}</strong> into the machine. What is g(${STEP_X[0]})?`);
+  }
+
+  $('pA').addEventListener('input',resetGame);
+  $('pB').addEventListener('input',resetGame);
+  $('pC').addEventListener('input',resetGame);
+  $('pD').addEventListener('input',resetGame);
+  $('pTarget').addEventListener('input',resetGame);
+
+  resetBtn.addEventListener('click', resetGame);
+
+  function onCheck(){
+    if(mode==='done') return;
+    if(step>=TOTAL){
+      mode='done'; checkBtn.disabled=true;
+      const roots = findRoots(pA,pB,pC,pD,pTarget);
+      const rStr = roots.length ? 'x = ' + roots.map(r=>r.toFixed(4)).join(' and x = ') : 'No real solution';
+      setStatus(`Solutions found: ${rStr}. Scroll down to reflect.`,'feedback-target');
+      render();
+      setTimeout(()=>{reflectCard.classList.remove('hidden');reflectCard.scrollIntoView({behavior:'smooth',block:'nearest'});},500);
+      return;
+    }
+    if(revealed){
+      step++; revealed=false; prediction=null;
+      if(step>=TOTAL){
+        setStatus('All points done! Click <strong>Find solutions</strong>.','feedback-target');
+        checkBtn.textContent='Find solutions';
+      } else {
+        setStatus(`Feed x = <strong>${STEP_X[step]}</strong>. What is g(${STEP_X[step]})?`);
+        checkBtn.textContent='Predict & Reveal';
+      }
+      updateAll(); markDots(); render();
+      return;
+    }
+    const py=parseFloat(predictY.value);
+    if(isNaN(py)){ setStatus('Enter a number.'); return; }
+    prediction=py;
+    const x=STEP_X[step], y=getY(x), diff=Math.abs(py-y);
+    points.push({x,y});
+    revealed=true;
+    const tol=Math.max(1,Math.abs(y)*0.08);
+    let msg,cls;
+    if(diff<tol){ msg=`Good! g(${x}) = ${y.toFixed(3)}.`; cls='feedback-good'; }
+    else{ msg=`You guessed ${py} (off by ${Math.abs(py-y).toFixed(1)}). g(${x}) = ${y.toFixed(3)}.`; cls='feedback-mid'; }
+    if(Math.abs(y-pTarget)<1){ msg+=' Close to target!'; cls='feedback-target'; }
+    if(step+1>=TOTAL) checkBtn.textContent='Next → Final';
+    else checkBtn.textContent='Next input';
+    yJar.textContent=y.toFixed(3);
+    setStatus(msg,cls); markDots(); render();
+  }
+
+  checkBtn.addEventListener('click', onCheck);
+  predictY.addEventListener('keydown',e=>{if(e.key==='Enter')onCheck();});
+
+  // ---- SVG RENDERING ----
+  const svg=$('graphSvg'), svgNS="http://www.w3.org/2000/svg";
+  const M={l:55,r:30,t:30,b:55}, PW=640-M.l-M.r, PH=560-M.t-M.b;
+
+  function getBounds(){
+    const xs = [...STEP_X];
+    points.forEach(p=>xs.push(p.x));
+    const roots=findRoots(pA,pB,pC,pD,pTarget);
+    roots.forEach(r=>{xs.push(r);});
+    const xMin=Math.floor(Math.min(...xs)-1), xMax=Math.ceil(Math.max(...xs)+1);
+    const allY=[pTarget,0];
+    STEP_X.forEach(x=>allY.push(getY(x)));
+    points.forEach(p=>allY.push(p.y));
+    roots.forEach(r=>allY.push(pTarget));
+    const ys=allY.filter(y=>isFinite(y));
+    const yLo=Math.min(...ys), yHi=Math.max(...ys);
+    const yPad=Math.max(5,(yHi-yLo)*0.25);
+    return {
+      xMin:xMin, xMax:xMax,
+      yMin:niceMin(yLo-yPad), yMax:niceMax(yHi+yPad)
+    };
+  }
+
+  function render(){
+    while(svg.childNodes.length>1) svg.removeChild(svg.lastChild);
+    const bounds=getBounds();
+    const xR=bounds.xMax-bounds.xMin, yR=bounds.yMax-bounds.yMin;
+    const xSc=PW/xR, ySc=PH/yR;
+    function toS(dx,dy){ return {x:M.l+(dx-bounds.xMin)*xSc, y:M.t+PH-(dy-bounds.yMin)*ySc}; }
+
+    // grid
+    const xSt=Math.max(1,niceMax(xR/6)), ySt=niceMax(yR/6);
+    for(let v=Math.ceil(bounds.xMin/xSt)*xSt;v<=bounds.xMax;v+=xSt){
+      if(Math.abs(v)<0.01)continue; const p=toS(v,0);
+      if(p.x>=M.l&&p.x<=M.l+PW){
+        svg.appendChild(mkL(p.x,M.t,p.x,M.t+PH,'#E4DCC4',1));
+        const t=mkT(p.x,M.t+PH+18,''+(Number.isInteger(v)?v:v.toFixed(1)),'tick-label');
+        t.setAttribute('text-anchor','middle'); svg.appendChild(t);
+      }
+    }
+    for(let v=Math.ceil(bounds.yMin/ySt)*ySt;v<=bounds.yMax;v+=ySt){
+      if(Math.abs(v)<0.01)continue; const p=toS(0,v);
+      if(p.y>=M.t&&p.y<=M.t+PH){
+        svg.appendChild(mkL(M.l,p.y,M.l+PW,p.y,'#E4DCC4',1));
+        const t=mkT(M.l-8,p.y+3,''+(Number.isInteger(v)?v:v.toFixed(1)),'tick-label');
+        t.setAttribute('text-anchor','end'); svg.appendChild(t);
+      }
+    }
+    // zero axes
+    if(0>=bounds.xMin&&0<=bounds.xMax){const p=toS(0,0);svg.appendChild(mkL(p.x,M.t,p.x,M.t+PH,'#C8BEA0',1));}
+    if(0>=bounds.yMin&&0<=bounds.yMax){const p=toS(0,0);svg.appendChild(mkL(M.l,p.y,M.l+PW,p.y,'#C8BEA0',1));}
+    svg.appendChild(mkL(M.l,M.t+PH,M.l+PW,M.t+PH,'#26332B',1.5));
+    svg.appendChild(mkL(M.l,M.t+PH,M.l,M.t,'#26332B',1.5));
+    const xlb=mkT(M.l+PW/2,M.t+PH+42,'x','axis-label');
+    xlb.setAttribute('text-anchor','middle'); svg.appendChild(xlb);
+    const ylb=mkT(14,M.t+PH/2,'g(x)','axis-label');
+    ylb.setAttribute('text-anchor','middle'); ylb.setAttribute('transform','rotate(-90 14 '+((M.t+PH/2))+')'); svg.appendChild(ylb);
+
+    // clip-path group
+    const clipG=document.createElementNS(svgNS,'g');
+    clipG.setAttribute('clip-path','url(#plotClip)');
+
+    // cubic curve
+    const cpts=[];
+    for(let x=bounds.xMin;x<=bounds.xMax;x+=(bounds.xMax-bounds.xMin)/300){
+      const y=getY(x); if(!isFinite(y)) continue;
+      const p=toS(x,y); cpts.push(p);
+    }
+    if(cpts.length>1){
+      let d='M '+cpts[0].x+' '+cpts[0].y;
+      for(let i=1;i<cpts.length;i++) d+=' L '+cpts[i].x+' '+cpts[i].y;
+      const path=document.createElementNS(svgNS,'path');
+      path.setAttribute('d',d); path.setAttribute('stroke','#1F6F5C');
+      path.setAttribute('stroke-width','2.5'); path.setAttribute('fill','none');
+      clipG.appendChild(path);
+    }
+
+    // target line
+    const tP=toS(0,pTarget);
+    if(tP.y>=M.t-5&&tP.y<=M.t+PH+5){
+      const hl=mkL(M.l,tP.y,M.l+PW,tP.y,'#B8860B',1.5);
+      hl.setAttribute('stroke-dasharray','6 4'); clipG.appendChild(hl);
+    }
+
+    // plotted points
+    points.forEach(p=>{
+      const sp=toS(p.x,p.y);
+      if(sp.x<M.l||sp.x>M.l+PW||sp.y<M.t||sp.y>M.t+PH) return;
+      const isSol=Math.abs(p.y-pTarget)<0.5;
+      const c=document.createElementNS(svgNS,'circle');
+      c.setAttribute('cx',sp.x);c.setAttribute('cy',sp.y);
+      c.setAttribute('r',isSol?8:6); c.setAttribute('fill',isSol?'#B8860B':'#1F6F5C');
+      c.setAttribute('stroke','#FFFDF7');c.setAttribute('stroke-width','2');
+      clipG.appendChild(c);
+      const lab=mkT(sp.x+8,sp.y-8,'('+(Number.isInteger(p.x)?p.x:p.x.toFixed(1))+','+p.y.toFixed(1)+')','tick-label');
+      clipG.appendChild(lab);
+    });
+
+    // prediction marker
+    if(!revealed&&step<TOTAL){
+      const py=parseFloat(predictY.value);
+      if(!isNaN(py)){
+        const x=STEP_X[step], y=getY(x);
+        const sp=toS(x,py), tsp=toS(x,y);
+        if(sp.y>=M.t-5&&sp.y<=M.t+PH+5){
+          const gd=mkL(sp.x,sp.y,tsp.x,tsp.y,'#7B5EA7',1.5);
+          gd.setAttribute('stroke-dasharray','4 3');gd.setAttribute('stroke-opacity','0.5');
+          clipG.appendChild(gd);
+          const c=document.createElementNS(svgNS,'circle');
+          c.setAttribute('cx',sp.x);c.setAttribute('cy',sp.y);c.setAttribute('r',7);
+          c.setAttribute('fill','#7B5EA7');c.setAttribute('fill-opacity','0.9');
+          c.setAttribute('stroke','#FFFDF7');c.setAttribute('stroke-width','2');
+          clipG.appendChild(c);
+          const lab=mkT(sp.x+8,sp.y-10,'you: '+py,'tick-label');
+          lab.setAttribute('fill','#7B5EA7');lab.setAttribute('font-weight','600');
+          clipG.appendChild(lab);
+        }
+      }
+    }
+
+    // roots
+    if(step>=TOTAL-1){
+      const roots=findRoots(pA,pB,pC,pD,pTarget);
+      roots.forEach(r=>{
+        const sp=toS(r,pTarget);
+        if(sp.x<M.l||sp.x>M.l+PW||sp.y<M.t||sp.y>M.t+PH)return;
+        const hl=document.createElementNS(svgNS,'circle');
+        hl.setAttribute('cx',sp.x);hl.setAttribute('cy',sp.y);hl.setAttribute('r',14);
+        hl.setAttribute('fill','none');hl.setAttribute('stroke','#B8860B');
+        hl.setAttribute('stroke-width','2.5');hl.setAttribute('stroke-opacity','0.6');
+        clipG.appendChild(hl);
+        const c=document.createElementNS(svgNS,'circle');
+        c.setAttribute('cx',sp.x);c.setAttribute('cy',sp.y);c.setAttribute('r',8);
+        c.setAttribute('fill','#B8860B');c.setAttribute('stroke','#FFFDF7');c.setAttribute('stroke-width','2');
+        clipG.appendChild(c);
+        const lab=mkT(sp.x+10,sp.y-16,'★ ('+r.toFixed(2)+','+pTarget+')','tick-label');
+        lab.setAttribute('fill','#B8860B');lab.setAttribute('font-weight','700');
+        clipG.appendChild(lab);
+      });
+    }
+    svg.appendChild(clipG);
+
+    // target label (unclipped)
+    if(tP.y>=M.t-5&&tP.y<=M.t+PH+5){
+      const lab=mkT(M.l+PW-5,tP.y-6,'y = '+pTarget,'tick-label');
+      lab.setAttribute('text-anchor','end');lab.setAttribute('fill','#B8860B');lab.setAttribute('font-weight','600');
+      svg.appendChild(lab);
+    }
+    // origin
+    if(0>=bounds.xMin&&0<=bounds.xMax&&0>=bounds.yMin&&0<=bounds.yMax){
+      const o=toS(0,0); const oc=document.createElementNS(svgNS,'circle');
+      oc.setAttribute('cx',o.x);oc.setAttribute('cy',o.y);oc.setAttribute('r',3.5);
+      oc.setAttribute('fill','#26332B'); svg.appendChild(oc);
+    }
+  }
+
+  function mkL(x1,y1,x2,y2,sw,w){const l=document.createElementNS(svgNS,'line');l.setAttribute('x1',x1);l.setAttribute('y1',y1);l.setAttribute('x2',x2);l.setAttribute('y2',y2);l.setAttribute('stroke',sw);l.setAttribute('stroke-width',w);return l;}
+  function mkT(x,y,t,c){const tx=document.createElementNS(svgNS,'text');tx.setAttribute('x',x);tx.setAttribute('y',y);tx.setAttribute('class',c);tx.textContent=t;return tx;}
+
+  // ---- QUIZ ----
+  document.querySelectorAll('.q .options').forEach(group=>{
+    group.querySelectorAll('.opt').forEach(btn=>{
+      btn.addEventListener('click',()=>{
+        const correct=btn.dataset.correct==='true';
+        group.querySelectorAll('.opt').forEach(b=>{b.disabled=true;if(b.dataset.correct==='true')b.classList.add('correct');});
+        if(!correct)btn.classList.add('wrong');
+        if(group.parentElement.id==='q3'&&correct){
+          setTimeout(()=>{exploreCard.classList.remove('hidden');exploreCard.scrollIntoView({behavior:'smooth',block:'nearest'});rebuildExplore();},400);
+        }
+      });
+    });
+  });
+
+  // ---- EXPLORE ----
+  const eA=$('expA'),eB=$('expB'),eC=$('expC'),eD=$('expD'),eT=$('expTarget');
+  const eEq=$('exploreEq'),eSol=$('exploreSolution'),ePlot=$('explorePlot');
+  function rebuildExplore(){
+    const a=parseFloat(eA.value)||0,b=parseFloat(eB.value)||0,c=parseFloat(eC.value)||0,dd=parseFloat(eD.value)||0,tt=parseFloat(eT.value)||0;
+    eEq.textContent='g(x) = '+cubicString(a,b,c,dd);
+    const roots=findRoots(a,b,c,dd,tt);
+    const annot=[];
+    let msg='';
+    if(!roots.length) msg='<div class="solution-banner">No real solutions</div>';
+    else msg='<div class="solution-banner two">'+(roots.length===1?'One':roots.length===2?'Two':'Three')+' real solution'+(roots.length>1?'s':'')+': '+roots.map(r=>'x = <strong>'+r.toFixed(4)+'</strong>').join(', ')+'</div>';
+    roots.forEach(r=>annot.push({x:r,y:tt}));
+    eSol.innerHTML=msg;
+    if(typeof Plotly!=='undefined'){
+      const xs=[],curve=[];
+      for(let x=-12;x<=12;x+=0.05){xs.push(x);curve.push(((a*x+b)*x+c)*x+dd);}
+      const traces=[
+        {x:xs,y:curve,mode:'lines',type:'scatter',line:{color:'#1F6F5C',width:3},name:'g(x)'},
+        {x:[-12,12],y:[tt,tt],mode:'lines',type:'scatter',line:{color:'#B8860B',width:2,dash:'dash'},name:'y='+tt}
+      ];
+      if(annot.length) traces.push({x:annot.map(p=>p.x),y:annot.map(p=>p.y),mode:'markers+text',type:'scatter',marker:{size:14,color:'#7B5EA7',symbol:'star',line:{color:'#FFFDF7',width:2}},text:annot.map(p=>'('+p.x.toFixed(2)+','+p.y+')'),textposition:'top center',name:'solutions'});
+      const allY=curve.concat([tt,dd]); const yPad=Math.max(5,(Math.max(...allY)-Math.min(...allY))*0.15);
+      Plotly.react(ePlot,traces,{margin:{l:40,r:20,t:20,b:40},xaxis:{range:[-12,12],gridcolor:'#E4DCC4',zeroline:true,zerolinecolor:'#26332B',title:'x'},yaxis:{range:[Math.min(...allY)-yPad,Math.max(...allY)+yPad],gridcolor:'#E4DCC4',zeroline:true,zerolinecolor:'#26332B',title:'g(x)'},plot_bgcolor:'#FFFDF7',paper_bgcolor:'#FFFDF7',font:{family:'IBM Plex Mono, monospace',size:11,color:'#26332B'},showlegend:true,legend:{x:1,y:1,xanchor:'right',yanchor:'top',bgcolor:'rgba(255,253,247,0.9)'}},{displayModeBar:false,responsive:true});
+    }
+  }
+  [eA,eB,eC,eD,eT].forEach(el=>el.addEventListener('input',rebuildExplore));
+
+  // init
+  $('step-1').classList.add('active');
+  resetGame();
+})();
+</script>
+</body>
+</html>

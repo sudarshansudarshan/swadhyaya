@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bharavi & Magha's Contest — Direct Proportion</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=IBM+Plex+Mono:wght@500;600&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper: #FAF5E8;
+    --paper-line: #D8CFB6;
+    --ink: #26332B;
+    --ink-soft: #5B6B60;
+    --bharavi: #1F6F5C;
+    --bharavi-soft: #DCEDE7;
+    --magha: #B8860B;
+    --magha-soft: #F3E9CE;
+    --guess: #7B5EA7;
+    --guess-soft: #EAE3F5;
+    --good: #1F6F5C;
+    --card: #FFFDF7;
+    --shadow: 0 2px 10px rgba(38,51,43,0.08);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:
+      repeating-linear-gradient(#FAF5E8 0px, #FAF5E8 27px, var(--paper-line) 28px),
+      var(--paper);
+    background-size: 100% 28px;
+    color:var(--ink);
+    font-family:'Source Sans 3', sans-serif;
+    min-height:100vh;
+    padding: 28px 16px 60px;
+  }
+  .wrap{max-width:1080px;margin:0 auto;}
+
+  header.hero{
+    background: var(--card);
+    border:1px solid var(--paper-line);
+    border-radius:14px;
+    box-shadow: var(--shadow);
+    padding: 26px 28px 22px;
+    margin-bottom:20px;
+    position:relative;
+    overflow:hidden;
+  }
+  .eyebrow{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--ink-soft);
+    margin:0 0 6px;
+  }
+  h1{
+    font-family:'Caveat', cursive;
+    font-weight:700;
+    font-size:44px;
+    margin:0 0 10px;
+    color:var(--ink);
+    line-height:1.05;
+  }
+  header.hero p{
+    max-width:640px;
+    line-height:1.55;
+    font-size:15.5px;
+    color:var(--ink);
+    margin:0 0 8px;
+  }
+  .rule-badge{
+    display:inline-flex;
+    gap:16px;
+    align-items:center;
+    background:var(--paper);
+    border:1px dashed var(--paper-line);
+    border-radius:10px;
+    padding:10px 14px;
+    margin-top:10px;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:13px;
+  }
+  .rule-badge .pill{
+    display:inline-flex; align-items:center; gap:6px;
+    padding:3px 9px; border-radius:20px; font-weight:600;
+  }
+  .pill.bharavi{ background:var(--bharavi-soft); color:var(--bharavi); }
+  .pill.magha{ background:var(--magha-soft); color:var(--magha); }
+
+  .grid-layout{
+    display:grid;
+    grid-template-columns: 300px 1fr;
+    gap:20px;
+    align-items:start;
+  }
+  @media (max-width: 800px){
+    .grid-layout{ grid-template-columns: 1fr; }
+  }
+
+  .card{
+    background:var(--card);
+    border:1px solid var(--paper-line);
+    border-radius:14px;
+    box-shadow: var(--shadow);
+    padding:20px;
+  }
+
+  .panel-title{
+    font-family:'Caveat', cursive;
+    font-weight:700;
+    font-size:24px;
+    margin:0 0 4px;
+  }
+  .panel-sub{
+    font-size:13px; color:var(--ink-soft); margin:0 0 16px; line-height:1.4;
+  }
+
+  .field{ margin-bottom:18px; }
+  .field label{
+    display:flex; justify-content:space-between;
+    font-size:13.5px; font-weight:600; margin-bottom:6px;
+  }
+  .field label span.val{
+    font-family:'IBM Plex Mono', monospace; color:var(--magha); font-weight:600;
+  }
+  input[type=range]{
+    width:100%;
+    accent-color: var(--magha);
+  }
+  .helper{ font-size:12px; color:var(--ink-soft); margin-top:4px; }
+
+  .jars{ display:flex; gap:14px; margin-bottom:18px; }
+  .jar{
+    flex:1; text-align:center; padding:12px 6px;
+    border-radius:10px; border:1px solid var(--paper-line);
+  }
+  .jar.bharavi-jar{ background:var(--bharavi-soft); }
+  .jar.magha-jar{ background:var(--magha-soft); }
+  .jar .name{ font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:.05em; }
+  .jar.bharavi-jar .name{ color:var(--bharavi); }
+  .jar.magha-jar .name{ color:var(--magha); }
+  .jar .amt{ font-family:'IBM Plex Mono', monospace; font-size:22px; font-weight:600; margin-top:4px; }
+
+  button{
+    font-family:'Source Sans 3', sans-serif;
+    font-weight:600; font-size:14.5px;
+    border:none; border-radius:9px;
+    padding:11px 16px; cursor:pointer;
+    width:100%;
+    transition: transform .08s ease, filter .15s ease;
+  }
+  button:active{ transform: translateY(1px); }
+  button:disabled{ opacity:.4; cursor:not-allowed; }
+  .btn-primary{ background:var(--bharavi); color:#fff; }
+  .btn-primary:hover:not(:disabled){ filter:brightness(1.08); }
+  .btn-secondary{ background:var(--paper); color:var(--ink); border:1px solid var(--paper-line); margin-top:8px; }
+  .btn-secondary:hover:not(:disabled){ background:#F0E9D6; }
+
+  .status{
+    font-size:13.5px; line-height:1.5; padding:12px 12px; border-radius:9px;
+    background:var(--paper); border:1px solid var(--paper-line); margin-bottom:14px; min-height:20px;
+  }
+  .status.feedback-good{ background:var(--bharavi-soft); border-color:var(--bharavi); color:var(--bharavi); font-weight:600; }
+  .status.feedback-mid{ background:var(--guess-soft); border-color:var(--guess); color:var(--guess); font-weight:600; }
+
+  .graph-card{ display:flex; flex-direction:column; }
+  .graph-card .panel-title{ margin-bottom:0; }
+  .legend{
+    display:flex; gap:18px; flex-wrap:wrap; margin: 6px 0 12px;
+    font-size:12.5px; font-family:'IBM Plex Mono', monospace;
+  }
+  .legend span{ display:inline-flex; align-items:center; gap:6px; }
+  .dot{ width:10px; height:10px; border-radius:50%; display:inline-block; }
+  .dot.guess{ background:var(--guess); }
+  .dot.actual{ background:var(--bharavi); }
+  .dot.line{ background:var(--magha); }
+
+  svg{ width:100%; height:auto; display:block; cursor:crosshair; touch-action:none; }
+  .axis-label{
+    font-family:'IBM Plex Mono', monospace; font-size:12px; fill:var(--ink-soft);
+  }
+  .tick-label{ font-family:'IBM Plex Mono', monospace; font-size:10px; fill:var(--ink-soft); }
+
+  .steps{ display:flex; gap:6px; margin-bottom:14px; flex-wrap:wrap; }
+  .step-dot{
+    width:26px; height:26px; border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    font-family:'IBM Plex Mono', monospace; font-size:12px; font-weight:600;
+    border:1.5px solid var(--paper-line); color:var(--ink-soft); background:var(--paper);
+  }
+  .step-dot.done{ background:var(--bharavi); border-color:var(--bharavi); color:#fff; }
+  .step-dot.active{ border-color:var(--magha); color:var(--magha); background:var(--magha-soft); }
+
+  .reflect{
+    margin-top:20px; padding-top:16px; border-top:1px dashed var(--paper-line);
+  }
+  .reflect.hidden, .explore.hidden{ display:none; }
+  .q{ margin-bottom:16px; }
+  .q p.qtext{ font-weight:600; margin:0 0 8px; font-size:14.5px; }
+  .options{ display:flex; gap:8px; flex-wrap:wrap; }
+  .opt{
+    padding:8px 14px; border-radius:8px; border:1px solid var(--paper-line);
+    background:var(--paper); font-size:13.5px; cursor:pointer; font-weight:600;
+  }
+  .opt.correct{ background:var(--bharavi-soft); border-color:var(--bharavi); color:var(--bharavi); }
+  .opt.wrong{ background:#F6DCD4; border-color:#B5502E; color:#8C3A1F; }
+  .opt:disabled{ cursor:default; }
+
+  .explore{ margin-top:20px; padding-top:16px; border-top:1px dashed var(--paper-line); }
+  .explore .panel-title{ font-size:22px; }
+
+  footer.note{
+    text-align:center; font-size:12px; color:var(--ink-soft); margin-top:26px;
+    font-family:'IBM Plex Mono', monospace;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <p class="eyebrow">Intuition Builder · Linear Equations in Two Variables</p>
+    <h1>Bharavi & Magha's Contest — Direct Proportion</h1>
+    <p>Bharavi and Magha compete in a verse-writing contest. Magha writes <strong>twice</strong> as many verses as Bharavi each day. Each day gives one pair: (Bharavi's total, Magha's total). Predict where each day's point will land, then reveal it — and watch what shape the points make.</p>
+    <div class="rule-badge">
+      <span class="pill magha">Bharavi writes V</span>
+      <span>→</span>
+      <span class="pill bharavi">Magha writes 2 × V</span>
+    </div>
+  </header>
+
+  <div class="grid-layout">
+
+    <!-- LEFT CONTROL PANEL -->
+    <div class="card">
+      <p class="panel-title">Today's verses</p>
+      <p class="panel-sub">Set how many verses Bharavi writes today. Magha, as always, writes twice that.</p>
+
+      <div class="field">
+        <label>Bharavi writes today <span class="val" id="weeklyLVal">₹5</span></label>
+        <input type="range" id="weeklyL" min="2" max="10" step="1" value="5">
+        <div class="helper">Change it day to day if you like — the rule (Magha = 2×Bharavi) never changes.</div>
+      </div>
+
+      <div class="jars">
+        <div class="jar magha-jar">
+          <div class="name">Bharavi</div>
+          <div class="amt" id="lakshTotal">₹0</div>
+        </div>
+        <div class="jar bharavi-jar">
+          <div class="name">Magha</div>
+          <div class="amt" id="ramTotal">₹0</div>
+        </div>
+      </div>
+
+      <div class="steps" id="stepDots"></div>
+
+      <div class="status" id="statusBox">Click a point on the graph where you think <strong>Day 1</strong>'s point (Bharavi, Magha) will land, then hit Reveal.</div>
+
+      <button class="btn-primary" id="revealBtn" disabled>Reveal Day 1</button>
+      <button class="btn-secondary" id="resetBtn">Start over</button>
+    </div>
+
+    <!-- RIGHT GRAPH -->
+    <div class="card graph-card">
+      <p class="panel-title">The contest graph</p>
+      <div class="legend">
+        <span><i class="dot guess"></i>your guess</span>
+        <span><i class="dot actual"></i>actual point</span>
+        <span><i class="dot line"></i>Magha = 2 × Bharavi</span>
+      </div>
+      <svg id="graphSvg" viewBox="0 0 640 500" xmlns="http://www.w3.org/2000/svg"></svg>
+    </div>
+  </div>
+
+  <!-- REFLECTION QUIZ -->
+  <div class="card reflect hidden" id="reflectCard">
+    <p class="panel-title">What do you notice?</p>
+    <p class="panel-sub">Five days are plotted. Look at the shape they make before answering.</p>
+
+    <div class="q" id="q1">
+      <p class="qtext">1. The points Bharavi and Magha plotted lie roughly on…</p>
+      <div class="options">
+        <button class="opt" data-correct="false">a scattered cloud, no pattern</button>
+        <button class="opt" data-correct="true">a straight line through the origin</button>
+        <button class="opt" data-correct="false">a curve that bends upward</button>
+      </div>
+    </div>
+
+    <div class="q" id="q2">
+      <p class="qtext">2. If Lakshman had saved ₹0 in a week, what would Ram's point be?</p>
+      <div class="options">
+        <button class="opt" data-correct="false">(0, 10)</button>
+        <button class="opt" data-correct="true">(0, 0)</button>
+        <button class="opt" data-correct="false">There's no such point</button>
+      </div>
+    </div>
+
+    <div class="q" id="q3">
+      <p class="qtext">3. Suppose in some week Lakshman had ₹30 saved in total. Without checking the graph, what would Ram's total be?</p>
+      <div class="options">
+        <button class="opt" data-correct="false">₹30</button>
+        <button class="opt" data-correct="false">₹45</button>
+        <button class="opt" data-correct="true">₹60</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- EXPLORE MODE -->
+  <div class="card explore hidden" id="exploreCard">
+    <p class="panel-title">Now you try: change the rule</p>
+    <p class="panel-sub">What if Magha didn't write exactly twice as many? Drag the multiplier and watch the line tilt. The line always starts at the origin — only its steepness changes.</p>
+
+    <div class="field">
+      <label>Magha writes <span class="val" id="multVal">2</span>× Bharavi's verses</label>
+      <input type="range" id="multiplier" min="1" max="4" step="0.5" value="2">
+    </div>
+    <div class="field">
+      <label>Bharavi writes per day <span class="val" id="expWeeklyVal">₹6</span></label>
+      <input type="range" id="expWeekly" min="2" max="10" step="1" value="6">
+    </div>
+    <div class="helper" style="margin-bottom:10px;">Try the multiplier at <strong>1</strong> — they write equally. Try <strong>4</strong> — Magha writes four times as many.</div>
+  </div>
+
+  <footer class="note">Built for exploring direct proportion · points (Bharavi, Magha) always sit on a straight line through (0,0) when the ratio stays fixed</footer>
+</div>
+
+<script>
+(function(){
+  const svgNS = "http://www.w3.org/2000/svg";
+  const svg = document.getElementById('graphSvg');
+  const originX = 80, originY = 460;
+  const plotW = 520, plotH = 400;
+
+  // ---- STATE ----
+  const MAIN_WEEKS = 5;
+  const FIXED_MULT = 2;
+  let weeklyL = 5;
+  let week = 0;               // weeks confirmed
+  let points = [];            // confirmed {L,R}
+  let guess = null;           // {L,R} in data units
+  let mode = 'predict';       // 'predict' | 'revealed' | 'done'
+  let exploreActive = false;
+  let explorePoints = [];
+
+  const weeklyLInput = document.getElementById('weeklyL');
+  const weeklyLVal = document.getElementById('weeklyLVal');
+  const lakshTotalEl = document.getElementById('lakshTotal');
+  const ramTotalEl = document.getElementById('ramTotal');
+  const statusBox = document.getElementById('statusBox');
+  const revealBtn = document.getElementById('revealBtn');
+  const resetBtn = document.getElementById('resetBtn');
+  const stepDots = document.getElementById('stepDots');
+  const reflectCard = document.getElementById('reflectCard');
+  const exploreCard = document.getElementById('exploreCard');
+
+  for(let i=1;i<=MAIN_WEEKS;i++){
+    const d = document.createElement('div');
+    d.className='step-dot';
+    d.textContent = i;
+    d.id = 'step-'+i;
+    stepDots.appendChild(d);
+  }
+
+  weeklyLInput.addEventListener('input', ()=>{
+    weeklyL = parseInt(weeklyLInput.value,10);
+    weeklyLVal.textContent = '₹'+weeklyL;
+    guess = null;
+    render();
+  });
+
+  resetBtn.addEventListener('click', ()=>{
+    week=0; points=[]; guess=null; mode='predict';
+    weeklyL = parseInt(weeklyLInput.value,10);
+    reflectCard.classList.add('hidden');
+    exploreCard.classList.add('hidden');
+    exploreActive = false;
+    revealBtn.disabled = true;
+    updateStatus(`Click a point on the graph where you think <strong>Day 1</strong>'s point (Bharavi, Magha) will land, then hit Reveal.`);
+    render();
+  });
+
+  revealBtn.addEventListener('click', ()=>{
+    if(mode==='predict'){
+      revealWeek();
+    } else if(mode==='revealed'){
+      advanceWeek();
+    }
+  });
+
+  function updateStatus(html, cls){
+    statusBox.innerHTML = html;
+    statusBox.className = 'status' + (cls ? (' '+cls) : '');
+  }
+
+  function currentTarget(){
+    const L = (week+1)*weeklyL;
+    const R = L*FIXED_MULT;
+    return {L,R};
+  }
+
+  function revealWeek(){
+    if(!guess){
+      updateStatus('Click somewhere on the grid first — take your best guess before revealing!');
+      return;
+    }
+    const target = currentTarget();
+    const dx = Math.abs(guess.L-target.L);
+    const dy = Math.abs(guess.R-target.R);
+    const dist = Math.sqrt(dx*dx+dy*dy);
+    points.push(target);
+    week++;
+    const dot = document.getElementById('step-'+week);
+    if(dot) dot.classList.add('done','active');
+    if(week>1){ const prev=document.getElementById('step-'+(week-1)); if(prev) prev.classList.remove('active'); }
+
+    let msg, cls;
+    if(dist < Math.max(2, weeklyL*0.15)){
+      msg = `Spot on! Day ${week}: Bharavi has ₹${target.L}, Magha has ₹${target.R} — exactly twice.`;
+      cls = 'feedback-good';
+    } else {
+      msg = `Actual point: (₹${target.L}, ₹${target.R}). Your guess was off by about ₹${Math.round(dist)}. Remember: Magha's value is always <strong>2 ×</strong> Bharavi's.`;
+      cls = 'feedback-mid';
+    }
+    mode = 'revealed';
+    guess = null;
+    if(week>=MAIN_WEEKS){
+      revealBtn.textContent = 'Finish';
+      mode='done';
+      msg += ' All 5 days are plotted — scroll down for what the pattern tells us.';
+    } else {
+      revealBtn.textContent = `Next: predict Day ${week+1}`;
+    }
+    updateStatus(msg, cls);
+    lakshTotalEl.textContent = '₹'+target.L;
+    ramTotalEl.textContent = '₹'+target.R;
+    render();
+
+    if(week>=MAIN_WEEKS){
+      revealBtn.disabled = true;
+      setTimeout(()=>{
+        reflectCard.classList.remove('hidden');
+        reflectCard.scrollIntoView({behavior:'smooth', block:'nearest'});
+      }, 500);
+    }
+  }
+
+  function advanceWeek(){
+    mode='predict';
+    revealBtn.disabled = true;
+    revealBtn.textContent = `Reveal Day ${week+1}`;
+    updateStatus(`Click where you think <strong>Day ${week+1}</strong>'s point will land, then hit Reveal.`);
+  }
+
+  // ---- SVG rendering ----
+  function niceMax(v){
+    if(v<=0) return 10;
+    const mag = Math.pow(10, Math.floor(Math.log10(v)));
+    const norm = v/mag;
+    let n;
+    if(norm<=1) n=1; else if(norm<=2) n=2; else if(norm<=5) n=5; else n=10;
+    return n*mag;
+  }
+
+  function getScale(){
+    let maxR = FIXED_MULT * (MAIN_WEEKS) * 10; // worst case main mode
+    if(exploreActive){
+      maxR = Math.max(maxR, 4*4*10);
+    }
+    const allR = points.map(p=>p.R).concat(explorePoints.map(p=>p.R));
+    const target = week>=MAIN_WEEKS && !exploreActive ? Math.max(...allR, 10) : maxR;
+    const capped = niceMax(target*1.15);
+    return plotH/capped;
+  }
+
+  function render(){
+    while(svg.firstChild) svg.removeChild(svg.firstChild);
+    const unit = getScale();
+    const maxR = plotH/unit;
+
+    // grid lines
+    const step = niceMax(maxR/6) || 10;
+    for(let v=0; v<=maxR+0.001; v+=step){
+      const y = originY - v*unit;
+      const gl = mkLine(originX, y, originX+plotW, y, '#E4DCC4', 1);
+      svg.appendChild(gl);
+      const tl = mkText(originX-10, y+3, '₹'+Math.round(v), 'tick-label');
+      tl.setAttribute('text-anchor','end');
+      svg.appendChild(tl);
+
+      const x = originX + v*unit;
+      if(x <= originX+plotW+1){
+        const glx = mkLine(x, originY, x, originY-plotH, '#E4DCC4', 1);
+        svg.appendChild(glx);
+        const tlx = mkText(x, originY+18, '₹'+Math.round(v), 'tick-label');
+        tlx.setAttribute('text-anchor','middle');
+        svg.appendChild(tlx);
+      }
+    }
+
+    // axes
+    svg.appendChild(mkLine(originX, originY, originX+plotW, originY, '#26332B', 1.5));
+    svg.appendChild(mkLine(originX, originY, originX, originY-plotH, '#26332B', 1.5));
+    const xlab = mkText(originX+plotW/2, originY+42, "Bharavi's verses (₹)", 'axis-label');
+    xlab.setAttribute('text-anchor','middle');
+    svg.appendChild(xlab);
+    const ylab = mkText(18, originY-plotH/2, "Magha's verses (₹)", 'axis-label');
+    ylab.setAttribute('text-anchor','middle');
+    ylab.setAttribute('transform', `rotate(-90 18 ${originY-plotH/2})`);
+    svg.appendChild(ylab);
+
+    const activePoints = exploreActive ? explorePoints : points;
+
+    // connecting line through confirmed points + origin
+    if(activePoints.length>0){
+      let d = `M ${originX} ${originY} `;
+      activePoints.forEach(p=>{
+        d += `L ${originX+p.L*unit} ${originY-p.R*unit} `;
+      });
+      const path = document.createElementNS(svgNS,'path');
+      path.setAttribute('d', d);
+      path.setAttribute('stroke', '#B8860B');
+      path.setAttribute('stroke-width', '2');
+      path.setAttribute('stroke-dasharray', '5 4');
+      path.setAttribute('fill', 'none');
+      svg.appendChild(path);
+    }
+
+    // confirmed points
+    activePoints.forEach((p,i)=>{
+      const cx = originX+p.L*unit, cy = originY-p.R*unit;
+      const c = document.createElementNS(svgNS,'circle');
+      c.setAttribute('cx',cx); c.setAttribute('cy',cy); c.setAttribute('r',7);
+      c.setAttribute('fill', '#1F6F5C');
+      c.setAttribute('stroke', '#FFFDF7'); c.setAttribute('stroke-width','2');
+      svg.appendChild(c);
+      const lab = mkText(cx+10, cy-8, `W${i+1}: (${p.L},${p.R})`, 'tick-label');
+      svg.appendChild(lab);
+    });
+
+    // guess marker (main mode only)
+    if(!exploreActive && guess){
+      const cx = originX+guess.L*unit, cy = originY-guess.R*unit;
+
+      // dashed guide lines down to each axis, so the guess reads clearly against both scales
+      const guideX = mkLine(cx, cy, cx, originY, '#7B5EA7', 1.5);
+      guideX.setAttribute('stroke-dasharray','4 3');
+      guideX.setAttribute('stroke-opacity','0.55');
+      svg.appendChild(guideX);
+      const guideY = mkLine(cx, cy, originX, cy, '#7B5EA7', 1.5);
+      guideY.setAttribute('stroke-dasharray','4 3');
+      guideY.setAttribute('stroke-opacity','0.55');
+      svg.appendChild(guideY);
+
+      // halo so the guess pops even when close to another point
+      const halo = document.createElementNS(svgNS,'circle');
+      halo.setAttribute('cx',cx); halo.setAttribute('cy',cy); halo.setAttribute('r',13);
+      halo.setAttribute('fill', 'none');
+      halo.setAttribute('stroke', '#7B5EA7'); halo.setAttribute('stroke-width','1.5');
+      halo.setAttribute('stroke-opacity','0.5');
+      svg.appendChild(halo);
+
+      const c = document.createElementNS(svgNS,'circle');
+      c.setAttribute('cx',cx); c.setAttribute('cy',cy); c.setAttribute('r',7);
+      c.setAttribute('fill', '#7B5EA7'); c.setAttribute('fill-opacity','0.95');
+      c.setAttribute('stroke', '#FFFDF7'); c.setAttribute('stroke-width','2');
+      svg.appendChild(c);
+
+      // coordinate label right on the point, positioned to avoid running off the edge
+      const labelAnchor = cx > originX+plotW-90 ? 'end' : 'start';
+      const labelX = cx > originX+plotW-90 ? cx-12 : cx+12;
+      const lab = mkText(labelX, cy-10, `you: (₹${guess.L}, ₹${guess.R})`, 'tick-label');
+      lab.setAttribute('text-anchor', labelAnchor);
+      lab.setAttribute('font-weight', '600');
+      lab.setAttribute('fill', '#7B5EA7');
+      svg.appendChild(lab);
+    }
+
+    // origin marker
+    const o = document.createElementNS(svgNS,'circle');
+    o.setAttribute('cx', originX); o.setAttribute('cy', originY); o.setAttribute('r', 4);
+    o.setAttribute('fill', '#26332B');
+    svg.appendChild(o);
+  }
+
+  function mkLine(x1,y1,x2,y2,stroke,w){
+    const l = document.createElementNS(svgNS,'line');
+    l.setAttribute('x1',x1); l.setAttribute('y1',y1);
+    l.setAttribute('x2',x2); l.setAttribute('y2',y2);
+    l.setAttribute('stroke',stroke); l.setAttribute('stroke-width',w);
+    return l;
+  }
+  function mkText(x,y,text,cls){
+    const t = document.createElementNS(svgNS,'text');
+    t.setAttribute('x',x); t.setAttribute('y',y);
+    t.setAttribute('class',cls);
+    t.textContent = text;
+    return t;
+  }
+
+  svg.addEventListener('click', (e)=>{
+    if(exploreActive) return;
+    if(mode!=='predict') return;
+    const rect = svg.getBoundingClientRect();
+    const scaleX = 640/rect.width, scaleY = 500/rect.height;
+    const clickX = (e.clientX-rect.left)*scaleX;
+    const clickY = (e.clientY-rect.top)*scaleY;
+    const unit = getScale();
+    let L = (clickX-originX)/unit;
+    let R = (originY-clickY)/unit;
+    if(L<0||R<0||clickX>originX+plotW+5||clickY<originY-plotH-5) return;
+    guess = {L: Math.round(L), R: Math.round(R)};
+    revealBtn.disabled = false;
+    updateStatus(`Your guess: (₹${guess.L}, ₹${guess.R}). Click "Reveal" to see the actual point — or click elsewhere on the grid to change your guess.`);
+    render();
+  });
+
+  // ---- QUIZ ----
+  document.querySelectorAll('.q .options').forEach(group=>{
+    group.querySelectorAll('.opt').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        const correct = btn.dataset.correct === 'true';
+        group.querySelectorAll('.opt').forEach(b=>{
+          b.disabled = true;
+          if(b.dataset.correct==='true') b.classList.add('correct');
+        });
+        if(!correct) btn.classList.add('wrong');
+        if(group.parentElement.id==='q3' && correct){
+          setTimeout(()=>{
+            exploreCard.classList.remove('hidden');
+            exploreCard.scrollIntoView({behavior:'smooth', block:'nearest'});
+          }, 400);
+        }
+      });
+    });
+  });
+
+  // ---- EXPLORE MODE ----
+  const multInput = document.getElementById('multiplier');
+  const multVal = document.getElementById('multVal');
+  const expWeeklyInput = document.getElementById('expWeekly');
+  const expWeeklyVal = document.getElementById('expWeeklyVal');
+
+  function rebuildExplore(){
+    exploreActive = true;
+    const m = parseFloat(multInput.value);
+    const wl = parseInt(expWeeklyInput.value,10);
+    explorePoints = [];
+    for(let i=1;i<=4;i++){
+      const L = i*wl;
+      const R = Math.round(L*m*10)/10;
+      explorePoints.push({L,R});
+    }
+    render();
+  }
+  multInput.addEventListener('input', ()=>{ multVal.textContent = multInput.value; rebuildExplore(); });
+  expWeeklyInput.addEventListener('input', ()=>{ expWeeklyVal.textContent = '₹'+expWeeklyInput.value; rebuildExplore(); });
+
+  // reveal explore mode also when scrolled into view even before quiz completion isn't needed; keep gated by quiz
+
+  // init
+  render();
+})();
+</script>
+</body>
+</html>
