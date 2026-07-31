@@ -6,6 +6,7 @@ import { MuxVideoPlayer } from '@/components/video/MuxVideoPlayer';
 import { ActivityFrame } from '@/components/activity/ActivityFrame';
 import { QuizApp } from '@/components/quiz/QuizApp';
 import { EthicsConsent } from '@/components/ethics/EthicsConsent';
+import { ProctorPanel } from '@/components/proctor/ProctorPanel';
 import { useLiveHeartbeat } from '@/hooks/useLiveHeartbeat';
 import Link from 'next/link';
 import { ChevronLeft } from 'lucide-react';
@@ -121,57 +122,59 @@ export function ItemClient({ item, progress, questions, userId, sectionTitle, ba
   }
 
   return (
-    <div className="space-y-4 max-w-4xl">
-      <div className="flex items-center gap-2 text-sm">
-        <Link href={backHref} className="flex items-center text-muted-foreground hover:text-gray-900">
-          <ChevronLeft className="h-4 w-4" /> {sectionTitle}
-        </Link>
-      </div>
+    <ProctorPanel itemId={item.id}>
+      <div className="space-y-4 max-w-4xl">
+        <div className="flex items-center gap-2 text-sm">
+          <Link href={backHref} className="flex items-center text-muted-foreground hover:text-gray-900">
+            <ChevronLeft className="h-4 w-4" /> {sectionTitle}
+          </Link>
+        </div>
 
-      <div>
-        <h1 className="text-2xl font-bold">{item.title}</h1>
-        {item.description && <p className="text-muted-foreground mt-1">{item.description}</p>}
-      </div>
+        <div>
+          <h1 className="text-2xl font-bold">{item.title}</h1>
+          {item.description && <p className="text-muted-foreground mt-1">{item.description}</p>}
+        </div>
 
-      {item.type === 'VIDEO' && (
-        <>
-          <MuxVideoPlayer
-            muxPlaybackId={item.muxPlaybackId ?? ''}
-            startTime={item.videoStartTime ?? '00:00:00'}
-            endTime={item.videoEndTime ?? undefined}
-            onEnded={markVideoWatched}
+        {item.type === 'VIDEO' && (
+          <>
+            <MuxVideoPlayer
+              muxPlaybackId={item.muxPlaybackId ?? ''}
+              startTime={item.videoStartTime ?? '00:00:00'}
+              endTime={item.videoEndTime ?? undefined}
+              onEnded={markVideoWatched}
+            />
+            {progress?.videoCompleted && (
+              <div className="p-3 bg-emerald-50 border border-emerald-200 rounded-lg text-sm text-emerald-800">
+                ✓ You have already watched this video. You may proceed.
+              </div>
+            )}
+            <button
+              onClick={markVideoWatched}
+              disabled={busy}
+              className="px-6 py-2 bg-emerald-600 text-white rounded-lg font-medium hover:bg-emerald-700 disabled:opacity-50"
+            >
+              {busy ? 'Saving…' : progress?.videoCompleted ? 'Continue' : 'Mark as Watched'}
+            </button>
+          </>
+        )}
+
+        {item.type === 'ACTIVITY' && item.activityHtmlSlug && (
+          <ActivityFrame
+            slug={item.activityHtmlSlug}
+            minSeconds={item.activityMinSeconds}
+            onComplete={markActivityComplete}
           />
-          {progress?.videoCompleted && (
-            <div className="p-3 bg-emerald-50 border border-emerald-200 rounded-lg text-sm text-emerald-800">
-              ✓ You have already watched this video. You may proceed.
-            </div>
-          )}
-          <button
-            onClick={markVideoWatched}
-            disabled={busy}
-            className="px-6 py-2 bg-emerald-600 text-white rounded-lg font-medium hover:bg-emerald-700 disabled:opacity-50"
-          >
-            {busy ? 'Saving…' : progress?.videoCompleted ? 'Continue' : 'Mark as Watched'}
-          </button>
-        </>
-      )}
+        )}
 
-      {item.type === 'ACTIVITY' && item.activityHtmlSlug && (
-        <ActivityFrame
-          slug={item.activityHtmlSlug}
-          minSeconds={item.activityMinSeconds}
-          onComplete={markActivityComplete}
-        />
-      )}
-
-      {item.type === 'QUIZ' && (
-        <QuizApp
-          questions={questions}
-          passThreshold={item.quizPassThreshold}
-          timeLimit={item.quizTimeLimit || undefined}
-          onSubmit={submitQuiz}
-        />
-      )}
-    </div>
+        {item.type === 'QUIZ' && (
+          <QuizApp
+            questions={questions}
+            passThreshold={item.quizPassThreshold}
+            timeLimit={item.quizTimeLimit || undefined}
+            onSubmit={submitQuiz}
+          />
+        )}
+      </div>
+    </ProctorPanel>
   );
 }
