@@ -40,7 +40,23 @@ That's it. The script will:
 
 ## How to log in (no password needed)
 
-The dev mode bypasses samagama.in OAuth. Set the `x-dev-user` header to "log in":
+The dev mode bypasses samagama.in OAuth. Two ways to sign in:
+
+### 1. One-click quick sign-in (recommended)
+
+Open http://localhost:3000/login and click a role button:
+
+| Button | Email | What you get |
+|---|---|---|
+| **Admin** | `admin@iitrpr.ac.in` | Every admin feature |
+| **Lead Instructor** | `sudarshan@iitrpr.ac.in` | Admin + teacher viva control |
+| **Instructor (TA)** | `ta.swadhyaya@iitrpr.ac.in` | Quiz review + viva queue |
+| **Reviewer** | `reviewer@iitrpr.ac.in` | Review-only permissions |
+| **Student** | `mudit@iitrpr.ac.in` | The full learn flow |
+
+You can also type any of those emails in the "Sign in" form — no password is checked.
+
+### 2. Dev header (`x-dev-user`) for curl/API calls
 
 ```bash
 # As admin
@@ -76,7 +92,7 @@ Now visit http://localhost:3000/admin and you'll be logged in as admin.
 | URL | What you'll see |
 |---|---|
 | `/` | Marketing homepage with "Sign in with samagama.in" button |
-| `/login` | Login page (use the dev header instead) |
+| `/login` | Login page — one-click quick sign-in for every role |
 | `/dashboard` | Role-aware dashboard (admin/instructor/student have different KPIs) |
 | `/learn` | Course list (1 course: Linear Algebra) |
 | `/learn/linear-algebra` | 6 modules (Module 1-6) |
