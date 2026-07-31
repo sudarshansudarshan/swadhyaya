@@ -7,7 +7,7 @@ import { Plus } from 'lucide-react';
 export default async function AdminInstructorsPage() {
   await requireAdmin();
   const instructors = await prisma.instructor.findMany({
-    include: { user: true, modules: true, _count: { select: { bookings: true } } },
+    include: { user: true },
     orderBy: { createdAt: 'asc' },
   });
 
@@ -41,7 +41,6 @@ export default async function AdminInstructorsPage() {
               <div className="flex gap-2 text-xs">
                 <span className="px-2 py-0.5 bg-gray-100 rounded">{i.staffRole.replace(/_/g, ' ')}</span>
                 {i.preset && <span className="px-2 py-0.5 bg-blue-100 rounded">{i.preset}</span>}
-                <span className="px-2 py-0.5 bg-emerald-100 rounded">{i._count.bookings} bookings</span>
                 {!i.active && <span className="px-2 py-0.5 bg-red-100 rounded">inactive</span>}
               </div>
             </div>

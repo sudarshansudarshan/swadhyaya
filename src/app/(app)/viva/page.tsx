@@ -7,14 +7,15 @@ export default async function StudentVivaPage() {
   const user = await getCurrentUser();
   if (!user) redirect('/login');
 
+  const userId = user.id;
   const [moduleProgress, bookings, instructors] = await Promise.all([
     prisma.moduleProgress.findMany({
-      where: { userId: user.id, allItemsDone: true },
-      include: { module: { include: { course: true } }, vivaBooking: true },
+      where: { userId, allItemsDone: true },
+      include: { module: { include: { course: true } } },
     }),
     prisma.vivaBooking.findMany({
       where: { userId },
-      include: { slot: { include: { instructor: true } }, module: true },
+      include: { slot: { include: { instructor: true, module: true } }, module: true },
       orderBy: { bookedAt: 'desc' },
     }),
     prisma.instructor.findMany({ where: { active: true } }),
