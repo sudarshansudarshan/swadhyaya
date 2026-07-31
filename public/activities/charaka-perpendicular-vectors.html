@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Charaka's Vectors — What is Perpendicular to [1, 1]?</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=IBM+Plex+Mono:wght@500;600&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#FAF5E8; --paper-line:#D8CFB6; --ink:#26332B; --ink-soft:#5B6B60;
+    --vec:#B8860B; --vec-soft:#F3E9CE;
+    --perp:#7B2D8E; --perp-soft:#F3E5F7;
+    --input:#0E7490; --input-soft:#CFFAFE;
+    --good:#1F6F5C; --good-soft:#DCEDE7;
+    --bad:#B5502E; --bad-soft:#FBEFE8;
+    --card:#FFFDF7; --shadow:0 2px 10px rgba(38,51,43,0.08);
+  }
+  *{box-sizing:border-box;} html,body{margin:0;padding:0;}
+  body{
+    background:repeating-linear-gradient(#FAF5E8 0px,#FAF5E8 27px,var(--paper-line) 28px),var(--paper);
+    background-size:100% 28px; color:var(--ink);
+    font-family:'Source Sans 3',sans-serif; min-height:100vh; padding:28px 16px 60px;
+  }
+  .wrap{max-width:1080px;margin:0 auto;}
+
+  header.hero{
+    background:var(--card); border:1px solid var(--paper-line);
+    border-radius:14px; box-shadow:var(--shadow);
+    padding:26px 28px 22px; margin-bottom:20px;
+  }
+  .eyebrow{font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);margin:0 0 6px;}
+  h1{font-family:'Caveat',cursive;font-weight:700;font-size:42px;margin:0 0 10px;line-height:1.05;}
+  header.hero p{max-width:760px;line-height:1.55;font-size:15.5px;margin:0 0 8px;}
+  .rule-badge{
+    display:inline-flex; gap:12px; align-items:center; flex-wrap:wrap;
+    background:var(--paper); border:1px dashed var(--paper-line);
+    border-radius:10px; padding:10px 14px; margin-top:12px;
+    font-family:'IBM Plex Mono',monospace; font-size:13px;
+  }
+  .rule-badge .pill{display:inline-flex;align-items:center;gap:6px;padding:3px 9px;border-radius:20px;font-weight:600;}
+  .pill.vec{background:var(--vec-soft);color:var(--vec);}
+  .pill.def{background:var(--perp-soft);color:var(--perp);}
+
+  .grid-layout{display:grid;grid-template-columns:340px 1fr;gap:20px;align-items:start;}
+  @media (max-width:880px){.grid-layout{grid-template-columns:1fr;}}
+
+  .card{background:var(--card);border:1px solid var(--paper-line);border-radius:14px;box-shadow:var(--shadow);padding:20px;}
+  .panel-title{font-family:'Caveat',cursive;font-weight:700;font-size:24px;margin:0 0 4px;}
+  .panel-sub{font-size:13px;color:var(--ink-soft);margin:0 0 14px;line-height:1.4;}
+
+  .vec-display{
+    background:var(--vec-soft); border:1.5px solid var(--vec);
+    border-radius:12px; padding:12px 14px; margin-bottom:12px;
+    font-family:'IBM Plex Mono',monospace; font-size:16px; font-weight:600;
+    text-align:center; color:var(--vec); line-height:1.4;
+  }
+  .vec-display .name{font-size:11px;color:var(--ink-soft);font-weight:700;display:block;margin-bottom:4px;text-transform:uppercase;letter-spacing:.05em;}
+  .vec-display .bracket{display:inline-block;vertical-align:middle;border-left:2.5px solid var(--vec);border-right:2.5px solid var(--vec);padding:4px 12px;margin:0 6px;}
+  .vec-display .row{display:block;font-size:22px;}
+
+  .field{margin-bottom:12px;}
+  .field label{display:flex;justify-content:space-between;font-size:13.5px;font-weight:600;margin-bottom:6px;}
+  .field label span.val{font-family:'IBM Plex Mono',monospace;color:var(--input);font-weight:600;}
+  .xy-row{display:flex;gap:8px;}
+  .xy-row .xy-field{flex:1;}
+  .xy-row .xy-field label{font-size:11.5px;color:var(--ink-soft);margin-bottom:3px;text-transform:uppercase;letter-spacing:.04em;font-weight:700;}
+  input[type=number]{
+    width:100%; padding:9px 10px; border-radius:8px;
+    border:1px solid var(--paper-line);
+    font-family:'IBM Plex Mono',monospace; font-size:16px;
+    background:var(--paper); color:var(--ink);
+    -moz-appearance:textfield;
+  }
+  input[type=number]::-webkit-inner-spin-button,
+  input[type=number]::-webkit-outer-spin-button{-webkit-appearance:none;margin:0;}
+  input[type=number]:focus{
+    outline:2px solid var(--input); outline-offset:-1px;
+    border-color:var(--input); background:var(--card);
+  }
+  .helper{font-size:12px;color:var(--ink-soft);margin-top:6px;line-height:1.4;}
+  .helper span.k{font-family:'IBM Plex Mono',monospace;color:var(--ink);font-weight:600;}
+
+  .dot-prod{
+    background:var(--paper); border:1px solid var(--paper-line);
+    border-radius:9px; padding:12px; margin-bottom:14px;
+    font-family:'IBM Plex Mono',monospace; font-size:14px; text-align:center;
+    font-weight:600;
+  }
+  .dot-prod .formula{font-size:13px;color:var(--ink-soft);margin-bottom:6px;}
+  .dot-prod .value{font-size:22px;font-weight:700;color:var(--ink);}
+  .dot-prod.passed .value{color:var(--good);}
+  .dot-prod.failed .value{color:var(--bad);}
+  .dot-prod.passed{background:var(--good-soft);border-color:var(--good);}
+  .dot-prod.failed{background:var(--bad-soft);border-color:var(--bad);}
+
+  /* Trial log table */
+  .trial-log{
+    background:var(--paper); border:1px solid var(--paper-line);
+    border-radius:9px; padding:10px 8px; margin-bottom:12px;
+  }
+  .trial-log h4{
+    margin:0 0 6px; font-family:'Caveat',cursive; font-size:18px; color:var(--ink);
+    text-align:center;
+  }
+  .trial-log table{
+    width:100%; border-collapse:collapse;
+    font-family:'IBM Plex Mono',monospace; font-size:12px;
+  }
+  .trial-log th{
+    background:var(--ink); color:#fff; padding:5px 4px;
+    font-weight:600; font-size:10px; text-transform:uppercase; letter-spacing:.04em;
+    border-radius:0;
+  }
+  .trial-log th:first-child{border-top-left-radius:6px;}
+  .trial-log th:last-child{border-top-right-radius:6px;}
+  .trial-log td{
+    padding:4px 4px; text-align:center;
+    border-bottom:1px dashed var(--paper-line);
+  }
+  .trial-log tr.perp td{background:var(--good-soft);color:var(--good);font-weight:700;}
+  .trial-log tr.current td{background:var(--input-soft);color:var(--input);font-weight:700;}
+  .trial-log .empty{color:var(--ink-soft);font-style:italic;font-size:11px;padding:8px;}
+  .trial-log .ok{color:var(--good);font-weight:700;}
+  .trial-log .no{color:var(--bad);}
+
+  button{
+    font-family:'Source Sans 3',sans-serif; font-weight:600; font-size:14.5px;
+    border:none; border-radius:9px; padding:11px 16px; cursor:pointer;
+    width:100%; transition:transform .08s ease, filter .15s ease;
+  }
+  button:active{transform:translateY(1px);}
+  button:disabled{opacity:.4;cursor:not-allowed;}
+  .btn-primary{background:var(--input);color:#fff;}
+  .btn-primary:hover:not(:disabled){filter:brightness(1.08);}
+  .btn-secondary{background:var(--paper);color:var(--ink);border:1px solid var(--paper-line);margin-top:8px;}
+  .btn-secondary:hover:not(:disabled){background:#F0E9D6;}
+
+  .status{
+    font-size:13.5px; line-height:1.5; padding:12px;
+    border-radius:9px; background:var(--paper);
+    border:1px solid var(--paper-line); margin-bottom:14px; min-height:20px;
+  }
+  .status.feedback-good{background:var(--good-soft);border-color:var(--good);color:var(--good);font-weight:600;}
+  .status.feedback-mid{background:var(--input-soft);border-color:var(--input);color:var(--input);font-weight:600;}
+
+  .graph-card{display:flex;flex-direction:column;}
+  .legend{display:flex;gap:18px;flex-wrap:wrap;margin:6px 0 12px;font-size:12.5px;font-family:'IBM Plex Mono',monospace;}
+  .legend span{display:inline-flex;align-items:center;gap:6px;}
+  .dot{width:10px;height:10px;border-radius:50%;display:inline-block;}
+  .dot.v-vec{background:var(--vec);}
+  .dot.u-vec{background:var(--input);}
+  .dot.perp{background:var(--perp);}
+
+  svg{width:100%;height:auto;display:block;cursor:crosshair;}
+  .axis-label{font-family:'IBM Plex Mono',monospace;font-size:12px;fill:var(--ink-soft);}
+  .tick-label{font-family:'IBM Plex Mono',monospace;font-size:10px;fill:var(--ink-soft);}
+
+  .reflect,.explore{margin-top:20px;padding-top:16px;border-top:1px dashed var(--paper-line);}
+  .reflect.hidden,.explore.hidden{display:none;}
+  .q{margin-bottom:16px;}
+  .q p.qtext{font-weight:600;margin:0 0 8px;font-size:14.5px;}
+  .options{display:flex;gap:8px;flex-wrap:wrap;}
+  .opt{
+    padding:8px 14px;border-radius:8px;border:1px solid var(--paper-line);
+    background:var(--paper);font-size:13.5px;cursor:pointer;font-weight:600;
+  }
+  .opt.correct{background:var(--good-soft);border-color:var(--good);color:var(--good);}
+  .opt.wrong{background:var(--bad-soft);border-color:var(--bad);color:var(--bad);}
+  .opt:disabled{cursor:default;}
+
+  .explore .panel-title{font-size:22px;}
+  .explore-inputs{display:flex;gap:10px;flex-wrap:wrap;margin:10px 0 14px;}
+  .explore-inputs .field{flex:1;min-width:90px;margin-bottom:0;}
+  .explore-eq{
+    background:var(--perp-soft); border:1px solid var(--perp);
+    border-radius:8px; padding:10px; margin-bottom:10px;
+    font-family:'IBM Plex Mono',monospace; font-size:14px; text-align:center; color:var(--perp); font-weight:700;
+  }
+
+  .arrow-vec{fill:none;stroke:var(--vec);stroke-width:2.5;stroke-linecap:round;}
+  .arrow-input{fill:none;stroke:var(--input);stroke-width:2.5;stroke-linecap:round;}
+  .dragging{cursor:grabbing !important;}
+
+  footer.note{text-align:center;font-size:12px;color:var(--ink-soft);margin-top:26px;font-family:'IBM Plex Mono',monospace;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <p class="eyebrow">Linear Algebra · Vectors & Perpendicularity</p>
+    <h1>Charaka's Vectors — What is Perpendicular to [1, 1]?</h1>
+    <p>Two vectors are <strong>perpendicular</strong> when their <strong>dot product</strong> is zero. For v = [1, 1], this means <code>v · u = 0</code> ⇒ <code>1·a + 1·b = 0</code> ⇒ <code>b = −a</code>. So every vector of the form [t, −t] is perpendicular to [1, 1]. Find them.</p>
+    <div class="rule-badge">
+      <span class="pill vec">v = [1, 1]</span>
+      <span>·</span>
+      <span class="pill def">u ⊥ v ⟺ v · u = 0</span>
+      <span>·</span>
+      <span class="pill def">⟺ 1·a + 1·b = 0</span>
+      <span>·</span>
+      <span class="pill def">⟺ b = −a</span>
+    </div>
+  </header>
+
+  <div class="grid-layout">
+
+    <!-- LEFT CONTROL PANEL -->
+    <div class="card">
+      <p class="panel-title">Test a candidate vector u</p>
+      <p class="panel-sub">Type u = (a, b). The dot product v · u tells you instantly whether u is perpendicular to v = [1, 1]. Click or drag in the graph too.</p>
+
+      <div class="vec-display">
+        <span class="name">fixed vector</span>
+        <span class="bracket">
+          <span class="row">1</span>
+          <span class="row">1</span>
+        </span>
+      </div>
+
+      <div class="field">
+        <label>Try <span class="val">u = (a, b)</span></label>
+        <div class="xy-row">
+          <div class="xy-field"><label>a</label><input type="number" id="inA" step="any" value="1"></div>
+          <div class="xy-field"><label>b</label><input type="number" id="inB" step="any" value="-1"></div>
+        </div>
+        <div class="helper">Tip: try <span class="k">a = 2, b = -2</span> · <span class="k">a = -3, b = 3</span> · <span class="k">a = 0, b = 1</span> (one of these is <em>not</em> perpendicular — find out which).</div>
+      </div>
+
+      <div class="dot-prod" id="dotProd">
+        <div class="formula">v · u = 1·a + 1·b = ?</div>
+        <div class="value" id="dotValue">?</div>
+      </div>
+
+      <div class="trial-log">
+        <h4>Trial log</h4>
+        <table id="trialTable">
+          <thead>
+            <tr>
+              <th style="width:18px;">#</th>
+              <th>(a, b)</th>
+              <th>v · u</th>
+              <th>⊥?</th>
+            </tr>
+          </thead>
+          <tbody id="trialBody">
+          </tbody>
+        </table>
+      </div>
+
+      <div class="trial-log">
+        <h4>Trial log</h4>
+        <table id="trialTable">
+          <thead>
+            <tr>
+              <th style="width:18px;">#</th>
+              <th>(a, b)</th>
+              <th>v · u</th>
+              <th>⊥?</th>
+            </tr>
+          </thead>
+          <tbody id="trialBody">
+          </tbody>
+        </table>
+      </div>
+
+      <button class="btn-primary" id="recordBtn" style="margin-top:8px;">Record this trial</button>
+      <button class="btn-secondary" id="resetBtn">Clear all</button>
+    </div>
+
+    <!-- RIGHT GRAPH -->
+    <div class="card graph-card">
+      <p class="panel-title">The plane</p>
+      <div class="legend">
+        <span><i class="dot v-vec"></i>v = [1, 1]</span>
+        <span><i class="dot u-vec"></i>your vector u</span>
+        <span><span style="color:var(--perp);">─ ─</span>line of perpendicular vectors (b = −a)</span>
+        <span><i class="dot perp"></i>perpendicular ✓</span>
+      </div>
+      <p class="panel-sub" style="margin:6px 0 10px;">Click anywhere on the plane to drop u there. Drag the teal tip to move u live. The dashed purple line <em>y = −x</em> is the locus of every vector perpendicular to [1, 1].</p>
+      <svg id="graphSvg" viewBox="0 0 640 500" xmlns="http://www.w3.org/2000/svg"></svg>
+    </div>
+  </div>
+
+  <!-- REFLECTION QUIZ -->
+  <div class="card reflect hidden" id="reflectCard">
+    <p class="panel-title">What do you notice?</p>
+    <p class="panel-sub">You can move u anywhere. Now check the geometry.</p>
+
+    <div class="q" id="q1">
+      <p class="qtext">1. Which of these vectors is perpendicular to [1, 1]?</p>
+      <div class="options">
+        <button class="opt" data-correct="false">[3, 3] — same direction as v, so 0° angle</button>
+        <button class="opt" data-correct="true">[3, −3] — opposite slope (1 vs −1), so 90° angle</button>
+        <button class="opt" data-correct="false">[1, 0] — perpendicular to x-axis, not to [1, 1]</button>
+        <button class="opt" data-correct="false">[0, 1] — perpendicular to y-axis, not to [1, 1]</button>
+      </div>
+    </div>
+
+    <div class="q" id="q2">
+      <p class="qtext">2. The condition "v · u = 0" geometrically means —</p>
+      <div class="options">
+        <button class="opt" data-correct="false">The two vectors have the same length</button>
+        <button class="opt" data-correct="false">The two vectors point in the same direction</button>
+        <button class="opt" data-correct="true">The two vectors meet at a 90° angle — they are perpendicular / orthogonal</button>
+      </div>
+    </div>
+
+    <div class="q" id="q3">
+      <p class="qtext">3. All vectors perpendicular to [1, 1] sit on the line —</p>
+      <div class="options">
+        <button class="opt" data-correct="false">y = x (parallel to v)</button>
+        <button class="opt" data-correct="true">y = −x (slope −1, perpendicular to the line y = x)</button>
+        <button class="opt" data-correct="false">y = 0 (the x-axis)</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- EXPLORE MODE -->
+  <div class="card explore hidden" id="exploreCard">
+    <p class="panel-title">Now you try: change v</p>
+    <p class="panel-sub">Pick any v. The locus of u ⊥ v is always a straight line through the origin. Where?</p>
+
+    <div class="explore-inputs">
+      <div class="field"><label>v<sub>1</sub></label><input type="number" id="expV1" step="0.5" value="1"></div>
+      <div class="field"><label>v<sub>2</sub></label><input type="number" id="expV2" step="0.5" value="2"></div>
+    </div>
+
+    <div class="explore-eq" id="exploreEq">All u ⊥ v lie on the line: 1·a + 2·b = 0 ⇒ b = −a/2</div>
+  </div>
+
+  <footer class="note">Built for vector orthogonality · v · u = 0 ⟺ u ⊥ v · the locus of u is a line through the origin perpendicular to v</footer>
+</div>
+
+<script>
+(function(){
+  const svgNS = "http://www.w3.org/2000/svg";
+  const svg = document.getElementById('graphSvg');
+  const M = {l: 70, r: 20, t: 30, b: 50};
+  const PW = 640 - M.l - M.r;
+  const PH = 500 - M.t - M.b;
+
+  // ---- STATE ----
+  let v1 = 1, v2 = 1;       // fixed v = [v1, v2]
+  let isDragging = null;
+  let rounds = 0;
+
+  // ---- DOM ----
+  const inA = document.getElementById('inA');
+  const inB = document.getElementById('inB');
+  const dotProd = document.getElementById('dotProd');
+  const dotValue = document.getElementById('dotValue');
+  const resetBtn = document.getElementById('resetBtn');
+  const recordBtn = document.getElementById('recordBtn');
+  const trialBody = document.getElementById('trialBody');
+  const reflectCard = document.getElementById('reflectCard');
+  const exploreCard = document.getElementById('exploreCard');
+
+  function formatNum(v){
+    if(Math.abs(v) < 1e-9) return '0';
+    if(Number.isInteger(v)) return v.toString();
+    return (Math.round(v*100)/100).toString();
+  }
+
+  function dot(u1, u2){
+    return v1*u1 + v2*u2;
+  }
+
+  // ---- Trial log ----
+  const trials = [];
+  let trialCounter = 0;
+  const MAX_TRIALS = 50;
+
+  function renderTrialsTable(){
+    if(trials.length === 0){
+      trialBody.innerHTML = '<tr><td colspan="4" class="empty">no trials yet — click "Record this trial"</td></tr>';
+      return;
+    }
+    const a = parseFloat(inA.value);
+    const b = parseFloat(inB.value);
+    const currentA = isNaN(a) ? null : a;
+    const currentB = isNaN(b) ? null : b;
+
+    const rows = trials.map((t, idx) => {
+      const isCurrent = currentA !== null && currentB !== null &&
+        Math.abs(t.a - currentA) < 1e-9 && Math.abs(t.b - currentB) < 1e-9;
+      const cls = isCurrent ? 'current' : (t.perp ? 'perp' : '');
+      return `<tr class="${cls}">
+        <td>${t.id}</td>
+        <td>(${formatNum(t.a)}, ${formatNum(t.b)})</td>
+        <td>${formatNum(t.dot)}</td>
+        <td>${t.perp ? '<span class="ok">✓</span>' : '<span class="no">✗</span>'}</td>
+      </tr>`;
+    }).join('');
+    trialBody.innerHTML = rows;
+  }
+
+  function recordCurrentTrial(){
+    const a = parseFloat(inA.value);
+    const b = parseFloat(inB.value);
+    if(isNaN(a) || isNaN(b)) return;
+    const d = dot(a, b);
+    trialCounter++;
+    trials.push({
+      id: trialCounter,
+      a: a,
+      b: b,
+      dot: d,
+      perp: Math.abs(d) < 0.005
+    });
+    // cap to last MAX_TRIALS
+    while(trials.length > MAX_TRIALS){
+      trials.shift();
+    }
+    renderTrialsTable();
+    render();
+
+    if(Math.abs(d) < 0.005){
+      rounds++;
+      if(rounds >= 2) reflectCard.classList.remove('hidden');
+    }
+  }
+
+  function updateLive(){
+    const a = parseFloat(inA.value);
+    const b = parseFloat(inB.value);
+    if(isNaN(a) || isNaN(b)){
+      dotValue.textContent = '?';
+      dotProd.className = 'dot-prod';
+      render();
+      renderTrialsTable();
+      return;
+    }
+    const d = dot(a, b);
+    dotValue.textContent = formatNum(d);
+    const passed = Math.abs(d) < 0.005;
+    dotProd.className = 'dot-prod ' + (passed ? 'passed' : 'failed');
+    render();
+    renderTrialsTable();
+    if(passed){
+      rounds++;
+      if(rounds >= 2) reflectCard.classList.remove('hidden');
+    }
+  }
+
+  function resetGame(){
+    inA.value = '1'; inB.value = '-1';
+    v1 = 1; v2 = 1;
+    reflectCard.classList.add('hidden');
+    exploreCard.classList.add('hidden');
+    rounds = 0;
+    trials.length = 0;
+    trialCounter = 0;
+    updateLive();
+    renderTrialsTable();
+  }
+
+  inA.addEventListener('input', updateLive);
+  inB.addEventListener('input', updateLive);
+  inA.addEventListener('keydown', (e)=>{ if(e.key === 'Enter') recordCurrentTrial(); });
+  inB.addEventListener('keydown', (e)=>{ if(e.key === 'Enter') recordCurrentTrial(); });
+  resetBtn.addEventListener('click', resetGame);
+  recordBtn.addEventListener('click', recordCurrentTrial);
+
+  // ---- SVG rendering ----
+  function getBounds(){
+    // Show the line of perpendicular vectors (passes through origin perpendicular to v)
+    // Bounds need to encompass v and the line in both directions
+    const candidates = [];
+    candidates.push({x: v1, y: v2});          // v itself
+    candidates.push({x: v2, y: -v1});        // one perpendicular direction
+    candidates.push({x: -v2, y: v1});       // other perpendicular direction
+    candidates.push({x: v1*2, y: v2*2});     // scaled v
+    const a = parseFloat(inA.value);
+    const b = parseFloat(inB.value);
+    if(!isNaN(a) && !isNaN(b)) candidates.push({x: a, y: b});
+    const xs = candidates.map(p => p.x);
+    const ys = candidates.map(p => p.y);
+    let xR = Math.max(Math.abs(Math.min(...xs)), Math.abs(Math.max(...xs)));
+    let yR = Math.max(Math.abs(Math.min(...ys)), Math.abs(Math.max(...ys)));
+    xR = Math.max(xR, 4);
+    yR = Math.max(yR, 4);
+    return {xMin: -xR, xMax: xR, yMin: -yR, yMax: yR};
+  }
+
+  function render(){
+    while(svg.firstChild) svg.removeChild(svg.firstChild);
+
+    const bounds = getBounds();
+    const xR = bounds.xMax - bounds.xMin;
+    const yR = bounds.yMax - bounds.yMin;
+    const xSc = PW / xR;
+    const ySc = PH / yR;
+
+    function toS(dx, dy){
+      return {
+        x: M.l + (dx - bounds.xMin) * xSc,
+        y: M.t + PH - (dy - bounds.yMin) * ySc
+      };
+    }
+
+    const originSvg = toS(0, 0);
+
+    // ---- Grid ----
+    const xStep = Math.max(1, Math.round(xR / 6));
+    const yStep = Math.max(1, Math.round(yR / 6));
+    for(let v = Math.ceil(bounds.xMin / xStep) * xStep; v <= bounds.xMax; v += xStep){
+      if(v === 0) continue;
+      const p = toS(v, 0);
+      if(p.x < M.l - 1 || p.x > M.l + PW + 1) continue;
+      const ln = mkL(p.x, M.t, p.x, M.t + PH, '#E4DCC4', 1);
+      ln.setAttribute('stroke-dasharray', v % 1 === 0 ? '2 3' : '3 3');
+      svg.appendChild(ln);
+      const t = mkT(p.x, originSvg.y + 16, formatNum(v), 'tick-label');
+      t.setAttribute('text-anchor', 'middle');
+      svg.appendChild(t);
+    }
+    for(let v = Math.ceil(bounds.yMin / yStep) * yStep; v <= bounds.yMax; v += yStep){
+      if(v === 0) continue;
+      const p = toS(0, v);
+      if(p.y < M.t - 1 || p.y > M.t + PH + 1) continue;
+      const ln = mkL(M.l, p.y, M.l + PW, p.y, '#E4DCC4', 1);
+      ln.setAttribute('stroke-dasharray', v % 1 === 0 ? '2 3' : '3 3');
+      svg.appendChild(ln);
+      const t = mkT(M.l - 6, p.y + 3, formatNum(v), 'tick-label');
+      t.setAttribute('text-anchor', 'end');
+      svg.appendChild(t);
+    }
+
+    // ---- Axes through (0,0) ----
+    if(0 >= bounds.yMin && 0 <= bounds.yMax){
+      svg.appendChild(mkL(M.l, originSvg.y, M.l + PW, originSvg.y, '#26332B', 1.5));
+    }
+    if(0 >= bounds.xMin && 0 <= bounds.xMax){
+      svg.appendChild(mkL(originSvg.x, M.t, originSvg.x, M.t + PH, '#26332B', 1.5));
+    }
+
+    // axis labels
+    const xlab = mkT(M.l + PW/2, M.t + PH + 42, 'a (x)', 'axis-label');
+    xlab.setAttribute('text-anchor', 'middle');
+    svg.appendChild(xlab);
+    const ylab = mkT(16, M.t + PH/2, 'b (y)', 'axis-label');
+    ylab.setAttribute('text-anchor', 'middle');
+    ylab.setAttribute('transform', `rotate(-90 16 ${M.t + PH/2})`);
+    svg.appendChild(ylab);
+
+    // ---- Line of perpendicular vectors (y = -v1/v2 * x) ----
+    // Only meaningful if v2 != 0 (and not all zero)
+    if(Math.abs(v1) > 1e-9 || Math.abs(v2) > 1e-9){
+      const slope = -v1 / v2;
+      // draw line through origin with this slope
+      let d = '';
+      let started = false;
+      for(let x = bounds.xMin; x <= bounds.xMax; x += (bounds.xMax - bounds.xMin)/200){
+        const y = slope * x;
+        if(!isFinite(y)) continue;
+        if(y < bounds.yMin || y > bounds.yMax) continue;
+        const sp = toS(x, y);
+        if(sp.x < M.l - 5 || sp.x > M.l + PW + 5 || sp.y < M.t - 5 || sp.y > M.t + PH + 5) continue;
+        d += (started ? ' L ' : 'M ') + sp.x + ' ' + sp.y + ' ';
+        started = true;
+      }
+      const path = document.createElementNS(svgNS, 'path');
+      path.setAttribute('d', d);
+      path.setAttribute('stroke', '#7B2D8E');
+      path.setAttribute('stroke-width', '2');
+      path.setAttribute('stroke-dasharray', '6 4');
+      path.setAttribute('fill', 'none');
+      svg.appendChild(path);
+
+      // label near one end of the line
+      const labX = bounds.xMax * 0.8;
+      const labY = slope * labX;
+      if(isFinite(labY) && labY >= bounds.yMin && labY <= bounds.yMax){
+        const sp = toS(labX, labY);
+        const eqLabel = mkT(sp.x - 6, sp.y - 8, 'line of u ⊥ v', 'tick-label');
+        eqLabel.setAttribute('fill', '#7B2D8E');
+        eqLabel.setAttribute('font-weight', '700');
+        eqLabel.setAttribute('font-size', '11');
+        eqLabel.setAttribute('text-anchor', 'end');
+        svg.appendChild(eqLabel);
+      }
+    }
+
+    // ---- v vector (gold) ----
+    function drawArrow(toX, toY, color, className, label, labelDx, labelDy){
+      const sp2 = toS(toX, toY);
+      const dx = sp2.x - originSvg.x, dy = sp2.y - originSvg.y;
+      const len = Math.sqrt(dx*dx + dy*dy);
+      if(len < 1) return;
+      const ux = dx/len, uy = dy/len;
+      const tipX = sp2.x - ux * 4;
+      const tipY = sp2.y - uy * 4;
+      const shaft = mkL(originSvg.x, originSvg.y, tipX, tipY, color, 0);
+      shaft.setAttribute('class', className);
+      svg.appendChild(shaft);
+      const head = 8;
+      const left = { x: sp2.x - head*ux + head*0.4*uy, y: sp2.y - head*uy - head*0.4*ux };
+      const right = { x: sp2.x - head*ux - head*0.4*uy, y: sp2.y - head*uy + head*0.4*ux };
+      const headPath = document.createElementNS(svgNS, 'path');
+      headPath.setAttribute('d', `M ${sp2.x} ${sp2.y} L ${left.x} ${left.y} L ${right.x} ${right.y} Z`);
+      headPath.setAttribute('fill', color);
+      svg.appendChild(headPath);
+      const dotC = document.createElementNS(svgNS, 'circle');
+      dotC.setAttribute('cx', sp2.x); dotC.setAttribute('cy', sp2.y);
+      dotC.setAttribute('r', 3);
+      dotC.setAttribute('fill', color);
+      svg.appendChild(dotC);
+      if(label){
+        const off = 14;
+        const lx = sp2.x + ux*off + (labelDx || 0);
+        const ly = sp2.y + uy*off + (labelDy || 0) - 6;
+        const t = mkT(lx, ly, label, 'tick-label');
+        t.setAttribute('text-anchor', (ux > 0.1 ? 'start' : (ux < -0.1 ? 'end' : 'middle')));
+        t.setAttribute('fill', color);
+        t.setAttribute('font-weight', '700');
+        t.setAttribute('font-size', '12');
+        svg.appendChild(t);
+      }
+    }
+    // v vector
+    drawArrow(v1, v2, '#B8860B', 'arrow-vec', `v = (${formatNum(v1)}, ${formatNum(v2)})`);
+
+    // ---- u vector (teal) ----
+    const a = parseFloat(inA.value);
+    const b = parseFloat(inB.value);
+    if(!isNaN(a) && !isNaN(b) && (a !== 0 || b !== 0)){
+      drawArrow(a, b, '#0E7490', 'arrow-input', `u = (${formatNum(a)}, ${formatNum(b)})`);
+    }
+  }
+
+  function mkL(x1, y1, x2, y2, stroke, w){
+    const l = document.createElementNS(svgNS, 'line');
+    l.setAttribute('x1', x1); l.setAttribute('y1', y1);
+    l.setAttribute('x2', x2); l.setAttribute('y2', y2);
+    l.setAttribute('stroke', stroke); l.setAttribute('stroke-width', w);
+    return l;
+  }
+  function mkT(x, y, text, cls){
+    const t = document.createElementNS(svgNS, 'text');
+    t.setAttribute('x', x); t.setAttribute('y', y);
+    t.setAttribute('class', cls);
+    t.textContent = text;
+    return t;
+  }
+
+  // ---- Interactive graph control ----
+  function pixelToData(px, py){
+    const b = getBounds();
+    const xR = b.xMax - b.xMin;
+    const yR = b.yMax - b.yMin;
+    const xSc = PW / xR, ySc = PH / yR;
+    return {
+      x: b.xMin + (px - M.l) / xSc,
+      y: b.yMin + (M.t + PH - py) / ySc
+    };
+  }
+  function round2(v){ return Math.round(v * 100) / 100; }
+  function eventToPixel(e){
+    const rect = svg.getBoundingClientRect();
+    const sx = 640 / rect.width;
+    const sy = 500 / rect.height;
+    return {
+      px: (e.clientX - rect.left) * sx,
+      py: (e.clientY - rect.top) * sy
+    };
+  }
+
+  svg.addEventListener('mousedown', (e)=>{
+    const {px, py} = eventToPixel(e);
+    const data = pixelToData(px, py);
+    isDragging = true;
+    inA.value = String(round2(data.x));
+    inB.value = String(round2(data.y));
+    updateLive();
+    svg.classList.add('dragging');
+    e.preventDefault();
+  });
+
+  document.addEventListener('mousemove', (e)=>{
+    if(!isDragging) return;
+    const rect = svg.getBoundingClientRect();
+    const sx = 640 / rect.width, sy = 500 / rect.height;
+    const px = (e.clientX - rect.left) * sx;
+    const py = (e.clientY - rect.top) * sy;
+    const cx = Math.max(M.l, Math.min(M.l + PW, px));
+    const cy = Math.max(M.t, Math.min(M.t + PH, py));
+    const data = pixelToData(cx, cy);
+    inA.value = String(round2(data.x));
+    inB.value = String(round2(data.y));
+    updateLive();
+  });
+
+  document.addEventListener('mouseup', ()=>{
+    if(!isDragging) return;
+    isDragging = null;
+    svg.classList.remove('dragging');
+  });
+
+  // ---- QUIZ ----
+  document.querySelectorAll('.q .options').forEach(group => {
+    group.querySelectorAll('.opt').forEach(btn => {
+      btn.addEventListener('click', ()=>{
+        const correct = btn.dataset.correct === 'true';
+        group.querySelectorAll('.opt').forEach(b => {
+          b.disabled = true;
+          if(b.dataset.correct === 'true') b.classList.add('correct');
+        });
+        if(!correct) btn.classList.add('wrong');
+        if(group.parentElement.id === 'q3' && correct){
+          setTimeout(()=>{
+            exploreCard.classList.remove('hidden');
+            exploreCard.scrollIntoView({behavior:'smooth', block:'nearest'});
+            rebuildExplore();
+          }, 400);
+        }
+      });
+    });
+  });
+
+  // ---- EXPLORE ----
+  const expV1 = document.getElementById('expV1');
+  const expV2 = document.getElementById('expV2');
+  const exploreEq = document.getElementById('exploreEq');
+
+  function rebuildExplore(){
+    const nv1 = parseFloat(expV1.value);
+    const nv2 = parseFloat(expV2.value);
+    if(isNaN(nv1) || isNaN(nv2)) return;
+    if(nv1 === 0 && nv2 === 0){
+      exploreEq.textContent = 'v = (0, 0) — every vector is trivially perpendicular';
+      return;
+    }
+    v1 = nv1;
+    v2 = nv2;
+    if(Math.abs(v2) < 1e-9){
+      exploreEq.textContent = `v = (${formatNum(v1)}, ${formatNum(v2)}) — perpendicular vectors lie on the line a = 0 (the b-axis)`;
+    } else {
+      const slope = -v1 / v2;
+      const sign = (slope < 0 ? '−' : '');
+      exploreEq.textContent = `v = (${formatNum(v1)}, ${formatNum(v2)}) — perpendicular vectors lie on b = ${formatNum(slope)}·a (slope ${sign}${Math.abs(slope).toFixed(2)})`;
+    }
+    render();
+  }
+  [expV1, expV2].forEach(inp => {
+    inp.addEventListener('input', rebuildExplore);
+  });
+
+  // init
+  renderTrialsTable();
+  updateLive();
+})();
+</script>
+</body>
+</html>

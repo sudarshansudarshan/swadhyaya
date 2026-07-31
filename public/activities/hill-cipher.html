@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hill Cipher — Encrypting with Matrices</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=IBM+Plex+Mono:wght@500;600&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#FAF5E8; --paper-line:#D8CFB6; --ink:#26332B; --ink-soft:#5B6B60;
+    --fn:#1F6F5C; --fn-soft:#DCEDE7; --pt:#7B5EA7; --pt-soft:#EAE3F5;
+    --target:#B8860B; --target-soft:#F3E9CE; --d1:#B5502E; --d1-soft:#FBEFE8;
+    --card:#FFFDF7; --shadow:0 2px 10px rgba(38,51,43,0.08);
+  }
+  *{box-sizing:border-box;} html,body{margin:0;padding:0;}
+  body{
+    background:repeating-linear-gradient(#FAF5E8 0px,#FAF5E8 27px,var(--paper-line) 28px),var(--paper);
+    background-size:100% 28px; color:var(--ink); font-family:'Source Sans 3',sans-serif;
+    min-height:100vh; padding:28px 16px 60px;
+  }
+  .wrap{max-width:1080px;margin:0 auto;}
+  header.hero{background:var(--card);border:1px solid var(--paper-line);border-radius:14px;box-shadow:var(--shadow);padding:26px 28px 22px;margin-bottom:20px;}
+  .eyebrow{font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);margin:0 0 6px;}
+  h1{font-family:'Caveat',cursive;font-weight:700;font-size:38px;margin:0 0 10px;line-height:1.05;}
+  header.hero p{max-width:680px;line-height:1.55;font-size:15.5px;margin:0 0 8px;}
+  .dim-grid{display:flex;gap:14px;flex-wrap:wrap;margin-top:12px;}
+  .dim-grid span{font-family:'IBM Plex Mono',monospace;font-size:13px;padding:8px 14px;border-radius:8px;font-weight:600;border:1px solid var(--paper-line);background:var(--paper);}
+  .grid-layout{display:grid;grid-template-columns:300px 1fr;gap:20px;align-items:start;}
+  @media (max-width:800px){.grid-layout{grid-template-columns:1fr;}}
+  .card{background:var(--card);border:1px solid var(--paper-line);border-radius:14px;box-shadow:var(--shadow);padding:20px;}
+  .panel-title{font-family:'Caveat',cursive;font-weight:700;font-size:24px;margin:0 0 4px;}
+  .panel-sub{font-size:13px;color:var(--ink-soft);margin:0 0 14px;line-height:1.4;}
+  .matrix-key{
+    font-family:'IBM Plex Mono',monospace;font-size:18px;font-weight:600;text-align:center;
+    padding:14px;border-radius:10px;margin-bottom:14px;line-height:1.7;
+    background:var(--target-soft);border:1px solid var(--target);color:var(--ink);
+  }
+  .matrix-key .big{font-size:26px;font-weight:700;color:var(--target);}
+  .field{margin-bottom:14px;}
+  .field label{display:flex;justify-content:space-between;font-size:13.5px;font-weight:600;margin-bottom:6px;}
+  .field label span.val{font-family:'IBM Plex Mono',monospace;font-weight:600;color:var(--pt);}
+  .coord-row{display:flex;gap:8px;}
+  .coord-row .cflex{flex:1;}
+  .coord-row .cflex label{font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--ink-soft);margin-bottom:2px;}
+  .coord-row .cflex input{font-size:13px;padding:6px 7px;width:100%;border-radius:8px;border:1px solid var(--paper-line);font-family:'IBM Plex Mono',monospace;background:var(--paper);color:var(--ink);}
+  .coord-row .cflex input:focus{outline:2px solid var(--pt);outline-offset:-1px;border-color:var(--pt);}
+  input[type=number]{width:100%;padding:9px 10px;border-radius:8px;border:1px solid var(--paper-line);font-family:'IBM Plex Mono',monospace;font-size:16px;background:var(--paper);color:var(--ink);}
+  input[type=number]:focus{outline:2px solid var(--pt);outline-offset:-1px;border-color:var(--pt);}
+  input[type=text]{width:100%;padding:9px 10px;border-radius:8px;border:1px solid var(--paper-line);font-family:'IBM Plex Mono',monospace;font-size:16px;background:var(--paper);color:var(--ink);}
+  input[type=text]:focus{outline:2px solid var(--pt);outline-offset:-1px;border-color:var(--pt);}
+  .helper{font-size:12px;color:var(--ink-soft);margin-top:4px;line-height:1.4;}
+  button{font-family:'Source Sans 3',sans-serif;font-weight:600;font-size:14.5px;border:none;border-radius:9px;padding:11px 16px;cursor:pointer;width:100%;transition:transform .08s ease,filter .15s ease;}
+  button:active{transform:translateY(1px);}button:disabled{opacity:.4;cursor:not-allowed;}
+  .btn-primary{background:var(--fn);color:#fff;}.btn-primary:hover:not(:disabled){filter:brightness(1.08);}
+  .btn-secondary{background:var(--paper);color:var(--ink);border:1px solid var(--paper-line);margin-top:8px;}
+  .btn-secondary:hover:not(:disabled){background:#F0E9D6;}
+  .status{font-size:13.5px;line-height:1.5;padding:12px;border-radius:9px;background:var(--paper);border:1px solid var(--paper-line);margin-bottom:14px;min-height:20px;}
+  .status.feedback-good{background:var(--fn-soft);border-color:var(--fn);color:var(--fn);font-weight:600;}
+  .status.feedback-mid{background:var(--pt-soft);border-color:var(--pt);color:var(--pt);font-weight:600;}
+  .status.feedback-target{background:var(--target-soft);border-color:var(--target);color:var(--target);font-weight:600;}
+  .calc-card{display:flex;flex-direction:column;min-height:300px;}
+  .calc-card .panel-title{margin-bottom:0;}
+  .calc-card .panel-sub{margin-bottom:12px;}
+  .calc-display{
+    flex:1;display:flex;align-items:center;justify-content:center;
+    background:#FFFDF7;border:1px solid var(--paper-line);border-radius:10px;
+    padding:20px;font-family:'IBM Plex Mono',monospace;overflow-x:auto;
+  }
+  .calc-formula{font-size:15px;line-height:2.2;text-align:center;}
+  .calc-formula .label{font-size:11px;color:var(--ink-soft);font-weight:600;margin:0 4px;}
+  .calc-formula .arr{font-size:22px;color:var(--target);margin:0 6px;}
+  .calc-formula .vec{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;margin:0 4px;}
+  .calc-formula .vec .num{font-weight:600;padding:2px 8px;font-size:16px;}
+  .calc-formula .vec.in .num{color:var(--pt);}
+  .calc-formula .vec.out .num{color:var(--fn);}
+  .calc-formula .vec .bar{border-top:1.5px solid var(--ink);width:100%;margin:2px 0;}
+  .calc-formula .mat{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;margin:0 4px;padding:2px 0;}
+  .calc-formula .mat .row{display:flex;gap:6px;padding:1px 6px;}
+  .calc-formula .mat .el{font-weight:600;font-size:16px;color:var(--ink);min-width:18px;text-align:center;}
+  .calc-formula .mat .br{font-size:18px;color:var(--ink-soft);padding:0 2px;}
+  .steps{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap;}
+  .step-dot{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:600;border:1.5px solid var(--paper-line);color:var(--ink-soft);background:var(--paper);}
+  .step-dot.done{background:var(--fn);border-color:var(--fn);color:#fff;}
+  .step-dot.solution{background:var(--target);border-color:var(--target);color:#fff;}
+  .step-dot.active{border-color:var(--pt);color:var(--pt);background:var(--pt-soft);}
+  .reflect,.explore{margin-top:20px;padding-top:16px;border-top:1px dashed var(--paper-line);}
+  .reflect.hidden,.explore.hidden{display:none;}
+  .q{margin-bottom:16px;}.q p.qtext{font-weight:600;margin:0 0 8px;font-size:14.5px;}
+  .options{display:flex;gap:8px;flex-wrap:wrap;}
+  .opt{padding:8px 14px;border-radius:8px;border:1px solid var(--paper-line);background:var(--paper);font-size:13.5px;cursor:pointer;font-weight:600;}
+  .opt.correct{background:var(--fn-soft);border-color:var(--fn);color:var(--fn);}
+  .opt.wrong{background:#F6DCD4;border-color:var(--d1);color:#8C3A1F;}
+  .opt:disabled{cursor:default;}
+  .explore .panel-title{font-size:22px;}
+  .explore-inputs{display:flex;gap:10px;flex-wrap:wrap;margin:10px 0 14px;}
+  .explore-inputs .field{flex:1;min-width:70px;margin-bottom:0;}
+  .explore-inputs .field label{font-size:11px;}
+  .explore-inputs input[type=text]{font-size:13px;padding:7px 8px;}
+  footer.note{text-align:center;font-size:12px;color:var(--ink-soft);margin-top:26px;font-family:'IBM Plex Mono',monospace;}
+  .letter-map{font-family:'IBM Plex Mono',monospace;font-size:11px;margin-bottom:14px;}
+  .letter-map .lm-grid{display:grid;grid-template-columns:repeat(13,1fr);border:1px solid var(--paper-line);border-radius:8px;overflow:hidden;}
+  .letter-map .lm-cell{text-align:center;padding:6px 2px;border-right:1px solid var(--paper-line);border-bottom:1px solid var(--paper-line);}
+  .letter-map .lm-cell:nth-child(13n){border-right:none;}
+  .letter-map .lm-cell:nth-child(n+14){border-bottom:none;}
+  .letter-map .lm-cell .l{font-weight:700;color:var(--ink);font-size:13px;display:block;}
+  .letter-map .lm-cell .n{color:var(--ink-soft);font-size:11px;display:block;margin-top:1px;}
+  .pair-box{display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap;}
+  .pair-box span{flex:1;text-align:center;padding:10px 6px;border-radius:10px;border:1px solid var(--paper-line);font-size:12px;font-weight:600;font-family:'IBM Plex Mono',monospace;min-width:80px;}
+  .pair-box .in{background:var(--pt-soft);border-color:var(--pt);color:var(--pt);}
+  .pair-box .out{background:var(--fn-soft);border-color:var(--fn);color:var(--fn);}
+  .pair-box .key{background:var(--target-soft);border-color:var(--target);color:var(--target);}
+  .result-grid{display:grid;grid-template-columns:auto 1fr;gap:3px 16px;font-size:13px;font-family:'IBM Plex Mono',monospace;margin:8px 0;}
+  .result-grid .rg-label{font-weight:600;color:var(--ink-soft);text-align:right;}
+  .result-grid .rg-val{font-weight:600;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <p class="eyebrow">Cryptography · Hill Cipher</p>
+    <h1>The Hill Cipher — Matrices as Encryption Keys</h1>
+    <p>Every letter becomes a number (A=0, B=1, …, Z=25). Pair them up, multiply by the <strong>key matrix</strong> A, and the message is encrypted. Decrypt using A⁻¹. This is the Hill Cipher — one of the first cipher systems to use matrix algebra.</p>
+    <div class="dim-grid">
+      <span style="background:var(--pt-soft);border-color:var(--pt);color:var(--pt);">Plaintext → numbers</span>
+      <span style="background:var(--target-soft);border-color:var(--target);color:var(--target);">A × pair = cipher</span>
+      <span style="background:var(--fn-soft);border-color:var(--fn);color:var(--fn);">A⁻¹ × cipher = plaintext</span>
+    </div>
+  </header>
+
+  <div class="grid-layout">
+    <div class="card">
+      <p class="panel-title" id="stepTitle">Letters to Numbers</p>
+      <p class="panel-sub" id="stepSub">Each letter maps to a number.</p>
+
+      <div class="matrix-key">
+        A&nbsp;=&nbsp;<span class="big">[[2,&nbsp;3],&nbsp;[3,&nbsp;4]]</span>&nbsp;&nbsp;A⁻¹&nbsp;=&nbsp;[[−4,&nbsp;3],&nbsp;[3,&nbsp;−2]]
+      </div>
+
+      <div class="letter-map" id="letterMap">
+        <div class="lm-grid"></div>
+      </div>
+
+      <div class="pair-box" id="pairBox">
+        <span class="in" id="badgeIn">Plain: —</span>
+        <span class="key" id="badgeKey">A ×</span>
+        <span class="out" id="badgeOut">Cipher: —</span>
+      </div>
+
+      <div class="steps" id="stepDots"></div>
+
+      <div class="status" id="statusBox">Step 1 of 6 — Convert letters to numbers using the map above.</div>
+
+      <button class="btn-primary" id="checkBtn">Next Step</button>
+      <button class="btn-secondary" id="resetBtn">Start over</button>
+    </div>
+
+    <div class="card calc-card">
+      <p class="panel-title" id="calcTitle">Encryption Step</p>
+      <p class="panel-sub" id="calcSub">The transformation in action</p>
+      <div class="calc-display" id="calcDisplay">
+        <div class="calc-formula" id="calcFormula">
+          <span style="color:var(--ink-soft);">Click "Next Step" to begin</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- REFLECTION QUIZ -->
+  <div class="card reflect hidden" id="reflectCard">
+    <p class="panel-title">The Hill Cipher</p>
+    <p class="panel-sub">Matrices can encrypt and decrypt messages. The key is the matrix A, and decryption uses A⁻¹.</p>
+
+    <div class="q" id="q1">
+      <p class="qtext">1. Why must the key matrix A have det ≠ 0?</p>
+      <div class="options">
+        <button class="opt" data-correct="false">No reason — any matrix works</button>
+        <button class="opt" data-correct="true">A⁻¹ must exist to decrypt. If det = 0, A is singular and decryption is impossible.</button>
+        <button class="opt" data-correct="false">Only symmetric matrices work</button>
+      </div>
+    </div>
+
+    <div class="q" id="q2">
+      <p class="qtext">2. How do you decrypt the pair (96, 134)?</p>
+      <div class="options">
+        <button class="opt" data-correct="true">Multiply by A⁻¹: (−4·96 + 3·134, 3·96 − 2·134) = (18, 20) → "SU"</button>
+        <button class="opt" data-correct="false">Divide by 2: (48, 67)</button>
+        <button class="opt" data-correct="false">Multiply by A again: (2·96+3·134, 3·96+4·134)</button>
+      </div>
+    </div>
+
+    <div class="q" id="q3">
+      <p class="qtext">3. The word SUDARSHANA has 10 letters. Why is it encrypted as 10 numbers?</p>
+      <div class="options">
+        <button class="opt" data-correct="true">Each pair of letters (x, y) → A(x, y) = (x', y') — two input numbers give two output numbers. 10 letters → 5 pairs → 10 encrypted numbers.</button>
+        <button class="opt" data-correct="false">Each letter becomes one number: 10 letters → 10 numbers</button>
+        <button class="opt" data-correct="false">The matrix doubles every value</button>
+      </div>
+    </div>
+
+    <div class="q" id="q4">
+      <p class="qtext">4. A classical cipher that uses matrix multiplication is called:</p>
+      <div class="options">
+        <button class="opt" data-correct="false">Caesar Cipher</button>
+        <button class="opt" data-correct="true">Hill Cipher (invented by Lester S. Hill in 1929)</button>
+        <button class="opt" data-correct="false">Vigenère Cipher</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- EXPLORE MODE -->
+  <div class="card explore hidden" id="exploreCard">
+    <p class="panel-title">Encrypt your own word</p>
+    <p class="panel-sub">Type any word (letters only, even length). It gets paired, encrypted with A, and displayed with the decryption check.</p>
+
+    <div class="explore-inputs">
+      <div class="field" style="flex:2;"><label>Word <span class="val" id="expWordLen">—</span></label><input type="text" id="expWord" value="HELLO" style="text-transform:uppercase;"></div>
+    </div>
+
+    <div id="expResult" style="margin-top:10px;font-family:'IBM Plex Mono',monospace;font-size:13px;line-height:1.8;background:var(--paper);border:1px solid var(--paper-line);border-radius:10px;padding:14px;overflow-x:auto;white-space:nowrap;"></div>
+    <div class="helper" style="margin-top:6px;">The Hill Cipher encrypts pairs of letters. If your word has an odd length, 'X' is appended. The matrix key must be invertible (det ≠ 0).</div>
+  </div>
+
+  <footer class="note">Hill Cipher · key A = [[2, 3], [3, 4]] · det = −1 · A⁻¹ = [[−4, 3], [3, −2]]</footer>
+</div>
+
+<script>
+(function(){
+  const $ = id => document.getElementById(id);
+
+  const A = (v) => [2*v[0] + 3*v[1], 3*v[0] + 4*v[1]];
+  const Ainv = (v) => [-4*v[0] + 3*v[1], 3*v[0] - 2*v[1]];
+
+  const LETTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+
+  const STEPS = [
+    {label:'Letters to Numbers', word:'SU', pairs:[[18,20]], key:'encode', desc:'S=18, U=20. Each letter becomes a number.'},
+    {label:'Encrypt a Pair', word:'SU', pairs:[[18,20]], key:'encrypt', desc:'A × (18, 20) = (96, 134). The pair is now ciphertext.'},
+    {label:'Full Encryption', word:'SUDARSHANA', pairs:[[18,20],[3,0],[17,18],[7,0],[13,0]], key:'encrypt', desc:'All 5 pairs of SUDARSHANA encrypted.'},
+    {label:'The Inverse Key', word:'SU', pairs:[[18,20]], key:'inverse', desc:'A⁻¹ × (96, 134) = (18, 20). Decryption undoes encryption.'},
+    {label:'Decrypt a Pair', word:'', pairs:[[96,134],[6,9],[88,123],[14,21],[26,39]], key:'decrypt', desc:'Multiply each cipher pair by A⁻¹ to recover the plaintext.'},
+    {label:'Full Decryption', word:'SUDARSHANA', pairs:[[18,20],[3,0],[17,18],[7,0],[13,0]], key:'done', desc:'SUDARSHANA recovered! A⁻¹ undoes every step of A.'},
+  ];
+  const TOTAL = STEPS.length;
+  let step = 0;
+  let revealed = false;
+
+  const stepDots = $('stepDots');
+  const statusBox = $('statusBox');
+  const checkBtn = $('checkBtn');
+  const resetBtn = $('resetBtn');
+  const reflectCard = $('reflectCard');
+  const exploreCard = $('exploreCard');
+  const stepTitle = $('stepTitle');
+  const stepSub = $('stepSub');
+  const badgeIn = $('badgeIn'), badgeKey = $('badgeKey'), badgeOut = $('badgeOut');
+  const calcTitle = $('calcTitle');
+  const calcSub = $('calcSub');
+  const calcFormula = $('calcFormula');
+
+  for(let i=1;i<=TOTAL;i++){
+    const d = document.createElement('div');
+    d.className='step-dot'; d.textContent=i; d.id='step-'+i;
+    stepDots.appendChild(d);
+  }
+
+  function getSD(){ return STEPS[step]; }
+
+  function fmt(v){ return Number.isInteger(v) ? v : v.toFixed(2); }
+
+  function clamp(v){ return Math.max(0, Math.min(25, ((v%26)+26)%26)); }
+
+  function numToLetter(n){ return LETTERS[((n%26)+26)%26]; }
+
+  function fmtPair(p){ return `(${fmt(p[0])}, ${fmt(p[1])})`; }
+
+  function matVecHTML(M, v, res, label){
+    const rows = [`<span class="mat"><span class="br">[</span><span class="row"><span class="el">${M[0][0]}</span><span class="el">${M[0][1]}</span></span><span class="br">]</span></span>`,
+                  `<span class="mat"><span class="br">[</span><span class="row"><span class="el">${M[1][0]}</span><span class="el">${M[1][1]}</span></span><span class="br">]</span></span>`];
+    const inp = `<span class="vec in"><span class="num">${fmt(v[0])}</span><span class="bar"></span><span class="num">${fmt(v[1])}</span></span>`;
+    const out = res ? `<span class="vec out"><span class="num">${fmt(res[0])}</span><span class="bar"></span><span class="num">${fmt(res[1])}</span></span>` : '';
+    return `<span class="label">${label}</span>${rows[0]}${rows[1]}<span class="arr">×</span>${inp}<span class="arr">=</span>${out}`;
+  }
+
+  function renderCalc(){
+    const sd = getSD();
+    calcTitle.textContent = `Step ${step+1}: ${sd.label}`;
+    calcSub.textContent = sd.desc;
+
+    let html = '';
+
+    if(sd.key === 'encode'){
+      const [a,b] = sd.pairs[0];
+      html = `<span class="label">Letters → Numbers</span><br>`;
+      for(let i=0;i<sd.word.length;i++){
+        const l = sd.word[i];
+        const n = LETTERS.indexOf(l);
+        html += `<span style="font-size:24px;font-weight:700;color:var(--pt);">${l}</span><span class="arr">→</span><span style="font-size:20px;font-weight:600;color:var(--fn);">${n}</span>`;
+        if(i < sd.word.length-1) html += '&nbsp;&nbsp;';
+      }
+      if(sd.word === 'SU'){
+        html += `<br><br><span style="font-size:13px;color:var(--ink-soft);">Pair: (${a}, ${b}) → ready for A ×</span>`;
+      }
+    } else if(sd.key === 'encrypt'){
+      html = `<span class="label">Encryption</span><br>`;
+      for(let i=0;i<sd.pairs.length;i++){
+        const p = sd.pairs[i];
+        const enc = A(p);
+        if(sd.pairs.length === 1){
+          html += matVecHTML([[2,3],[3,4]], p, enc, '');
+        } else {
+          html += `<span style="color:var(--pt);">${fmt(p[0])},${fmt(p[1])}</span><span class="arr">→</span><span style="color:var(--fn);font-weight:600;">${fmt(enc[0])},${fmt(enc[1])}</span>`;
+        }
+        if(i < sd.pairs.length-1) html += '<br>';
+      }
+      if(sd.word === 'SUDARSHANA'){
+        html += `<br><br><span style="font-size:12px;color:var(--ink-soft);">Ciphertext: 96, 134, 6, 9, 88, 123, 14, 21, 26, 39</span>`;
+      }
+    } else if(sd.key === 'inverse'){
+      const enc = A([18,20]);
+      const dec = Ainv(enc);
+      html = `<span class="label">A × v = cipher</span><br>`;
+      html += matVecHTML([[2,3],[3,4]], [18,20], enc, '');
+      html += `<br><br><span class="label">A⁻¹ × cipher = v</span><br>`;
+      html += matVecHTML([[-4,3],[3,-2]], enc, dec, '');
+      html += `<br><br><span style="font-size:14px;color:var(--fn);font-weight:600;">→ SU recovered!</span>`;
+    } else if(sd.key === 'decrypt'){
+      html = `<span class="label">Decryption with A⁻¹</span><br>`;
+      for(let i=0;i<sd.pairs.length;i++){
+        const p = sd.pairs[i];
+        const dec = Ainv(p);
+        const l1 = numToLetter(dec[0]);
+        const l2 = numToLetter(dec[1]);
+        html += `<span style="color:var(--d1);">(${fmt(p[0])},${fmt(p[1])})</span><span class="arr">→</span>`;
+        html += `<span style="color:var(--fn);font-weight:600;">(${fmt(dec[0])},${fmt(dec[1])})</span>`;
+        html += `<span class="arr">→</span><span style="color:var(--pt);font-size:16px;font-weight:700;">${l1}${l2}</span>`;
+        if(i < sd.pairs.length-1) html += '<br>';
+      }
+    } else {
+      html = `<span style="font-size:18px;font-weight:700;color:var(--fn);">SUDARSHANA</span>`;
+      html += `<br><br><span style="font-size:14px;color:var(--ink-soft);">Plaintext recovered from ciphertext using A⁻¹!</span>`;
+      html += `<br><br><span class="label">A × A⁻¹ = I &nbsp;&nbsp; Encryption is undone.</span>`;
+    }
+
+    calcFormula.innerHTML = html;
+  }
+
+  function updateUI(){
+    const sd = getSD();
+    stepTitle.textContent = sd.label;
+    stepSub.textContent = sd.desc;
+
+    if(sd.key === 'encode'){
+      badgeIn.textContent = `Plain: ${sd.word}`;
+      badgeKey.textContent = `Map → numbers`;
+      badgeOut.textContent = `Numbers: ${sd.pairs[0].join(',')}`;
+    } else if(sd.key === 'encrypt' || sd.key === 'done'){
+      badgeIn.textContent = `Plain: ${sd.word}`;
+      badgeKey.textContent = `A ×`;
+      const all = sd.pairs.flatMap(A);
+      badgeOut.textContent = `Cipher: ${all.join(', ')}`;
+    } else if(sd.key === 'inverse'){
+      badgeIn.textContent = `Cipher: 96, 134`;
+      badgeKey.textContent = `A⁻¹ ×`;
+      badgeOut.textContent = `Plain: 18, 20 → SU`;
+    } else if(sd.key === 'decrypt'){
+      badgeIn.textContent = `Cipher: 5 pairs`;
+      badgeKey.textContent = `A⁻¹ ×`;
+      badgeOut.textContent = `Plain: SUDARSHANA`;
+    }
+
+    if(step >= TOTAL - 1 && revealed){
+      checkBtn.textContent = 'See all steps';
+    } else if(step >= TOTAL){
+      checkBtn.disabled = true; checkBtn.textContent = 'Complete';
+    } else if(revealed){
+      checkBtn.textContent = 'Next Step';
+    } else {
+      checkBtn.textContent = 'Next Step';
+    }
+    if(step >= TOTAL) checkBtn.disabled = true;
+  }
+
+  function markDots(){
+    document.querySelectorAll('.step-dot').forEach(d=>d.classList.remove('active'));
+    for(let i=0;i<step&&i<TOTAL;i++){
+      const d=$('step-'+(i+1)); if(d) d.classList.add('done');
+    }
+    if(step < TOTAL){ const d=$('step-'+(step+1)); if(d) d.classList.add('active'); }
+  }
+
+  function setStatus(html, cls){
+    statusBox.innerHTML = html;
+    statusBox.className = 'status' + (cls ? ' '+cls : '');
+  }
+
+  function advance(){
+    if(step>=TOTAL){
+      checkBtn.disabled=true;
+      setTimeout(()=>{reflectCard.classList.remove('hidden');exploreCard.classList.remove('hidden');reflectCard.scrollIntoView({behavior:'smooth',block:'nearest'});},500);
+      setStatus('Hill Cipher complete! Encrypt your own words below.','feedback-target');
+      return;
+    }
+    revealed = true;
+    const sd = getSD();
+    let msg;
+    if(sd.key === 'encode') msg = `S→18, U→20. Ready to multiply by A.`;
+    else if(sd.key === 'encrypt') msg = sd.word === 'SU' ? `A(18,20) = (96,134). Ciphertext!` : `All 5 pairs encrypted. The ciphertext is 96, 134, 6, 9, 88, 123, 14, 21, 26, 39.`;
+    else if(sd.key === 'inverse') msg = `A⁻¹(96,134) = (18,20) = SU. Decryption works!`;
+    else if(sd.key === 'decrypt') msg = `A⁻¹ recovers every pair → SUDARSHANA!`;
+    else msg = `Full cycle complete! A encrypts, A⁻¹ decrypts.`;
+    setStatus(msg,'feedback-good');
+    markDots(); renderCalc(); updateUI();
+  }
+
+  function nextStep(){
+    if(!revealed){
+      advance();
+    } else {
+      step++; revealed = false;
+      if(step<TOTAL){
+        const sd = getSD();
+        setStatus(`Step ${step+1}: ${sd.desc}`);
+        updateUI(); markDots(); renderCalc();
+      } else {
+        setStatus('All steps complete! Click to reflect.','feedback-target');
+        checkBtn.disabled = true;
+        setTimeout(()=>{reflectCard.classList.remove('hidden');exploreCard.classList.remove('hidden');reflectCard.scrollIntoView({behavior:'smooth',block:'nearest'});},500);
+      }
+    }
+  }
+
+  checkBtn.addEventListener('click', nextStep);
+
+  resetBtn.addEventListener('click', ()=>{
+    step=0; revealed=false;
+    checkBtn.disabled=false;
+    reflectCard.classList.add('hidden');
+    exploreCard.classList.add('hidden');
+    document.querySelectorAll('.step-dot').forEach(d=>d.classList.remove('done','solution','active'));
+    const f=$('step-1'); if(f) f.classList.add('active');
+    updateUI(); markDots(); renderCalc();
+    setStatus('Step 1 of 6 — Convert letters to numbers using the map above.');
+  });
+
+  // ---- EXPLORE MODE ----
+  const expWord = $('expWord');
+  const expWordLen = $('expWordLen');
+  const expResult = $('expResult');
+
+  function rebuildExplore(){
+    let raw = expWord.value.toUpperCase().replace(/[^A-Z]/g, '');
+    if(raw.length === 0){ expResult.textContent = 'Type a word to encrypt.'; expWordLen.textContent = '—'; return; }
+    if(raw.length % 2 !== 0) raw += 'X';
+    expWordLen.textContent = raw.length + ' letters → ' + (raw.length/2) + ' pairs';
+
+    let html = '<div style="margin-bottom:8px;"><span style="color:var(--ink-soft);font-size:12px;">Plaintext → Numbers → Encrypted → Decrypted</span></div>';
+    const pairs = [];
+    for(let i=0;i<raw.length;i+=2){
+      const p = [LETTERS.indexOf(raw[i]), LETTERS.indexOf(raw[i+1])];
+      pairs.push(p);
+      const enc = A(p);
+      const dec = Ainv(enc);
+      html += `<div style="display:flex;gap:12px;align-items:center;padding:4px 0;border-bottom:1px solid var(--paper-line);">`;
+      html += `<span style="min-width:36px;font-weight:700;color:var(--pt);">${raw[i]}${raw[i+1]}</span>`;
+      html += `<span style="color:var(--ink-soft);">(</span><span style="color:var(--pt);">${p[0]}</span><span style="color:var(--ink-soft);">, </span><span style="color:var(--pt);">${p[1]}</span><span style="color:var(--ink-soft);">)</span>`;
+      html += `<span style="color:var(--target);font-size:16px;">→</span>`;
+      html += `<span style="color:var(--fn);font-weight:600;">${enc[0]}</span><span style="color:var(--ink-soft);">, </span><span style="color:var(--fn);font-weight:600;">${enc[1]}</span>`;
+      html += `<span style="color:var(--target);font-size:16px;">→</span>`;
+      html += `<span style="color:var(--d1);">${clamp(dec[0])}</span><span style="color:var(--ink-soft);">, </span><span style="color:var(--d1);">${clamp(dec[1])}</span>`;
+      html += `<span style="color:var(--target);font-size:16px;">→</span>`;
+      html += `<span style="font-weight:700;color:var(--pt);font-size:15px;">${numToLetter(dec[0])}${numToLetter(dec[1])}</span>`;
+      html += `</div>`;
+    }
+
+    const allEnc = pairs.flatMap(A);
+    html += `<div style="margin-top:10px;padding-top:8px;border-top:1px solid var(--paper-line);font-size:12px;color:var(--ink-soft);">`;
+    html += `Ciphertext: <strong style="color:var(--fn);">${allEnc.join(', ')}</strong><br>`;
+    html += `Decrypted: <strong style="color:var(--pt);">${pairs.map(p => numToLetter((Ainv(A(p))[0]%26+26)%26) + numToLetter((Ainv(A(p))[1]%26+26)%26)).join('')}</strong> (mod 26)`;
+    html += `</div>`;
+
+    expResult.innerHTML = html;
+  }
+
+  expWord.addEventListener('input', rebuildExplore);
+
+  // ---- QUIZ ----
+  document.querySelectorAll('.q .options').forEach(group=>{
+    group.querySelectorAll('.opt').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        const correct = btn.dataset.correct === 'true';
+        group.querySelectorAll('.opt').forEach(b=>{
+          b.disabled = true;
+          if(b.dataset.correct==='true') b.classList.add('correct');
+        });
+        if(!correct) btn.classList.add('wrong');
+      });
+    });
+  });
+
+  // ---- INIT ----
+  (function init(){
+    for(let i=1;i<=TOTAL;i++){
+      const d = document.createElement('div');
+      d.className='step-dot'; d.textContent=i; d.id='step-'+i;
+      stepDots.appendChild(d);
+    }
+    const f=$('step-1'); if(f) f.classList.add('active');
+
+    // build letter map grid
+    const grid = document.querySelector('.lm-grid');
+    for(let i=0;i<26;i++){
+      const cell = document.createElement('div');
+      cell.className='lm-cell';
+      cell.innerHTML = `<span class="l">${LETTERS[i]}</span><span class="n">${i}</span>`;
+      grid.appendChild(cell);
+    }
+
+    updateUI(); markDots(); renderCalc();
+    setStatus('Step 1 of 6 — Convert letters to numbers using the map above.');
+    rebuildExplore();
+  })();
+})();
+</script>
+</body>
+</html>

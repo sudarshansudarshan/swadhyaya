@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B Collapses a Dimension — The Rank‑Nullity Theorem</title>
+<script src="https://cdn.plot.ly/plotly-2.32.0.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=IBM+Plex+Mono:wght@500;600&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#FAF5E8; --paper-line:#D8CFB6; --ink:#26332B; --ink-soft:#5B6B60;
+    --fn:#1F6F5C; --fn-soft:#DCEDE7; --pt:#7B5EA7; --pt-soft:#EAE3F5;
+    --target:#B8860B; --target-soft:#F3E9CE; --d1:#B5502E; --d1-soft:#FBEFE8;
+    --card:#FFFDF7; --shadow:0 2px 10px rgba(38,51,43,0.08);
+  }
+  *{box-sizing:border-box;} html,body{margin:0;padding:0;}
+  body{
+    background:repeating-linear-gradient(#FAF5E8 0px,#FAF5E8 27px,var(--paper-line) 28px),var(--paper);
+    background-size:100% 28px; color:var(--ink); font-family:'Source Sans 3',sans-serif;
+    min-height:100vh; padding:28px 16px 60px;
+  }
+  .wrap{max-width:1100px;margin:0 auto;}
+  header.hero{background:var(--card);border:1px solid var(--paper-line);border-radius:14px;box-shadow:var(--shadow);padding:26px 28px 22px;margin-bottom:20px;}
+  .eyebrow{font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);margin:0 0 6px;}
+  h1{font-family:'Caveat',cursive;font-weight:700;font-size:38px;margin:0 0 10px;line-height:1.05;}
+  header.hero p{max-width:680px;line-height:1.55;font-size:15.5px;margin:0 0 8px;}
+  .dim-grid{display:flex;gap:14px;flex-wrap:wrap;margin-top:12px;}
+  .dim-grid span{font-family:'IBM Plex Mono',monospace;font-size:13px;padding:8px 14px;border-radius:8px;font-weight:600;border:1px solid var(--paper-line);background:var(--paper);}
+  .grid-layout{display:grid;grid-template-columns:300px 1fr;gap:20px;align-items:start;}
+  @media (max-width:800px){.grid-layout{grid-template-columns:1fr;}}
+  .card{background:var(--card);border:1px solid var(--paper-line);border-radius:14px;box-shadow:var(--shadow);padding:20px;}
+  .panel-title{font-family:'Caveat',cursive;font-weight:700;font-size:24px;margin:0 0 4px;}
+  .panel-sub{font-size:13px;color:var(--ink-soft);margin:0 0 14px;line-height:1.4;}
+  .field{margin-bottom:14px;}
+  .field label{display:flex;justify-content:space-between;font-size:13.5px;font-weight:600;margin-bottom:6px;}
+  input[type=number]{width:100%;padding:9px 10px;border-radius:8px;border:1px solid var(--paper-line);font-family:'IBM Plex Mono',monospace;font-size:16px;background:var(--paper);color:var(--ink);}
+  input[type=number]:focus{outline:2px solid var(--pt);outline-offset:-1px;border-color:var(--pt);}
+  button{font-family:'Source Sans 3',sans-serif;font-weight:600;font-size:14.5px;border:none;border-radius:9px;padding:11px 16px;cursor:pointer;width:100%;transition:transform .08s ease,filter .15s ease;}
+  button:active{transform:translateY(1px);}button:disabled{opacity:.4;cursor:not-allowed;}
+  .btn-primary{background:var(--fn);color:#fff;}.btn-primary:hover:not(:disabled){filter:brightness(1.08);}
+  .btn-secondary{background:var(--paper);color:var(--ink);border:1px solid var(--paper-line);margin-top:8px;}
+  .btn-secondary:hover:not(:disabled){background:#F0E9D6;}
+  .status{font-size:13.5px;line-height:1.5;padding:12px;border-radius:9px;background:var(--paper);border:1px solid var(--paper-line);margin-bottom:14px;min-height:20px;}
+  .status.feedback-good{background:var(--fn-soft);border-color:var(--fn);color:var(--fn);font-weight:600;}
+  .status.feedback-target{background:var(--target-soft);border-color:var(--target);color:var(--target);font-weight:600;}
+  .steps{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap;}
+  .step-dot{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:600;border:1.5px solid var(--paper-line);color:var(--ink-soft);background:var(--paper);}
+  .step-dot.done{background:var(--fn);border-color:var(--fn);color:#fff;}
+  .step-dot.active{border-color:var(--pt);color:var(--pt);background:var(--pt-soft);}
+  .reflect,.explore{margin-top:20px;padding-top:16px;border-top:1px dashed var(--paper-line);}
+  .reflect.hidden,.explore.hidden{display:none;}
+  .q{margin-bottom:16px;}.q p.qtext{font-weight:600;margin:0 0 8px;font-size:14.5px;}
+  .options{display:flex;gap:8px;flex-wrap:wrap;}
+  .opt{padding:8px 14px;border-radius:8px;border:1px solid var(--paper-line);background:var(--paper);font-size:13.5px;cursor:pointer;font-weight:600;}
+  .opt.correct{background:var(--fn-soft);border-color:var(--fn);color:var(--fn);}
+  .opt.wrong{background:#F6DCD4;border-color:var(--d1);color:#8C3A1F;}
+  .opt:disabled{cursor:default;}
+  .explore .panel-title{font-size:22px;}
+  footer.note{text-align:center;font-size:12px;color:var(--ink-soft);margin-top:26px;font-family:'IBM Plex Mono',monospace;}
+
+  .calc-box{font-family:'IBM Plex Mono',monospace;font-size:13px;line-height:1.7;padding:12px;border-radius:8px;background:var(--paper);border:1px solid var(--paper-line);margin-top:10px;}
+  .calc-box .step-label{font-size:11px;color:var(--ink-soft);font-weight:600;margin-bottom:4px;}
+  .calc-box .result{font-size:15px;font-weight:700;color:var(--pt);margin:6px 0;}
+  .calc-box .eq{margin:3px 0;}
+  .calc-box .big{font-size:24px;font-weight:700;color:var(--target);text-align:center;padding:10px 0;}
+
+  .sol-table{width:100%;border-collapse:collapse;font-family:'IBM Plex Mono',monospace;font-size:12px;margin:8px 0;}
+  .sol-table th{font-size:10px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.05em;padding:3px 5px;border-bottom:1px solid var(--paper-line);text-align:right;}
+  .sol-table td{padding:3px 5px;text-align:right;border-bottom:1px solid var(--paper-line);}
+  .sol-table td:first-child{text-align:center;}
+  .sol-table .hl td{font-weight:700;background:var(--fn-soft);}
+
+  .plot-wrap{width:100%;height:380px;border-radius:10px;overflow:hidden;border:1px solid var(--paper-line);background:#fff;}
+
+  .wisdom-box{background:var(--fn-soft);border:2px solid var(--fn);border-radius:12px;padding:16px;text-align:center;margin:10px 0;}
+  .wisdom-box .wisdom-text{font-family:'Caveat',cursive;font-size:28px;color:var(--fn);line-height:1.2;}
+  .wisdom-box .wisdom-sub{font-size:13px;color:var(--ink-soft);margin-top:6px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <p class="eyebrow">Linear Algebra · The Fundamental Insight</p>
+    <h1>B Collapses a Dimension — The Rank‑Nullity Theorem</h1>
+    <p><strong>B = [[1,2],[2,4]]</strong> maps ℝ² → ℝ² but the output only fills a <strong>1D line</strong>. One whole dimension of the input gets <strong>crushed to zero</strong>. This is the <strong>rank‑nullity theorem</strong>: dim(domain) = dim(image) + dim(kernel).</p>
+    <div class="dim-grid">
+      <span style="background:var(--fn-soft);border-color:var(--fn);color:var(--fn);">ℝ² → ℝ²</span>
+      <span style="background:var(--d1-soft);border-color:var(--d1);color:var(--d1);">rank = 1</span>
+      <span style="background:var(--pt-soft);border-color:var(--pt);color:var(--pt);">nullity = 1</span>
+      <span style="background:var(--target-soft);border-color:var(--target);color:var(--target);">1 + 1 = 2</span>
+    </div>
+  </header>
+
+  <div class="grid-layout">
+    <div class="card">
+      <p class="panel-title" id="stepTitle">The Singular Matrix</p>
+      <p class="panel-sub" id="stepSub">B = [[1,2],[2,4]].</p>
+
+      <div id="stepContent"></div>
+
+      <div class="steps" id="stepDots"></div>
+
+      <div class="status" id="statusBox">Step 1 of 5 — Meet the matrix that collapses a dimension.</div>
+
+      <button class="btn-primary" id="checkBtn">Reveal</button>
+      <button class="btn-secondary" id="resetBtn">Start Over</button>
+    </div>
+
+    <div class="card">
+      <p class="panel-title" id="rightTitle">ℝ² → ℝ²: Before &amp; After</p>
+      <p class="panel-sub" id="rightSub">A grid in ℝ² collapses to a line under B.</p>
+      <div class="plot-wrap" id="plotlyDiv"></div>
+    </div>
+  </div>
+
+  <div class="card reflect hidden" id="reflectCard">
+    <p class="panel-title">The Wisdom</p>
+    <p class="panel-sub">You have achieved the required wisdom: <strong>B collapses a dimension</strong>.</p>
+
+    <div class="wisdom-box">
+      <div class="wisdom-text">"B collapses a dimension"</div>
+      <div class="wisdom-sub">dim(ℝ²) = dim(image) + dim(kernel) = 1 + 1 = 2</div>
+    </div>
+
+    <div class="q" id="q1">
+      <p class="qtext">1. What does "B collapses a dimension" mean?</p>
+      <div class="options">
+        <button class="opt" data-correct="true">One independent direction gets mapped to 0, so the output is only 1D.</button>
+        <button class="opt" data-correct="false">B reduces all numbers by half.</button>
+        <button class="opt" data-correct="false">B deletes the second row of the input vector.</button>
+      </div>
+    </div>
+
+    <div class="q" id="q2">
+      <p class="qtext">2. The nullspace direction (−2,1) gets mapped to:</p>
+      <div class="options">
+        <button class="opt" data-correct="true">(0,0) — it is in the kernel, so B annihilates it.</button>
+        <button class="opt" data-correct="false">(−2,1) — B leaves it unchanged.</button>
+        <button class="opt" data-correct="false">(0,1) — only the y component survives.</button>
+      </div>
+    </div>
+
+    <div class="q" id="q3">
+      <p class="qtext">3. The row space direction (1,2) maps to:</p>
+      <div class="options">
+        <button class="opt" data-correct="true">(5,10) = 5·(1,2) — it survives and lands in the column space.</button>
+        <button class="opt" data-correct="false">(0,0) — everything gets crushed.</button>
+        <button class="opt" data-correct="false">(1,2) — B acts like the identity on this vector.</button>
+      </div>
+    </div>
+
+    <div class="q" id="q4">
+      <p class="qtext">4. The rank‑nullity theorem says:</p>
+      <div class="options">
+        <button class="opt" data-correct="true">dim(domain) = rank + nullity = dim(image) + dim(kernel).</button>
+        <button class="opt" data-correct="false">det(A) = product of eigenvalues.</button>
+        <button class="opt" data-correct="false">rank = number of non-zero rows.</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="card explore hidden" id="exploreCard">
+    <p class="panel-title">Explore: See the Collapse</p>
+    <p class="panel-sub">Change the matrix and watch the dimension change.</p>
+
+    <div class="explore-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:10px 0;">
+      <div class="field"><label>a</label><input type="number" id="ea" value="1" step="0.5"></div>
+      <div class="field"><label>b</label><input type="number" id="eb" value="2" step="0.5"></div>
+      <div class="field"><label>c</label><input type="number" id="ec" value="2" step="0.5"></div>
+      <div class="field"><label>d</label><input type="number" id="ed" value="4" step="0.5"></div>
+    </div>
+
+    <div id="expResult" style="margin-top:10px;font-family:'IBM Plex Mono',monospace;font-size:13px;line-height:1.8;background:var(--paper);border:1px solid var(--paper-line);border-radius:10px;padding:14px;"></div>
+  </div>
+
+  <footer class="note">dim(ℝⁿ) = rank + nullity · B collapses a dimension · The Fundamental Theorem</footer>
+</div>
+
+<script>
+(function(){
+  const $ = id => document.getElementById(id);
+
+  const STEPS = [
+    { label:'The Singular Matrix', desc:'B = [[1,2],[2,4]] — rank 1, det 0.', key:'intro' },
+    { label:'What Gets Crushed?', desc:'The nullspace: direction (−2,1) → (0,0).', key:'nullspace' },
+    { label:'What Survives?', desc:'The row direction (1,2) maps to (5,10).', key:'survives' },
+    { label:'The Collapse', desc:'The 2D grid gets squished to a 1D line.', key:'collapse' },
+    { label:'The Wisdom', desc:'dim(domain) = dim(image) + dim(kernel).', key:'wisdom' },
+  ];
+  const TOTAL = STEPS.length;
+  let step = 0;
+  let revealed = false;
+
+  let a = 1, b = 2, c = 2, d = 4;
+
+  const stepDots = $('stepDots');
+  const statusBox = $('statusBox');
+  const checkBtn = $('checkBtn');
+  const resetBtn = $('resetBtn');
+  const reflectCard = $('reflectCard');
+  const exploreCard = $('exploreCard');
+  const stepTitle = $('stepTitle');
+  const stepSub = $('stepSub');
+  const stepContent = $('stepContent');
+  const rightTitle = $('rightTitle');
+  const rightSub = $('rightSub');
+
+  for(let i=1;i<=TOTAL;i++){
+    const d = document.createElement('div');
+    d.className='step-dot'; d.textContent=i; d.id='step-'+i;
+    stepDots.appendChild(d);
+  }
+
+  function getSD(){ return STEPS[step]; }
+  function fmt(n){ return Number.isInteger(n) ? n : parseFloat(n.toFixed(4)); }
+
+  function applyB(p){ return [a*p[0] + b*p[1], c*p[0] + d*p[1]]; }
+  function isRank1(){ return Math.abs(a*d - b*c) < 1e-10; }
+
+  // ----- Plotly -----
+  let plotlyPlot = null;
+
+  function drawCollapseGrid(){
+    const B = [[a,b],[c,d]];
+    const r1 = isRank1();
+    const data = [];
+
+    // Generate grid points
+    const gridPts = [];
+    const stepSize = 0.5;
+    for(let x=-4; x<=4; x+=stepSize){
+      for(let y=-4; y<=4; y+=stepSize){
+        gridPts.push({x, y});
+      }
+    }
+
+    // Map them
+    const mapped = gridPts.map(p => {
+      const img = applyB([p.x, p.y]);
+        return {x: p.x, y: p.y, ix: img[0], iy: img[1]};
+    });
+
+    // Color by k = a*x + b*y
+    const kMin = a*(-4) + b*(-4);
+    const kMax = a*4 + b*4;
+
+    function kColor(k){
+      const t = (k - kMin) / (kMax - kMin + 0.001);
+      // blue → green → red
+      const r = Math.min(1, Math.max(0, t*2));
+      const g = Math.min(1, Math.max(0, 2 - t*2));
+      const bv = Math.min(1, Math.max(0, 1 - t*2));
+      return `rgb(${Math.round(r*180+60)},${Math.round(g*180+60)},${Math.round(bv*180+60)})`;
+    }
+
+    // Domain points (small, semi-transparent)
+    const dCols = mapped.map(p => kColor(a*p.x + b*p.y));
+    data.push({
+      type:'scatter', mode:'markers',
+      x:mapped.map(p=>p.x), y:mapped.map(p=>p.y),
+      marker:{size:2.5, color:dCols, opacity:0.5},
+      showlegend: false, name:'Domain ℝ²'
+    });
+
+    // A few connecting lines for a subset of points
+    const connectPts = [];
+    for(let x=-4; x<=4; x+=1){
+      for(let y=-4; y<=4; y+=1){
+        connectPts.push({x, y});
+      }
+    }
+    const connMapped = connectPts.map(p => {
+      const img = applyB([p.x, p.y]);
+      return {x: p.x, y: p.y, ix: img[0], iy: img[1]};
+    });
+
+    // Connecting lines
+    for(let cp of connMapped){
+      const k = a*cp.x + b*cp.y;
+      const col = kColor(k);
+      data.push({
+        type:'scatter', mode:'lines',
+        x:[cp.x, cp.ix], y:[cp.y, cp.iy],
+        line:{width:0.8, color:col, opacity:0.3},
+        showlegend: false
+      });
+    }
+
+    // Image points (larger, same colors)
+    const imgMap = {};
+    for(let cp of connMapped){
+      const key = `${fmt(cp.ix)},${fmt(cp.iy)}`;
+      if(!imgMap[key]){
+        imgMap[key] = {x: cp.ix, y: cp.iy, count: 0, color: kColor(a*cp.x + b*cp.y)};
+      }
+      imgMap[key].count++;
+    }
+    const imgArr = Object.values(imgMap);
+    if(imgArr.length > 0){
+      data.push({
+        type:'scatter', mode:'markers',
+        x:imgArr.map(p=>p.x), y:imgArr.map(p=>p.y),
+        marker:{size:5 + imgArr.map(p=>Math.min(p.count,10)), color:imgArr.map(p=>p.color), symbol:'diamond',
+                line:{color:'#fff',width:1}},
+        showlegend: false, name:'Image'
+      });
+    }
+
+    // Nullspace line
+    let nv = [1,0];
+    if(Math.abs(b) > 1e-10) nv = [-b, a];
+    else if(Math.abs(a) > 1e-10) nv = [0, 1];
+    const scale = 5;
+    data.push({
+      type:'scatter', mode:'lines',
+      x:[-nv[0]*scale, nv[0]*scale], y:[-nv[1]*scale, nv[1]*scale],
+      line:{width:2.5, color:'#B5502E', dash:'dash'},
+      showlegend: false, name:'Nullspace'
+    });
+
+    // Column space line (image line)
+    if(r1){
+      let lambda = 0;
+      if(Math.abs(a) > 1e-10) lambda = c/a;
+      else if(Math.abs(b) > 1e-10) lambda = d/b;
+      data.push({
+        type:'scatter', mode:'lines',
+        x:[-5,5], y:[-5*lambda, 5*lambda],
+        line:{width:3, color:'#1F6F5C', dash:'solid'},
+        showlegend: false, name:'Column space'
+      });
+    }
+
+    const axisStyle = {
+      showgrid:true, gridcolor:'rgba(0,0,0,0.08)',
+      zeroline:true, zerolinecolor:'rgba(0,0,0,0.2)',
+      title:{font:{size:12}},
+      tickfont:{size:10},
+      range:[-5,5]
+    };
+
+    const layout = {
+      xaxis:{...axisStyle, title:'x'},
+      yaxis:{...axisStyle, title:'y', scaleanchor:'x', scaleratio:1},
+      margin:{l:40, r:40, b:40, t:20, pad:0},
+      paper_bgcolor:'#FFFDF7',
+      font:{family:'Source Sans 3, sans-serif'},
+      showlegend: false,
+      hovermode:'closest',
+      annotations: [
+        {x:4.2, y:4.2*lambda, text:'image: y='+fmt(lambda)+'x', showarrow:false, font:{size:10, color:'#1F6F5C', family:'IBM Plex Mono'}},
+        {x:3.2, y:-1.6, text:'nullspace', showarrow:false, font:{size:10, color:'#B5502E', family:'IBM Plex Mono'}}
+      ]
+    };
+
+    const div = $('plotlyDiv');
+    if(plotlyPlot){
+      Plotly.react(div, data, layout);
+    } else {
+      Plotly.newPlot(div, data, layout).then(p => plotlyPlot = p);
+    }
+  }
+
+  // ----- Step Content -----
+  function renderStep(){
+    const sd = getSD();
+    stepTitle.textContent = sd.label;
+    stepSub.textContent = sd.desc;
+
+    let html = '';
+
+    if(sd.key === 'intro'){
+      html = `<div class="calc-box">`;
+      html += `<div class="step-label">B = [[a,b],[c,d]] with a=1, b=2, c=2, d=4</div><br>`;
+      html += `B = ⎡1 2⎤ &nbsp; det = 1·4 − 2·2 = <strong>0</strong><br>`;
+      html += `&nbsp;&nbsp;&nbsp;&nbsp;⎣2 4⎦<br><br>`;
+      html += `Row₂ = 2·Row₁ → <strong>rank = 1</strong>.<br><br>`;
+      html += `B maps ℝ² onto a <strong>1D line</strong>, not all of ℝ².<br>`;
+      html += `One dimension of the input gets <strong>completely crushed</strong>.<br><br>`;
+      html += `<span style="color:var(--ink-soft);font-size:12px;">The colored grid shows the domain; each color is a level set.</span>`;
+      html += `</div>`;
+      rightTitle.textContent = 'B = [[1,2],[2,4]]';
+      rightSub.textContent = 'rank = 1 → one dimension collapses';
+      drawCollapseGrid();
+    } else if(sd.key === 'nullspace'){
+      let nv = [1,0];
+      if(Math.abs(b) > 1e-10) nv = [-b, a];
+      else if(Math.abs(a) > 1e-10) nv = [0, 1];
+
+      const crushed = applyB(nv);
+
+      html = `<div class="calc-box">`;
+      html += `<div class="step-label">What gets crushed? The nullspace.</div><br>`;
+      html += `Nullspace = all vectors satisfying B·v = 0.<br><br>`;
+      html += `Solve: x + 2y = 0, 2x + 4y = 0<br><br>`;
+      html += `<div class="result">𝒩(B) = span{(−2, 1)}</div><br>`;
+      html += `Check: B·(−2, 1) = (${fmt(crushed[0])}, ${fmt(crushed[1])}) → <strong>(0, 0)</strong> ✓<br><br>`;
+      html += `The direction (−2, 1) gets <strong>annihilated</strong>.<br>`;
+      html += `This is the <strong>kernel</strong> — what B maps to zero.<br><br>`;
+      html += `dim(𝒩) = <strong>1</strong> (a line).`;
+      html += `</div>`;
+      rightTitle.textContent = 'What Gets Crushed?';
+      rightSub.textContent = 'nullspace: span{(−2,1)} → (0,0)';
+      drawCollapseGrid();
+    } else if(sd.key === 'survives'){
+      const rowDir = [a, b];
+      const img = applyB(rowDir);
+
+      html = `<div class="calc-box">`;
+      html += `<div class="step-label">What survives? The row space.</div><br>`;
+      html += `Row space = line through (${a}, ${b}) — the independent row direction.<br><br>`;
+      html += `B·(${a}, ${b}) = (${fmt(img[0])}, ${fmt(img[1])})<br><br>`;
+      html += `This is <strong>not</strong> zero! It maps to (${fmt(img[0])}, ${fmt(img[1])}).<br><br>`;
+      html += `The direction (${a}, ${b}) <strong>survives</strong> the mapping.<br>`;
+      html += `Its image lies in the <strong>column space</strong> of B.<br><br>`;
+      html += `Every vector can be decomposed as:<br>`;
+      html += `v = α·(−2,1) + β·(1,2)<br>`;
+      html += `&nbsp;&nbsp;↳ crushed &nbsp;&nbsp; ↳ survives<br><br>`;
+      html += `B·v = β·B·(1,2) = β·(${fmt(img[0])},${fmt(img[1])})<br>`;
+      html += `The α part (nullspace) → 0.<br>`;
+      html += `The β part (row space) → survives.`;
+      html += `</div>`;
+      rightTitle.textContent = 'What Survives?';
+      rightSub.textContent = `row direction (${a},${b}) → (${fmt(img[0])},${fmt(img[1])})`;
+      drawCollapseGrid();
+    } else if(sd.key === 'collapse'){
+      html = `<div class="calc-box">`;
+      html += `<div class="step-label">The Collapse: ℝ² → line</div><br>`;
+      html += `Look at the plot:<br><br>`;
+      html += `• <strong>Colored dots</strong> = points in the domain ℝ²<br>`;
+      html += `• <strong>Lines</strong> connect each domain point to its image<br>`;
+      html += `• <strong>Diamonds</strong> = the images — all on one line!<br><br>`;
+      html += `The dashed line is the <strong>nullspace</strong> (everything here → 0).<br>`;
+      html += `The solid line is the <strong>column space</strong> (where everything lands).<br><br>`;
+      html += `All the 2D color collapses to a <strong>1D line</strong>.<br><br>`;
+      html += `<div class="result">The 2D plane gets squished to a 1D line.<br>That's "B collapses a dimension."</div>`;
+      html += `</div>`;
+      rightTitle.textContent = 'The Collapse';
+      rightSub.textContent = '2D grid → 1D line: a dimension is lost';
+      drawCollapseGrid();
+    } else if(sd.key === 'wisdom'){
+      let nv = [1,0];
+      if(Math.abs(b) > 1e-10) nv = [-b, a];
+      else if(Math.abs(a) > 1e-10) nv = [0, 1];
+      const rowDir = [a, b];
+      const img = applyB(rowDir);
+
+      html = `<div class="calc-box">`;
+      html += `<div class="step-label">The Rank‑Nullity Theorem</div><br>`;
+      html += `<div class="big">B collapses a dimension</div><br>`;
+      html += `<strong>Rank‑nullity theorem:</strong><br>`;
+      html += `<div class="result" style="font-size:22px;">dim(domain) = rank + nullity</div><br>`;
+      html += `For B = [[${a},${b}],[${c},${d}]]:<br><br>`;
+      html += `• dim(domain) = <strong>2</strong> (ℝ²)<br>`;
+      html += `• rank = dim(image) = <strong>1</strong> (line y = ${fmt(c/a)}x)<br>`;
+      html += `• nullity = dim(kernel) = <strong>1</strong> (line through (−${fmt(b)}, ${fmt(a)}))<br><br>`;
+      html += `<div class="result">2 = 1 + 1 ✓</div><br>`;
+      html += `The nullspace direction gets <strong>crushed</strong>.<br>`;
+      html += `The row space direction <strong>survives</strong>.<br><br>`;
+      html += `That's the wisdom: <strong>every singular matrix collapses at least one dimension</strong>.`;
+      html += `</div>`;
+      rightTitle.textContent = 'The Wisdom';
+      rightSub.textContent = 'dim(ℝ²) = rank(1) + nullity(1) = 2';
+      drawCollapseGrid();
+    }
+
+    stepContent.innerHTML = html;
+
+    if(step >= TOTAL){
+      checkBtn.disabled = true; checkBtn.textContent = 'Complete';
+    } else if(revealed){
+      checkBtn.textContent = 'Next Step';
+    } else {
+      checkBtn.textContent = 'Reveal';
+    }
+  }
+
+  function markDots(){
+    document.querySelectorAll('.step-dot').forEach(d=>d.classList.remove('active'));
+    for(let i=0;i<step&&i<TOTAL;i++){
+      const d=$('step-'+(i+1)); if(d) d.classList.add('done');
+    }
+    if(step < TOTAL){ const d=$('step-'+(step+1)); if(d) d.classList.add('active'); }
+  }
+
+  function setStatus(html, cls){
+    statusBox.innerHTML = html;
+    statusBox.className = 'status' + (cls ? ' '+cls : '');
+  }
+
+  function advance(){
+    if(step>=TOTAL){
+      checkBtn.disabled=true;
+      setTimeout(()=>{reflectCard.classList.remove('hidden');exploreCard.classList.remove('hidden');reflectCard.scrollIntoView({behavior:'smooth',block:'nearest'});},500);
+      setStatus('Complete! You have achieved the wisdom.','feedback-target');
+      return;
+    }
+    revealed = true;
+    const sd = getSD();
+    let msg;
+    if(sd.key === 'intro') msg = 'det=0, rank=1 → B is singular. One dimension will collapse.';
+    else if(sd.key === 'nullspace') msg = 'The direction (−2,1) gets crushed to (0,0) — the nullspace.';
+    else if(sd.key === 'survives') msg = 'The direction (1,2) survives the mapping.';
+    else if(sd.key === 'collapse') msg = 'The whole 2D grid collapses to a 1D line.';
+    else msg = 'dim(ℝ²) = rank(1) + nullity(1). B collapses a dimension.';
+    setStatus(msg,'feedback-good');
+    markDots(); renderStep();
+  }
+
+  function nextStep(){
+    if(!revealed){
+      advance();
+    } else {
+      step++; revealed = false;
+      if(step<TOTAL){
+        const sd = getSD();
+        setStatus(`Step ${step+1}: ${sd.desc}`);
+        renderStep(); markDots();
+      } else {
+        setStatus('All steps complete!','feedback-target');
+        checkBtn.disabled = true;
+        setTimeout(()=>{reflectCard.classList.remove('hidden');exploreCard.classList.remove('hidden');reflectCard.scrollIntoView({behavior:'smooth',block:'nearest'});},500);
+      }
+    }
+  }
+
+  checkBtn.addEventListener('click', nextStep);
+
+  resetBtn.addEventListener('click', ()=>{
+    step=0; revealed=false;
+    checkBtn.disabled=false;
+    reflectCard.classList.add('hidden');
+    exploreCard.classList.add('hidden');
+    document.querySelectorAll('.step-dot').forEach(d=>d.classList.remove('done','active'));
+    const f=$('step-1'); if(f) f.classList.add('active');
+    a=1; b=2; c=2; d=4;
+    $('ea').value=1; $('eb').value=2; $('ec').value=2; $('ed').value=4;
+    renderStep(); markDots();
+    setStatus('Step 1 of 5 — Meet the matrix that collapses a dimension.');
+  });
+
+  // ---- EXPLORE ----
+  function renderExplore(){
+    a = parseFloat($('ea').value) || 0;
+    b = parseFloat($('eb').value) || 0;
+    c = parseFloat($('ec').value) || 0;
+    d = parseFloat($('ed').value) || 0;
+
+    const r1 = isRank1();
+    const det = a*d - b*c;
+    let nullity = 0;
+    let nv = [1,0];
+
+    if(r1){
+      nullity = 1;
+      if(Math.abs(b) > 1e-10) nv = [-b, a];
+      else if(Math.abs(a) > 1e-10) nv = [0, 1];
+    } else if(Math.abs(det) < 1e-10){
+      nullity = 2;
+    }
+
+    let lambda = 0;
+    if(r1){
+      if(Math.abs(a) > 1e-10) lambda = c/a;
+      else if(Math.abs(b) > 1e-10) lambda = d/b;
+    }
+
+    let html = `<div class="step-label">B = [[${fmt(a)},${fmt(b)}],[${fmt(c)},${fmt(d)}]]</div>`;
+    html += `<div style="display:flex;gap:12px;font-size:13px;font-weight:600;margin:6px 0;">`;
+    html += `<span>det = ${fmt(det)}</span>`;
+    if(r1) html += `<span style="color:var(--fn);">rank = 1, nullity = 1</span>`;
+    else if(Math.abs(det) > 1e-10) html += `<span style="color:var(--pt);">rank = 2, nullity = 0 — full rank, no collapse</span>`;
+    html += `</div>`;
+
+    if(r1){
+      html += `<div class="step-label">Nullspace:</div>`;
+      html += `<div style="font-size:14px;font-weight:600;color:var(--d1);">span{(${nv.map(fmt).join(',')})}</div>`;
+      html += `<div style="margin-top:4px;">Image: each point lands on <strong>y = ${fmt(lambda)}x</strong></div>`;
+      html += `<div style="margin-top:4px;font-size:12px;color:var(--ink-soft);">dim(ℝ²) = 1 (rank) + 1 (nullity) = 2 ✓</div>`;
+    } else {
+      html += `<div style="margin-top:6px;color:var(--pt);font-weight:600;">Full rank — no dimension collapse. B is invertible.</div>`;
+      html += `<div style="font-size:12px;color:var(--ink-soft);margin-top:4px;">dim(ℝ²) = 2 (rank) + 0 (nullity) = 2 ✓</div>`;
+    }
+
+    $('expResult').innerHTML = html;
+    drawCollapseGrid();
+
+    if(step >= TOTAL){
+      rightTitle.textContent = 'Explore';
+      rightSub.textContent = r1 ? 'Collapse: rank=1, nullity=1' : 'No collapse: rank=2, nullity=0';
+    }
+  }
+
+  $('ea').addEventListener('input', renderExplore);
+  $('eb').addEventListener('input', renderExplore);
+  $('ec').addEventListener('input', renderExplore);
+  $('ed').addEventListener('input', renderExplore);
+
+  // ---- QUIZ ----
+  document.querySelectorAll('.q .options').forEach(group=>{
+    group.querySelectorAll('.opt').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        const correct = btn.dataset.correct === 'true';
+        group.querySelectorAll('.opt').forEach(b=>{
+          b.disabled = true;
+          if(b.dataset.correct==='true') b.classList.add('correct');
+        });
+        if(!correct) btn.classList.add('wrong');
+      });
+    });
+  });
+
+  // ---- INIT ----
+  (function init(){
+    const f=$('step-1'); if(f) f.classList.add('active');
+    renderStep(); markDots();
+    setStatus('Step 1 of 5 — Meet the matrix that collapses a dimension.');
+    renderExplore();
+  })();
+})();
+</script>
+</body>
+</html>

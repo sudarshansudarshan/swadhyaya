@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Collapsing Lines — The Geometry of a Rank‑1 Matrix</title>
+<script src="https://cdn.plot.ly/plotly-2.32.0.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=IBM+Plex+Mono:wght@500;600&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#FAF5E8; --paper-line:#D8CFB6; --ink:#26332B; --ink-soft:#5B6B60;
+    --fn:#1F6F5C; --fn-soft:#DCEDE7; --pt:#7B5EA7; --pt-soft:#EAE3F5;
+    --target:#B8860B; --target-soft:#F3E9CE; --d1:#B5502E; --d1-soft:#FBEFE8;
+    --card:#FFFDF7; --shadow:0 2px 10px rgba(38,51,43,0.08);
+  }
+  *{box-sizing:border-box;} html,body{margin:0;padding:0;}
+  body{
+    background:repeating-linear-gradient(#FAF5E8 0px,#FAF5E8 27px,var(--paper-line) 28px),var(--paper);
+    background-size:100% 28px; color:var(--ink); font-family:'Source Sans 3',sans-serif;
+    min-height:100vh; padding:28px 16px 60px;
+  }
+  .wrap{max-width:1100px;margin:0 auto;}
+  header.hero{background:var(--card);border:1px solid var(--paper-line);border-radius:14px;box-shadow:var(--shadow);padding:26px 28px 22px;margin-bottom:20px;}
+  .eyebrow{font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);margin:0 0 6px;}
+  h1{font-family:'Caveat',cursive;font-weight:700;font-size:38px;margin:0 0 10px;line-height:1.05;}
+  header.hero p{max-width:680px;line-height:1.55;font-size:15.5px;margin:0 0 8px;}
+  .dim-grid{display:flex;gap:14px;flex-wrap:wrap;margin-top:12px;}
+  .dim-grid span{font-family:'IBM Plex Mono',monospace;font-size:13px;padding:8px 14px;border-radius:8px;font-weight:600;border:1px solid var(--paper-line);background:var(--paper);}
+  .grid-layout{display:grid;grid-template-columns:300px 1fr;gap:20px;align-items:start;}
+  @media (max-width:800px){.grid-layout{grid-template-columns:1fr;}}
+  .card{background:var(--card);border:1px solid var(--paper-line);border-radius:14px;box-shadow:var(--shadow);padding:20px;}
+  .panel-title{font-family:'Caveat',cursive;font-weight:700;font-size:24px;margin:0 0 4px;}
+  .panel-sub{font-size:13px;color:var(--ink-soft);margin:0 0 14px;line-height:1.4;}
+  .field{margin-bottom:14px;}
+  .field label{display:flex;justify-content:space-between;font-size:13.5px;font-weight:600;margin-bottom:6px;}
+  input[type=number]{width:100%;padding:9px 10px;border-radius:8px;border:1px solid var(--paper-line);font-family:'IBM Plex Mono',monospace;font-size:16px;background:var(--paper);color:var(--ink);}
+  input[type=number]:focus{outline:2px solid var(--pt);outline-offset:-1px;border-color:var(--pt);}
+  button{font-family:'Source Sans 3',sans-serif;font-weight:600;font-size:14.5px;border:none;border-radius:9px;padding:11px 16px;cursor:pointer;width:100%;transition:transform .08s ease,filter .15s ease;}
+  button:active{transform:translateY(1px);}button:disabled{opacity:.4;cursor:not-allowed;}
+  .btn-primary{background:var(--fn);color:#fff;}.btn-primary:hover:not(:disabled){filter:brightness(1.08);}
+  .btn-secondary{background:var(--paper);color:var(--ink);border:1px solid var(--paper-line);margin-top:8px;}
+  .btn-secondary:hover:not(:disabled){background:#F0E9D6;}
+  .status{font-size:13.5px;line-height:1.5;padding:12px;border-radius:9px;background:var(--paper);border:1px solid var(--paper-line);margin-bottom:14px;min-height:20px;}
+  .status.feedback-good{background:var(--fn-soft);border-color:var(--fn);color:var(--fn);font-weight:600;}
+  .status.feedback-target{background:var(--target-soft);border-color:var(--target);color:var(--target);font-weight:600;}
+  .steps{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap;}
+  .step-dot{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:600;border:1.5px solid var(--paper-line);color:var(--ink-soft);background:var(--paper);}
+  .step-dot.done{background:var(--fn);border-color:var(--fn);color:#fff;}
+  .step-dot.active{border-color:var(--pt);color:var(--pt);background:var(--pt-soft);}
+  .reflect,.explore{margin-top:20px;padding-top:16px;border-top:1px dashed var(--paper-line);}
+  .reflect.hidden,.explore.hidden{display:none;}
+  .q{margin-bottom:16px;}.q p.qtext{font-weight:600;margin:0 0 8px;font-size:14.5px;}
+  .options{display:flex;gap:8px;flex-wrap:wrap;}
+  .opt{padding:8px 14px;border-radius:8px;border:1px solid var(--paper-line);background:var(--paper);font-size:13.5px;cursor:pointer;font-weight:600;}
+  .opt.correct{background:var(--fn-soft);border-color:var(--fn);color:var(--fn);}
+  .opt.wrong{background:#F6DCD4;border-color:var(--d1);color:#8C3A1F;}
+  .opt:disabled{cursor:default;}
+  .explore .panel-title{font-size:22px;}
+  footer.note{text-align:center;font-size:12px;color:var(--ink-soft);margin-top:26px;font-family:'IBM Plex Mono',monospace;}
+
+  .calc-box{font-family:'IBM Plex Mono',monospace;font-size:13px;line-height:1.7;padding:12px;border-radius:8px;background:var(--paper);border:1px solid var(--paper-line);margin-top:10px;}
+  .calc-box .step-label{font-size:11px;color:var(--ink-soft);font-weight:600;margin-bottom:4px;}
+  .calc-box .result{font-size:15px;font-weight:700;color:var(--pt);margin:6px 0;}
+  .calc-box .eq{margin:3px 0;}
+
+  .sol-table{width:100%;border-collapse:collapse;font-family:'IBM Plex Mono',monospace;font-size:12px;margin:8px 0;}
+  .sol-table th{font-size:10px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.05em;padding:3px 5px;border-bottom:1px solid var(--paper-line);text-align:right;}
+  .sol-table th:first-child{text-align:center;}
+  .sol-table td{padding:3px 5px;text-align:right;border-bottom:1px solid var(--paper-line);}
+  .sol-table td:first-child{text-align:center;color:var(--ink-soft);}
+  .sol-table .hl td{font-weight:700;background:var(--target-soft);}
+
+  .plot-wrap{width:100%;height:380px;border-radius:10px;overflow:hidden;border:1px solid var(--paper-line);background:#fff;}
+
+  .explore-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:10px 0;}
+  .explore-grid .field{margin-bottom:0;}
+  .explore-grid .field label{font-size:11px;}
+  .explore-grid .field input{font-size:14px;padding:6px 7px;}
+  .explore-grid .wide{grid-column:span 2;}
+
+  .sv{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:4px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <p class="eyebrow">Linear Algebra · Rank‑1 Mapping</p>
+    <h1>Collapsing Lines — The Geometry of a Rank‑1 Matrix</h1>
+    <p>For <strong>B</strong> = [[1,2],[2,4]] mapping ℝ² → ℝ², where does it take the line <strong>2y + x = k</strong>? Since rank(B) = 1, B collapses each entire line to a <strong>single point</strong> — every point on <strong>x + 2y = k</strong> lands on <strong>(k, 2k)</strong>.</p>
+    <div class="dim-grid">
+      <span style="background:var(--pt-soft);border-color:var(--pt);color:var(--pt);">B: ℝ² → ℝ²</span>
+      <span style="background:var(--d1-soft);border-color:var(--d1);color:var(--d1);">rank = 1</span>
+      <span style="background:var(--target-soft);border-color:var(--target);color:var(--target);">nullspace: line x+2y=0</span>
+    </div>
+  </header>
+
+  <div class="grid-layout">
+    <div class="card">
+      <p class="panel-title" id="stepTitle">The Matrix B</p>
+      <p class="panel-sub" id="stepSub">A singular 2×2 matrix.</p>
+
+      <div id="stepContent"></div>
+
+      <div class="steps" id="stepDots"></div>
+
+      <div class="status" id="statusBox">Step 1 of 5 — Examine B and find its rank.</div>
+
+      <button class="btn-primary" id="checkBtn">Reveal</button>
+      <button class="btn-secondary" id="resetBtn">Start Over</button>
+    </div>
+
+    <div class="card">
+      <p class="panel-title" id="rightTitle">Domain ℝ² → Codomain ℝ²</p>
+      <p class="panel-sub" id="rightSub">Each colored line collapses to a dot of the same color.</p>
+      <div class="plot-wrap" id="plotlyDiv"></div>
+    </div>
+  </div>
+
+  <div class="card reflect hidden" id="reflectCard">
+    <p class="panel-title">The Geometry of a Singular Matrix</p>
+    <p class="panel-sub">B collapses the nullspace direction and preserves the orthogonal direction.</p>
+
+    <div class="q" id="q1">
+      <p class="qtext">1. What is the rank of B = [[1,2],[2,4]]?</p>
+      <div class="options">
+        <button class="opt" data-correct="false">2 — both rows look different</button>
+        <button class="opt" data-correct="true">1 — Row₂ = 2·Row₁, so only one independent row</button>
+        <button class="opt" data-correct="false">0 — B is singular</button>
+      </div>
+    </div>
+
+    <div class="q" id="q2">
+      <p class="qtext">2. All points on the line x + 2y = k map to:</p>
+      <div class="options">
+        <button class="opt" data-correct="true">(k, 2k) — B·(x,y) = (x+2y, 2x+4y) = (k, 2k)</button>
+        <button class="opt" data-correct="false">A different line — each point maps somewhere different</button>
+        <button class="opt" data-correct="false">(0,0) — they all collapse to the origin</button>
+      </div>
+    </div>
+
+    <div class="q" id="q3">
+      <p class="qtext">3. What is the nullspace of B?</p>
+      <div class="options">
+        <button class="opt" data-correct="true">span{(−2,1)} — solves x+2y=0, 2x+4y=0</button>
+        <button class="opt" data-correct="false">span{(1,2)} — that's the row direction</button>
+        <button class="opt" data-correct="false">{(0,0)} only — B is not invertible but nullspace is trivial</button>
+      </div>
+    </div>
+
+    <div class="q" id="q4">
+      <p class="qtext">4. The column space of B is the line y = 2x. Where do the image points (k, 2k) lie?</p>
+      <div class="options">
+        <button class="opt" data-correct="true">On y = 2x — (k, 2k) always satisfies y = 2x.</button>
+        <button class="opt" data-correct="false">On y = −2x — the nullspace direction.</button>
+        <button class="opt" data-correct="false">Scattered randomly in ℝ².</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="card explore hidden" id="exploreCard">
+    <p class="panel-title">Explore: Change the Matrix</p>
+    <p class="panel-sub">Edit B₂₂ or try a different rank‑1 matrix.</p>
+
+    <div class="explore-grid">
+      <div class="field"><label>a</label><input type="number" id="ea" value="1" step="0.5"></div>
+      <div class="field"><label>b</label><input type="number" id="eb" value="2" step="0.5"></div>
+      <div class="field"><label>c</label><input type="number" id="ec" value="2" step="0.5"></div>
+      <div class="field"><label>d (= k·c)</label><input type="number" id="ed" value="4" step="0.5"></div>
+      <div class="field wide"><label>Level set formula</label><input type="text" id="eLevelFormula" value="ax+by=k" readonly style="font-size:13px;padding:8px 10px;width:100%;border-radius:8px;border:1px solid var(--paper-line);font-family:'IBM Plex Mono',monospace;background:var(--paper-line);"></div>
+    </div>
+
+    <div id="expResult" style="margin-top:10px;font-family:'IBM Plex Mono',monospace;font-size:13px;line-height:1.8;background:var(--paper);border:1px solid var(--paper-line);border-radius:10px;padding:14px;"></div>
+  </div>
+
+  <footer class="note">B: ℝ² → ℝ² · rank=1 · each line x+2y=k collapses to (k,2k) · nullspace ⟂ row space</footer>
+</div>
+
+<script>
+(function(){
+  const $ = id => document.getElementById(id);
+
+  const STEPS = [
+    { label:'The Matrix B', desc:'Examine B and find its rank.', key:'intro' },
+    { label:'The Lines x+2y=k', desc:'Parallel lines in the domain ℝ².', key:'lines' },
+    { label:'Apply B', desc:'Compute B·(x,y) for points on each line.', key:'apply' },
+    { label:'The Image', desc:'Each entire line maps to a single point.', key:'image' },
+    { label:'The Big Picture', desc:'Nullspace ⟂ Row space ⟂ Column space.', key:'bigpicture' },
+  ];
+  const TOTAL = STEPS.length;
+  let step = 0;
+  let revealed = false;
+
+  // Default: B = [[1,2],[2,4]]
+  let a = 1, b = 2, c = 2, d = 4;
+
+  const stepDots = $('stepDots');
+  const statusBox = $('statusBox');
+  const checkBtn = $('checkBtn');
+  const resetBtn = $('resetBtn');
+  const reflectCard = $('reflectCard');
+  const exploreCard = $('exploreCard');
+  const stepTitle = $('stepTitle');
+  const stepSub = $('stepSub');
+  const stepContent = $('stepContent');
+  const rightTitle = $('rightTitle');
+  const rightSub = $('rightSub');
+
+  for(let i=1;i<=TOTAL;i++){
+    const d = document.createElement('div');
+    d.className='step-dot'; d.textContent=i; d.id='step-'+i;
+    stepDots.appendChild(d);
+  }
+
+  function getSD(){ return STEPS[step]; }
+  function fmt(n){ return Number.isInteger(n) ? n : parseFloat(n.toFixed(4)); }
+
+  // The matrix B
+  function getB(){ return [[a,b],[c,d]]; }
+  function applyB(p){ return [a*p[0] + b*p[1], c*p[0] + d*p[1]]; }
+  function isRank1(){ return Math.abs(a*d - b*c) < 1e-10; }
+  function levelVal(p){ return b*p[0] + a*p[1]; }
+  // Wait: the user says 2y+x=k → x+2y=k. For B=[a,b;c,d], the level set is bx + ay = k (since B·(x,y) = (ax+by, cx+dy) and the first component is ax+by). 
+  // For a=1,b=2, we get x+2y = k. In general: level = a*x + b*y.
+
+  // Nullspace of B: solve a*x + b*y = 0, c*x + d*y = 0 (since rank=1, one eqn suffices)
+  function nullVec(){
+    if(Math.abs(b) > 1e-10) return [-b, a]; // ax+by=0 → y = -(a/b)x → vec (b, -a) or (-b, a)
+    if(Math.abs(a) > 1e-10) return [0, 1]; // b=0, ax=0 → x=0
+    return [1,0];
+  }
+
+  // Plotly
+  let plotlyPlot = null;
+
+  const LINE_COLORS = ['#1A6B4A','#2B8C5E','#4CAF7A','#9CCC7A','#E8C35A','#D98A3C','#B84A2A','#7B3A5E','#4A3A7B'];
+  const LINE_K_VALS = [-4, -3, -2, -1, 0, 1, 2, 3, 4];
+
+  function drawCollapse(B, highlightK, domainPts, imagePts){
+    const data = [];
+
+    // Draw the level set lines in the domain
+    const xRange = [-5, 5];
+    const nLines = LINE_K_VALS.length;
+
+    for(let li=0; li<nLines; li++){
+      const k = LINE_K_VALS[li];
+      const color = LINE_COLORS[li % LINE_COLORS.length];
+      const isHL = (highlightK !== undefined && Math.abs(k - highlightK) < 1e-10);
+
+      // Line equation: a*x + b*y = k → y = (k - a*x)/b if b ≠ 0
+      if(Math.abs(b) > 1e-10){
+        const x1 = xRange[0], x2 = xRange[1];
+        const y1 = (k - a*x1)/b, y2 = (k - a*x2)/b;
+        data.push({
+          type:'scatter', mode:'lines',
+          x:[x1, x2], y:[y1, y2],
+          line:{width: isHL ? 4 : 1.5, color:color, dash: isHL ? 'solid' : 'dot'},
+          showlegend: false,
+          name: `x+${fmt(b)}y=${k}`
+        });
+      } else if(Math.abs(a) > 1e-10){
+        // b=0, a*x = k → x = k/a (vertical line)
+        const xVal = k/a;
+        data.push({
+          type:'scatter', mode:'lines',
+          x:[xVal, xVal], y:xRange,
+          line:{width: isHL ? 4 : 1.5, color:color, dash: isHL ? 'solid' : 'dot'},
+          showlegend: false
+        });
+      }
+    }
+
+    // Domain points
+    if(domainPts && domainPts.length > 0){
+      for(let di=0; di<domainPts.length; di++){
+        const pt = domainPts[di];
+        const col = pt.color || '#333';
+        data.push({
+          type:'scatter', mode:'markers',
+          x:[pt.x], y:[pt.y],
+          marker:{size:8, color:col, symbol:'circle', line:{color:'#fff',width:1}},
+          showlegend: false
+        });
+      }
+    }
+
+    // Image points (in codomain, but shown on same plot for clarity)
+    if(imagePts && imagePts.length > 0){
+      const ix = imagePts.map(p => p.x);
+      const iy = imagePts.map(p => p.y);
+      const cols = imagePts.map(p => p.color || '#333');
+      data.push({
+        type:'scatter', mode:'markers+text',
+        x:ix, y:iy,
+        marker:{size:12, color:cols, symbol:'diamond', line:{color:'#fff',width:2}},
+        text:imagePts.map(p => `(${p.label})`),
+        textposition:'top center',
+        textfont:{size:9, color:'#333', family:'IBM Plex Mono'},
+        showlegend: false
+      });
+
+      // Connect domain points to their images if both present
+      if(domainPts && domainPts.length === imagePts.length){
+        for(let di=0; di<domainPts.length; di++){
+          data.push({
+            type:'scatter', mode:'lines',
+            x:[domainPts[di].x, imagePts[di].x], y:[domainPts[di].y, imagePts[di].y],
+            line:{width:1, color:'rgba(0,0,0,0.15)', dash:'dash'},
+            showlegend: false
+          });
+        }
+      }
+    }
+
+    // Draw image trajectory line: y = (d/b)*x if b≠0, but also column space is span{(a,c)}
+    // Image of all lines: (k, ck/a)? Let's compute: if ax+by=k, B maps to (k, c*(x) + d*y)
+    // Actually B·(x,y) = (ax+by, cx+dy). Since cx+dy = (c/a)*ax + (d/b)*by but that's messy.
+    // For rank-1: (c,d) = λ(a,b), so cx+dy = λ(ax+by) = λk.
+    // The image points are (k, λk) on the line y = λx.
+    // For B=[[1,2],[2,4]], λ = 2, image line: y = 2x.
+
+    if(isRank1()){
+      let lambda = 0;
+      if(Math.abs(a) > 1e-10) lambda = c/a;
+      else if(Math.abs(b) > 1e-10) lambda = d/b;
+
+      // Show the image line in the range
+      const imgLineX = [xRange[0], xRange[1]];
+      const imgLineY = [lambda * xRange[0], lambda * xRange[1]];
+      data.push({
+        type:'scatter', mode:'lines',
+        x:imgLineX, y:imgLineY,
+        line:{width:2, color:'#26332B', dash:'dash'},
+        name:'Column space (image line)',
+        showlegend: false
+      });
+    }
+
+    const axisStyle = {
+      showgrid:true, gridcolor:'rgba(0,0,0,0.08)',
+      zeroline:true, zerolinecolor:'rgba(0,0,0,0.2)',
+      title:{font:{size:12}},
+      tickfont:{size:10},
+      range:[-5.5,5.5]
+    };
+
+    const layout = {
+      xaxis:{...axisStyle, title:'x'},
+      yaxis:{...axisStyle, title:'y', scaleanchor:'x', scaleratio:1},
+      margin:{l:40, r:40, b:40, t:20, pad:0},
+      paper_bgcolor:'#FFFDF7',
+      font:{family:'Source Sans 3, sans-serif'},
+      showlegend: false,
+      hovermode:'closest',
+      shapes: [
+        {type:'line', x0:0, y0:-5.5, x1:0, y1:5.5, line:{color:'rgba(0,0,0,0.1)', width:1}},
+        {type:'line', x0:-5.5, y0:0, x1:5.5, y1:0, line:{color:'rgba(0,0,0,0.1)', width:1}}
+      ]
+    };
+
+    const div = $('plotlyDiv');
+    if(plotlyPlot){
+      Plotly.react(div, data, layout);
+    } else {
+      Plotly.newPlot(div, data, layout).then(p => plotlyPlot = p);
+    }
+  }
+
+  // ----- Step Content -----
+  function renderStep(){
+    const sd = getSD();
+    stepTitle.textContent = sd.label;
+    stepSub.textContent = sd.desc;
+
+    const B = getB();
+    const r1 = isRank1();
+
+    let html = '';
+
+    if(sd.key === 'intro'){
+      html = `<div class="calc-box">`;
+      html += `<div class="step-label">B = [[a,b],[c,d]] with a=1, b=2, c=2, d=4</div><br>`;
+      html += `B = ⎡1 2⎤ &nbsp; det(B) = 1·4 − 2·2 = <strong>0</strong><br>`;
+      html += `&nbsp;&nbsp;&nbsp;&nbsp;⎣2 4⎦<br><br>`;
+      html += `Row₂ = 2·Row₁ → rows are <strong>dependent</strong>.<br>`;
+      html += `rank(B) = <strong>1</strong> (only one independent row/column).<br><br>`;
+      html += `A rank‑1 matrix maps all of ℝ² onto a <strong>1D line</strong>.<br>`;
+      html += `Every point lands somewhere on the line <strong>y = 2x</strong>.`;
+      html += `</div>`;
+      rightTitle.textContent = 'Matrix B = [[1,2],[2,4]]';
+      rightSub.textContent = 'rank = 1, nullspace direction (−2, 1)';
+      drawCollapse(B);
+    } else if(sd.key === 'lines'){
+      html = `<div class="calc-box">`;
+      html += `<div class="step-label">The level sets of ℓ(x,y) = x + 2y</div><br>`;
+      html += `The expression <strong>x + 2y</strong> takes different values on different parallel lines.<br><br>`;
+      html += `x + 2y = k &nbsp;→&nbsp; y = (k − x)/2<br><br>`;
+      html += `These are parallel lines with slope −½.<br><br>`;
+      html += `The <strong>nullspace</strong> of B is the line <strong>x + 2y = 0</strong> (k = 0).<br>`;
+      html += `Every line x+2y=k is a translate of the nullspace.<br><br>`;
+      html += `<span style="color:var(--ink-soft);font-size:12px;">Each color in the plot is a different k value.</span>`;
+      html += `</div>`;
+      rightTitle.textContent = 'Level Sets';
+      rightSub.textContent = 'Lines x+2y=k for k = −4 to 4';
+      drawCollapse(B);
+    } else if(sd.key === 'apply'){
+      // Pick a few points on different lines and compute their images
+      const kValues = [-3, -1, 0, 1, 3];
+      const samplePts = [];
+      for(let k of kValues){
+        // Pick 3 points on each line: x = -2, 0, 2
+        for(let x of [-2, 0, 2]){
+          const y = (k - a*x)/b;
+          samplePts.push({x, y, k});
+        }
+      }
+
+      html = `<div class="calc-box">`;
+      html += `<div class="step-label">Applying B to points on x+2y=k</div><br>`;
+      html += `<table class="sol-table"><thead><tr><th>k</th><th>(x,y)</th><th>B·(x,y)</th><th>Result</th></tr></thead><tbody>`;
+      for(let si=0; si<samplePts.length; si++){
+        const pt = samplePts[si];
+        const img = applyB([pt.x, pt.y]);
+        const k = a*pt.x + b*pt.y;
+        const isHL = si % 3 === 0; // highlight first of each group
+        html += `<tr${isHL ? ' class="hl"' : ''}>`;
+        html += `<td>k=${fmt(k)}</td><td>(${fmt(pt.x)},${fmt(pt.y)})</td>`;
+        html += `<td>(${fmt(img[0])},${fmt(img[1])})</td>`;
+        html += `<td>= (k, ${fmt(c/a)}k)</td>`;
+        html += `</tr>`;
+      }
+      html += `</tbody></table>`;
+      html += `<br>`;
+      html += `<strong style="color:var(--pt);">All points with the same k map to the same image!</strong>`;
+      html += `</div>`;
+
+      const domainPts = samplePts.map(p => ({x:p.x, y:p.y, color:LINE_COLORS[LINE_K_VALS.indexOf(p.k) % LINE_COLORS.length]}));
+      const imgPts = samplePts.map(p => {
+        const img = applyB([p.x, p.y]);
+        return {x:img[0], y:img[1], color:LINE_COLORS[LINE_K_VALS.indexOf(p.k) % LINE_COLORS.length], label:`k=${fmt(a*p.x+b*p.y)}`};
+      });
+
+      rightTitle.textContent = 'Points and Their Images';
+      rightSub.textContent = 'Same color = same k → same image';
+      drawCollapse(B, undefined, domainPts, imgPts);
+    } else if(sd.key === 'image'){
+      // Show the collapse: each entire line → one point
+      const B = getB();
+      const kValues = [-4, -3, -2, -1, 0, 1, 2, 3, 4];
+      const domainPts = [];
+      const imgPts = [];
+
+      for(let k of kValues){
+        // One point per line (the one where x=0)
+        const y = k/b;
+        const col = LINE_COLORS[LINE_K_VALS.indexOf(k) % LINE_COLORS.length];
+        domainPts.push({x:0, y, color:col});
+        const img = applyB([0, y]);
+        imgPts.push({x:img[0], y:img[1], color:col, label:`k=${k}`});
+      }
+
+      html = `<div class="calc-box">`;
+      html += `<div class="step-label">Each entire line x+2y=k collapses to one point</div><br>`;
+      html += `B·(x, y) = (x + 2y, 2x + 4y)<br>`;
+      html += `<span class="result" style="font-size:18px;">= (k, 2k)</span><br><br>`;
+      html += `Every point (x,y) on the line <strong>x+2y=k</strong> maps to <strong>(k, 2k)</strong>.<br><br>`;
+      html += `The image (k, 2k) lies on the line <strong>y = 2x</strong> — the column space of B.<br><br>`;
+      html += `The map is <strong>not injective</strong>: infinitely many points map to the same output.<br>`;
+      html += `It's <strong>surjective onto</strong> the line y=2x (not all of ℝ²).`;
+      html += `</div>`;
+
+      rightTitle.textContent = 'Collapse to a Single Point';
+      rightSub.textContent = 'All colors land on the column space line';
+      drawCollapse(B, undefined, domainPts, imgPts);
+    } else if(sd.key === 'bigpicture'){
+      const B = getB();
+      const nullV = nullVec();
+      const kValues = [-4, -3, -2, -1, 0, 1, 2, 3, 4];
+      const imgPts = [];
+      for(let k of kValues){
+        const col = LINE_COLORS[LINE_K_VALS.indexOf(k) % LINE_COLORS.length];
+        const img = applyB([0, k/b]);
+        imgPts.push({x:img[0], y:img[1], color:col, label:`k=${k}`});
+      }
+
+      html = `<div class="calc-box">`;
+      html += `<div class="step-label">The Geometry of a Rank‑1 Map</div><br>`;
+      html += `<strong>Nullspace</strong> 𝒩(B) = span{(${nullV.map(fmt).join(',')})} = line <strong>x+2y=0</strong><br><br>`;
+      html += `<strong>Row space</strong> ℛ(B) = span{(${a},${b})} = line through [1,2] (⟂ nullspace)<br><br>`;
+      html += `<strong>Column space</strong> 𝒞(B) = span{(${a},${c})} = line <strong>y = ${fmt(c/a)}x</strong><br><br>`;
+      html += `Each line <strong>x+2y=k</strong> is a translate of the nullspace.<br>`;
+      html += `B collapses it to a single point on the column space line.<br><br>`;
+      html += `<div class="result">dim(𝒩) + dim(ℛ) = 1 + 1 = 2 = n</div><br>`;
+      html += `The nullspace direction gets <strong>crushed</strong>; the row space direction survives.`;
+      html += `</div>`;
+
+      rightTitle.textContent = 'The Big Picture';
+      rightSub.textContent = 'Nullspace collapses · Row space maps to column space';
+      drawCollapse(B, undefined, undefined, imgPts);
+    }
+
+    stepContent.innerHTML = html;
+
+    if(step >= TOTAL){
+      checkBtn.disabled = true; checkBtn.textContent = 'Complete';
+    } else if(revealed){
+      checkBtn.textContent = 'Next Step';
+    } else {
+      checkBtn.textContent = 'Reveal';
+    }
+  }
+
+  function markDots(){
+    document.querySelectorAll('.step-dot').forEach(d=>d.classList.remove('active'));
+    for(let i=0;i<step&&i<TOTAL;i++){
+      const d=$('step-'+(i+1)); if(d) d.classList.add('done');
+    }
+    if(step < TOTAL){ const d=$('step-'+(step+1)); if(d) d.classList.add('active'); }
+  }
+
+  function setStatus(html, cls){
+    statusBox.innerHTML = html;
+    statusBox.className = 'status' + (cls ? ' '+cls : '');
+  }
+
+  function advance(){
+    if(step>=TOTAL){
+      checkBtn.disabled=true;
+      setTimeout(()=>{reflectCard.classList.remove('hidden');exploreCard.classList.remove('hidden');reflectCard.scrollIntoView({behavior:'smooth',block:'nearest'});},500);
+      setStatus('Complete! Explore your own rank‑1 matrix below.','feedback-target');
+      return;
+    }
+    revealed = true;
+    const sd = getSD();
+    let msg;
+    if(sd.key === 'intro') msg = 'rank=1 → B collapses ℝ² onto a line.';
+    else if(sd.key === 'lines') msg = 'Lines x+2y=k are all parallel, each a translate of the nullspace.';
+    else if(sd.key === 'apply') msg = 'All points on the same line x+2y=k map to the SAME point (k, 2k)!';
+    else if(sd.key === 'image') msg = 'Each entire line collapses to one point on y=2x.';
+    else msg = 'Nullspace ⟂ Row space. dim(N)+dim(R)=2. The nullspace direction collapses.';
+    setStatus(msg,'feedback-good');
+    markDots(); renderStep();
+  }
+
+  function nextStep(){
+    if(!revealed){
+      advance();
+    } else {
+      step++; revealed = false;
+      if(step<TOTAL){
+        const sd = getSD();
+        setStatus(`Step ${step+1}: ${sd.desc}`);
+        renderStep(); markDots();
+      } else {
+        setStatus('All steps complete!','feedback-target');
+        checkBtn.disabled = true;
+        setTimeout(()=>{reflectCard.classList.remove('hidden');exploreCard.classList.remove('hidden');reflectCard.scrollIntoView({behavior:'smooth',block:'nearest'});},500);
+      }
+    }
+  }
+
+  checkBtn.addEventListener('click', nextStep);
+
+  resetBtn.addEventListener('click', ()=>{
+    step=0; revealed=false;
+    checkBtn.disabled=false;
+    reflectCard.classList.add('hidden');
+    exploreCard.classList.add('hidden');
+    document.querySelectorAll('.step-dot').forEach(d=>d.classList.remove('done','active'));
+    const f=$('step-1'); if(f) f.classList.add('active');
+    a=1; b=2; c=2; d=4;
+    $('ea').value=1; $('eb').value=2; $('ec').value=2; $('ed').value=4;
+    renderStep(); markDots();
+    setStatus('Step 1 of 5 — Examine B and find its rank.');
+  });
+
+  // ---- EXPLORE ----
+  function renderExplore(){
+    a = parseFloat($('ea').value) || 0;
+    b = parseFloat($('eb').value) || 0;
+    c = parseFloat($('ec').value) || 0;
+    d = parseFloat($('ed').value) || 0;
+
+    const r1 = isRank1();
+    const det = a*d - b*c;
+    const B = [[a,b],[c,d]];
+
+    const nullV = nullVec();
+    const lambda = Math.abs(a) > 1e-10 ? c/a : (Math.abs(b) > 1e-10 ? d/b : 0);
+
+    let html = `<div class="step-label">B = [[${a},${b}],[${c},${d}]]</div>`;
+    html += `<div style="display:flex;gap:12px;font-size:13px;font-weight:600;margin:6px 0;">`;
+    html += `<span style="color:${r1 ? 'var(--fn)' : 'var(--d1)'};">det = ${fmt(det)} ${Math.abs(det) < 1e-10 ? '(singular)' : ''}</span>`;
+    html += `<span>rank = ${r1 ? '1' : '2'}</span>`;
+    html += `</div>`;
+
+    if(r1){
+      html += `<div class="step-label">Nullspace:</div>`;
+      html += `<div style="font-size:14px;font-weight:600;color:var(--d1);">span{(${nullV.map(fmt).join(',')})}</div>`;
+      html += `<div style="margin:4px 0;">Level set: <strong>${fmt(a)}x + ${fmt(b)}y = k</strong></div>`;
+      html += `<div>Image: each line maps to <strong>(k, ${fmt(lambda)}k)</strong> on <strong>y = ${fmt(lambda)}x</strong></div>`;
+    } else {
+      html += `<div style="color:var(--pt);">Full rank → B is invertible. No collapse — each point maps uniquely. No non-trivial nullspace.</div>`;
+    }
+
+    $('expResult').innerHTML = html;
+
+    // Update level formula display
+    $('eLevelFormula').value = `${fmt(a)}x + ${fmt(b)}y = k`;
+
+    // Update plot
+    const kValues = [-4, -3, -2, -1, 0, 1, 2, 3, 4];
+    const imgPts = [];
+    if(r1 && Math.abs(b) > 1e-10){
+      for(let k of kValues){
+        const col = LINE_COLORS[LINE_K_VALS.indexOf(k) % LINE_COLORS.length];
+        const img = applyB([0, k/b]);
+        imgPts.push({x:img[0], y:img[1], color:col, label:`k=${k}`});
+      }
+    }
+    drawCollapse(B, undefined, undefined, imgPts);
+
+    if(step >= TOTAL){
+      rightTitle.textContent = 'Explore';
+      rightSub.textContent = r1 ? 'Rank‑1 — lines collapse' : 'Full rank — no collapse';
+    }
+  }
+
+  $('ea').addEventListener('input', renderExplore);
+  $('eb').addEventListener('input', renderExplore);
+  $('ec').addEventListener('input', renderExplore);
+  $('ed').addEventListener('input', renderExplore);
+
+  // ---- QUIZ ----
+  document.querySelectorAll('.q .options').forEach(group=>{
+    group.querySelectorAll('.opt').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        const correct = btn.dataset.correct === 'true';
+        group.querySelectorAll('.opt').forEach(b=>{
+          b.disabled = true;
+          if(b.dataset.correct==='true') b.classList.add('correct');
+        });
+        if(!correct) btn.classList.add('wrong');
+      });
+    });
+  });
+
+  // ---- INIT ----
+  (function init(){
+    const f=$('step-1'); if(f) f.classList.add('active');
+    renderStep(); markDots();
+    setStatus('Step 1 of 5 — Examine B and find its rank.');
+    renderExplore();
+  })();
+})();
+</script>
+</body>
+</html>

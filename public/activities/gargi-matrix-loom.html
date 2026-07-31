@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gargi's Matrix Loom — The Matrix as a Function</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=IBM+Plex+Mono:wght@500;600&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#FAF5E8; --paper-line:#D8CFB6; --ink:#26332B; --ink-soft:#5B6B60;
+    --fn:#1F6F5C; --fn-soft:#DCEDE7; --fn-fill:rgba(31,111,92,0.2);
+    --pt:#7B5EA7; --pt-soft:#EAE3F5; --pt-fill:rgba(123,94,167,0.2);
+    --target:#B8860B; --target-soft:#F3E9CE;
+    --d1:#B5502E; --d1-soft:#FBEFE8;
+    --card:#FFFDF7; --shadow:0 2px 10px rgba(38,51,43,0.08);
+  }
+  *{box-sizing:border-box;} html,body{margin:0;padding:0;}
+  body{
+    background:repeating-linear-gradient(#FAF5E8 0px,#FAF5E8 27px,var(--paper-line) 28px),var(--paper);
+    background-size:100% 28px; color:var(--ink); font-family:'Source Sans 3',sans-serif;
+    min-height:100vh; padding:28px 16px 60px;
+  }
+  .wrap{max-width:1080px;margin:0 auto;}
+  header.hero{background:var(--card);border:1px solid var(--paper-line);border-radius:14px;box-shadow:var(--shadow);padding:26px 28px 22px;margin-bottom:20px;}
+  .eyebrow{font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);margin:0 0 6px;}
+  h1{font-family:'Caveat',cursive;font-weight:700;font-size:38px;margin:0 0 10px;line-height:1.05;}
+  header.hero p{max-width:680px;line-height:1.55;font-size:15.5px;margin:0 0 8px;}
+  .dim-grid{display:flex;gap:14px;flex-wrap:wrap;margin-top:12px;}
+  .dim-grid span{font-family:'IBM Plex Mono',monospace;font-size:13px;padding:8px 14px;border-radius:8px;font-weight:600;border:1px solid var(--paper-line);background:var(--paper);}
+  .grid-layout{display:grid;grid-template-columns:300px 1fr;gap:20px;align-items:start;}
+  @media (max-width:800px){.grid-layout{grid-template-columns:1fr;}}
+  .card{background:var(--card);border:1px solid var(--paper-line);border-radius:14px;box-shadow:var(--shadow);padding:20px;}
+  .panel-title{font-family:'Caveat',cursive;font-weight:700;font-size:24px;margin:0 0 4px;}
+  .panel-sub{font-size:13px;color:var(--ink-soft);margin:0 0 14px;line-height:1.4;}
+  .matrix-card{
+    font-family:'IBM Plex Mono',monospace;font-size:16px;font-weight:600;text-align:center;
+    padding:14px;border-radius:10px;margin-bottom:14px;line-height:1.6;
+    background:var(--target-soft);border:1px solid var(--target);color:var(--ink);
+  }
+  .matrix-card .big{font-size:26px;font-weight:700;color:var(--target);}
+  .field{margin-bottom:14px;}
+  .field label{display:flex;justify-content:space-between;font-size:13.5px;font-weight:600;margin-bottom:6px;}
+  .field label span.val{font-family:'IBM Plex Mono',monospace;font-weight:600;color:var(--pt);}
+  .coord-row{display:flex;gap:8px;}
+  .coord-row .cflex{flex:1;}
+  .coord-row .cflex label{font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--ink-soft);margin-bottom:2px;}
+  .coord-row .cflex input{font-size:13px;padding:6px 7px;width:100%;border-radius:8px;border:1px solid var(--paper-line);font-family:'IBM Plex Mono',monospace;background:var(--paper);color:var(--ink);}
+  .coord-row .cflex input:focus{outline:2px solid var(--pt);outline-offset:-1px;border-color:var(--pt);}
+  input[type=number]{width:100%;padding:9px 10px;border-radius:8px;border:1px solid var(--paper-line);font-family:'IBM Plex Mono',monospace;font-size:16px;background:var(--paper);color:var(--ink);}
+  input[type=number]:focus{outline:2px solid var(--pt);outline-offset:-1px;border-color:var(--pt);}
+  .helper{font-size:12px;color:var(--ink-soft);margin-top:4px;line-height:1.4;}
+  .shape-badge{display:flex;gap:8px;margin-bottom:14px;}
+  .shape-badge span{flex:1;text-align:center;padding:10px 6px;border-radius:10px;border:1px solid var(--paper-line);font-size:12px;font-weight:600;font-family:'IBM Plex Mono',monospace;}
+  .shape-badge .in-badge{background:var(--pt-soft);border-color:var(--pt);color:var(--pt);}
+  .shape-badge .out-badge{background:var(--fn-soft);border-color:var(--fn);color:var(--fn);}
+  .shape-badge .prop-badge{background:var(--target-soft);border-color:var(--target);color:var(--target);}
+  button{font-family:'Source Sans 3',sans-serif;font-weight:600;font-size:14.5px;border:none;border-radius:9px;padding:11px 16px;cursor:pointer;width:100%;transition:transform .08s ease,filter .15s ease;}
+  button:active{transform:translateY(1px);}button:disabled{opacity:.4;cursor:not-allowed;}
+  .btn-primary{background:var(--fn);color:#fff;}.btn-primary:hover:not(:disabled){filter:brightness(1.08);}
+  .btn-secondary{background:var(--paper);color:var(--ink);border:1px solid var(--paper-line);margin-top:8px;}
+  .btn-secondary:hover:not(:disabled){background:#F0E9D6;}
+  .status{font-size:13.5px;line-height:1.5;padding:12px;border-radius:9px;background:var(--paper);border:1px solid var(--paper-line);margin-bottom:14px;min-height:20px;}
+  .status.feedback-good{background:var(--fn-soft);border-color:var(--fn);color:var(--fn);font-weight:600;}
+  .status.feedback-mid{background:var(--pt-soft);border-color:var(--pt);color:var(--pt);font-weight:600;}
+  .status.feedback-target{background:var(--target-soft);border-color:var(--target);color:var(--target);font-weight:600;}
+  .graph-card{display:flex;flex-direction:column;}
+  .graph-card .panel-title{margin-bottom:0;}
+  .graph-card .panel-sub{margin-bottom:6px;}
+  .legend{display:flex;gap:18px;flex-wrap:wrap;margin:6px 0 12px;font-size:12.5px;font-family:'IBM Plex Mono',monospace;}
+  .legend span{display:inline-flex;align-items:center;gap:6px;}
+  .swatch{width:18px;height:12px;border-radius:3px;display:inline-block;border:1px solid var(--paper-line);}
+  .swatch.in{background:var(--pt-fill);border-color:var(--pt);}
+  .swatch.out{background:var(--fn-fill);border-color:var(--fn);}
+  .swatch.conn{background:none;border-color:var(--target);border-style:dashed;}
+  .graph-wrap svg{width:100%;height:auto;display:block;background:#FFFDF7;border:1px solid var(--paper-line);border-radius:8px;}
+  .graph-wrap{position:relative;}
+  .axis-label{font-family:'IBM Plex Mono',monospace;font-size:12px;fill:var(--ink-soft);}
+  .tick-label{font-family:'IBM Plex Mono',monospace;font-size:10px;fill:var(--ink-soft);}
+  .steps{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap;}
+  .step-dot{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:600;border:1.5px solid var(--paper-line);color:var(--ink-soft);background:var(--paper);}
+  .step-dot.done{background:var(--fn);border-color:var(--fn);color:#fff;}
+  .step-dot.solution{background:var(--target);border-color:var(--target);color:#fff;}
+  .step-dot.active{border-color:var(--pt);color:var(--pt);background:var(--pt-soft);}
+  .reflect,.explore{margin-top:20px;padding-top:16px;border-top:1px dashed var(--paper-line);}
+  .reflect.hidden,.explore.hidden{display:none;}
+  .q{margin-bottom:16px;}.q p.qtext{font-weight:600;margin:0 0 8px;font-size:14.5px;}
+  .options{display:flex;gap:8px;flex-wrap:wrap;}
+  .opt{padding:8px 14px;border-radius:8px;border:1px solid var(--paper-line);background:var(--paper);font-size:13.5px;cursor:pointer;font-weight:600;}
+  .opt.correct{background:var(--fn-soft);border-color:var(--fn);color:var(--fn);}
+  .opt.wrong{background:#F6DCD4;border-color:var(--d1);color:#8C3A1F;}
+  .opt:disabled{cursor:default;}
+  .explore .panel-title{font-size:22px;}
+  .explore-inputs{display:flex;gap:10px;flex-wrap:wrap;margin:10px 0 14px;}
+  .explore-inputs .field{flex:1;min-width:70px;margin-bottom:0;}
+  .explore-inputs .field label{font-size:11px;}
+  .explore-inputs input[type=number]{font-size:13px;padding:7px 8px;}
+  footer.note{text-align:center;font-size:12px;color:var(--ink-soft);margin-top:26px;font-family:'IBM Plex Mono',monospace;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <p class="eyebrow">Intuition Builder · Matrix as a Function</p>
+    <h1>Gargi's Matrix Loom — A : ℝ² → ℝ²</h1>
+    <p>Gargi, the ancient philosopher, saw reality as woven fabric. A matrix is like a loom's pattern — it takes every thread (x, y) and weaves it into a new position. The matrix <strong>A</strong> below is a function: feed it any point, and it outputs a transformed point. Watch how it reshapes entire figures!</p>
+    <div class="dim-grid">
+      <span style="background:var(--pt-soft);border-color:var(--pt);color:var(--pt);font-size:16px;">A = [[2, 3], [3, 4]]</span>
+      <span style="background:var(--fn-soft);border-color:var(--fn);color:var(--fn);">det A = −1</span>
+      <span style="background:var(--target-soft);border-color:var(--target);color:var(--target);">A⁻¹ = [[−4, 3], [3, −2]]</span>
+    </div>
+  </header>
+
+  <div class="grid-layout">
+    <div class="card">
+      <p class="panel-title" id="stepTitle">The Unit Triangle</p>
+      <p class="panel-sub" id="stepSub">A weaves the triangle into a new triangle. Each vertex maps individually.</p>
+
+      <div class="matrix-card" id="matrixDisplay">
+        A&nbsp;=&nbsp;<span class="big">[[2,&nbsp;3],&nbsp;[3,&nbsp;4]]</span>&nbsp;:&nbsp;ℝ²&nbsp;→&nbsp;ℝ²
+      </div>
+
+      <div class="shape-badge" id="shapeBadge">
+        <span class="in-badge" id="badgeIn">Input: 3 vertices</span>
+        <span class="out-badge" id="badgeOut">Output: 3 vertices</span>
+        <span class="prop-badge" id="badgeProp">det = −1</span>
+      </div>
+
+      <div class="coord-row" id="predictRow" style="display:none;margin-bottom:12px;">
+        <div class="cflex"><label>GUESS x'</label><input type="number" id="predX" step="any" placeholder="x′"></div>
+        <div class="cflex"><label>GUESS y'</label><input type="number" id="predY" step="any" placeholder="y′"></div>
+      </div>
+
+      <div class="steps" id="stepDots"></div>
+
+      <div class="status" id="statusBox">Step 1 of 6 — Watch how A transforms the unit triangle.</div>
+
+      <button class="btn-primary" id="checkBtn">Transform &amp; Reveal</button>
+      <button class="btn-secondary" id="resetBtn">Start over</button>
+    </div>
+
+    <div class="card graph-card">
+      <p class="panel-title" id="graphTitle">A : ℝ² → ℝ²</p>
+      <div class="legend">
+        <span><i class="swatch in"></i>input shape</span>
+        <span><i class="swatch out"></i>A(output shape)</span>
+        <span><i class="swatch conn"></i>vertex mapping</span>
+      </div>
+      <div class="graph-wrap" id="graphContainer">
+        <svg id="graphSvg" viewBox="0 0 640 460" xmlns="http://www.w3.org/2000/svg"></svg>
+      </div>
+    </div>
+  </div>
+
+  <!-- REFLECTION QUIZ -->
+  <div class="card reflect hidden" id="reflectCard">
+    <p class="panel-title">The Matrix as a Function</p>
+    <p class="panel-sub">A is a function from ℝ² to ℝ². It's linear, so A(u+v) = Au + Av and A(c·v) = c·Av.</p>
+
+    <div class="q" id="q1">
+      <p class="qtext">1. What does A(1, 0) = (2, 3) tell you about the matrix?</p>
+      <div class="options">
+        <button class="opt" data-correct="false">The output is always 3 times bigger</button>
+        <button class="opt" data-correct="true">The first column of A is (2, 3) — A maps î to its first column</button>
+        <button class="opt" data-correct="false">The point (1, 0) is unchanged</button>
+      </div>
+    </div>
+
+    <div class="q" id="q2">
+      <p class="qtext">2. Is A invertible as a function?</p>
+      <div class="options">
+        <button class="opt" data-correct="true">Yes — det ≠ 0, so A⁻¹ exists and undoes the map</button>
+        <button class="opt" data-correct="false">No — matrices are never invertible</button>
+        <button class="opt" data-correct="false">Only if A is symmetric</button>
+      </div>
+    </div>
+
+    <div class="q" id="q3">
+      <p class="qtext">3. The triangle with vertices (0,0), (1,0), (0,1) has area ½. After A, what is its area?</p>
+      <div class="options">
+        <button class="opt" data-correct="true">½ × |det A| = ½ — area scales by |det|</button>
+        <button class="opt" data-correct="false">½ × det A = −½ — area can be negative!</button>
+        <button class="opt" data-correct="false">Same — area never changes</button>
+      </div>
+    </div>
+
+    <div class="q" id="q4">
+      <p class="qtext">4. A function f : ℝ² → ℝ² means:</p>
+      <div class="options">
+        <button class="opt" data-correct="true">Every input (x, y) gives exactly one output in ℝ²</button>
+        <button class="opt" data-correct="false">The output is always larger than the input</button>
+        <button class="opt" data-correct="false">Only integers are allowed</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- EXPLORE MODE -->
+  <div class="card explore hidden" id="exploreCard">
+    <p class="panel-title">Weave any point through A</p>
+    <p class="panel-sub">Type any (x, y) and see A(x, y) = (2x+3y, 3x+4y). The dashed gold line shows the map.</p>
+
+    <div class="explore-inputs">
+      <div class="field"><label>x <span class="val" id="expXVal">2</span></label><input type="number" id="expX" step="0.5" value="2"></div>
+      <div class="field"><label>y <span class="val" id="expYVal">1</span></label><input type="number" id="expY" step="0.5" value="1"></div>
+    </div>
+
+    <div class="matrix-card" id="exploreEq" style="font-size:15px;padding:10px;">
+      A(<span id="expIn">2, 1</span>) = <span id="expOut">(7, 10)</span>
+    </div>
+
+    <div id="explorePlot" style="width:100%;height:400px;background:#FFFDF7;border:1px solid var(--paper-line);border-radius:8px;"></div>
+    <div class="helper" style="margin-top:4px;">A is a function: one input → one output. Since det A = −1 ≠ 0, it's invertible — you can uniquely recover the input from the output.</div>
+  </div>
+
+  <footer class="note">A = [[2, 3], [3, 4]] acts on (x, y) to give (2x+3y, 3x+4y) · det = −1 · A⁻¹ = 1/(−1) · [[4, −3], [−3, 2]] = [[−4, 3], [3, −2]]</footer>
+</div>
+
+<script>
+(function(){
+  const $ = id => document.getElementById(id);
+
+  const A = (v) => [2*v[0] + 3*v[1], 3*v[0] + 4*v[1]];
+
+  const STEPS = [
+    {name:'The Unit Triangle', verts:[[0,0],[1,0],[0,1]], hide:-1, desc:'A maps the triangle to a new triangle. All 3 vertices transform.', prop:'3 vertices → 3 vertices'},
+    {name:'The Unit Square', verts:[[0,0],[1,0],[1,1],[0,1]], hide:-1, desc:'A square becomes a parallelogram. Lines stay straight — A is linear.', prop:'Area: 1 → |det| = 1'},
+    {name:'The House', verts:[[0,0],[2,0],[2,1],[1,2],[0,1]], hide:-1, desc:'A complex shape transforms. Every vertex moves independently.', prop:'5 vertices → 5 vertices'},
+    {name:'Where is vertex (1,0) mapped?', verts:[[0,0],[1,0],[0,1]], hide:1, desc:'The triangle\'s second vertex is hidden. Predict where A sends (1, 0).', prop:'A(1, 0) = (?, ?)'},
+    {name:'Where is vertex (0,1) mapped?', verts:[[0,0],[1,0],[0,1]], hide:2, desc:'The third vertex is hidden. Predict where A sends (0, 1).', prop:'A(0, 1) = (?, ?)'},
+    {name:'Where is vertex (1,1) mapped?', verts:[[0,0],[1,0],[1,1],[0,1]], hide:2, desc:'A(1, 1) = A(1, 0) + A(0, 1) by linearity. Can you guess it?', prop:'A(1, 1) = (?, ?)'},
+  ];
+  const TOTAL = STEPS.length;
+  let step = 0;
+  let revealed = false;
+  let prediction = null;
+
+  const stepDots = $('stepDots');
+  const statusBox = $('statusBox');
+  const checkBtn = $('checkBtn');
+  const resetBtn = $('resetBtn');
+  const reflectCard = $('reflectCard');
+  const exploreCard = $('exploreCard');
+  const stepTitle = $('stepTitle');
+  const stepSub = $('stepSub');
+  const matrixDisplay = $('matrixDisplay');
+  const graphTitle = $('graphTitle');
+  const badgeIn = $('badgeIn'), badgeOut = $('badgeOut'), badgeProp = $('badgeProp');
+  const predictRow = $('predictRow');
+  const predX = $('predX'), predY = $('predY');
+  const svg = $('graphSvg');
+  const svgNS = "http://www.w3.org/2000/svg";
+
+  for(let i=1;i<=TOTAL;i++){
+    const d = document.createElement('div');
+    d.className='step-dot'; d.textContent=i; d.id='step-'+i;
+    stepDots.appendChild(d);
+  }
+
+  function getSD(){ return STEPS[step]; }
+
+  function fmt(v){ return Number.isInteger(v) ? v : v.toFixed(3); }
+
+  function fmtPt(v){ return `(${fmt(v[0])}, ${fmt(v[1])})`; }
+
+  function fmtVerts(verts){ return verts.map(fmtPt).join(', '); }
+
+  function clampPx(px, lo, hi, margin){
+    const a=lo+margin, b=hi-margin;
+    if(px<a) return {v:a, clamped:true, dir:-1};
+    if(px>b) return {v:b, clamped:true, dir:1};
+    return {v:px, clamped:false, dir:0};
+  }
+
+  function ptOnEdgePx(px, py, xL, xR, yT, yB, margin){
+    const cx=clampPx(px,xL,xR,margin), cy=clampPx(py,yT,yB,margin);
+    return {cx:cx.v, cy:cy.v, clamped:cx.clamped||cy.clamped};
+  }
+
+  function updateUI(){
+    const sd = getSD();
+    stepTitle.textContent = sd.name;
+    stepSub.textContent = sd.desc;
+
+    const ov = sd.verts.map(A);
+    badgeIn.textContent = `Input: ${sd.verts.length} vertices`;
+    badgeOut.textContent = `Output: ${sd.verts.length} vertices`;
+    badgeProp.textContent = sd.prop;
+
+    if(sd.hide >= 0 && !revealed){
+      predictRow.style.display = 'flex';
+      predX.value = ''; predY.value = '';
+    } else {
+      predictRow.style.display = 'none';
+    }
+
+    if(step >= TOTAL - 1 && revealed){
+      checkBtn.textContent = 'See all transforms';
+    } else if(step >= TOTAL){
+      checkBtn.disabled = true;
+      checkBtn.textContent = 'Complete';
+    } else if(revealed){
+      checkBtn.textContent = 'Next shape';
+    } else {
+      checkBtn.textContent = 'Transform & Reveal';
+    }
+
+    if(step >= TOTAL) checkBtn.disabled = true;
+  }
+
+  function markDots(){
+    document.querySelectorAll('.step-dot').forEach(d=>d.classList.remove('active'));
+    for(let i=0;i<step&&i<TOTAL;i++){
+      const d = $('step-'+(i+1));
+      if(d) d.classList.add('done');
+    }
+    if(step < TOTAL){
+      const d = $('step-'+(step+1));
+      if(d) d.classList.add('active');
+    }
+  }
+
+  function setStatus(html, cls){
+    statusBox.innerHTML = html;
+    statusBox.className = 'status' + (cls ? ' '+cls : '');
+  }
+
+  function drawLoom(verts, showAll, hiddenIdx){
+    while(svg.firstChild) svg.firstChild.remove();
+    const W=640,H=460, ox=72, oy=H-70, pw=W-ox-38, ph=oy-48;
+    const xMin=-4,xMax=12,yMin=-4,yMax=12;
+    const sx=pw/(xMax-xMin), sy=ph/(yMin-yMax);
+
+    function tx(v){return ox+(v-xMin)*sx;}
+    function ty(v){return oy+(v-yMin)*sy;}
+
+    // grid
+    for(let v=Math.ceil(xMin);v<=Math.floor(xMax);v++){
+      const l=document.createElementNS(svgNS,'line');
+      l.setAttribute('x1',tx(v)); l.setAttribute('y1',oy);
+      l.setAttribute('x2',tx(v)); l.setAttribute('y2',oy-ph);
+      l.setAttribute('stroke','#E4DCC4'); l.setAttribute('stroke-width',0.5);
+      svg.appendChild(l);
+    }
+    for(let v=Math.ceil(yMin);v<=Math.floor(yMax);v++){
+      const l=document.createElementNS(svgNS,'line');
+      l.setAttribute('x1',ox); l.setAttribute('y1',ty(v));
+      l.setAttribute('x2',ox+pw); l.setAttribute('y2',ty(v));
+      l.setAttribute('stroke','#E4DCC4'); l.setAttribute('stroke-width',0.5);
+      svg.appendChild(l);
+    }
+
+    // axes
+    const ax1=document.createElementNS(svgNS,'line');
+    ax1.setAttribute('x1',ox); ax1.setAttribute('y1',oy);
+    ax1.setAttribute('x2',ox+pw); ax1.setAttribute('y2',oy);
+    ax1.setAttribute('stroke','#26332B'); ax1.setAttribute('stroke-width',1.5);
+    svg.appendChild(ax1);
+    const ax2=document.createElementNS(svgNS,'line');
+    ax2.setAttribute('x1',ox); ax2.setAttribute('y1',oy);
+    ax2.setAttribute('x2',ox); ax2.setAttribute('y2',oy-ph);
+    ax2.setAttribute('stroke','#26332B'); ax2.setAttribute('stroke-width',1.5);
+    svg.appendChild(ax2);
+
+    const tl=document.createElementNS(svgNS,'text');
+    tl.setAttribute('x',ox+pw+10); tl.setAttribute('y',oy+4);
+    tl.setAttribute('class','axis-label'); tl.textContent='x';
+    svg.appendChild(tl);
+    const tl2=document.createElementNS(svgNS,'text');
+    tl2.setAttribute('x',ox-12); tl2.setAttribute('y',oy-ph-8);
+    tl2.setAttribute('class','axis-label'); tl2.textContent='y';
+    svg.appendChild(tl2);
+
+    for(let v=Math.ceil(xMin);v<=Math.floor(xMax);v++){
+      if(v===0) continue;
+      const l=document.createElementNS(svgNS,'text');
+      l.setAttribute('x',tx(v)); l.setAttribute('y',oy+16);
+      l.setAttribute('text-anchor','middle'); l.setAttribute('class','tick-label');
+      l.textContent=v; svg.appendChild(l);
+    }
+    for(let v=Math.ceil(yMin);v<=Math.floor(yMax);v++){
+      if(v===0) continue;
+      const l=document.createElementNS(svgNS,'text');
+      l.setAttribute('x',ox-10); l.setAttribute('y',ty(v)+4);
+      l.setAttribute('text-anchor','end'); l.setAttribute('class','tick-label');
+      l.textContent=v; svg.appendChild(l);
+    }
+    const z=document.createElementNS(svgNS,'text');
+    z.setAttribute('x',tx(0)); z.setAttribute('y',oy+16);
+    z.setAttribute('text-anchor','middle'); z.setAttribute('class','tick-label');
+    z.textContent='0'; svg.appendChild(z);
+
+    const overts = verts.map(A);
+    const xL=ox, xR=ox+pw, yT=oy-ph, yB=oy;
+    const labelOff = 13;
+
+    // connecting lines (thin, subtle)
+    for(let i=0;i<verts.length;i++){
+      const [ix,iy]=verts[i], [oxx,oyy]=overts[i];
+      const l=document.createElementNS(svgNS,'line');
+      l.setAttribute('x1',tx(ix)); l.setAttribute('y1',ty(iy));
+      l.setAttribute('x2',tx(oxx)); l.setAttribute('y2',ty(oyy));
+      l.setAttribute('stroke','var(--target)'); l.setAttribute('stroke-width',0.8);
+      l.setAttribute('stroke-dasharray','3,3'); l.setAttribute('opacity','0.45');
+      svg.appendChild(l);
+    }
+
+    // input polygon (dashed outline only, no fill)
+    const inPts = verts.map(p => `${tx(p[0])},${ty(p[1])}`).join(' ');
+    const inPoly = document.createElementNS(svgNS,'polygon');
+    inPoly.setAttribute('points',inPts);
+    inPoly.setAttribute('fill','none'); inPoly.setAttribute('stroke','var(--pt)');
+    inPoly.setAttribute('stroke-width',1.5); inPoly.setAttribute('stroke-dasharray','5,4');
+    svg.appendChild(inPoly);
+
+    // output polygon (filled)
+    const outVerts = showAll
+      ? overts
+      : overts.filter((_,i) => i !== hiddenIdx);
+
+    if(outVerts.length >= 3){
+      const outPts = outVerts.map(p => `${tx(p[0])},${ty(p[1])}`).join(' ');
+      const outPoly = document.createElementNS(svgNS,'polygon');
+      outPoly.setAttribute('points',outPts);
+      outPoly.setAttribute('fill','var(--fn-fill)'); outPoly.setAttribute('stroke','var(--fn)');
+      outPoly.setAttribute('stroke-width',2);
+      svg.appendChild(outPoly);
+    }
+
+    // function to draw a labeled point
+    function placeLabel(px, py, text, fill, yOff){
+      const c=ptOnEdgePx(px,py,xL,xR,yT,yB,10);
+      const txt=document.createElementNS(svgNS,'text');
+      txt.setAttribute('x',c.cx); txt.setAttribute('y',c.cy + (yOff||-labelOff));
+      txt.setAttribute('text-anchor','middle'); txt.setAttribute('font-size','9.5');
+      txt.setAttribute('fill',fill); txt.setAttribute('font-weight','600');
+      txt.setAttribute('font-family',"'IBM Plex Mono',monospace");
+      txt.textContent=text; svg.appendChild(txt);
+      if(c.clamped){
+        const a=c.cx,b=c.cy,sz=4;
+        const pts=px<xL?`${a-sz},${b} ${a+sz},${b-sz} ${a+sz},${b+sz}`:px>xR?`${a+sz},${b} ${a-sz},${b-sz} ${a-sz},${b+sz}`:py<yT?`${a},${b-sz} ${a-sz},${b+sz} ${a+sz},${b+sz}`:`${a},${b+sz} ${a-sz},${b-sz} ${a+sz},${b-sz}`;
+        const arr=document.createElementNS(svgNS,'polygon');
+        arr.setAttribute('points',pts); arr.setAttribute('fill',fill);
+        svg.appendChild(arr);
+      }
+    }
+
+    // input labels (above vertices)
+    for(let i=0;i<verts.length;i++){
+      const [vx,vy]=verts[i];
+      placeLabel(tx(vx),ty(vy),'v'+i+' '+fmtPt(verts[i]),'var(--pt)',-labelOff);
+    }
+
+    // output labels (below vertices)
+    for(let i=0;i<overts.length;i++){
+      if(!showAll && i===hiddenIdx){
+        const hp=verts[hiddenIdx]; const [hx,hy]=A(hp);
+        const txt=document.createElementNS(svgNS,'text');
+        txt.setAttribute('x',tx(hx)); txt.setAttribute('y',ty(hy));
+        txt.setAttribute('text-anchor','middle'); txt.setAttribute('font-size','22');
+        txt.setAttribute('fill','var(--target)'); txt.setAttribute('font-weight','700');
+        txt.setAttribute('font-family',"'IBM Plex Mono',monospace");
+        txt.textContent='?'; svg.appendChild(txt);
+        continue;
+      }
+      const [oxx,oyy]=overts[i];
+      placeLabel(tx(oxx),ty(oyy),'A(v'+i+') '+fmtPt(overts[i]),'var(--fn)',labelOff);
+    }
+  }
+
+  function renderGraph(){
+    const sd = getSD();
+    drawLoom(sd.verts, revealed, sd.hide);
+  }
+
+  function resetGame(){
+    step=0; revealed=false; prediction=null;
+    checkBtn.disabled=false;
+    reflectCard.classList.add('hidden');
+    exploreCard.classList.add('hidden');
+    document.querySelectorAll('.step-dot').forEach(d=>d.classList.remove('done','solution','active'));
+    const f=$('step-1'); if(f) f.classList.add('active');
+    updateUI(); markDots(); renderGraph();
+    setStatus('Step 1 of 6 — Watch how A transforms the unit triangle.');
+  }
+
+  resetBtn.addEventListener('click', resetGame);
+
+  function getGuess(){
+    const x=parseFloat(predX.value), y=parseFloat(predY.value);
+    return (isNaN(x)||isNaN(y)) ? null : [x,y];
+  }
+
+  function checkGuess(){
+    if(step>=TOTAL){
+      checkBtn.disabled=true;
+      setTimeout(()=>{reflectCard.classList.remove('hidden');exploreCard.classList.remove('hidden');reflectCard.scrollIntoView({behavior:'smooth',block:'nearest'});},500);
+      setStatus('All transformations explored! Reflect on the matrix as a function below.','feedback-target');
+      return;
+    }
+    const sd = getSD();
+    if(revealed){
+      step++; revealed=false; prediction=null;
+      if(step>=TOTAL){
+        checkBtn.textContent = 'Finish';
+        setStatus('All done! Click Finish to reflect.','feedback-target');
+      } else {
+        checkBtn.textContent = 'Transform & Reveal';
+        const n = STEPS[step];
+        setStatus(`Next: ${n.name}. ${n.desc}`);
+      }
+      updateUI(); markDots(); renderGraph();
+      return;
+    }
+
+    if(sd.hide >= 0){
+      const guess = getGuess();
+      if(guess===null || isNaN(guess[0])||isNaN(guess[1])){
+        setStatus('Enter a valid x′ and y′ for the hidden vertex.');
+        return;
+      }
+      prediction = guess;
+      const actual = A(sd.verts[sd.hide]);
+      const dx=Math.abs(guess[0]-actual[0]), dy=Math.abs(guess[1]-actual[1]);
+      const tol=0.05;
+      let msg,cls;
+      if(dx<tol&&dy<tol){
+        msg=`Amazing! A${fmtPt(sd.verts[sd.hide])} = ${fmtPt(actual)}.`;
+        cls='feedback-good';
+      } else {
+        msg=`You guessed A${fmtPt(sd.verts[sd.hide])} = ${fmtPt(guess)}. Actual: <strong>${fmtPt(actual)}</strong>.`;
+        cls='feedback-mid';
+      }
+      revealed = true;
+      if(step+1>=TOTAL){
+        msg += ' Every shape explored!';
+        checkBtn.textContent = 'See all transforms';
+      } else {
+        checkBtn.textContent = 'Next shape';
+      }
+      setStatus(msg,cls);
+      markDots(); renderGraph();
+      updateUI();
+    } else {
+      revealed = true;
+      const v = sd.verts;
+      const o = v.map(A);
+      let msg = `A weaves ${v.length} vertices → ${o.map(fmtPt).join(', ')}.`;
+      if(step===0) msg += ' Lines stay straight — A is linear!';
+      else if(step===1) msg += ' Area scaled by |det A| = 1.';
+      else if(step===2) msg += ' Every vertex maps independently.';
+      if(step+1>=TOTAL){
+        msg += ' Final step!';
+        checkBtn.textContent = 'See all transforms';
+      } else {
+        checkBtn.textContent = 'Next shape';
+      }
+      setStatus(msg,'feedback-good');
+      markDots(); renderGraph();
+      updateUI();
+    }
+  }
+
+  checkBtn.addEventListener('click', checkGuess);
+  predX.addEventListener('keydown', e=>{if(e.key==='Enter') checkGuess();});
+  predY.addEventListener('keydown', e=>{if(e.key==='Enter') checkGuess();});
+
+  // ---- EXPLORE MODE ----
+  const expX=$('expX'), expY=$('expY');
+  const expXVal=$('expXVal'), expYVal=$('expYVal');
+  const expIn=$('expIn'), expOut=$('expOut');
+  const explorePlot=$('explorePlot');
+
+  function rebuildExplore(){
+    const x=parseFloat(expX.value)||0, y=parseFloat(expY.value)||0;
+    expXVal.textContent=x; expYVal.textContent=y;
+    const ox=2*x+3*y, oy2=3*x+4*y;
+    expIn.textContent=`${fmt(x)}, ${fmt(y)}`;
+    expOut.textContent=`(${fmt(ox)}, ${fmt(oy2)})`;
+
+    while(explorePlot.firstChild) explorePlot.firstChild.remove();
+    const W=640,H=420, o2x=72, o2y=H-68, pw2=W-o2x-38, ph2=o2y-48;
+    const xMi=-4,xMa=12,yMi=-4,yMa=12;
+    const sx2=pw2/(xMa-xMi), sy2=ph2/(yMi-yMa);
+    const s2=document.createElementNS(svgNS,'svg');
+    s2.setAttribute('viewBox',`0 0 ${W} ${H}`);
+    s2.setAttribute('width','100%'); s2.setAttribute('height','100%');
+    s2.style.display='block';
+
+    function t2x(v){return o2x+(v-xMi)*sx2;}
+    function t2y(v){return o2y+(v-yMi)*sy2;}
+
+    // grid
+    for(let v=Math.ceil(xMi);v<=Math.floor(xMa);v++){
+      const l=document.createElementNS(svgNS,'line');
+      l.setAttribute('x1',t2x(v)); l.setAttribute('y1',o2y);
+      l.setAttribute('x2',t2x(v)); l.setAttribute('y2',o2y-ph2);
+      l.setAttribute('stroke','#E4DCC4'); l.setAttribute('stroke-width',0.5);
+      s2.appendChild(l);
+    }
+    for(let v=Math.ceil(yMi);v<=Math.floor(yMa);v++){
+      const l=document.createElementNS(svgNS,'line');
+      l.setAttribute('x1',o2x); l.setAttribute('y1',t2y(v));
+      l.setAttribute('x2',o2x+pw2); l.setAttribute('y2',t2y(v));
+      l.setAttribute('stroke','#E4DCC4'); l.setAttribute('stroke-width',0.5);
+      s2.appendChild(l);
+    }
+
+    // axes
+    const a1=document.createElementNS(svgNS,'line');
+    a1.setAttribute('x1',o2x); a1.setAttribute('y1',o2y);
+    a1.setAttribute('x2',o2x+pw2); a1.setAttribute('y2',o2y);
+    a1.setAttribute('stroke','#26332B'); a1.setAttribute('stroke-width',1.5);
+    s2.appendChild(a1);
+    const a2=document.createElementNS(svgNS,'line');
+    a2.setAttribute('x1',o2x); a2.setAttribute('y1',o2y);
+    a2.setAttribute('x2',o2x); a2.setAttribute('y2',o2y-ph2);
+    a2.setAttribute('stroke','#26332B'); a2.setAttribute('stroke-width',1.5);
+    s2.appendChild(a2);
+
+    // axis labels
+    const al1=document.createElementNS(svgNS,'text');
+    al1.setAttribute('x',o2x+pw2+10); al1.setAttribute('y',o2y+4);
+    al1.setAttribute('class','axis-label'); al1.textContent='x';
+    s2.appendChild(al1);
+    const al2=document.createElementNS(svgNS,'text');
+    al2.setAttribute('x',o2x-12); al2.setAttribute('y',o2y-ph2-8);
+    al2.setAttribute('class','axis-label'); al2.textContent='y';
+    s2.appendChild(al2);
+
+    // tick labels
+    for(let v=Math.ceil(xMi);v<=Math.floor(xMa);v++){
+      if(v===0) continue;
+      const l=document.createElementNS(svgNS,'text');
+      l.setAttribute('x',t2x(v)); l.setAttribute('y',o2y+16);
+      l.setAttribute('text-anchor','middle'); l.setAttribute('class','tick-label');
+      l.textContent=v; s2.appendChild(l);
+    }
+    for(let v=Math.ceil(yMi);v<=Math.floor(yMa);v++){
+      if(v===0) continue;
+      const l=document.createElementNS(svgNS,'text');
+      l.setAttribute('x',o2x-10); l.setAttribute('y',t2y(v)+4);
+      l.setAttribute('text-anchor','end'); l.setAttribute('class','tick-label');
+      l.textContent=v; s2.appendChild(l);
+    }
+    const zl=document.createElementNS(svgNS,'text');
+    zl.setAttribute('x',t2x(0)); zl.setAttribute('y',o2y+16);
+    zl.setAttribute('text-anchor','middle'); zl.setAttribute('class','tick-label');
+    zl.textContent='0'; s2.appendChild(zl);
+
+    const xL2=o2x, xR2=o2x+pw2, yT2=o2y-ph2, yB2=o2y;
+
+    // mapping arrow
+    const ml=document.createElementNS(svgNS,'line');
+    ml.setAttribute('x1',t2x(x)); ml.setAttribute('y1',t2y(y));
+    ml.setAttribute('x2',t2x(ox)); ml.setAttribute('y2',t2y(oy2));
+    ml.setAttribute('stroke','var(--target)'); ml.setAttribute('stroke-width',1.5);
+    ml.setAttribute('stroke-dasharray','5,4');
+    s2.appendChild(ml);
+
+    // input point
+    (function(px,py,lbl,fl){
+      const gap=10;
+      const c=ptOnEdgePx(px,py,xL2,xR2,yT2,yB2,gap);
+      const circ=document.createElementNS(svgNS,'circle');
+      circ.setAttribute('cx',c.cx); circ.setAttribute('cy',c.cy);
+      circ.setAttribute('r',8); circ.setAttribute('fill',fl);
+      s2.appendChild(circ);
+      const txt=document.createElementNS(svgNS,'text');
+      txt.setAttribute('x',c.cx); txt.setAttribute('y',c.cy-13);
+      txt.setAttribute('text-anchor','middle'); txt.setAttribute('font-size','11');
+      txt.setAttribute('font-weight','600'); txt.setAttribute('fill',fl);
+      txt.setAttribute('font-family',"'IBM Plex Mono',monospace");
+      txt.textContent=lbl; s2.appendChild(txt);
+      if(c.clamped){
+        const a=c.cx,b=c.cy,sz=5;
+        const pts=px<xL2?`${a-sz},${b} ${a+sz},${b-sz} ${a+sz},${b+sz}`:px>xR2?`${a+sz},${b} ${a-sz},${b-sz} ${a-sz},${b+sz}`:py<yT2?`${a},${b-sz} ${a-sz},${b+sz} ${a+sz},${b+sz}`:`${a},${b+sz} ${a-sz},${b-sz} ${a+sz},${b-sz}`;
+        const arr=document.createElementNS(svgNS,'polygon');
+        arr.setAttribute('points',pts); arr.setAttribute('fill',fl);
+        s2.appendChild(arr);
+      }
+    })(t2x(x),t2y(y),'v ('+fmt(x)+', '+fmt(y)+')','var(--pt)');
+
+    // output point
+    (function(px,py,lbl,fl){
+      const gap=10;
+      const c=ptOnEdgePx(px,py,xL2,xR2,yT2,yB2,gap);
+      const circ=document.createElementNS(svgNS,'circle');
+      circ.setAttribute('cx',c.cx); circ.setAttribute('cy',c.cy);
+      circ.setAttribute('r',8); circ.setAttribute('fill',fl);
+      s2.appendChild(circ);
+      const txt=document.createElementNS(svgNS,'text');
+      txt.setAttribute('x',c.cx); txt.setAttribute('y',c.cy+15);
+      txt.setAttribute('text-anchor','middle'); txt.setAttribute('font-size','11');
+      txt.setAttribute('font-weight','600'); txt.setAttribute('fill',fl);
+      txt.setAttribute('font-family',"'IBM Plex Mono',monospace");
+      txt.textContent=lbl; s2.appendChild(txt);
+      if(c.clamped){
+        const a=c.cx,b=c.cy,sz=5;
+        const pts=px<xL2?`${a-sz},${b} ${a+sz},${b-sz} ${a+sz},${b+sz}`:px>xR2?`${a+sz},${b} ${a-sz},${b-sz} ${a-sz},${b+sz}`:py<yT2?`${a},${b-sz} ${a-sz},${b+sz} ${a+sz},${b+sz}`:`${a},${b+sz} ${a-sz},${b-sz} ${a+sz},${b-sz}`;
+        const arr=document.createElementNS(svgNS,'polygon');
+        arr.setAttribute('points',pts); arr.setAttribute('fill',fl);
+        s2.appendChild(arr);
+      }
+    })(t2x(ox),t2y(oy2),'A(v) ('+fmt(ox)+', '+fmt(oy2)+')','var(--fn)');
+
+    explorePlot.appendChild(s2);
+  }
+
+  [expX, expY].forEach(el => el.addEventListener('input', rebuildExplore));
+
+  // ---- QUIZ ----
+  document.querySelectorAll('.q .options').forEach(group=>{
+    group.querySelectorAll('.opt').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        const correct = btn.dataset.correct === 'true';
+        group.querySelectorAll('.opt').forEach(b=>{
+          b.disabled = true;
+          if(b.dataset.correct==='true') b.classList.add('correct');
+        });
+        if(!correct) btn.classList.add('wrong');
+      });
+    });
+  });
+
+  // ---- INIT ----
+  resetGame();
+  rebuildExplore();
+})();
+</script>
+</body>
+</html>
