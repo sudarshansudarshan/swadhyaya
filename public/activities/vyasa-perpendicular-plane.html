@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vyasa's Plane — Every (x, y, z) Perpendicular to W</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=IBM+Plex+Mono:wght@500;600&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#FAF5E8; --paper-line:#D8CFB6; --ink:#26332B; --ink-soft:#5B6B60;
+    --xaxis:#B5502E;
+    --yaxis:#1F6F5C;
+    --zaxis:#0E7490;
+    --line:#7B2D8E; --line-soft:#F3E5F7;
+    --plane:#0E7490; --plane-fill:rgba(14, 116, 144, 0.18);
+    --plane-border:#0E7490;
+    --point:#B8860B;
+    --accent:#0E7490; --accent-soft:#CFFAFE;
+    --good:#1F6F5C; --good-soft:#DCEDE7;
+    --warn:#B5502E; --warn-soft:#FBEFE8;
+    --card:#FFFDF7; --shadow:0 2px 10px rgba(38,51,43,0.08);
+  }
+  *{box-sizing:border-box;} html,body{margin:0;padding:0;}
+  body{
+    background:repeating-linear-gradient(#FAF5E8 0px,#FAF5E8 27px,var(--paper-line) 28px),var(--paper);
+    background-size:100% 28px; color:var(--ink);
+    font-family:'Source Sans 3',sans-serif; min-height:100vh; padding:28px 16px 60px;
+  }
+  .wrap{max-width:1080px;margin:0 auto;}
+
+  header.hero{
+    background:var(--card); border:1px solid var(--paper-line);
+    border-radius:14px; box-shadow:var(--shadow);
+    padding:26px 28px 22px; margin-bottom:20px;
+  }
+  .eyebrow{font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);margin:0 0 6px;}
+  h1{font-family:'Caveat',cursive;font-weight:700;font-size:42px;margin:0 0 10px;line-height:1.05;}
+  header.hero p{max-width:760px;line-height:1.55;font-size:15.5px;margin:0 0 8px;}
+  .rule-badge{
+    display:inline-flex; gap:12px; align-items:center; flex-wrap:wrap;
+    background:var(--paper); border:1px dashed var(--paper-line);
+    border-radius:10px; padding:10px 14px; margin-top:12px;
+    font-family:'IBM Plex Mono',monospace; font-size:13px;
+  }
+  .rule-badge .piece{display:inline-flex;align-items:center;gap:6px;}
+  .rule-badge .mat{color:var(--line);font-weight:700;}
+  .rule-badge .vec{color:var(--plane);font-weight:700;}
+  .rule-badge .eq{color:var(--ink);}
+  .rule-badge .vec3{
+    border-left:1.5px solid var(--ink); border-right:1.5px solid var(--ink);
+    padding:1px 6px; font-size:12px; line-height:1.0;
+  }
+
+  .grid-layout{display:grid;grid-template-columns:340px 1fr;gap:20px;align-items:start;}
+  @media (max-width:880px){.grid-layout{grid-template-columns:1fr;}}
+
+  .card{background:var(--card);border:1px solid var(--paper-line);border-radius:14px;box-shadow:var(--shadow);padding:20px;}
+  .panel-title{font-family:'Caveat',cursive;font-weight:700;font-size:24px;margin:0 0 4px;}
+  .panel-sub{font-size:13px;color:var(--ink-soft);margin:0 0 14px;line-height:1.4;}
+
+  .equation-display{
+    background:var(--line-soft); border:1.5px solid var(--line);
+    border-radius:10px; padding:12px 14px; margin-bottom:14px;
+    font-family:'IBM Plex Mono',monospace; font-size:14px; font-weight:600;
+    text-align:center; color:var(--line); line-height:1.6;
+  }
+  .equation-display .small{font-size:11px;color:var(--ink-soft);font-weight:400;margin-top:4px;}
+
+  .field{margin-bottom:12px;}
+  .field label{display:flex;justify-content:space-between;font-size:13.5px;font-weight:600;margin-bottom:6px;}
+  .field label span.val{font-family:'IBM Plex Mono',monospace;color:var(--plane);font-weight:600;}
+  .xyz-row{display:flex;gap:8px;}
+  .xyz-row .xyz-field{flex:1;}
+  .xyz-row .xyz-field label{font-size:11.5px;color:var(--ink-soft);margin-bottom:3px;text-transform:uppercase;letter-spacing:.04em;font-weight:700;}
+  input[type=number]{
+    width:100%; padding:9px 10px; border-radius:8px;
+    border:1px solid var(--paper-line);
+    font-family:'IBM Plex Mono',monospace; font-size:16px;
+    background:var(--paper); color:var(--ink);
+    -moz-appearance:textfield;
+  }
+  input[type=number]::-webkit-inner-spin-button,
+  input[type=number]::-webkit-outer-spin-button{-webkit-appearance:none;margin:0;}
+  input[type=number]:focus{
+    outline:2px solid var(--plane); outline-offset:-1px;
+    border-color:var(--plane); background:var(--card);
+  }
+  .helper{font-size:12px;color:var(--ink-soft);margin-top:6px;line-height:1.4;}
+  .helper span.k{font-family:'IBM Plex Mono',monospace;color:var(--ink);font-weight:600;}
+
+  .check-box{
+    background:var(--paper); border:1px solid var(--paper-line);
+    border-radius:9px; padding:12px; margin-bottom:14px;
+    font-family:'IBM Plex Mono',monospace; font-size:14px; text-align:center;
+    font-weight:600;
+  }
+  .check-box .formula{font-size:11px;color:var(--ink-soft);margin-bottom:4px;}
+  .check-box .value{font-size:22px;font-weight:700;}
+  .check-box.passed{background:var(--good-soft);border-color:var(--good);}
+  .check-box.failed{background:var(--warn-soft);border-color:var(--warn);}
+  .check-box.passed .value{color:var(--good);}
+  .check-box.failed .value{color:var(--warn);}
+
+  .sample-row{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap;}
+  .sample-btn{
+    flex:1; min-width:50px;
+    padding:7px 4px; border-radius:8px;
+    border:1px solid var(--paper-line); background:var(--paper);
+    font-family:'IBM Plex Mono',monospace; font-size:12px; font-weight:600;
+    cursor:pointer; color:var(--ink); text-align:center;
+  }
+  .sample-btn:hover{background:var(--plane-fill);border-color:var(--plane);color:var(--plane);}
+  .sample-btn.active{background:var(--plane-fill);border-color:var(--plane);color:var(--plane);}
+
+  .status{
+    font-size:13.5px; line-height:1.5; padding:12px;
+    border-radius:9px; background:var(--paper);
+    border:1px solid var(--paper-line); margin-bottom:14px; min-height:20px;
+  }
+  .status.feedback-good{background:var(--good-soft);border-color:var(--good);color:var(--good);font-weight:600;}
+  .status.feedback-mid{background:var(--plane-fill);border-color:var(--plane);color:var(--plane);font-weight:600;}
+
+  button{
+    font-family:'Source Sans 3',sans-serif; font-weight:600; font-size:14.5px;
+    border:none; border-radius:9px; padding:11px 16px; cursor:pointer;
+    width:100%; transition:transform .08s ease, filter .15s ease;
+  }
+  button:active{transform:translateY(1px);}
+  button:disabled{opacity:.4;cursor:not-allowed;}
+  .btn-primary{background:var(--plane);color:#fff;}
+  .btn-primary:hover:not(:disabled){filter:brightness(1.08);}
+  .btn-secondary{background:var(--paper);color:var(--ink);border:1px solid var(--paper-line);margin-top:8px;}
+  .btn-secondary:hover:not(:disabled){background:#F0E9D6;}
+
+  .graph-card{display:flex;flex-direction:column;}
+  .legend{display:flex;gap:18px;flex-wrap:wrap;margin:6px 0 12px;font-size:12.5px;font-family:'IBM Plex Mono',monospace;}
+  .legend span{display:inline-flex;align-items:center;gap:6px;}
+  .axis-x{color:var(--xaxis);font-weight:700;}
+  .axis-y{color:var(--yaxis);font-weight:700;}
+  .axis-z{color:var(--zaxis);font-weight:700;}
+  .dot{width:10px;height:10px;border-radius:50%;display:inline-block;}
+  .dot.s-line{background:var(--line);}
+  .dot.s-plane{background:var(--plane);}
+  .dot.s-point{background:var(--point);}
+
+  svg{width:100%;height:auto;display:block;background:var(--paper);border:1px solid var(--paper-line);border-radius:8px;}
+  .axis-label{font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:700;}
+  .tick-label{font-family:'IBM Plex Mono',monospace;font-size:10px;fill:var(--ink-soft);}
+  .point-label{font-family:'IBM Plex Mono',monospace;font-size:11px;fill:var(--ink);font-weight:600;}
+
+  .reflect,.explore{margin-top:20px;padding-top:16px;border-top:1px dashed var(--paper-line);}
+  .reflect.hidden,.explore.hidden{display:none;}
+  .q{margin-bottom:16px;}
+  .q p.qtext{font-weight:600;margin:0 0 8px;font-size:14.5px;}
+  .options{display:flex;gap:8px;flex-wrap:wrap;}
+  .opt{
+    padding:8px 14px;border-radius:8px;border:1px solid var(--paper-line);
+    background:var(--paper);font-size:13.5px;cursor:pointer;font-weight:600;
+  }
+  .opt.correct{background:var(--good-soft);border-color:var(--good);color:var(--good);}
+  .opt.wrong{background:var(--warn-soft);border-color:var(--warn);color:var(--warn);}
+  .opt:disabled{cursor:default;}
+
+  .explore .panel-title{font-size:22px;}
+  .explore-inputs{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 14px;}
+  .explore-inputs .field{flex:1;min-width:80px;margin-bottom:0;}
+  .explore-eq{
+    background:var(--line-soft); border:1px solid var(--line);
+    border-radius:8px; padding:10px; margin-bottom:10px;
+    font-family:'IBM Plex Mono',monospace; font-size:13px; text-align:center; color:var(--line); font-weight:700;
+  }
+
+  footer.note{text-align:center;font-size:12px;color:var(--ink-soft);margin-top:26px;font-family:'IBM Plex Mono',monospace;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <p class="eyebrow">Linear Algebra · Perpendicular Plane in 3D</p>
+    <h1>Vyasa's Plane — Every (x, y, z) Perpendicular to W</h1>
+    <p>From the previous activity, W = {β(2, 7, 3) | β ∈ ℝ} is a line through the origin with direction (2, 7, 3). For any (w₁, w₂, w₃) in W, find every (x, y, z) with <strong>[w₁ w₂ w₃] · [x; y; z] = 0</strong>. The answer is not a single point or a line — it's an entire <strong>plane</strong> through the origin.</p>
+    <div class="rule-badge">
+      <span class="piece mat vec3">
+        <span style="display:block;line-height:1.0;">w₁&nbsp;w₂&nbsp;w₃</span>
+      </span>
+      <span class="eq">·</span>
+      <span class="piece vec vec3">
+        <span style="display:block;line-height:1.0;">x</span>
+        <span style="display:block;line-height:1.0;">y</span>
+        <span style="display:block;line-height:1.0;">z</span>
+      </span>
+      <span class="eq">=</span>
+      <span class="piece">0</span>
+      <span class="eq">⇒</span>
+      <span class="piece mat" style="color:var(--line);font-weight:700;">2x + 7y + 3z = 0</span>
+    </div>
+  </header>
+
+  <div class="grid-layout">
+
+    <!-- LEFT CONTROL PANEL -->
+    <div class="card">
+      <p class="panel-title">Test a candidate (x, y, z)</p>
+      <p class="panel-sub">Type x, y, z. If 2x + 7y + 3z = 0, your point sits on the plane — perpendicular to every vector in W.</p>
+
+      <div class="equation-display">
+        2x + 7y + 3z = 0
+        <div class="small">the equation of the perpendicular plane</div>
+      </div>
+
+      <div class="field">
+        <label>Try <span class="val">x</span>, <span class="val">y</span>, <span class="val">z</span></label>
+        <div class="xyz-row">
+          <div class="xyz-field"><label>x</label><input type="number" id="inX" step="any" value="3"></div>
+          <div class="xyz-field"><label>y</label><input type="number" id="inY" step="any" value="0"></div>
+          <div class="xyz-field"><label>z</label><input type="number" id="inZ" step="any" value="-2"></div>
+        </div>
+        <div class="helper">Try <span class="k">(3, 0, −2)</span> · <span class="k">(0, 3, −7)</span> · <span class="k">(1, 1, −3)</span> (one of these does <em>not</em> work — find which).</div>
+      </div>
+
+      <div class="check-box" id="checkBox">
+        <div class="formula">2x + 7y + 3z = ?</div>
+        <div class="value" id="checkValue">?</div>
+      </div>
+
+      <div class="sample-row">
+        <button class="sample-btn" data-x="3"  data-y="0"  data-z="-2">(3, 0, −2)</button>
+        <button class="sample-btn" data-x="0"  data-y="3"  data-z="-7">(0, 3, −7)</button>
+        <button class="sample-btn" data-x="3"  data-y="3"  data-z="-9">(3, 3, −9)</button>
+        <button class="sample-btn" data-x="1"  data-y="1"  data-z="-3">(1, 1, −3)</button>
+      </div>
+
+      <div class="status" id="statusBox">Type (x, y, z) or pick a button. The point is on the plane when 2x + 7y + 3z = 0.</div>
+
+      <button class="btn-secondary" id="resetBtn">Reset to (3, 0, −2)</button>
+    </div>
+
+    <!-- RIGHT GRAPH -->
+    <div class="card graph-card">
+      <p class="panel-title">3D space — line W and its perpendicular plane</p>
+      <div class="legend">
+        <span><span class="axis-x">──</span>X axis</span>
+        <span><span class="axis-y">──</span>Y axis</span>
+        <span><span class="axis-z">──</span>Z axis</span>
+        <span><i class="dot s-line"></i>line W (direction (2, 7, 3))</span>
+        <span><i class="dot s-plane"></i>plane ⊥ W (solution set)</span>
+        <span><i class="dot s-point"></i>your (x, y, z)</span>
+      </div>
+      <p class="panel-sub" style="margin:6px 0 10px;">The purple line is W (the original line). The shaded blue parallelogram is the plane of all points perpendicular to W. The line and plane meet only at the origin.</p>
+      <svg id="graphSvg" viewBox="0 0 640 500" xmlns="http://www.w3.org/2000/svg"></svg>
+    </div>
+  </div>
+
+  <!-- REFLECTION QUIZ -->
+  <div class="card reflect hidden" id="reflectCard">
+    <p class="panel-title">What do you notice?</p>
+    <p class="panel-sub">You can pick any (x, y, z). Then check the geometry.</p>
+
+    <div class="q" id="q1">
+      <p class="qtext">1. The set of all (x, y, z) perpendicular to W is —</p>
+      <div class="options">
+        <button class="opt" data-correct="false">a single point — only the origin</button>
+        <button class="opt" data-correct="true">a flat plane through the origin — the equation 2x + 7y + 3z = 0</button>
+        <button class="opt" data-correct="false">a line through the origin — same as W itself</button>
+      </div>
+    </div>
+
+    <div class="q" id="q2">
+      <p class="qtext">2. Pick any vector in W. Pick any vector in the plane. Their <strong>dot product</strong> is —</p>
+      <div class="options">
+        <button class="opt" data-correct="false">always 1</button>
+        <button class="opt" data-correct="true">always 0 (that's why they're called perpendicular)</button>
+        <button class="opt" data-correct="false">always 7</button>
+      </div>
+    </div>
+
+    <div class="q" id="q3">
+      <p class="qtext">3. The perpendicular plane is —</p>
+      <div class="options">
+        <button class="opt" data-correct="false">one-dimensional (a line)</button>
+        <button class="opt" data-correct="true">two-dimensional (a plane)</button>
+        <button class="opt" data-correct="false">three-dimensional (the whole space)</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- EXPLORE MODE -->
+  <div class="card explore hidden" id="exploreCard">
+    <p class="panel-title">Now you try: change the direction of W</p>
+    <p class="panel-sub">The line is W = β(d₁, d₂, d₃). Its perpendicular plane is d₁·x + d₂·y + d₃·z = 0.</p>
+
+    <div class="explore-inputs">
+      <div class="field"><label>d₁</label><input type="number" id="expD1" step="0.5" value="2"></div>
+      <div class="field"><label>d₂</label><input type="number" id="expD2" step="0.5" value="7"></div>
+      <div class="field"><label>d₃</label><input type="number" id="expD3" step="0.5" value="3"></div>
+    </div>
+
+    <div class="explore-eq" id="exploreEq">Perpendicular plane: 2x + 7y + 3z = 0</div>
+  </div>
+
+  <footer class="note">Built for perpendicular plane · for every (w₁, w₂, w₃) ∈ W, the perpendicular set is the plane through origin · the line is the normal of the plane</footer>
+</div>
+
+<script>
+(function(){
+  // ---- STATE ----
+  let d1 = 2, d2 = 7, d3 = 3;       // direction of W
+  let x = 3, y = 0, z = -2;        // user's candidate (x, y, z)
+
+  // ---- DOM ----
+  const inX = document.getElementById('inX');
+  const inY = document.getElementById('inY');
+  const inZ = document.getElementById('inZ');
+  const checkBox = document.getElementById('checkBox');
+  const checkValue = document.getElementById('checkValue');
+  const statusBox = document.getElementById('statusBox');
+  const resetBtn = document.getElementById('resetBtn');
+  const sampleBtns = document.querySelectorAll('.sample-btn');
+  const reflectCard = document.getElementById('reflectCard');
+  const exploreCard = document.getElementById('exploreCard');
+
+  function formatNum(v){
+    if(Math.abs(v) < 1e-9) return '0';
+    if(Number.isInteger(v)) return v.toString();
+    return (Math.round(v*100)/100).toString();
+  }
+
+  function checkValueOnPlane(){
+    return d1*x + d2*y + d3*z;
+  }
+
+  function updateLive(){
+    const tx = parseFloat(inX.value);
+    const ty = parseFloat(inY.value);
+    const tz = parseFloat(inZ.value);
+    if(isNaN(tx) || isNaN(ty) || isNaN(tz)){
+      checkValue.textContent = '?';
+      checkBox.className = 'check-box';
+      render();
+      return;
+    }
+    x = tx; y = ty; z = tz;
+    const v = checkValueOnPlane();
+    checkValue.textContent = formatNum(v);
+    const passed = Math.abs(v) < 0.005;
+    checkBox.className = 'check-box ' + (passed ? 'passed' : 'failed');
+
+    sampleBtns.forEach(btn => {
+      const bx = parseFloat(btn.dataset.x);
+      const by = parseFloat(btn.dataset.y);
+      const bz = parseFloat(btn.dataset.z);
+      btn.classList.toggle('active',
+        Math.abs(bx - x) < 1e-9 && Math.abs(by - y) < 1e-9 && Math.abs(bz - z) < 1e-9);
+    });
+
+    if(passed){
+      setStatus(`✓ On the plane. The vector (${formatNum(x)}, ${formatNum(y)}, ${formatNum(z)}) is perpendicular to every (w₁, w₂, w₃) in W.`, 'feedback-good');
+    } else {
+      setStatus(`Off the plane. 2x + 7y + 3z = ${formatNum(v)} ≠ 0. Adjust the coordinates so the dot product becomes zero.`, 'feedback-mid');
+    }
+    render();
+  }
+
+  function setStatus(html, cls){
+    statusBox.innerHTML = html;
+    statusBox.className = 'status' + (cls ? (' '+cls) : '');
+  }
+
+  function resetGame(){
+    inX.value = '3'; inY.value = '0'; inZ.value = '-2';
+    x = 3; y = 0; z = -2;
+    d1 = 2; d2 = 7; d3 = 3;
+    reflectCard.classList.add('hidden');
+    exploreCard.classList.add('hidden');
+    updateLive();
+  }
+
+  inX.addEventListener('input', updateLive);
+  inY.addEventListener('input', updateLive);
+  inZ.addEventListener('input', updateLive);
+  inX.addEventListener('keydown', (e)=>{ if(e.key === 'Enter') updateLive(); });
+  inY.addEventListener('keydown', (e)=>{ if(e.key === 'Enter') updateLive(); });
+  inZ.addEventListener('keydown', (e)=>{ if(e.key === 'Enter') updateLive(); });
+  resetBtn.addEventListener('click', resetGame);
+  sampleBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      inX.value = btn.dataset.x;
+      inY.value = btn.dataset.y;
+      inZ.value = btn.dataset.z;
+      updateLive();
+      reflectCard.classList.remove('hidden');
+    });
+  });
+
+  // ---- SVG rendering (3D isometric projection) ----
+  const svg = document.getElementById('graphSvg');
+  const svgNS = "http://www.w3.org/2000/svg";
+
+  function project(x, y, z){
+    const scale = 18;
+    const ox = 320, oy = 290;
+    const sx = ox + (x + z * 0.5) * scale;
+    const sy = oy + (-y * 0.6 + z * 0.3) * scale;
+    return {sx, sy};
+  }
+
+  function render(){
+    while(svg.firstChild) svg.removeChild(svg.firstChild);
+
+    // Background grid (faint 3D cube)
+    for(let v = -3; v <= 3; v++){
+      const c1 = project(v, -3, 0), c2 = project(v, 3, 0);
+      svg.appendChild(mkL(c1.sx, c1.sy, c2.sx, c2.sy, '#C8BEA0', 0.5));
+      const c3 = project(-3, v, 0), c4 = project(3, v, 0);
+      svg.appendChild(mkL(c3.sx, c3.sy, c4.sx, c4.sy, '#C8BEA0', 0.5));
+      const c5 = project(v, 0, -3), c6 = project(v, 0, 3);
+      svg.appendChild(mkL(c5.sx, c5.sy, c6.sx, c6.sy, '#C8BEA0', 0.5));
+      const c7 = project(-3, 0, v), c8 = project(3, 0, v);
+      svg.appendChild(mkL(c7.sx, c7.sy, c8.sx, c8.sy, '#C8BEA0', 0.5));
+      const c9 = project(0, v, -3), c10 = project(0, v, 3);
+      svg.appendChild(mkL(c9.sx, c9.sy, c10.sx, c10.sy, '#C8BEA0', 0.5));
+      const c11 = project(0, -3, v), c12 = project(0, 3, v);
+      svg.appendChild(mkL(c11.sx, c11.sy, c12.sx, c12.sy, '#C8BEA0', 0.5));
+    }
+
+    // ---- Axes ----
+    function drawAxis(dirX, dirY, dirZ, color, label, lx, ly, anchor){
+      const end = project(dirX, dirY, dirZ);
+      svg.appendChild(mkL(320, 290, end.sx, end.sy, color, 1.5));
+      const dx = end.sx - 320, dy = end.sy - 290;
+      const len = Math.sqrt(dx*dx + dy*dy);
+      if(len > 5){
+        const ux = dx/len, uy = dy/len;
+        const head = 7;
+        const lpt = {x: end.sx - ux*head*0.3 - uy*head*0.4, y: end.sy - uy*head*0.3 + ux*head*0.4};
+        const rpt = {x: end.sx - ux*head*0.3 + uy*head*0.4, y: end.sy - uy*head*0.3 - ux*head*0.4};
+        const headPath = document.createElementNS(svgNS, 'path');
+        headPath.setAttribute('d', `M ${end.sx} ${end.sy} L ${lpt.x} ${lpt.y} L ${rpt.x} ${rpt.y} Z`);
+        headPath.setAttribute('fill', color);
+        svg.appendChild(headPath);
+      }
+      const t = mkT(end.sx + lx, end.y + ly || (end.sy + ly), label, 'axis-label');
+      t.setAttribute('fill', color);
+      t.setAttribute('text-anchor', anchor || 'start');
+      svg.appendChild(t);
+    }
+    drawAxis(5, 0, 0, '#B5502E', 'X', 4, 6, 'start');
+    drawAxis(0, 8, 0, '#1F6F5C', 'Y', -8, -6, 'end');
+    drawAxis(0, 0, 5, '#0E7490', 'Z', 8, -2, 'start');
+
+    // ---- The PLANE: d1·x + d2·y + d3·z = 0 ----
+    // Two basis vectors for the plane (both perpendicular to (d1, d2, d3)):
+    //   u = (3, 0, -2)  — gives d1·3 + d3·(-2) = 6 - 6 = 0 ✓ for (2,7,3)
+    //   v = (0, 3, -7)  — gives d2·3 + d3·(-7) = 21 - 21 = 0 ✓
+    // For general (d1,d2,d3): u = (d3, 0, -d1), v = (0, d3, -d2)
+    let u, v_basis;
+    if(Math.abs(d1) > 1e-6 || Math.abs(d3) > 1e-6){
+      u = {x: d3, y: 0, z: -d1};
+    } else {
+      u = {x: 1, y: 0, z: 0};  // fallback when d1=d3=0
+    }
+    if(Math.abs(d2) > 1e-6 || Math.abs(d3) > 1e-6){
+      v_basis = {x: 0, y: d3, z: -d2};
+    } else {
+      v_basis = {x: 0, y: 1, z: 0};
+    }
+
+    // Normalize to a reasonable size for the parallelogram (scale so the longest axis is ~3 units)
+    function len3(v){ return Math.sqrt(v.x*v.x + v.y*v.y + v.z*v.z); }
+    const scale_u = 3 / len3(u);
+    const scale_v = 3 / len3(v_basis);
+    const uS = {x: u.x*scale_u, y: u.y*scale_u, z: u.z*scale_u};
+    const vS = {x: v_basis.x*scale_v, y: v_basis.y*scale_v, z: v_basis.z*scale_v};
+
+    const O = project(0, 0, 0);
+    const U = project(uS.x, uS.y, uS.z);
+    const V = project(vS.x, vS.y, vS.z);
+    const UV = project(uS.x + vS.x, uS.y + vS.y, uS.z + vS.z);
+
+    // Draw parallelogram (transparent fill, dashed border)
+    const poly = document.createElementNS(svgNS, 'path');
+    poly.setAttribute('d', `M ${O.sx} ${O.sy} L ${U.sx} ${U.sy} L ${UV.sx} ${UV.sy} L ${V.sx} ${V.sy} Z`);
+    poly.setAttribute('fill', '#0E7490');
+    poly.setAttribute('fill-opacity', '0.15');
+    poly.setAttribute('stroke', '#0E7490');
+    poly.setAttribute('stroke-width', '2');
+    poly.setAttribute('stroke-dasharray', '4 3');
+    svg.appendChild(poly);
+
+    // Grid lines on the plane (visual aid — shows it's 2D)
+    for(let i = 1; i < 4; i++){
+      // Line parallel to u at point i/4 * v
+      const a1 = project(i/4 * vS.x, i/4 * vS.y, i/4 * vS.z);
+      const a2 = project(uS.x + i/4 * vS.x, uS.y + i/4 * vS.y, uS.z + i/4 * vS.z);
+      svg.appendChild(mkL(a1.sx, a1.sy, a2.sx, a2.sy, '#0E7490', 0.4));
+      a2.sy && a2.sx;
+    }
+    for(let i = 1; i < 4; i++){
+      const b1 = project(i/4 * uS.x, i/4 * uS.y, i/4 * uS.z);
+      const b2 = project(i/4 * uS.x + vS.x, i/4 * uS.y + vS.y, i/4 * uS.z + vS.z);
+      svg.appendChild(mkL(b1.sx, b1.sy, b2.sx, b2.sy, '#0E7490', 0.4));
+    }
+
+    // Plane label
+    const planeMid = project((uS.x + vS.x) / 2, (uS.y + vS.y) / 2, (uS.z + vS.z) / 2);
+    const planeLabel = mkT(planeMid.sx, planeMid.sy - 6, 'plane 2x + 7y + 3z = 0', 'tick-label');
+    planeLabel.setAttribute('text-anchor', 'middle');
+    planeLabel.setAttribute('fill', '#0E7490');
+    planeLabel.setAttribute('font-weight', '700');
+    planeLabel.setAttribute('font-size', '11');
+    svg.appendChild(planeLabel);
+
+    // ---- The LINE W: d1·t, d2·t, d3·t for t = ±2 ----    const t = 2;
+    const W1 = project(-t*d1, -t*d2, -t*d3);
+    const W2 = project(t*d1, t*d2, t*d3);
+    const linePath = document.createElementNS(svgNS, 'path');
+    linePath.setAttribute('d', `M ${W1.sx} ${W1.sy} L ${W2.sx} ${W2.sy}`);
+    linePath.setAttribute('stroke', '#7B2D8E');
+    linePath.setAttribute('stroke-width', '2.5');
+    linePath.setAttribute('fill', 'none');
+    svg.appendChild(linePath);
+    // Arrowheads at both ends
+    function arrowhead(from, to, color){
+      const dx = to.sx - from.sx, dy = to.sy - from.sy;
+      const len = Math.sqrt(dx*dx + dy*dy);
+      if(len < 5) return;
+      const ux = dx/len, uy = dy/len;
+      const head = 7;
+      const lpt = {x: to.sx - ux*head*0.4 - uy*head*0.4, y: to.sy - uy*head*0.4 + ux*head*0.4};
+      const rpt = {x: to.sx - ux*head*0.4 + uy*head*0.4, y: to.sy - uy*head*0.4 - ux*head*0.4};
+      const hp = document.createElementNS(svgNS, 'path');
+      hp.setAttribute('d', `M ${to.sx} ${to.sy} L ${lpt.x} ${lpt.y} L ${rpt.x} ${rpt.y} Z`);
+      hp.setAttribute('fill', color);
+      svg.appendChild(hp);
+    }
+    arrowhead(W1, W2, '#7B2D8E');
+    arrowhead(W2, W1, '#7B2D8E');
+
+    // ---- Sample points on W (β = ±1, ±2) ----
+    for(let b = -2; b <= 2; b++){
+      if(b === 0) continue;
+      const p = project(b*d1, b*d2, b*d3);
+      if(p.sx < 20 || p.sx > 620 || p.sy < 20 || p.sy > 480) continue;
+      const c = document.createElementNS(svgNS, 'circle');
+      c.setAttribute('cx', p.sx); c.setAttribute('cy', p.sy);
+      c.setAttribute('r', 3);
+      c.setAttribute('fill', '#7B2D8E');
+      c.setAttribute('fill-opacity', '0.6');
+      svg.appendChild(c);
+    }
+
+    // ---- User's point (x, y, z) ----
+    if(Math.abs(x) <= 10 && Math.abs(y) <= 10 && Math.abs(z) <= 10){
+      const up = project(x, y, z);
+      if(up.sx >= 0 && up.sx <= 640 && up.sy >= 0 && up.sy <= 500){
+        const v = checkValueOnPlane();
+        const onPlane = Math.abs(v) < 0.005;
+        if(onPlane){
+          const halo = document.createElementNS(svgNS, 'circle');
+          halo.setAttribute('cx', up.sx); halo.setAttribute('cy', up.sy);
+          halo.setAttribute('r', 12);
+          halo.setAttribute('fill', 'none');
+          halo.setAttribute('stroke', '#B8860B');
+          halo.setAttribute('stroke-width', '2');
+          halo.setAttribute('stroke-opacity', '0.5');
+          svg.appendChild(halo);
+        }
+        const c = document.createElementNS(svgNS, 'circle');
+        c.setAttribute('cx', up.sx); c.setAttribute('cy', up.sy);
+        c.setAttribute('r', 5);
+        c.setAttribute('fill', onPlane ? '#1F6F5C' : '#B5502E');
+        c.setAttribute('stroke', '#FFFDF7');
+        c.setAttribute('stroke-width', '2');
+        svg.appendChild(c);
+        // Label
+        const lbl = mkT(up.sx + 10, up.sy - 6, `(${formatNum(x)}, ${formatNum(y)}, ${formatNum(z)})`, 'point-label');
+        if(!onPlane) lbl.setAttribute('fill', '#B5502E');
+        else lbl.setAttribute('fill', '#1F6F5C');
+        svg.appendChild(lbl);
+      }
+    }
+
+    // ---- Origin marker ----
+    const oc = document.createElementNS(svgNS, 'circle');
+    oc.setAttribute('cx', O.sx); oc.setAttribute('cy', O.sy);
+    oc.setAttribute('r', 4);
+    oc.setAttribute('fill', '#26332B');
+    svg.appendChild(oc);
+    const ol = mkT(O.sx - 8, O.sy + 14, '(0, 0, 0)', 'tick-label');
+    ol.setAttribute('font-weight', '700');
+    ol.setAttribute('fill', '#26332B');
+    ol.setAttribute('text-anchor', 'end');
+    svg.appendChild(ol);
+  }
+
+  function mkL(x1, y1, x2, y2, stroke, w){
+    const l = document.createElementNS(svgNS, 'line');
+    l.setAttribute('x1', x1); l.setAttribute('y1', y1);
+    l.setAttribute('x2', x2); l.setAttribute('y2', y2);
+    l.setAttribute('stroke', stroke); l.setAttribute('stroke-width', w);
+    return l;
+  }
+  function mkT(x, y, text, cls){
+    const t = document.createElementNS(svgNS, 'text');
+    t.setAttribute('x', x); t.setAttribute('y', y);
+    t.setAttribute('class', cls);
+    t.textContent = text;
+    return t;
+  }
+
+  // ---- QUIZ ----
+  document.querySelectorAll('.q .options').forEach(group => {
+    group.querySelectorAll('.opt').forEach(btn => {
+      btn.addEventListener('click', ()=>{
+        const correct = btn.dataset.correct === 'true';
+        group.querySelectorAll('.opt').forEach(b => {
+          b.disabled = true;
+          if(b.dataset.correct === 'true') b.classList.add('correct');
+        });
+        if(!correct) btn.classList.add('wrong');
+        if(group.parentElement.id === 'q3' && correct){
+          setTimeout(()=>{
+            exploreCard.classList.remove('hidden');
+            exploreCard.scrollIntoView({behavior:'smooth', block:'nearest'});
+            rebuildExplore();
+          }, 400);
+        }
+      });
+    });
+  });
+
+  // ---- EXPLORE ----
+  const expD1 = document.getElementById('expD1');
+  const expD2 = document.getElementById('expD2');
+  const expD3 = document.getElementById('expD3');
+  const exploreEq = document.getElementById('exploreEq');
+
+  function rebuildExplore(){
+    const nd1 = parseFloat(expD1.value);
+    const nd2 = parseFloat(expD2.value);
+    const nd3 = parseFloat(expD3.value);
+    if([nd1, nd2, nd3].some(v => isNaN(v))) return;
+    d1 = nd1; d2 = nd2; d3 = nd3;
+    if(d1 === 0 && d2 === 0 && d3 === 0){
+      exploreEq.textContent = 'direction (0, 0, 0) — every vector is perpendicular (degenerate)';
+    } else {
+      exploreEq.textContent = `Perpendicular plane: ${formatNum(d1)}x + ${formatNum(d2)}y + ${formatNum(d3)}z = 0`;
+    }
+    render();
+  }
+  [expD1, expD2, expD3].forEach(inp => {
+    inp.addEventListener('input', rebuildExplore);
+  });
+
+  // init
+  updateLive();
+})();
+</script>
+</body>
+</html>

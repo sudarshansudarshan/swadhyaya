@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vidyapati's Line — Points of the form α(1, 2, 1)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=IBM+Plex+Mono:wght@500;600&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#FAF5E8; --paper-line:#D8CFB6; --ink:#26332B; --ink-soft:#5B6B60;
+    --xaxis:#B5502E;      /* X axis = red */
+    --yaxis:#1F6F5C;      /* Y axis = green */
+    --zaxis:#0E7490;      /* Z axis = blue */
+    --line:#7B2D8E;       /* the line T */
+    --line-soft:#F3E5F7;
+    --point:#B8860B;      /* current α point */
+    --accent:#0E7490; --accent-soft:#CFFAFE;
+    --good:#1F6F5C; --good-soft:#DCEDE7;
+    --card:#FFFDF7; --shadow:0 2px 10px rgba(38,51,43,0.08);
+  }
+  *{box-sizing:border-box;} html,body{margin:0;padding:0;}
+  body{
+    background:repeating-linear-gradient(#FAF5E8 0px,#FAF5E8 27px,var(--paper-line) 28px),var(--paper);
+    background-size:100% 28px; color:var(--ink);
+    font-family:'Source Sans 3',sans-serif; min-height:100vh; padding:28px 16px 60px;
+  }
+  .wrap{max-width:1080px;margin:0 auto;}
+
+  header.hero{
+    background:var(--card); border:1px solid var(--paper-line);
+    border-radius:14px; box-shadow:var(--shadow);
+    padding:26px 28px 22px; margin-bottom:20px;
+  }
+  .eyebrow{font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);margin:0 0 6px;}
+  h1{font-family:'Caveat',cursive;font-weight:700;font-size:42px;margin:0 0 10px;line-height:1.05;}
+  header.hero p{max-width:760px;line-height:1.55;font-size:15.5px;margin:0 0 8px;}
+  .rule-badge{
+    display:inline-flex; gap:12px; align-items:center; flex-wrap:wrap;
+    background:var(--paper); border:1px dashed var(--paper-line);
+    border-radius:10px; padding:10px 14px; margin-top:12px;
+    font-family:'IBM Plex Mono',monospace; font-size:13px;
+  }
+  .rule-badge .piece{display:inline-flex;align-items:center;gap:6px;}
+  .rule-badge .var{color:var(--accent);font-weight:700;}
+  .rule-badge .dir{color:var(--line);font-weight:700;}
+  .rule-badge .vec3{
+    border-left:1.5px solid var(--ink); border-right:1.5px solid var(--ink);
+    padding:1px 6px; font-size:12px; line-height:1.0;
+  }
+
+  .grid-layout{display:grid;grid-template-columns:340px 1fr;gap:20px;align-items:start;}
+  @media (max-width:880px){.grid-layout{grid-template-columns:1fr;}}
+
+  .card{background:var(--card);border:1px solid var(--paper-line);border-radius:14px;box-shadow:var(--shadow);padding:20px;}
+  .panel-title{font-family:'Caveat',cursive;font-weight:700;font-size:24px;margin:0 0 4px;}
+  .panel-sub{font-size:13px;color:var(--ink-soft);margin:0 0 14px;line-height:1.4;}
+
+  .point-display{
+    background:var(--accent-soft); border:1.5px solid var(--accent);
+    border-radius:10px; padding:12px 14px; margin-bottom:14px;
+    font-family:'IBM Plex Mono',monospace; font-size:15px; font-weight:600;
+    text-align:center; color:var(--accent); line-height:1.5;
+  }
+  .point-display .formula{margin-bottom:4px;color:var(--ink-soft);font-size:12px;}
+  .point-display .coords{font-size:18px;font-weight:700;}
+  .point-display .coords .ax{color:var(--xaxis);}
+  .point-display .coords .ay{color:var(--yaxis);}
+  .point-display .coords .az{color:var(--zaxis);}
+
+  .field{margin-bottom:12px;}
+  .field label{display:flex;justify-content:space-between;font-size:13.5px;font-weight:600;margin-bottom:6px;}
+  .field label span.val{font-family:'IBM Plex Mono',monospace;color:var(--accent);font-weight:600;}
+  input[type=number]{
+    width:100%; padding:9px 10px; border-radius:8px;
+    border:1px solid var(--paper-line);
+    font-family:'IBM Plex Mono',monospace; font-size:16px;
+    background:var(--paper); color:var(--ink);
+    -moz-appearance:textfield;
+  }
+  input[type=number]::-webkit-inner-spin-button,
+  input[type=number]::-webkit-outer-spin-button{-webkit-appearance:none;margin:0;}
+  input[type=number]:focus{
+    outline:2px solid var(--accent); outline-offset:-1px;
+    border-color:var(--accent); background:var(--card);
+  }
+  .helper{font-size:12px;color:var(--ink-soft);margin-top:6px;line-height:1.4;}
+  .helper span.k{font-family:'IBM Plex Mono',monospace;color:var(--ink);font-weight:600;}
+
+  .sample-row{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap;}
+  .sample-btn{
+    flex:1; min-width:36px;
+    padding:7px 4px; border-radius:8px;
+    border:1px solid var(--paper-line); background:var(--paper);
+    font-family:'IBM Plex Mono',monospace; font-size:13px; font-weight:600;
+    cursor:pointer; color:var(--ink); text-align:center;
+  }
+  .sample-btn:hover{background:var(--accent-soft);border-color:var(--accent);color:var(--accent);}
+  .sample-btn.active{background:var(--accent-soft);border-color:var(--accent);color:var(--accent);}
+
+  .status{
+    font-size:13.5px; line-height:1.5; padding:12px;
+    border-radius:9px; background:var(--paper);
+    border:1px solid var(--paper-line); margin-bottom:14px; min-height:20px;
+  }
+  .status.feedback-good{background:var(--good-soft);border-color:var(--good);color:var(--good);font-weight:600;}
+
+  button{
+    font-family:'Source Sans 3',sans-serif; font-weight:600; font-size:14.5px;
+    border:none; border-radius:9px; padding:11px 16px; cursor:pointer;
+    width:100%; transition:transform .08s ease, filter .15s ease;
+  }
+  button:active{transform:translateY(1px);}
+  button:disabled{opacity:.4;cursor:not-allowed;}
+  .btn-primary{background:var(--accent);color:#fff;}
+  .btn-primary:hover:not(:disabled){filter:brightness(1.08);}
+  .btn-secondary{background:var(--paper);color:var(--ink);border:1px solid var(--paper-line);margin-top:8px;}
+  .btn-secondary:hover:not(:disabled){background:#F0E9D6;}
+
+  .graph-card{display:flex;flex-direction:column;}
+  .legend{display:flex;gap:18px;flex-wrap:wrap;margin:6px 0 12px;font-size:12.5px;font-family:'IBM Plex Mono',monospace;}
+  .legend span{display:inline-flex;align-items:center;gap:6px;}
+  .axis-x{color:var(--xaxis);font-weight:700;}
+  .axis-y{color:var(--yaxis);font-weight:700;}
+  .axis-z{color:var(--zaxis);font-weight:700;}
+  .dot{width:10px;height:10px;border-radius:50%;display:inline-block;}
+  .dot.s-line{background:var(--line);}
+  .dot.s-point{background:var(--point);}
+  .dot.s-sample{background:var(--ink-soft);}
+
+  svg{width:100%;height:auto;display:block;}
+  .axis-label{font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:700;}
+  .tick-label{font-family:'IBM Plex Mono',monospace;font-size:10px;fill:var(--ink-soft);}
+  .point-label{font-family:'IBM Plex Mono',monospace;font-size:11px;fill:var(--ink);font-weight:600;}
+
+  .reflect,.explore{margin-top:20px;padding-top:16px;border-top:1px dashed var(--paper-line);}
+  .reflect.hidden,.explore.hidden{display:none;}
+  .q{margin-bottom:16px;}
+  .q p.qtext{font-weight:600;margin:0 0 8px;font-size:14.5px;}
+  .options{display:flex;gap:8px;flex-wrap:wrap;}
+  .opt{
+    padding:8px 14px;border-radius:8px;border:1px solid var(--paper-line);
+    background:var(--paper);font-size:13.5px;cursor:pointer;font-weight:600;
+  }
+  .opt.correct{background:var(--good-soft);border-color:var(--good);color:var(--good);}
+  .opt.wrong{background:#FBEFE8;border-color:#B5502E;color:#8C3A1F;}
+  .opt:disabled{cursor:default;}
+
+  .explore .panel-title{font-size:22px;}
+  .explore-inputs{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 14px;}
+  .explore-inputs .field{flex:1;min-width:80px;margin-bottom:0;}
+  .explore-eq{
+    background:var(--line-soft); border:1px solid var(--line);
+    border-radius:8px; padding:10px; margin-bottom:10px;
+    font-family:'IBM Plex Mono',monospace; font-size:13px; text-align:center; color:var(--line); font-weight:700;
+  }
+
+  footer.note{text-align:center;font-size:12px;color:var(--ink-soft);margin-top:26px;font-family:'IBM Plex Mono',monospace;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <p class="eyebrow">Linear Algebra · Lines through the Origin in 3D</p>
+    <h1>Vidyapati's Line — Every Point of the Form α(1, 2, 1)</h1>
+    <p>Pick any real number α. Multiply the direction vector (1, 2, 1) by α — you get a point (α, 2α, α). As α runs over all reals, the point traces a <strong>straight line through the origin</strong>. Every point on the line is some α(1, 2, 1); every α gives a point on the line.</p>
+    <div class="rule-badge">
+      <span style="color:var(--ink-soft);">T = {</span>
+      <span class="var">α</span>
+      <span class="dir">·</span>
+      <span class="vec3">
+        <span style="display:block;line-height:1.0;">1</span>
+        <span style="display:block;line-height:1.0;">2</span>
+        <span style="display:block;line-height:1.0;">1</span>
+      </span>
+      <span style="color:var(--ink-soft);">| α ∈ ℝ}</span>
+      <span style="color:var(--ink-soft);">·</span>
+      <span style="color:var(--ink);">every α gives a point (α, 2α, α)</span>
+    </div>
+  </header>
+
+  <div class="grid-layout">
+
+    <!-- LEFT CONTROL PANEL -->
+    <div class="card">
+      <p class="panel-title">Pick α, get a point</p>
+      <p class="panel-sub">Type any α. The point on the line is (α, 2α, α). Try the buttons below for quick values.</p>
+
+      <div class="point-display">
+        <div class="formula">α(1, 2, 1) =</div>
+        <div class="coords" id="coords">
+          (<span class="ax">x</span>, <span class="ay">y</span>, <span class="az">z</span>)
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Pick <span class="val">α</span></label>
+        <input type="number" id="inAlpha" step="any" value="1">
+        <div class="helper">Try <span class="k">α = 0</span> (the origin), <span class="k">α = 1</span> (the point (1, 2, 1)), <span class="k">α = −2</span> (the opposite side).</div>
+      </div>
+
+      <div class="sample-row">
+        <button class="sample-btn" data-alpha="-3">α = −3</button>
+        <button class="sample-btn" data-alpha="-2">α = −2</button>
+        <button class="sample-btn" data-alpha="-1">α = −1</button>
+        <button class="sample-btn" data-alpha="0">α = 0</button>
+        <button class="sample-btn" data-alpha="1">α = 1</button>
+        <button class="sample-btn" data-alpha="2">α = 2</button>
+        <button class="sample-btn" data-alpha="3">α = 3</button>
+      </div>
+
+      <div class="status" id="statusBox">Type α or pick a button. The point on the line is (α, 2α, α).</div>
+
+      <button class="btn-secondary" id="resetBtn">Reset to α = 1</button>
+    </div>
+
+    <!-- RIGHT GRAPH -->
+    <div class="card graph-card">
+      <p class="panel-title">3D space (isometric view)</p>
+      <div class="legend">
+        <span><span class="axis-x">──</span>X axis</span>
+        <span><span class="axis-y">──</span>Y axis (up)</span>
+        <span><span class="axis-z">──</span>Z axis</span>
+        <span><i class="dot s-line"></i>line T = α(1, 2, 1)</span>
+        <span><i class="dot s-sample"></i>sample points</span>
+        <span><i class="dot s-point"></i>your α</span>
+      </div>
+      <p class="panel-sub" style="margin:6px 0 10px;">Every dot on the purple line is one value of α. The line passes through (0, 0, 0) and (1, 2, 1) — it has the direction (1, 2, 1).</p>
+      <svg id="graphSvg" viewBox="0 0 640 500" xmlns="http://www.w3.org/2000/svg"></svg>
+    </div>
+  </div>
+
+  <!-- REFLECTION QUIZ -->
+  <div class="card reflect hidden" id="reflectCard">
+    <p class="panel-title">What do you notice?</p>
+    <p class="panel-sub">The points form a single straight line. Now answer these.</p>
+
+    <div class="q" id="q1">
+      <p class="qtext">1. For α = 1, the point on the line is —</p>
+      <div class="options">
+        <button class="opt" data-correct="false">(1, 1, 1) — every coordinate equals α</button>
+        <button class="opt" data-correct="true">(1, 2, 1) — because we multiply (1, 2, 1) by α = 1</button>
+        <button class="opt" data-correct="false">(2, 4, 2) — only even numbers</button>
+      </div>
+    </div>
+
+    <div class="q" id="q2">
+      <p class="qtext">2. For α = −2, the point is —</p>
+      <div class="options">
+        <button class="opt" data-correct="false">(2, 4, 2) — flip the sign of the coordinates of α = 2</button>
+        <button class="opt" data-correct="true">(−2, −4, −2) — multiply (1, 2, 1) by α = −2</button>
+        <button class="opt" data-correct="false">(−2, 4, −2) — only the y stays positive</button>
+      </div>
+    </div>
+
+    <div class="q" id="q3">
+      <p class="qtext">3. All the points (α, 2α, α) lie on —</p>
+      <div class="options">
+        <button class="opt" data-correct="false">a curved arc above the xy-plane</button>
+        <button class="opt" data-correct="true">a single straight line through the origin (0, 0, 0), in the direction (1, 2, 1)</button>
+        <button class="opt" data-correct="false">two separate lines, one above and one below the xy-plane</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- EXPLORE MODE -->
+  <div class="card explore hidden" id="exploreCard">
+    <p class="panel-title">Now you try: change the direction</p>
+    <p class="panel-sub">The set is α(d₁, d₂, d₃). Type any direction vector (d₁, d₂, d₃) and see the line it draws.</p>
+
+    <div class="explore-inputs">
+      <div class="field"><label>d₁</label><input type="number" id="expD1" step="0.5" value="1"></div>
+      <div class="field"><label>d₂</label><input type="number" id="expD2" step="0.5" value="2"></div>
+      <div class="field"><label>d₃</label><input type="number" id="expD3" step="0.5" value="1"></div>
+    </div>
+
+    <div class="explore-eq" id="exploreEq">Direction (1, 2, 1) — line through origin</div>
+  </div>
+
+  <footer class="note">Built for 3D lines · every α(1, 2, 1) lies on one straight line through the origin · the line has direction (1, 2, 1)</footer>
+</div>
+
+<script>
+(function(){
+  // ---- STATE ----
+  let d1 = 1, d2 = 2, d3 = 1;       // direction vector
+  let alpha = 1;
+
+  // ---- DOM ----
+  const inAlpha = document.getElementById('inAlpha');
+  const coords = document.getElementById('coords');
+  const statusBox = document.getElementById('statusBox');
+  const resetBtn = document.getElementById('resetBtn');
+  const sampleBtns = document.querySelectorAll('.sample-btn');
+  const reflectCard = document.getElementById('reflectCard');
+  const exploreCard = document.getElementById('exploreCard');
+
+  function formatNum(v){
+    if(Math.abs(v) < 1e-9) return '0';
+    if(Number.isInteger(v)) return v.toString();
+    return (Math.round(v*100)/100).toString();
+  }
+
+  function point(alpha){
+    return {
+      x: alpha * d1,
+      y: alpha * d2,
+      z: alpha * d3
+    };
+  }
+
+  function updateLive(){
+    const a = parseFloat(inAlpha.value);
+    if(isNaN(a)){
+      coords.innerHTML = '(<span class="ax">x</span>, <span class="ay">y</span>, <span class="az">z</span>)';
+      render();
+      return;
+    }
+    alpha = a;
+    const p = point(alpha);
+    coords.innerHTML = `(<span class="ax">${formatNum(p.x)}</span>, <span class="ay">${formatNum(p.y)}</span>, <span class="az">${formatNum(p.z)}</span>)`;
+    // Highlight matching sample button
+    sampleBtns.forEach(btn => {
+      const btnAlpha = parseFloat(btn.dataset.alpha);
+      btn.classList.toggle('active', Math.abs(btnAlpha - alpha) < 1e-9);
+    });
+    render();
+  }
+
+  function resetGame(){
+    inAlpha.value = '1';
+    alpha = 1;
+    d1 = 1; d2 = 2; d3 = 1;
+    reflectCard.classList.add('hidden');
+    exploreCard.classList.add('hidden');
+    updateLive();
+  }
+
+  inAlpha.addEventListener('input', updateLive);
+  inAlpha.addEventListener('keydown', (e)=>{ if(e.key === 'Enter') updateLive(); });
+  resetBtn.addEventListener('click', resetGame);
+  sampleBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      inAlpha.value = btn.dataset.alpha;
+      updateLive();
+      // Unlock reflection after a few samples
+      reflectCard.classList.remove('hidden');
+    });
+  });
+
+  // ---- SVG rendering (3D isometric projection) ----
+  const svg = document.getElementById('graphSvg');
+  const svgNS = "http://www.w3.org/2000/svg";
+
+  // 3D to 2D projection:
+  // X axis points right and slightly down: screen dir (1, 0.4)
+  // Y axis points up:                       screen dir (0, -1)
+  // Z axis points right and up:              screen dir (0.6, -0.4)
+  function project(x, y, z, scale, originX, originY){
+    const sx = originX + (x + z * 0.6) * scale;
+    const sy = originY + (-y + z * 0.4) * scale;
+    return {sx, sy};
+  }
+
+  function render(){
+    while(svg.firstChild) svg.removeChild(svg.firstChild);
+
+    const scale = 28;             // pixels per 3D unit
+    const originSvg = {x: 320, y: 290};   // where (0, 0, 0) sits on screen
+
+    // Draw the LINE T — extend along the direction from alpha=-4 to alpha=+4
+    const lenA = 4;
+    const p1 = point(-lenA);
+    const p2 = point(+lenA);
+    const sp1 = project(p1.x, p1.y, p1.z, scale, originSvg.x, originSvg.y);
+    const sp2 = project(p2.x, p2.y, p2.z, scale, originSvg.x, originSvg.y);
+    const linePath = document.createElementNS(svgNS, 'path');
+    linePath.setAttribute('d', `M ${sp1.sx} ${sp1.sy} L ${sp2.sx} ${sp2.sy}`);
+    linePath.setAttribute('stroke', '#7B2D8E');
+    linePath.setAttribute('stroke-width', '2.5');
+    linePath.setAttribute('fill', 'none');
+    svg.appendChild(linePath);
+
+    // Sample dots (for α = -3, -2, -1, 0, 1, 2, 3) as small grey dots
+    for(let a = -3; a <= 3; a++){
+      const p = point(a);
+      const sp = project(p.x, p.y, p.z, scale, originSvg.x, originSvg.y);
+      const c = document.createElementNS(svgNS, 'circle');
+      c.setAttribute('cx', sp.sx); c.setAttribute('cy', sp.sy);
+      c.setAttribute('r', 3);
+      c.setAttribute('fill', '#5B6B60');
+      c.setAttribute('fill-opacity', '0.5');
+      svg.appendChild(c);
+      if(a !== 0){
+        const t = mkT(sp.sx + 6, sp.sy - 4, `α=${a}`, 'tick-label');
+        t.setAttribute('fill', '#5B6B60');
+        t.setAttribute('font-size', '9');
+        svg.appendChild(t);
+      }
+    }
+
+    // User's current point (bigger, gold)
+    const pa = point(alpha);
+    const sa = project(pa.x, pa.y, pa.z, scale, originSvg.x, originSvg.y);
+    // Halo
+    const halo = document.createElementNS(svgNS, 'circle');
+    halo.setAttribute('cx', sa.sx); halo.setAttribute('cy', sa.sy);
+    halo.setAttribute('r', 14);
+    halo.setAttribute('fill', 'none');
+    halo.setAttribute('stroke', '#B8860B');
+    halo.setAttribute('stroke-width', '2');
+    halo.setAttribute('stroke-opacity', '0.4');
+    svg.appendChild(halo);
+    // Dot
+    const c = document.createElementNS(svgNS, 'circle');
+    c.setAttribute('cx', sa.sx); c.setAttribute('cy', sa.sy);
+    c.setAttribute('r', 6);
+    c.setAttribute('fill', '#B8860B');
+    c.setAttribute('stroke', '#FFFDF7');
+    c.setAttribute('stroke-width', '2');
+    svg.appendChild(c);
+    // Label
+    const lab = mkT(sa.sx + 10, sa.sy - 8, `(${formatNum(pa.x)}, ${formatNum(pa.y)}, ${formatNum(pa.z)})`, 'point-label');
+    svg.appendChild(lab);
+
+    // ---- Origin marker ----
+    const so = project(0, 0, 0, scale, originSvg.x, originSvg.y);
+    const oc = document.createElementNS(svgNS, 'circle');
+    oc.setAttribute('cx', so.x); oc.setAttribute('cy', so.y);
+    oc.setAttribute('r', 4);
+    oc.setAttribute('fill', '#26332B');
+    svg.appendChild(oc);
+
+    // ---- Axes ----
+    function drawAxis(dirX, dirY, dirZ, color, label, labelOffsetX, labelOffsetY, labelAnchor){
+      const end = project(dirX, dirY, dirZ, scale, originSvg.x, originSvg.y);
+      // axis line
+      const ax = mkL(so.x, so.y, end.sx, end.sy, color, 1.5);
+      svg.appendChild(ax);
+      // arrowhead
+      const dx = end.sx - so.x, dy = end.sy - so.y;
+      const len = Math.sqrt(dx*dx + dy*dy);
+      if(len > 5){
+        const ux = dx/len, uy = dy/len;
+        const head = 8;
+        const ax2 = end.sx - ux*head*0.3;
+        const ay2 = end.sy - uy*head*0.3;
+        const left = {x: ax2 - head*uy*0.4, y: ay2 + head*ux*0.4};
+        const right = {x: ax2 + head*uy*0.4, y: ay2 - head*ux*0.4};
+        const headPath = document.createElementNS(svgNS, 'path');
+        headPath.setAttribute('d', `M ${end.sx} ${end.sy} L ${left.x} ${left.y} L ${right.x} ${right.y} Z`);
+        headPath.setAttribute('fill', color);
+        svg.appendChild(headPath);
+      }
+      // Label
+      const lab = mkT(end.sx + (labelOffsetX || 0), end.sy + (labelOffsetY || 0), label, 'axis-label');
+      lab.setAttribute('fill', color);
+      lab.setAttribute('text-anchor', labelAnchor || 'start');
+      svg.appendChild(lab);
+    }
+
+    // X axis: direction (1, 0, 0) → right
+    drawAxis(5, 0, 0, '#B5502E', 'X', 4, 6, 'start');
+    // Y axis: direction (0, 1, 0) → up
+    drawAxis(0, 5, 0, '#1F6F5C', 'Y', -6, -6, 'end');
+    // Z axis: direction (0, 0, 1) → diagonally up-right
+    drawAxis(0, 0, 5, '#0E7490', 'Z', 8, -2, 'start');
+
+    // ---- Origin label ----
+    const ol = mkT(so.x - 8, so.y + 14, '(0, 0, 0)', 'tick-label');
+    ol.setAttribute('fill', '#26332B');
+    ol.setAttribute('font-weight', '700');
+    ol.setAttribute('text-anchor', 'end');
+    svg.appendChild(ol);
+
+    // ---- Direction arrow from origin to (d1, d2, d3) × 2 (showing the direction of the line) ----
+    const dpt = point(2);
+    const sd = project(dpt.x, dpt.y, dpt.z, scale, originSvg.x, originSvg.y);
+    const darrow = mkL(so.x, so.y, sd.sx, sd.sy, '#7B2D8E', 1);
+    darrow.setAttribute('stroke-dasharray', '4 3');
+    svg.appendChild(darrow);
+    const dhead = document.createElementNS(svgNS, 'path');
+    const ddx = sd.sx - so.x, ddy = sd.sy - so.y;
+    const dlen = Math.sqrt(ddx*ddx + ddy*ddy);
+    const dux = ddx/dlen, duy = ddy/dlen;
+    const headSize = 6;
+    const dl = {x: sd.sx - dux*headSize - duy*headSize*0.4, y: sd.sy - duy*headSize + dux*headSize*0.4};
+    const dr = {x: sd.sx - dux*headSize + duy*headSize*0.4, y: sd.sy - duy*headSize - dux*headSize*0.4};
+    dhead.setAttribute('d', `M ${sd.sx} ${sd.sy} L ${dl.x} ${dl.y} L ${dr.x} ${dr.y} Z`);
+    dhead.setAttribute('fill', '#7B2D8E');
+    svg.appendChild(dhead);
+    const dlab = mkT(sd.sx + 8, sd.sy + 4, `(${formatNum(dpt.x)}, ${formatNum(dpt.y)}, ${formatNum(dpt.z)})`, 'tick-label');
+    dlab.setAttribute('fill', '#7B2D8E');
+    dlab.setAttribute('font-weight', '700');
+    dlab.setAttribute('font-size', '11');
+    svg.appendChild(dlab);
+  }
+
+  function mkL(x1, y1, x2, y2, stroke, w){
+    const l = document.createElementNS(svgNS, 'line');
+    l.setAttribute('x1', x1); l.setAttribute('y1', y1);
+    l.setAttribute('x2', x2); l.setAttribute('y2', y2);
+    l.setAttribute('stroke', stroke); l.setAttribute('stroke-width', w);
+    return l;
+  }
+  function mkT(x, y, text, cls){
+    const t = document.createElementNS(svgNS, 'text');
+    t.setAttribute('x', x); t.setAttribute('y', y);
+    t.setAttribute('class', cls);
+    t.textContent = text;
+    return t;
+  }
+
+  // ---- QUIZ ----
+  document.querySelectorAll('.q .options').forEach(group => {
+    group.querySelectorAll('.opt').forEach(btn => {
+      btn.addEventListener('click', ()=>{
+        const correct = btn.dataset.correct === 'true';
+        group.querySelectorAll('.opt').forEach(b => {
+          b.disabled = true;
+          if(b.dataset.correct === 'true') b.classList.add('correct');
+        });
+        if(!correct) btn.classList.add('wrong');
+        if(group.parentElement.id === 'q3' && correct){
+          setTimeout(()=>{
+            exploreCard.classList.remove('hidden');
+            exploreCard.scrollIntoView({behavior:'smooth', block:'nearest'});
+            rebuildExplore();
+          }, 400);
+        }
+      });
+    });
+  });
+
+  // ---- EXPLORE ----
+  const expD1 = document.getElementById('expD1');
+  const expD2 = document.getElementById('expD2');
+  const expD3 = document.getElementById('expD3');
+  const exploreEq = document.getElementById('exploreEq');
+
+  function rebuildExplore(){
+    const nd1 = parseFloat(expD1.value);
+    const nd2 = parseFloat(expD2.value);
+    const nd3 = parseFloat(expD3.value);
+    if([nd1, nd2, nd3].some(v => isNaN(v))) return;
+    d1 = nd1; d2 = nd2; d3 = nd3;
+    if(d1 === 0 && d2 === 0 && d3 === 0){
+      exploreEq.textContent = 'direction (0, 0, 0) — every point is the same (no line)';
+    } else {
+      exploreEq.textContent = `Direction (${formatNum(d1)}, ${formatNum(d2)}, ${formatNum(d3)}) — line through origin`;
+    }
+    render();
+  }
+  [expD1, expD2, expD3].forEach(inp => {
+    inp.addEventListener('input', rebuildExplore);
+  });
+
+  // init
+  updateLive();
+})();
+</script>
+</body>
+</html>

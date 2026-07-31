@@ -1,0 +1,883 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vikramaditya's Coin Jar — Does the Line Pass Through the Origin?</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=IBM+Plex+Mono:wght@500;600&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper: #FAF5E8;
+    --paper-line: #D8CFB6;
+    --ink: #26332B;
+    --ink-soft: #5B6B60;
+    --vikram: #B5502E;
+    --vikram-soft: #FBEFE8;
+    --accent: #1F6F5C;
+    --accent-soft: #DCEDE7;
+    --slope: #B8860B;
+    --slope-soft: #F3E9CE;
+    --intercept: #7B5EA7;
+    --intercept-soft: #EAE3F5;
+    --good: #1F6F5C;
+    --card: #FFFDF7;
+    --shadow: 0 2px 10px rgba(38,51,43,0.08);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:
+      repeating-linear-gradient(#FAF5E8 0px, #FAF5E8 27px, var(--paper-line) 28px),
+      var(--paper);
+    background-size: 100% 28px;
+    color:var(--ink);
+    font-family:'Source Sans 3', sans-serif;
+    min-height:100vh;
+    padding: 28px 16px 60px;
+  }
+  .wrap{max-width:1080px;margin:0 auto;}
+
+  header.hero{
+    background: var(--card);
+    border:1px solid var(--paper-line);
+    border-radius:14px;
+    box-shadow: var(--shadow);
+    padding: 26px 28px 22px;
+    margin-bottom:20px;
+    position:relative;
+    overflow:hidden;
+  }
+  .eyebrow{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--ink-soft);
+    margin:0 0 6px;
+  }
+  h1{
+    font-family:'Caveat', cursive;
+    font-weight:700;
+    font-size:44px;
+    margin:0 0 10px;
+    color:var(--ink);
+    line-height:1.05;
+  }
+  header.hero p{
+    max-width:680px;
+    line-height:1.55;
+    font-size:15.5px;
+    color:var(--ink);
+    margin:0 0 8px;
+  }
+  .rule-badge{
+    display:inline-flex;
+    gap:14px;
+    align-items:center;
+    background:var(--paper);
+    border:1px dashed var(--paper-line);
+    border-radius:10px;
+    padding:10px 14px;
+    margin-top:10px;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:13px;
+  }
+  .rule-badge .pill{
+    display:inline-flex; align-items:center; gap:6px;
+    padding:3px 9px; border-radius:20px; font-weight:600;
+  }
+  .pill.start{ background:var(--slope-soft); color:var(--slope); }
+  .pill.week-rule{ background:var(--accent-soft); color:var(--accent); }
+  .pill.eq{ background:var(--paper); border:1px solid var(--paper-line); color:var(--ink); }
+
+  .grid-layout{
+    display:grid;
+    grid-template-columns: 320px 1fr;
+    gap:20px;
+    align-items:start;
+  }
+  @media (max-width: 800px){
+    .grid-layout{ grid-template-columns: 1fr; }
+  }
+
+  .card{
+    background:var(--card);
+    border:1px solid var(--paper-line);
+    border-radius:14px;
+    box-shadow: var(--shadow);
+    padding:20px;
+  }
+
+  .panel-title{
+    font-family:'Caveat', cursive;
+    font-weight:700;
+    font-size:24px;
+    margin:0 0 4px;
+  }
+  .panel-sub{
+    font-size:13px; color:var(--ink-soft); margin:0 0 16px; line-height:1.4;
+  }
+
+  .eq-box{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:22px;
+    font-weight:600;
+    text-align:center;
+    background:var(--paper);
+    border:1px solid var(--paper-line);
+    border-radius:10px;
+    padding:10px;
+    margin-bottom:16px;
+    color:var(--vikram);
+  }
+
+  .field{ margin-bottom:16px; }
+  .field label{
+    display:flex; justify-content:space-between;
+    font-size:13.5px; font-weight:600; margin-bottom:6px;
+  }
+  .field label span.val{
+    font-family:'IBM Plex Mono', monospace; color:var(--slope); font-weight:600;
+  }
+  input[type=number]{
+    width:100%;
+    padding:9px 10px;
+    border-radius:8px;
+    border:1px solid var(--paper-line);
+    font-family:'IBM Plex Mono', monospace;
+    font-size:16px;
+    background:var(--paper);
+    color:var(--ink);
+    -moz-appearance: textfield;
+  }
+  input[type=number]::-webkit-inner-spin-button,
+  input[type=number]::-webkit-outer-spin-button{
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  input[type=number]:focus{
+    outline:2px solid var(--vikram);
+    outline-offset:-1px;
+    border-color:var(--vikram);
+    background:var(--card);
+  }
+  input[type=number]:disabled{
+    opacity:.5;
+    cursor:not-allowed;
+  }
+  .helper{ font-size:12px; color:var(--ink-soft); margin-top:6px; line-height:1.4; }
+  .helper span.k{ font-family:'IBM Plex Mono', monospace; color:var(--ink); font-weight:600; }
+
+  .jars{ display:flex; gap:14px; margin-bottom:18px; }
+  .jar{
+    flex:1; text-align:center; padding:12px 6px;
+    border-radius:10px; border:1px solid var(--paper-line);
+  }
+  .jar.week-jar{ background:var(--accent-soft); }
+  .jar.coin-jar{ background:var(--slope-soft); }
+  .jar .name{ font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:.05em; }
+  .jar.week-jar .name{ color:var(--accent); }
+  .jar.coin-jar .name{ color:var(--slope); }
+  .jar .amt{ font-family:'IBM Plex Mono', monospace; font-size:22px; font-weight:600; margin-top:4px; }
+
+  button{
+    font-family:'Source Sans 3', sans-serif;
+    font-weight:600; font-size:14.5px;
+    border:none; border-radius:9px;
+    padding:11px 16px; cursor:pointer;
+    width:100%;
+    transition: transform .08s ease, filter .15s ease;
+  }
+  button:active{ transform: translateY(1px); }
+  button:disabled{ opacity:.4; cursor:not-allowed; }
+  .btn-primary{ background:var(--vikram); color:#fff; }
+  .btn-primary:hover:not(:disabled){ filter:brightness(1.08); }
+  .btn-secondary{ background:var(--paper); color:var(--ink); border:1px solid var(--paper-line); margin-top:8px; }
+  .btn-secondary:hover:not(:disabled){ background:#F0E9D6; }
+
+  .status{
+    font-size:13.5px; line-height:1.5; padding:12px 12px; border-radius:9px;
+    background:var(--paper); border:1px solid var(--paper-line); margin-bottom:14px; min-height:20px;
+  }
+  .status.feedback-good{ background:var(--accent-soft); border-color:var(--accent); color:var(--accent); font-weight:600; }
+  .status.feedback-mid{ background:var(--intercept-soft); border-color:var(--intercept); color:var(--intercept); font-weight:600; }
+
+  .graph-card{ display:flex; flex-direction:column; }
+  .graph-card .panel-title{ margin-bottom:0; }
+  .legend{
+    display:flex; gap:18px; flex-wrap:wrap; margin: 6px 0 12px;
+    font-size:12.5px; font-family:'IBM Plex Mono', monospace;
+  }
+  .legend span{ display:inline-flex; align-items:center; gap:6px; }
+  .dot{ width:10px; height:10px; border-radius:50%; display:inline-block; }
+  .dot.guess{ background:var(--intercept); }
+  .dot.actual{ background:var(--vikram); }
+  .dot.line{ background:var(--slope); }
+  .dot.origin{ background:var(--ink); }
+
+  svg{ width:100%; height:auto; display:block; }
+  .axis-label{
+    font-family:'IBM Plex Mono', monospace; font-size:12px; fill:var(--ink-soft);
+  }
+  .tick-label{ font-family:'IBM Plex Mono', monospace; font-size:10px; fill:var(--ink-soft); }
+
+  .steps{ display:flex; gap:6px; margin-bottom:14px; flex-wrap:wrap; }
+  .step-dot{
+    width:26px; height:26px; border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    font-family:'IBM Plex Mono', monospace; font-size:12px; font-weight:600;
+    border:1.5px solid var(--paper-line); color:var(--ink-soft); background:var(--paper);
+  }
+  .step-dot.done{ background:var(--vikram); border-color:var(--vikram); color:#fff; }
+  .step-dot.active{ border-color:var(--slope); color:var(--slope); background:var(--slope-soft); }
+
+  .reflect{
+    margin-top:20px; padding-top:16px; border-top:1px dashed var(--paper-line);
+  }
+  .reflect.hidden, .explore.hidden{ display:none; }
+  .q{ margin-bottom:16px; }
+  .q p.qtext{ font-weight:600; margin:0 0 8px; font-size:14.5px; }
+  .options{ display:flex; gap:8px; flex-wrap:wrap; }
+  .opt{
+    padding:8px 14px; border-radius:8px; border:1px solid var(--paper-line);
+    background:var(--paper); font-size:13.5px; cursor:pointer; font-weight:600;
+  }
+  .opt.correct{ background:var(--accent-soft); border-color:var(--accent); color:var(--accent); }
+  .opt.wrong{ background:var(--vikram-soft); border-color:var(--vikram); color:var(--vikram); }
+  .opt:disabled{ cursor:default; }
+
+  .explore{ margin-top:20px; padding-top:16px; border-top:1px dashed var(--paper-line); }
+  .explore .panel-title{ font-size:22px; }
+
+  .explore-inputs{
+    display:flex; gap:16px; flex-wrap:wrap; margin:10px 0 16px;
+  }
+  .explore-inputs .field{
+    flex:1; min-width:140px; margin-bottom:0;
+  }
+  .explore-inputs .field label span.v-slope{
+    font-family:'IBM Plex Mono', monospace; color:var(--slope); font-weight:600;
+  }
+  .explore-inputs .field label span.v-int{
+    font-family:'IBM Plex Mono', monospace; color:var(--intercept); font-weight:600;
+  }
+
+  footer.note{
+    text-align:center; font-size:12px; color:var(--ink-soft); margin-top:26px;
+    font-family:'IBM Plex Mono', monospace;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <p class="eyebrow">Intuition Builder · Linear Equations in Two Variables</p>
+    <h1>Vikramaditya's Coin Jar — Does the Line Pass Through the Origin?</h1>
+    <p>Vikramaditya's royal treasury starts with <strong>1 gold coin</strong>. Each month, the treasurer adds <strong>2 more</strong> gold coins. Each month gives one pair: (month number, total coins). Predict the total for each month, then look closely at where the line sits relative to the origin.</p>
+    <div class="rule-badge">
+      <span class="pill start">Start: 1 coin</span>
+      <span>+</span>
+      <span class="pill week-rule">+2 each month</span>
+      <span>=</span>
+      <span class="pill eq">y = 2x + 1</span>
+    </div>
+  </header>
+
+  <div class="grid-layout">
+
+    <!-- LEFT CONTROL PANEL -->
+    <div class="card">
+      <p class="panel-title">This month's total</p>
+      <p class="panel-sub">For each round, type the total coins you expect Vikramaditya to have. He starts with 1 and adds 2 every month.</p>
+
+      <div class="eq-box" id="eqDisplay">y = 2x + 1</div>
+
+      <div class="field">
+        <label>Month <span id="currentXLabel">1</span> — guess total coins y:</label>
+        <input type="number" id="predictY" step="any" placeholder="?">
+        <div class="helper" id="predictHelper">y = <span class="k">2</span> × <span class="k" id="xDisplay">1</span> + <span class="k">1</span> = ?</div>
+      </div>
+
+      <div class="jars">
+        <div class="jar week-jar">
+          <div class="name">Month (x)</div>
+          <div class="amt" id="xVal">1</div>
+        </div>
+        <div class="jar coin-jar">
+          <div class="name">Your guess</div>
+          <div class="amt" id="yVal">?</div>
+        </div>
+      </div>
+
+      <div class="steps" id="stepDots"></div>
+
+      <div class="status" id="statusBox">Vikramaditya is in <strong>Month 1</strong>. Type your guess for his total coins, then press Predict.</div>
+
+      <button class="btn-primary" id="checkBtn">Predict &amp; Reveal</button>
+      <button class="btn-secondary" id="resetBtn">Start over</button>
+    </div>
+
+    <!-- RIGHT GRAPH -->
+    <div class="card graph-card">
+      <p class="panel-title">Vikramaditya's treasury graph</p>
+      <div class="legend">
+        <span><i class="dot guess"></i>your guess</span>
+        <span><i class="dot actual"></i>actual point</span>
+        <span><i class="dot line"></i>y = 2x + 1</span>
+        <span><i class="dot origin"></i>origin (0, 0)</span>
+      </div>
+      <svg id="graphSvg" viewBox="0 0 640 500" xmlns="http://www.w3.org/2000/svg"></svg>
+    </div>
+  </div>
+
+  <!-- REFLECTION QUIZ -->
+  <div class="card reflect hidden" id="reflectCard">
+    <p class="panel-title">What do you notice?</p>
+    <p class="panel-sub">All five months are plotted. Look at the shape — and especially where the line meets the y-axis — before you answer.</p>
+
+    <div class="q" id="q1">
+      <p class="qtext">1. The five points Vikramaditya plotted lie on…</p>
+      <div class="options">
+        <button class="opt" data-correct="false">a straight line passing through the origin (0, 0)</button>
+        <button class="opt" data-correct="true">a straight line, but it does <em>not</em> pass through the origin</button>
+        <button class="opt" data-correct="false">a curve that bends upward</button>
+      </div>
+    </div>
+
+    <div class="q" id="q2">
+      <p class="qtext">2. If Vikramaditya had saved for <strong>0 months</strong> (the very moment the treasury started), how many coins would there be?</p>
+      <div class="options">
+        <button class="opt" data-correct="false">0 coins — at the origin</button>
+        <button class="opt" data-correct="true">1 coin — the starting amount</button>
+        <button class="opt" data-correct="false">2 coins — after one addition</button>
+      </div>
+    </div>
+
+    <div class="q" id="q3">
+      <p class="qtext">3. Suppose Vikramaditya started with <strong>3 coins</strong> instead of 1. The new line would be…</p>
+      <div class="options">
+        <button class="opt" data-correct="false">steeper — going up by 3 coins each month</button>
+        <button class="opt" data-correct="true">shifted upward — still going up by 2 coins each month, just from a higher start</button>
+        <button class="opt" data-correct="false">passing through the origin now</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- EXPLORE MODE -->
+  <div class="card explore hidden" id="exploreCard">
+    <p class="panel-title">Now you try: change the rule</p>
+    <p class="panel-sub">What if Vikramaditya started with a different number of coins, or added a different amount each month? Type new values and watch how the line moves — does it ever pass through the origin?</p>
+
+    <div class="explore-inputs">
+      <div class="field">
+        <label>Coins added each month (<em>m</em>, slope) <span class="v-slope" id="expMVal">2</span></label>
+        <input type="number" id="expM" min="1" max="4" step="1" value="2">
+      </div>
+      <div class="field">
+        <label>Starting coins (<em>c</em>, intercept) <span class="v-int" id="expCVal">1</span></label>
+        <input type="number" id="expC" min="0" max="5" step="1" value="1">
+      </div>
+    </div>
+
+    <div class="eq-box" id="exploreEq">y = 2x + 1</div>
+
+    <div class="helper" style="margin-bottom:10px;">Try <strong>c = 0</strong> — now the line passes through the origin! Try <strong>m = 1</strong> — the line is less steep.</div>
+  </div>
+
+  <footer class="note">Built for exploring y = mx + c · c is the value of y at x = 0 (the y-intercept) · when c = 0 the line passes through the origin</footer></footer>
+</div>
+
+<script>
+(function(){
+  const svgNS = "http://www.w3.org/2000/svg";
+  const svg = document.getElementById('graphSvg');
+  const originX = 80, originY = 460;
+  const plotW = 520, plotH = 400;
+
+  // ---- STATE ----
+  const MAIN_STEPS = 5;
+  let m = 2, c = 1;
+  let step = 0;
+  let points = [];
+  let prediction = null;
+  let revealed = false;
+  let mode = 'predict';
+
+  // ---- DOM ----
+  const predictY = document.getElementById('predictY');
+  const currentXLabel = document.getElementById('currentXLabel');
+  const xDisplay = document.getElementById('xDisplay');
+  const xVal = document.getElementById('xVal');
+  const yVal = document.getElementById('yVal');
+  const eqDisplay = document.getElementById('eqDisplay');
+  const predictHelper = document.getElementById('predictHelper');
+  const statusBox = document.getElementById('statusBox');
+  const checkBtn = document.getElementById('checkBtn');
+  const resetBtn = document.getElementById('resetBtn');
+  const stepDots = document.getElementById('stepDots');
+  const reflectCard = document.getElementById('reflectCard');
+  const exploreCard = document.getElementById('exploreCard');
+
+  for(let i=1;i<=MAIN_STEPS;i++){
+    const d = document.createElement('div');
+    d.className='step-dot';
+    d.textContent = i;
+    d.id = 'step-'+i;
+    stepDots.appendChild(d);
+  }
+
+  function eqString(slope, intercept){
+    const mPart = slope === 1 ? 'x' : `${slope}x`;
+    const cPart = intercept === 0 ? '' : (intercept > 0 ? ` + ${intercept}` : ` − ${Math.abs(intercept)}`);
+    return `y = ${mPart}${cPart}`;
+  }
+
+  function updateEq(){
+    eqDisplay.textContent = eqString(m, c);
+  }
+
+  function updatePredictHelper(){
+    const currentX = step + 1;
+    currentXLabel.textContent = currentX;
+    xDisplay.textContent = currentX;
+    xVal.textContent = currentX;
+    yVal.textContent = '?';
+    predictHelper.innerHTML = `y = <span class="k">${m}</span> × <span class="k">${currentX}</span> + <span class="k">${c}</span> = ?`;
+  }
+
+  function updateStatus(html, cls){
+    statusBox.innerHTML = html;
+    statusBox.className = 'status' + (cls ? (' '+cls) : '');
+  }
+
+  function getCurrentTarget(){
+    const x = step + 1;
+    return {x, y: m * x + c};
+  }
+
+  function niceMax(v){
+    if(v <= 0) return 10;
+    const mag = Math.pow(10, Math.floor(Math.log10(v)));
+    const norm = v / mag;
+    let n;
+    if(norm <= 1) n = 1; else if(norm <= 2) n = 2; else if(norm <= 4) n = 4; else if(norm <= 5) n = 5; else n = 10;
+    return n * mag;
+  }
+  function niceMin(v){
+    if(v >= 0) return 0;
+    const mag = Math.pow(10, Math.floor(Math.log10(Math.abs(v))));
+    const norm = Math.abs(v) / mag;
+    let n;
+    if(norm <= 1) n = 1; else if(norm <= 2) n = 2; else if(norm <= 4) n = 4; else if(norm <= 5) n = 5; else n = 10;
+    return -(n * mag);
+  }
+
+  function getDataBounds(){
+    const allPts = points.concat([]);
+    if(allPts.length === 0){
+      return {xMin: 0, xMax: 8, yMin: -1, yMax: 12};
+    }
+    const xs = allPts.map(p => p.x);
+    const ys = allPts.map(p => p.y);
+    const expMraw = document.getElementById('expM');
+    const expCraw = document.getElementById('expC');
+    const expM = (expMraw && expMraw.value !== '') ? parseFloat(expMraw.value) : m;
+    const expC = (expCraw && expCraw.value !== '') ? parseFloat(expCraw.value) : c;
+    let maxY = Math.max(...ys, expC, expM * 6 + expC, 5);
+    let minY = Math.min(...ys, expC, 0);
+    const maxX = Math.max(...xs, 6);
+    return {
+      xMin: 0,
+      xMax: Math.max(6, niceMax(maxX * 1.15)),
+      yMin: niceMin(minY - 1),
+      yMax: niceMax(maxY * 1.15 + 1)
+    };
+  }
+
+  function render(){
+    while(svg.firstChild) svg.removeChild(svg.firstChild);
+
+    const bounds = getDataBounds();
+    const xRange = bounds.xMax - bounds.xMin;
+    const yRange = bounds.yMax - bounds.yMin;
+    const xScale = plotW / xRange;
+    const yScale = plotH / yRange;
+    const originDataX = bounds.xMin;
+    const originDataY = bounds.yMin;
+
+    function toSvg(dx, dy){
+      return {
+        x: originX + (dx - originDataX) * xScale,
+        y: originY - (dy - originDataY) * yScale
+      };
+    }
+
+    // grid lines
+    const xStep = niceMax(xRange / 6) || 1;
+    const yStep = niceMax(yRange / 6) || 1;
+
+    for(let v = 0; v <= bounds.xMax; v += xStep){
+      if(v === 0) continue;
+      const p = toSvg(v, 0);
+      if(p.x >= originX && p.x <= originX + plotW){
+        const gl = mkLine(p.x, originY, p.x, originY - plotH, '#E4DCC4', 1);
+        svg.appendChild(gl);
+        const tl = mkText(p.x, originY + 18, '' + Math.round(v), 'tick-label');
+        tl.setAttribute('text-anchor', 'middle');
+        svg.appendChild(tl);
+      }
+    }
+
+    for(let v = 0; v <= bounds.yMax; v += yStep){
+      if(v === 0) continue;
+      const p = toSvg(0, v);
+      if(p.y <= originY && p.y >= originY - plotH){
+        const gl = mkLine(originX, p.y, originX + plotW, p.y, '#E4DCC4', 1);
+        svg.appendChild(gl);
+        const tl = mkText(originX - 10, p.y + 3, '' + Math.round(v), 'tick-label');
+        tl.setAttribute('text-anchor', 'end');
+        svg.appendChild(tl);
+      }
+    }
+
+    // axes
+    svg.appendChild(mkLine(originX, originY, originX + plotW, originY, '#26332B', 1.5));
+    svg.appendChild(mkLine(originX, originY, originX, originY - plotH, '#26332B', 1.5));
+
+    // axis labels
+    const xlab = mkText(originX + plotW/2, originY + 42, 'Month number (x)', 'axis-label');
+    xlab.setAttribute('text-anchor', 'middle');
+    svg.appendChild(xlab);
+    const ylab = mkText(18, originY - plotH/2, 'Coins (y)', 'axis-label');
+    ylab.setAttribute('text-anchor', 'middle');
+    ylab.setAttribute('transform', `rotate(-90 18 ${originY - plotH/2})`);
+    svg.appendChild(ylab);
+
+    // origin marker + label
+    const originSvg = toSvg(0, 0);
+    if(originSvg.x >= originX - 5 && originSvg.x <= originX + plotW + 5 &&
+       originSvg.y >= originY - plotH - 5 && originSvg.y <= originY + 5){
+      const o = document.createElementNS(svgNS, 'circle');
+      o.setAttribute('cx', originSvg.x); o.setAttribute('cy', originSvg.y);
+      o.setAttribute('r', 4);
+      o.setAttribute('fill', '#26332B');
+      svg.appendChild(o);
+      const ol = mkText(originSvg.x + 8, originSvg.y - 8, '(0, 0)', 'tick-label');
+      ol.setAttribute('font-weight', '600');
+      ol.setAttribute('fill', '#26332B');
+      svg.appendChild(ol);
+    }
+
+    // full equation line (drawn from x=0 through revealed region)
+    // in main mode after reveal of a point, show the line; in explore, always show it.
+    const showLine = (mode === 'explore' || (mode === 'done' && points.length === MAIN_STEPS));
+    if(showLine){
+      const lineM = mode === 'explore' ? (parseFloat(document.getElementById('expM').value) || 0) : m;
+      const lineC = mode === 'explore' ? (parseFloat(document.getElementById('expC').value) || 0) : c;
+      const p1 = toSvg(bounds.xMin, lineM * bounds.xMin + lineC);
+      const p2 = toSvg(bounds.xMax, lineM * bounds.xMax + lineC);
+      if(p2.x >= originX && p1.x <= originX + plotW){
+        const clipP1 = Math.max(p1.x, originX);
+        const clipP2 = Math.min(p2.x, originX + plotW);
+        const frac1 = (clipP1 - p1.x) / (p2.x - p1.x);
+        const frac2 = (clipP2 - p1.x) / (p2.x - p1.x);
+        const l = mkLine(
+          clipP1, p1.y + (p2.y - p1.y) * frac1,
+          clipP2, p1.y + (p2.y - p1.y) * frac2,
+          '#B8860B', 2.5
+        );
+        svg.appendChild(l);
+      }
+
+      // highlight y-intercept point (0, c) when c != 0
+      if(lineC !== 0){
+        const ip = toSvg(0, lineC);
+        if(ip.y >= originY - plotH && ip.y <= originY){
+          const ic = document.createElementNS(svgNS, 'circle');
+          ic.setAttribute('cx', ip.x); ic.setAttribute('cy', ip.y);
+          ic.setAttribute('r', 4);
+          ic.setAttribute('fill', '#B8860B');
+          svg.appendChild(ic);
+          const il = mkText(ip.x + 8, ip.y + 4, `(0, ${lineC})`, 'tick-label');
+          il.setAttribute('font-weight', '600');
+          il.setAttribute('fill', '#B8860B');
+          svg.appendChild(il);
+        }
+      }
+    }
+
+    // dashed connecting path through confirmed points (main mode only)
+    if(points.length > 0 && mode !== 'explore'){
+      let d = '';
+      const sortedPts = [...points].sort((a,b) => a.x - b.x);
+      sortedPts.forEach((p, i) => {
+        const sp = toSvg(p.x, p.y);
+        d += (i === 0 ? 'M ' : 'L ') + sp.x + ' ' + sp.y + ' ';
+      });
+      const path = document.createElementNS(svgNS, 'path');
+      path.setAttribute('d', d);
+      path.setAttribute('stroke', '#B8860B');
+      path.setAttribute('stroke-width', '2');
+      path.setAttribute('stroke-dasharray', '5 4');
+      path.setAttribute('fill', 'none');
+      svg.appendChild(path);
+    }
+
+    // confirmed points (main mode)
+    points.forEach((p) => {
+      const sp = toSvg(p.x, p.y);
+      if(sp.x < originX - 10 || sp.x > originX + plotW + 10 ||
+         sp.y < originY - plotH - 10 || sp.y > originY + 10) return;
+      const c = document.createElementNS(svgNS, 'circle');
+      c.setAttribute('cx', sp.x); c.setAttribute('cy', sp.y);
+      c.setAttribute('r', 7);
+      c.setAttribute('fill', '#B5502E');
+      c.setAttribute('stroke', '#FFFDF7'); c.setAttribute('stroke-width', '2');
+      svg.appendChild(c);
+      const lab = mkText(sp.x + 10, sp.y - 8, `W${p.x}: (${p.x}, ${p.y})`, 'tick-label');
+      lab.setAttribute('font-weight', '600');
+      lab.setAttribute('fill', '#B5502E');
+      svg.appendChild(lab);
+    });
+
+    // prediction marker (predict mode, before reveal)
+    if(mode === 'predict' && prediction !== null && !revealed){
+      const target = getCurrentTarget();
+      const sp = toSvg(target.x, prediction);
+      const targetSp = toSvg(target.x, target.y);
+      // dashed vertical guide from guess to actual y
+      if(Math.abs(prediction - target.y) > 0.05){
+        const guide = mkLine(sp.x, sp.y, targetSp.x, targetSp.y, '#7B5EA7', 1.5);
+        guide.setAttribute('stroke-dasharray', '4 3');
+        guide.setAttribute('stroke-opacity', '0.5');
+        svg.appendChild(guide);
+      }
+      const c = document.createElementNS(svgNS, 'circle');
+      c.setAttribute('cx', sp.x); c.setAttribute('cy', sp.y);
+      c.setAttribute('r', 7);
+      c.setAttribute('fill', '#7B5EA7');
+      c.setAttribute('fill-opacity', '0.9');
+      c.setAttribute('stroke', '#FFFDF7'); c.setAttribute('stroke-width', '2');
+      svg.appendChild(c);
+      const lab = mkText(sp.x + 10, sp.y - 10, `you: (${target.x}, ${prediction})`, 'tick-label');
+      lab.setAttribute('fill', '#7B5EA7');
+      lab.setAttribute('font-weight', '600');
+      svg.appendChild(lab);
+    }
+
+    // explore mode points (5 months for current m, c)
+    if(mode === 'explore'){
+      const expMraw = document.getElementById('expM');
+      const expCraw = document.getElementById('expC');
+      const expM = (expMraw && expMraw.value !== '') ? parseFloat(expMraw.value) : m;
+      const expC = (expCraw && expCraw.value !== '') ? parseFloat(expCraw.value) : c;
+      for(let xi = 1; xi <= 5; xi++){
+        const yi = expM * xi + expC;
+        const sp = toSvg(xi, yi);
+        if(sp.x < originX - 10 || sp.x > originX + plotW + 10 ||
+           sp.y < originY - plotH - 10 || sp.y > originY + 10) continue;
+        const c = document.createElementNS(svgNS, 'circle');
+        c.setAttribute('cx', sp.x); c.setAttribute('cy', sp.y);
+        c.setAttribute('r', 6);
+        c.setAttribute('fill', '#1F6F5C');
+        c.setAttribute('fill-opacity', '0.85');
+        c.setAttribute('stroke', '#FFFDF7'); c.setAttribute('stroke-width', '2');
+        svg.appendChild(c);
+        const lab = mkText(sp.x + 8, sp.y - 6, `(${xi},${yi})`, 'tick-label');
+        lab.setAttribute('font-weight', '600');
+        lab.setAttribute('fill', '#1F6F5C');
+        svg.appendChild(lab);
+      }
+    }
+  }
+
+  function mkLine(x1, y1, x2, y2, stroke, w){
+    const l = document.createElementNS(svgNS, 'line');
+    l.setAttribute('x1', x1); l.setAttribute('y1', y1);
+    l.setAttribute('x2', x2); l.setAttribute('y2', y2);
+    l.setAttribute('stroke', stroke); l.setAttribute('stroke-width', w);
+    return l;
+  }
+  function mkText(x, y, text, cls){
+    const t = document.createElementNS(svgNS, 'text');
+    t.setAttribute('x', x); t.setAttribute('y', y);
+    t.setAttribute('class', cls);
+    t.textContent = text;
+    return t;
+  }
+
+  // ---- MAIN LOGIC ----
+  function checkPrediction(){
+    if(mode === 'done') return;
+    if(revealed){
+      // advance to next month
+      step++;
+      revealed = false;
+      prediction = null;
+      predictY.value = '';
+      checkBtn.textContent = 'Predict & Reveal';
+      if(step >= MAIN_STEPS){
+        mode = 'done';
+        checkBtn.textContent = 'Finish';
+        checkBtn.disabled = true;
+        updateStatus('All 5 months are done — scroll down to reflect on what you found!', 'feedback-good');
+        render();
+        setTimeout(()=>{
+          reflectCard.classList.remove('hidden');
+          reflectCard.scrollIntoView({behavior:'smooth', block:'nearest'});
+        }, 500);
+        return;
+      }
+      updatePredictHelper();
+      const nextX = step + 1;
+      updateStatus(`Month ${nextX}: type your predicted total coins y, then press Predict.`);
+      render();
+      return;
+    }
+
+    // predict mode
+    const py = parseFloat(predictY.value);
+    if(isNaN(py)){
+      updateStatus('Enter a number for your prediction first.');
+      return;
+    }
+    prediction = py;
+    const target = getCurrentTarget();
+    const diff = Math.abs(py - target.y);
+
+    revealed = true;
+    points.push({x: target.x, y: target.y});
+
+    const dot = document.getElementById('step-' + (step + 1));
+    if(dot) dot.classList.add('done', 'active');
+    if(step > 0){
+      const prev = document.getElementById('step-' + step);
+      if(prev) prev.classList.remove('active');
+    }
+
+    yVal.textContent = py;
+
+    let msg, cls;
+    if(diff < 0.05){
+      msg = `Exactly right! Month ${target.x}: Vikramaditya has ${target.y} coins (= 2 × ${target.x} + 1).`;
+      cls = 'feedback-good';
+    } else {
+      const dir = py > target.y ? 'high' : 'low';
+      msg = `Not quite. You guessed <strong>${py}</strong> (${Math.round(diff)} ${dir}). The actual total is <strong>${target.y}</strong> coins. Remember: y = 2 × ${target.x} + 1 = ${target.y}.`;
+      cls = 'feedback-mid';
+    }
+
+    if(step + 1 >= MAIN_STEPS){
+      checkBtn.textContent = 'See the line';
+      mode = 'done';
+    } else {
+      checkBtn.textContent = 'Next month';
+    }
+
+    updateStatus(msg, cls);
+    render();
+  }
+
+  checkBtn.addEventListener('click', checkPrediction);
+
+  predictY.addEventListener('input', () => {
+    const raw = predictY.value;
+    if(raw === '' || raw === '-'){
+      prediction = null;
+      yVal.textContent = '?';
+      render();
+      return;
+    }
+    const py = parseFloat(raw);
+    if(isNaN(py)){
+      prediction = null;
+      yVal.textContent = '?';
+      render();
+      return;
+    }
+    prediction = py;
+    yVal.textContent = py;
+    if(mode === 'predict') render();
+  });
+
+  predictY.addEventListener('keydown', (e) => {
+    if(e.key === 'Enter') checkPrediction();
+  });
+
+  function resetGame(){
+    step = 0;
+    points = [];
+    prediction = null;
+    revealed = false;
+    mode = 'predict';
+    m = 2; c = 1;
+    predictY.value = '';
+    predictY.disabled = false;
+    checkBtn.disabled = false;
+    checkBtn.textContent = 'Predict & Reveal';
+    document.querySelectorAll('.step-dot').forEach(d => d.classList.remove('done', 'active'));
+    reflectCard.classList.add('hidden');
+    exploreCard.classList.add('hidden');
+    document.getElementById('expM').value = 2;
+    document.getElementById('expC').value = 1;
+    document.getElementById('expMVal').textContent = 2;
+    document.getElementById('expCVal').textContent = 1;
+    updateEq();
+    updatePredictHelper();
+    updateStatus('Month 1: type your predicted total coins y and press Predict.');
+    render();
+  }
+
+  resetBtn.addEventListener('click', resetGame);
+
+  // ---- QUIZ ----
+  document.querySelectorAll('.q .options').forEach(group => {
+    group.querySelectorAll('.opt').forEach(btn => {
+      btn.addEventListener('click', ()=>{
+        const correct = btn.dataset.correct === 'true';
+        group.querySelectorAll('.opt').forEach(b => {
+          b.disabled = true;
+          if(b.dataset.correct === 'true') b.classList.add('correct');
+        });
+        if(!correct) btn.classList.add('wrong');
+        if(group.parentElement.id === 'q3' && correct){
+          setTimeout(()=>{
+            exploreCard.classList.remove('hidden');
+            exploreCard.scrollIntoView({behavior:'smooth', block:'nearest'});
+            rebuildExplore();
+          }, 400);
+        }
+      });
+    });
+  });
+
+  // ---- EXPLORE MODE ----
+  const expM = document.getElementById('expM');
+  const expC = document.getElementById('expC');
+  const expMVal = document.getElementById('expMVal');
+  const expCVal = document.getElementById('expCVal');
+  const exploreEq = document.getElementById('exploreEq');
+
+  function rebuildExplore(){
+    mode = 'explore';
+    const em = parseFloat(expM.value);
+    const ec = parseFloat(expC.value);
+    expMVal.textContent = isNaN(em) ? 2 : em;
+    expCVal.textContent = isNaN(ec) ? 1 : ec;
+    exploreEq.textContent = eqString(isNaN(em) ? 2 : em, isNaN(ec) ? 1 : ec);
+    render();
+  }
+
+  expM.addEventListener('input', rebuildExplore);
+  expC.addEventListener('input', rebuildExplore);
+
+  // init
+  updateEq();
+  updatePredictHelper();
+  render();
+})();
+</script>
+</body>
+</html>
