@@ -156,9 +156,19 @@ async function main() {
 
   for (const inst of instructors) {
     const moduleIds = (await prisma.module.findMany({ where: { courseId: course.id } })).map((m) => m.id);
+    const user = await prisma.user.upsert({
+      where: { email: inst.email },
+      create: {
+        email: inst.email,
+        name: inst.name,
+        role: inst.role,
+      },
+      update: { role: inst.role },
+    });
     await prisma.instructor.upsert({
       where: { email: inst.email },
       create: {
+        userId: user.id,
         name: inst.name,
         email: inst.email,
         staffRole: inst.staffRole,
@@ -168,6 +178,7 @@ async function main() {
         active: true,
       },
       update: {
+        userId: user.id,
         permissions: PRESETS[inst.preset] ?? {},
       },
     });
@@ -221,6 +232,20 @@ async function main() {
     update: {},
   });
   console.log('✓ Cohort: IIT Ropar 2026 BTech');
+
+  // 7. Admin + demo student accounts (so email sign-in works on a fresh DB)
+  const accounts = [
+    { email: 'admin@iitrpr.ac.in', name: 'admin', role: 'ADMIN' as const },
+    { email: 'mudit@iitrpr.ac.in', name: 'mudit', role: 'STUDENT' as const },
+  ];
+  for (const acc of accounts) {
+    await prisma.user.upsert({
+      where: { email: acc.email },
+      create: { email: acc.email, name: acc.name, role: acc.role },
+      update: {},
+    });
+  }
+  console.log(`✓ Accounts: ${accounts.map((a) => a.email).join(', ')}`);
 
   console.log('\n✅ Seed complete.');
 }
