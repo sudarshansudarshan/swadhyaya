@@ -41,8 +41,8 @@ export function parseConceptualMd(filePath: string, moduleId: number): ParsedTop
     const endIdx = i + 1 < subHeadings.length ? subHeadings[i + 1].index! : content.length;
     const section = content.slice(startIdx, endIdx);
 
-    const vocabMatch = section.match(/Vocabulary allowed:\s*(.+?)\n/s);
-    const forbMatch = section.match(/Vocabulary forbidden:\s*(.+?)(?:\n|$)/s);
+    const vocabMatch = section.match(/Vocabulary allowed:\s*(.+?)\n/);
+    const forbMatch = section.match(/Vocabulary forbidden:\s*(.+?)(?:\n|$)/);
     const vocabulary = {
       allowed: vocabMatch ? parseList(vocabMatch[1]) : [],
       forbidden: forbMatch ? parseList(forbMatch[1]) : [],

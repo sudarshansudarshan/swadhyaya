@@ -161,7 +161,6 @@ async function main() {
       create: {
         name: inst.name,
         email: inst.email,
-        role: staffRolePermission(inst.role),
         staffRole: inst.staffRole,
         preset: inst.preset,
         permissions: PRESETS[inst.preset] ?? {},
@@ -177,7 +176,7 @@ async function main() {
 
   for (const moduleRecord of await prisma.module.findMany({ where: { courseId: course.id } })) {
     const instructor = await prisma.instructor.findFirst({
-      where: { role: 'LEAD_INSTRUCTOR' },
+      where: { staffRole: 'LEAD_INSTRUCTOR' },
     });
     if (!instructor) continue;
 
