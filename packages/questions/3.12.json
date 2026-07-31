@@ -1,0 +1,546 @@
+{
+  "id": "3.12",
+  "moduleId": 3,
+  "number": 12,
+  "title": "B takes line 2y + x = 4 to where?",
+  "vocabulary": {
+    "allowed": [
+      "image",
+      "line",
+      "transform",
+      "linear",
+      "map",
+      "matrix.",
+      "Vocabulary",
+      "forbidden:",
+      "eigenvalue",
+      "(later)."
+    ],
+    "forbidden": [
+      "eigenvalue",
+      "(later)."
+    ]
+  },
+  "questions": [
+    {
+      "id": "3.12.q1",
+      "topicId": "3.12",
+      "prompt": "What is the *image* of a line under a linear map?",
+      "options": [
+        {
+          "text": "Often a line",
+          "correct": true
+        },
+        {
+          "text": "Always a plane",
+          "correct": false
+        },
+        {
+          "text": "Random shape",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: A linear map (matrix) takes lines to lines (generically). Step 2: Special cases: collapses to a point or whole plane. Step 3: The trap \"plane\" describes 2D inputs. Step 4: Used in *linear transformations*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.12.q2",
+      "topicId": "3.12",
+      "prompt": "Why does B send the line 2y + x = 4 to another line?",
+      "options": [
+        {
+          "text": "Linear maps",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Curves only",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Linear maps preserve \"linearity\" — straight lines go to straight lines. Step 2: The image is a line. Step 3: The trap \"curves\" describes nonlinear maps. Step 4: Used in *computer graphics*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.12.q3",
+      "topicId": "3.12",
+      "prompt": "What does the line 2y + x = 4 look like?",
+      "options": [
+        {
+          "text": "A line",
+          "correct": true
+        },
+        {
+          "text": "A circle",
+          "correct": false
+        },
+        {
+          "text": "A plane",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: 2y + x = 4 is a linear equation. Step 2: So it's a line in 2D. Step 3: Not through origin (4 ≠ 0). Step 4: Used in *coordinate geometry*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.12.q4",
+      "topicId": "3.12",
+      "prompt": "Why is the image line *different from* the original?",
+      "options": [
+        {
+          "text": "Matrix change",
+          "correct": true
+        },
+        {
+          "text": "Same line",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Matrix B transforms the line — generally to a different line. Step 2: Position, direction, scale — all can change. Step 3: Used in *transformations*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.12.q5",
+      "topicId": "3.12",
+      "prompt": "What if B *collapses* the line to a single point?",
+      "options": [
+        {
+          "text": "Singular here",
+          "correct": true
+        },
+        {
+          "text": "Always line",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: If B is singular (det = 0), it can collapse dimensions. Step 2: A line can collapse to a single point. Step 3: This happens when line is in kernel. Step 4: Used in *singular maps*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.12.q6",
+      "topicId": "3.12",
+      "prompt": "Why does a *linear* map preserve straight lines?",
+      "options": [
+        {
+          "text": "Linear combo",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Curves only",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Linear maps preserve linear combinations. Step 2: Points on a line are linear combinations. Step 3: So images of those points are also linear combinations. Step 4: This \"preserves lines\" is the key property.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.12.q7",
+      "topicId": "3.12",
+      "prompt": "What does it *mean* for the image of a line to be a *line*?",
+      "options": [
+        {
+          "text": "B is injective",
+          "correct": true
+        },
+        {
+          "text": "Always here",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: If B is injective on the line, the image is the full line. Step 2: Injectivity preserves dimension. Step 3: If not injective on the line, image collapses. Step 4: Used in *transformations*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.12.q8",
+      "topicId": "3.12",
+      "prompt": "When is the image of a line a *point*?",
+      "options": [
+        {
+          "text": "Line in kernel",
+          "correct": true
+        },
+        {
+          "text": "Always point",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: If the entire line is in the kernel of B, B maps it to origin. Step 2: So the image is a single point (origin). Step 3: This is *collapse*. Step 4: Used in *singular transformations*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.12.q9",
+      "topicId": "3.12",
+      "prompt": "Can a linear map send a line to a *plane*?",
+      "options": [
+        {
+          "text": "No, dim match",
+          "correct": true
+        },
+        {
+          "text": "Yes, possible",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: A line is 1D, a plane is 2D. Step 2: Linear maps can only *decrease* dimension (collapse), not increase. Step 3: So 1D → 2D is impossible for linear maps. Step 4: This \"dimension can only shrink\" is the rule.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.12.q10",
+      "topicId": "3.12",
+      "prompt": "Why does the image line *pass through origin*?",
+      "options": [
+        {
+          "text": "Linear maps",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Not through orig",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Linear maps send origin to origin. Step 2: So origin is in the image. Step 3: Hence the image line passes through origin. Step 4: Used in *linear transformations*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.12.q11",
+      "topicId": "3.12",
+      "prompt": "What is the *direction* of the image line?",
+      "options": [
+        {
+          "text": "B applied to dir",
+          "correct": true
+        },
+        {
+          "text": "Original only",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: The direction of the image line = B · (direction of original). Step 2: Linear maps transform directions via the matrix. Step 3: Used in *direction transformations*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.12.q12",
+      "topicId": "3.12",
+      "prompt": "Why is the image of 2y + x = 4 *not through origin*?",
+      "options": [
+        {
+          "text": "Original not through orig",
+          "correct": true
+        },
+        {
+          "text": "Linear maps origin",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: The original line 2y + x = 4 doesn't pass through origin. Step 2: Linear maps preserve \"direction\" but shift positions. Step 3: So image also doesn't pass through origin (typically). Step 4: This \"linear = direction preserving\" is the rule.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.12.q13",
+      "topicId": "3.12",
+      "prompt": "How is the image of a line *parametrised*?",
+      "options": [
+        {
+          "text": "B · (t · v₀ + p₀)",
+          "correct": true
+        },
+        {
+          "text": "Random form",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Always same",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Original line parametrised as t · v₀ + p₀ (direction v₀, point p₀). Step 2: Apply B: B · (t · v₀ + p₀) = t · (B · v₀) + B · p₀. Step 3: Image line has direction B · v₀ and passes through B · p₀. Step 4: Used in *image parametrisation*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.12.q14",
+      "topicId": "3.12",
+      "prompt": "What is the image line *direction* for line 2y + x = 4 under B?",
+      "options": [
+        {
+          "text": "B · (1, 2)",
+          "correct": true
+        },
+        {
+          "text": "(1, 2)",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Direction of 2y + x = 4 is (1, 2) (since slope is −1/2). Step 2: Apply B: image direction is B · (1, 2). Step 3: This is the matrix-times-vector product. Step 4: Used in *direction transformations*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.12.q15",
+      "topicId": "3.12",
+      "prompt": "How do you find a *point* on the image line?",
+      "options": [
+        {
+          "text": "Apply B to point",
+          "correct": true
+        },
+        {
+          "text": "Random point",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Always origin",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Pick any point on original line (e.g., (4, 0)). Step 2: Apply B to get a point on image line. Step 3: This is the standard procedure. Step 4: Used in *image construction*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.12.q16",
+      "topicId": "3.12",
+      "prompt": "What does B · (4, 0) give for the line 2y + x = 4?",
+      "options": [
+        {
+          "text": "Point on image",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Always zero",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: (4, 0) satisfies 2·0 + 4 = 4. ✓ So (4, 0) is on the line. Step 2: Apply B: get a point on the image. Step 3: Used in *image construction*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.12.q17",
+      "topicId": "3.12",
+      "prompt": "What is the image line *parametrisation*?",
+      "options": [
+        {
+          "text": "t · (B·v₀) + (B·p₀)",
+          "correct": true
+        },
+        {
+          "text": "Random form",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Just origin",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Original line: p(t) = t · v₀ + p₀. Step 2: Apply B: image line is B · p(t) = t · (B · v₀) + B · p₀. Step 3: Standard formula. Step 4: Used in *image parametrisation*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.12.q18",
+      "topicId": "3.12",
+      "prompt": "What if B were the *zero matrix* — what would be the image of any line?",
+      "options": [
+        {
+          "text": "Just origin",
+          "correct": true
+        },
+        {
+          "text": "Same line",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Zero matrix sends everything to origin. Step 2: So image of any line is the single point origin. Step 3: This is the most extreme collapse. Step 4: Used in *singular transformations*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.12.q19",
+      "topicId": "3.12",
+      "prompt": "Why can a linear map send a line to a *whole plane*?",
+      "options": [
+        {
+          "text": "It can't",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Sometimes can",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: A line is 1D, image must be ≤ 1D (linear maps don't increase dimension). Step 2: So image can be a line or a point — not a plane. Step 3: This \"image dim ≤ input dim\" is the rule.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.12.q20",
+      "topicId": "3.12",
+      "prompt": "What if B = identity — what would the image of 2y + x = 4 be?",
+      "options": [
+        {
+          "text": "Same line",
+          "correct": true
+        },
+        {
+          "text": "Different line",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Identity matrix sends each point to itself. Step 2: So image of any line is the line itself. Step 3: This is the \"no change\" transformation. Step 4: Used in *identity transformations*.\n\n---",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    }
+  ]
+}

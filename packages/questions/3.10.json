@@ -1,0 +1,550 @@
+{
+  "id": "3.10",
+  "moduleId": 3,
+  "number": 10,
+  "title": "Row space, Column space, Null space of A",
+  "vocabulary": {
+    "allowed": [
+      "row",
+      "space",
+      "column",
+      "space",
+      "null",
+      "space",
+      "dimension",
+      "fundamental.",
+      "Vocabulary",
+      "forbidden:",
+      "transpose",
+      "detail",
+      "(Q3.11)."
+    ],
+    "forbidden": [
+      "transpose",
+      "detail",
+      "(Q3.11)."
+    ]
+  },
+  "questions": [
+    {
+      "id": "3.10.q1",
+      "topicId": "3.10",
+      "prompt": "What are the *three fundamental subspaces* of A?",
+      "options": [
+        {
+          "text": "Row, Col, Null",
+          "correct": true
+        },
+        {
+          "text": "Random three",
+          "correct": false
+        },
+        {
+          "text": "Two only",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: For any matrix A: row space, column space, null space. Step 2: These are the three *fundamental subspaces*. Step 3: Introduced by Gilbert Strang. Step 4: Used throughout linear algebra. Step 5: We will study all three.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.10.q2",
+      "topicId": "3.10",
+      "prompt": "What is the *row space* of A?",
+      "options": [
+        {
+          "text": "Span of rows",
+          "correct": true
+        },
+        {
+          "text": "Span of columns",
+          "correct": false
+        },
+        {
+          "text": "Random span",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Row space = span of rows of A. Step 2: Subspace of ℝⁿ. Step 3: This is the space of \"linear combinations of rows\". Step 4: Used in Q3.11.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.10.q3",
+      "topicId": "3.10",
+      "prompt": "What is the *column space* of A?",
+      "options": [
+        {
+          "text": "Span of cols",
+          "correct": true
+        },
+        {
+          "text": "Span of rows",
+          "correct": false
+        },
+        {
+          "text": "Random span",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Column space = span of columns of A. Step 2: Subspace of ℝᵐ. Step 3: Also called the *image* or *range* of A. Step 4: Used in Q3.14.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.10.q4",
+      "topicId": "3.10",
+      "prompt": "What is the *null space* of A?",
+      "options": [
+        {
+          "text": "All x with Ax=0",
+          "correct": true
+        },
+        {
+          "text": "Random set",
+          "correct": false
+        },
+        {
+          "text": "Always origin",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Null space = {x : A · x = 0}. Step 2: Subspace of ℝⁿ. Step 3: Also called *kernel*. Step 4: Used in Q1.16.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.10.q5",
+      "topicId": "3.10",
+      "prompt": "Why are *all three* subspaces important?",
+      "options": [
+        {
+          "text": "Describe A",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Only one matters",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: The three subspaces together describe A completely. Step 2: Rank, nullity, solvability — all encoded. Step 3: This is the *Strang trilogy*. Step 4: Used throughout linear algebra.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.10.q6",
+      "topicId": "3.10",
+      "prompt": "What is the *dimension* of row space?",
+      "options": [
+        {
+          "text": "Rank of A",
+          "correct": true
+        },
+        {
+          "text": "Nullity only",
+          "correct": false
+        },
+        {
+          "text": "Random number",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: dim(row space) = rank(A). Step 2: This is the definition of rank. Step 3: Number of independent rows. Step 4: Used in Mission 16.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.10.q7",
+      "topicId": "3.10",
+      "prompt": "What is the *dimension* of column space?",
+      "options": [
+        {
+          "text": "Rank of A",
+          "correct": true
+        },
+        {
+          "text": "Nullity only",
+          "correct": false
+        },
+        {
+          "text": "Random number",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: dim(column space) = rank(A). Step 2: Same as row space dim. Step 3: This is the *rank theorem*. Step 4: Used in Mission 16.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.10.q8",
+      "topicId": "3.10",
+      "prompt": "What is the *dimension* of null space?",
+      "options": [
+        {
+          "text": "Nullity of A",
+          "correct": true
+        },
+        {
+          "text": "Rank only",
+          "correct": false
+        },
+        {
+          "text": "Random number",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: dim(null space) = nullity(A) = n − rank(A). Step 2: This is the *rank-nullity theorem*. Step 3: Used in Mission 16.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.10.q9",
+      "topicId": "3.10",
+      "prompt": "What is *rank + nullity*?",
+      "options": [
+        {
+          "text": "Equal to n",
+          "correct": true
+        },
+        {
+          "text": "Random sum",
+          "correct": false
+        },
+        {
+          "text": "Always zero",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: rank + nullity = n (number of columns). Step 2: This is the *rank-nullity theorem*. Step 3: For A m×n. Step 4: Used throughout linear algebra.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.10.q10",
+      "topicId": "3.10",
+      "prompt": "For A = [[1, 2, 3], [4, 5, 6]], what is rank?",
+      "options": [
+        {
+          "text": "Just two",
+          "correct": true
+        },
+        {
+          "text": "Three only",
+          "correct": false
+        },
+        {
+          "text": "One only",
+          "correct": false
+        },
+        {
+          "text": "Zero only",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Two rows, neither is multiple of the other. Step 2: Independent. Step 3: rank = 2. Step 4: For a 2×3 matrix. Step 5: Used in rank computation.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.10.q11",
+      "topicId": "3.10",
+      "prompt": "For A = [[1, 2, 3], [4, 5, 6]], what is nullity?",
+      "options": [
+        {
+          "text": "Just one",
+          "correct": true
+        },
+        {
+          "text": "Two only",
+          "correct": false
+        },
+        {
+          "text": "Three only",
+          "correct": false
+        },
+        {
+          "text": "Zero only",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: n = 3, rank = 2. Step 2: nullity = 3 − 2 = 1. Step 3: So kernel is 1D. Step 4: Used in rank-nullity.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.10.q12",
+      "topicId": "3.10",
+      "prompt": "Why is row space *orthogonal* to null space?",
+      "options": [
+        {
+          "text": "FTLA theorem",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Same space",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: For any matrix A, row space ⊥ null space. Step 2: This is the *Fundamental Theorem of Linear Algebra*. Step 3: Discovered by Gilbert Strang. Step 4: Used in Q3.11.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.10.q13",
+      "topicId": "3.10",
+      "prompt": "What is the *dimension* of row space + null space?",
+      "options": [
+        {
+          "text": "Equal to n",
+          "correct": true
+        },
+        {
+          "text": "Random sum",
+          "correct": false
+        },
+        {
+          "text": "Always zero",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: dim(row space) + dim(null space) = rank + nullity = n. Step 2: This is the *dimension theorem*. Step 3: Used in *rank-nullity*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.10.q14",
+      "topicId": "3.10",
+      "prompt": "Are row space and column space *the same set*?",
+      "options": [
+        {
+          "text": "No, different",
+          "correct": true
+        },
+        {
+          "text": "Yes, same",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Row space and column space have the same *dimension* (rank). Step 2: But they live in different ambient spaces. Step 3: Different subspaces. Step 4: Used in *subspace theory*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.10.q15",
+      "topicId": "3.10",
+      "prompt": "What is the *rank* of A = identity matrix I (n×n)?",
+      "options": [
+        {
+          "text": "Equal to n",
+          "correct": true
+        },
+        {
+          "text": "Less than n",
+          "correct": false
+        },
+        {
+          "text": "Zero only",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: I has n independent rows (and columns). Step 2: rank(I) = n. Step 3: Full rank. Step 4: Used in *identity matrix* properties.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.10.q16",
+      "topicId": "3.10",
+      "prompt": "What is the *nullity* of I?",
+      "options": [
+        {
+          "text": "Just zero",
+          "correct": true
+        },
+        {
+          "text": "One only",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: I · x = x. So I · x = 0 only if x = 0. Step 2: Nullity = 0. Step 3: Kernel is just origin. Step 4: Used in *invertibility*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.10.q17",
+      "topicId": "3.10",
+      "prompt": "Why does *rank + nullity = n* for any A?",
+      "options": [
+        {
+          "text": "Always holds",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Never holds",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: This is a *theorem* — always true. Step 2: For any matrix A. Step 3: Proved in any linear algebra course. Step 4: Used in *matrix theory*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.10.q18",
+      "topicId": "3.10",
+      "prompt": "What if A had *more columns than rows* — what would rank + nullity be?",
+      "options": [
+        {
+          "text": "Equal to cols",
+          "correct": true
+        },
+        {
+          "text": "Equal to rows",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: rank + nullity = number of columns (n), not rows. Step 2: For wide matrices, n > m, so nullity > 0 typically. Step 3: Used in *wide matrices*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.10.q19",
+      "topicId": "3.10",
+      "prompt": "Why is *rank ≤ min(m, n)* always?",
+      "options": [
+        {
+          "text": "Bounded",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "No bound",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: rank ≤ min(m, n) — cannot exceed either dimension. Step 2: This is the *rank inequality*. Step 3: For m×n matrix. Step 4: Used in *matrix theory*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.10.q20",
+      "topicId": "3.10",
+      "prompt": "What if all three subspaces were *just origin* — what does that mean for A?",
+      "options": [
+        {
+          "text": "Zero matrix",
+          "correct": true
+        },
+        {
+          "text": "Identity mat",
+          "correct": false
+        },
+        {
+          "text": "Random mat",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: All subspaces trivial → A = 0 matrix. Step 2: Row, column, null space all = {0}. Step 3: The zero matrix. Step 4: Used in *extreme cases*.\n\n---",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    }
+  ]
+}

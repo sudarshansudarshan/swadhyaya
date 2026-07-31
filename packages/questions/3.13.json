@@ -1,0 +1,547 @@
+{
+  "id": "3.13",
+  "moduleId": 3,
+  "number": 13,
+  "title": "B takes 2y + x = k to where?",
+  "vocabulary": {
+    "allowed": [
+      "family",
+      "of",
+      "lines",
+      "parameter",
+      "parallel",
+      "lines",
+      "generalise.",
+      "Vocabulary",
+      "forbidden:",
+      "kernel",
+      "details."
+    ],
+    "forbidden": [
+      "kernel",
+      "details."
+    ]
+  },
+  "questions": [
+    {
+      "id": "3.13.q1",
+      "topicId": "3.13",
+      "prompt": "What does the *family* 2y + x = k represent?",
+      "options": [
+        {
+          "text": "All parallel lines",
+          "correct": true
+        },
+        {
+          "text": "Just one line",
+          "correct": false
+        },
+        {
+          "text": "Random lines",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: For different k, the equation defines different parallel lines (same normal direction (1, 1)). Step 2: All lines have slope −1/2. Step 3: A *family* of parallel lines. Step 4: Used in *level sets*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.13.q2",
+      "topicId": "3.13",
+      "prompt": "Why do all lines 2y + x = k have the same *direction*?",
+      "options": [
+        {
+          "text": "Same normal",
+          "correct": true
+        },
+        {
+          "text": "Random normal",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Same value",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: All lines have normal (1, 1) (the coefficients of x and y). Step 2: So all perpendicular to (1, 1), meaning same direction (parallel). Step 3: Used in *parallel families*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.13.q3",
+      "topicId": "3.13",
+      "prompt": "Why does k control *position* but not direction?",
+      "options": [
+        {
+          "text": "k is constant",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Always both",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: k is the constant term — affects only the intercept. Step 2: Direction comes from coefficients (1, 1), unaffected. Step 3: So k controls position. Step 4: Used in *parameter interpretation*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.13.q4",
+      "topicId": "3.13",
+      "prompt": "How does B *transform* the family 2y + x = k?",
+      "options": [
+        {
+          "text": "Family of lines",
+          "correct": true
+        },
+        {
+          "text": "One line only",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: B sends each line 2y + x = k to some image line. Step 2: For different k, different image lines. Step 3: So B transforms a family to another family. Step 4: Used in *family transformations*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.13.q5",
+      "topicId": "3.13",
+      "prompt": "Why is the image family *parallel* (if B is invertible)?",
+      "options": [
+        {
+          "text": "Linear preserve",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Not parallel",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Linear maps preserve parallelism (parallel lines go to parallel lines). Step 2: If B is invertible, the image family is parallel. Step 3: Used in *parallelism preservation*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.13.q6",
+      "topicId": "3.13",
+      "prompt": "What if k = 0 — what line is that?",
+      "options": [
+        {
+          "text": "Through origin",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Not through",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: 2y + x = 0 is the homogeneous equation. Step 2: Passes through origin. Step 3: This is the special \"through origin\" line. Step 4: Used in *homogeneous subspaces*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.13.q7",
+      "topicId": "3.13",
+      "prompt": "What if k ≠ 0 — what kind of line is it?",
+      "options": [
+        {
+          "text": "Not through orig",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Always through",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: 2y + x = k with k ≠ 0 doesn't satisfy (0, 0). Step 2: Doesn't pass through origin. Step 3: This is *affine*, not *linear*. Step 4: Used in *affine geometry*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.13.q8",
+      "topicId": "3.13",
+      "prompt": "How does k *parametrise* the family?",
+      "options": [
+        {
+          "text": "One line per k",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Always same",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: For each k value, one specific line. Step 2: So k is a parameter indexing the family. Step 3: Used in *family parametrisation*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.13.q9",
+      "topicId": "3.13",
+      "prompt": "Is the family 2y + x = k a *linear* family?",
+      "options": [
+        {
+          "text": "Yes, parallel",
+          "correct": true
+        },
+        {
+          "text": "No, parallel",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: All lines are parallel (same slope). Step 2: They differ by translation. Step 3: This is a *linear family* in the sense of \"all parallel\". Step 4: Used in *parallel families*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.13.q10",
+      "topicId": "3.13",
+      "prompt": "What if the family were 2y + x² = k — would it still be linear family?",
+      "options": [
+        {
+          "text": "No, nonlinear",
+          "correct": true
+        },
+        {
+          "text": "Yes, still linear",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: x² is a squared term. Step 2: 2y + x² = k is nonlinear. Step 3: Not a linear family. Step 4: Used in *nonlinear functions*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.13.q11",
+      "topicId": "3.13",
+      "prompt": "What is the *envelope* of the family 2y + x = k?",
+      "options": [
+        {
+          "text": "No envelope",
+          "correct": true
+        },
+        {
+          "text": "Some curve",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Parallel families have no envelope (they don't intersect). Step 2: The family covers the plane uniformly. Step 3: Used in *envelope theory* (none here).",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.13.q12",
+      "topicId": "3.13",
+      "prompt": "Why are all lines 2y + x = k *non",
+      "options": [
+        {
+          "text": "Parallel here",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Intersect one",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Same direction → parallel. Step 2: Parallel lines don't intersect (in Euclidean plane). Step 3: Used in *parallel geometry*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.13.q13",
+      "topicId": "3.13",
+      "prompt": "What if k took only *integer values* — what subset of family?",
+      "options": [
+        {
+          "text": "Subfamily",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Same family",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Integer k gives a countable subset of lines. Step 2: A *subfamily* of the full continuous family. Step 3: Used in *discrete families*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.13.q14",
+      "topicId": "3.13",
+      "prompt": "How can the family 2y + x = k be *written in vector form*?",
+      "options": [
+        {
+          "text": "α(2, −1) + (k, 0)",
+          "correct": true
+        },
+        {
+          "text": "Random form",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Always zero",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Parametrise the line as (k, 0) + α(2, −1) (where (k, 0) is a particular point, (2, −1) is direction). Step 2: This is the vector form. Step 3: Used in *vector parametrisation*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.13.q15",
+      "topicId": "3.13",
+      "prompt": "Does the family 2y + x = k *cover* the whole plane?",
+      "options": [
+        {
+          "text": "Yes, all points",
+          "correct": true
+        },
+        {
+          "text": "No, only some",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: For any (x, y), k = 2y + x. Step 2: So every point lies on exactly one line of the family. Step 3: Used in *foliations* (the family partitions the plane).",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.13.q16",
+      "topicId": "3.13",
+      "prompt": "What is the *distance* between consecutive lines (k and k+1)?",
+      "options": [
+        {
+          "text": "Constant gap",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Varies",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: For parallel lines 2y + x = k and 2y + x = k + 1, distance = |1| / √(1² + 2²) = 1/√5. Step 2: Constant gap. Step 3: Used in *parallel line geometry*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.13.q17",
+      "topicId": "3.13",
+      "prompt": "What does B do to *spaced parallel lines*?",
+      "options": [
+        {
+          "text": "Maps to lines",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Stays same",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: B (linear) maps each line to some line. Step 2: The image is another set of lines. Step 3: Spacing might change (depending on B). Step 4: Used in *image of family*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.13.q18",
+      "topicId": "3.13",
+      "prompt": "What if B were singular — could lines collapse to a point?",
+      "options": [
+        {
+          "text": "Yes possible",
+          "correct": true
+        },
+        {
+          "text": "No, never",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Singular B can collapse dimensions. Step 2: A whole line could map to a single point. Step 3: Used in *singular transformations*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.13.q19",
+      "topicId": "3.13",
+      "prompt": "What if B sends the family 2y + x = k to the *same line* — what would that mean?",
+      "options": [
+        {
+          "text": "Singular B",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Always same",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: If all lines map to the same line, B has collapsed everything. Step 2: B must be singular (not injective). Step 3: Used in *singular maps*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.13.q20",
+      "topicId": "3.13",
+      "prompt": "What if we changed 2y + x = k to 3y + 2x = k — would the family be parallel to the original?",
+      "options": [
+        {
+          "text": "No, different",
+          "correct": true
+        },
+        {
+          "text": "Yes, parallel",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Normal (2, 3) vs original (1, 1). Different directions. Step 2: Different families (different slopes). Step 3: Used in *family comparison*.\n\n---",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    }
+  ]
+}

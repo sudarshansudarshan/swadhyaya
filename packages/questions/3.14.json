@@ -1,0 +1,550 @@
+{
+  "id": "3.14",
+  "moduleId": 3,
+  "number": 14,
+  "title": "Range of B = [[1, 2], [2, 4]]",
+  "vocabulary": {
+    "allowed": [
+      "range",
+      "image",
+      "column",
+      "space",
+      "[[1",
+      "2]",
+      "[2",
+      "4]].",
+      "Vocabulary",
+      "forbidden:",
+      "kernel",
+      "(separate",
+      "topic)."
+    ],
+    "forbidden": [
+      "kernel",
+      "(separate",
+      "topic)."
+    ]
+  },
+  "questions": [
+    {
+      "id": "3.14.q1",
+      "topicId": "3.14",
+      "prompt": "What is the *range* of a matrix B?",
+      "options": [
+        {
+          "text": "Set of outputs",
+          "correct": true
+        },
+        {
+          "text": "Set of inputs",
+          "correct": false
+        },
+        {
+          "text": "Random set",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Range(B) = {B · x : x ∈ ℝⁿ} = set of all outputs. Step 2: Same as column space. Step 3: Used in *image* and *range*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.14.q2",
+      "topicId": "3.14",
+      "prompt": "Why is range(B) the *same as column space*?",
+      "options": [
+        {
+          "text": "Same definition",
+          "correct": true
+        },
+        {
+          "text": "Different here",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: B · x = linear combination of columns. Step 2: So all outputs are linear combinations of columns. Step 3: range = span of columns = column space. Step 4: Used interchangeably.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.14.q3",
+      "topicId": "3.14",
+      "prompt": "What is the *range* of B = [[1, 2], [2, 4]]?",
+      "options": [
+        {
+          "text": "Line in ℝ²",
+          "correct": true
+        },
+        {
+          "text": "Plane",
+          "correct": false
+        },
+        {
+          "text": "Whole ℝ²",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: rank(B) = 1 (rows are dependent). Step 2: column space is 1D = a line. Step 3: So range is a line through origin. Step 4: Used in *column space* computation.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.14.q4",
+      "topicId": "3.14",
+      "prompt": "Why is the range of B a *line*, not a plane?",
+      "options": [
+        {
+          "text": "Rank is one",
+          "correct": true
+        },
+        {
+          "text": "Rank is two",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: rank(B) = 1 (only 1 independent column). Step 2: column space is 1D. Step 3: So range is a line. Step 4: Used in *rank* interpretation.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.14.q5",
+      "topicId": "3.14",
+      "prompt": "What is the *direction* of range(B)?",
+      "options": [
+        {
+          "text": "(1, 2)",
+          "correct": true
+        },
+        {
+          "text": "(2, 4)",
+          "correct": false
+        },
+        {
+          "text": "(0, 1)",
+          "correct": false
+        },
+        {
+          "text": "Random vec",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: First column (1, 2) is the spanning vector. Step 2: Second column (2, 4) = 2 · (1, 2) is same direction. Step 3: So direction is (1, 2). Step 4: Used in *column space* direction.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.14.q6",
+      "topicId": "3.14",
+      "prompt": "What is the *normal* to range(B)?",
+      "options": [
+        {
+          "text": "(−2, 1)",
+          "correct": true
+        },
+        {
+          "text": "(1, 2)",
+          "correct": false
+        },
+        {
+          "text": "(0, 0)",
+          "correct": false
+        },
+        {
+          "text": "Random vec",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Normal is perpendicular to direction. Step 2: (1, 2) · (−2, 1) = −2 + 2 = 0. So (−2, 1) is normal. Step 3: Used in *perpendicular construction*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.14.q7",
+      "topicId": "3.14",
+      "prompt": "Does range(B) include (3, 6)?",
+      "options": [
+        {
+          "text": "Yes, 3 · col",
+          "correct": true
+        },
+        {
+          "text": "No, fails",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: 3 · (1, 2) = (3, 6). Step 2: So (3, 6) is 3 times the first column. Step 3: Yes, in range. Step 4: Used in *membership testing*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.14.q8",
+      "topicId": "3.14",
+      "prompt": "Does range(B) include (1, 1)?",
+      "options": [
+        {
+          "text": "No, fails",
+          "correct": true
+        },
+        {
+          "text": "Yes, fits",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Need α(1, 2) + β(2, 4) = (1, 1). Step 2: α + 2β = 1, 2α + 4β = 1. Step 3: From first: α = 1 − 2β. Sub: 2(1 − 2β) + 4β = 1 → 2 − 4β + 4β = 1 → 2 = 1. Contradiction. Step 4: So (1, 1) not in range.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.14.q9",
+      "topicId": "3.14",
+      "prompt": "What is the *dimension* of range(B)?",
+      "options": [
+        {
+          "text": "Just one",
+          "correct": true
+        },
+        {
+          "text": "Two only",
+          "correct": false
+        },
+        {
+          "text": "Three only",
+          "correct": false
+        },
+        {
+          "text": "Zero only",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: rank(B) = 1. Step 2: dim(range) = rank = 1. Step 3: Used in *dimension counting*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.14.q10",
+      "topicId": "3.14",
+      "prompt": "Is range(B) a *subspace* of ℝ²?",
+      "options": [
+        {
+          "text": "Yes, closed ops",
+          "correct": true
+        },
+        {
+          "text": "No, not closed",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: range(B) is closed under addition and scaling. Step 2: Contains origin. Step 3: So a subspace. Step 4: Used in Mission 12.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.14.q11",
+      "topicId": "3.14",
+      "prompt": "What is the *basis* for range(B)?",
+      "options": [
+        {
+          "text": "{(1, 2)}",
+          "correct": true
+        },
+        {
+          "text": "{(1, 2), (2, 4)}",
+          "correct": false
+        },
+        {
+          "text": "{(0, 0)}",
+          "correct": false
+        },
+        {
+          "text": "Random set",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: One independent vector is enough. Step 2: {(1, 2)} is a basis for the 1D column space. Step 3: The trap {(1, 2), (2, 4)} has dependent elements. Step 4: Used in *basis construction*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.14.q12",
+      "topicId": "3.14",
+      "prompt": "Why is B · x = (0, 0) solvable for *some* x ≠ 0?",
+      "options": [
+        {
+          "text": "Kernel nonzero",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "No nonzero",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: rank(B) = 1, nullity = 2 − 1 = 1. Step 2: Kernel is 1D, contains nonzero vectors. Step 3: B · x = (0, 0) has nontrivial solutions. Step 4: Used in *kernel existence*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.14.q13",
+      "topicId": "3.14",
+      "prompt": "What is the *null space* of B?",
+      "options": [
+        {
+          "text": "Line (−2, 1)",
+          "correct": true
+        },
+        {
+          "text": "Plane",
+          "correct": false
+        },
+        {
+          "text": "Just origin",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: kernel = {x : x + 2y = 0, 2x + 4y = 0}. Step 2: Second is redundant. Step 3: First gives x = −2y. Parametrise: (x, y) = (−2t, t) = t · (−2, 1). Step 4: So kernel is span{(-2, 1)}, 1D line. Step 5: Used in *kernel basis*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.14.q14",
+      "topicId": "3.14",
+      "prompt": "Does the range include (5, 10)?",
+      "options": [
+        {
+          "text": "Yes, 5 · col",
+          "correct": true
+        },
+        {
+          "text": "No, fails",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: 5 · (1, 2) = (5, 10). Step 2: So (5, 10) is in range. Step 3: Used in *membership testing*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.14.q15",
+      "topicId": "3.14",
+      "prompt": "What is the *null space* basis for B?",
+      "options": [
+        {
+          "text": "{(−2, 1)}",
+          "correct": true
+        },
+        {
+          "text": "{(1, 2)}",
+          "correct": false
+        },
+        {
+          "text": "{(0, 0)}",
+          "correct": false
+        },
+        {
+          "text": "Random set",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: From Q13, kernel = span{(-2, 1)}. Step 2: So basis = {(-2, 1)}. Step 3: Used in *kernel basis*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.14.q16",
+      "topicId": "3.14",
+      "prompt": "What is the *orthogonal complement* of range(B)?",
+      "options": [
+        {
+          "text": "Span {(-2, 1)}",
+          "correct": true
+        },
+        {
+          "text": "Span {(1, 2)}",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: range(B) is the line with direction (1, 2). Step 2: Perpendicular direction is (−2, 1). Step 3: So range(B)⊥ = span{(-2, 1)} = kernel(B). Step 4: This \"column space ⊥ null space\" is FTLA (in this symmetric case). Step 5: Used in *orthogonal complement*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.14.q17",
+      "topicId": "3.14",
+      "prompt": "Why does the image *fail to cover* ℝ²?",
+      "options": [
+        {
+          "text": "Rank is one",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Always covers",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: rank(B) = 1. Step 2: Image is 1D, much smaller than ℝ² (2D). Step 3: So image doesn't cover all of ℝ². Step 4: Used in *image size*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.14.q18",
+      "topicId": "3.14",
+      "prompt": "What if we changed B to [[1, 0], [0, 1]] (identity) — what would range be?",
+      "options": [
+        {
+          "text": "All ℝ²",
+          "correct": true
+        },
+        {
+          "text": "Just line",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Identity has rank 2. Step 2: Range is 2D = ℝ². Step 3: So identity covers everything. Step 4: Used in *invertible maps*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.14.q19",
+      "topicId": "3.14",
+      "prompt": "What if we added (0, 1) as a third column to B — what would change?",
+      "options": [
+        {
+          "text": "Rank becomes 2",
+          "correct": true
+        },
+        {
+          "text": "Stays rank 1",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: New column (0, 1) is independent of (1, 2) (not a scalar multiple). Step 2: rank = 2. Step 3: Now invertible. Step 4: Used in *rank extension*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.14.q20",
+      "topicId": "3.14",
+      "prompt": "What if the range were the whole ℝ² — what would that mean for B?",
+      "options": [
+        {
+          "text": "Invertible",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Not invert",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Range = ℝ² means B is *onto* (surjective). Step 2: For square B, onto ↔ invertible. Step 3: So B would be invertible. Step 4: Used in *surjectivity*.\n\n---",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    }
+  ]
+}

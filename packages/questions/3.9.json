@@ -1,0 +1,544 @@
+{
+  "id": "3.9",
+  "moduleId": 3,
+  "number": 9,
+  "title": "A · (x, y, z) = 0 for A = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]",
+  "vocabulary": {
+    "allowed": [
+      "arithmetic",
+      "progression",
+      "singular",
+      "det",
+      "kernel",
+      "structure.",
+      "Vocabulary",
+      "forbidden:",
+      "eigenvalue."
+    ],
+    "forbidden": [
+      "eigenvalue."
+    ]
+  },
+  "questions": [
+    {
+      "id": "3.9.q1",
+      "topicId": "3.9",
+      "prompt": "What is special about A = [[1,2,3],[4,5,6],[7,8,9]]?",
+      "options": [
+        {
+          "text": "Singular matrix",
+          "correct": true
+        },
+        {
+          "text": "Always invertible",
+          "correct": false
+        },
+        {
+          "text": "Random shape",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: This matrix has a special structure (rows in arithmetic progression). Step 2: det(A) = 0 — singular. Step 3: Non-invertible. Step 4: This famous matrix is *singular*. Step 5: Used in *singular value decomposition*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.9.q2",
+      "topicId": "3.9",
+      "prompt": "What is *det(A)* for A = [[1,2,3],[4,5,6],[7,8,9]]?",
+      "options": [
+        {
+          "text": "Zero",
+          "correct": true
+        },
+        {
+          "text": "One only",
+          "correct": false
+        },
+        {
+          "text": "Some number",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: det = 1(45−48) − 2(36−42) + 3(32−35) = 1(−3) − 2(−6) + 3(−3) = −3 + 12 − 9 = 0. Step 2: So det = 0. Step 3: Singular. Step 4: Used in *Cramer's rule* failure.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.9.q3",
+      "topicId": "3.9",
+      "prompt": "Why is row 2 of A *dependent* on rows 1 and 3?",
+      "options": [
+        {
+          "text": "Row 2 = (R1+R3)/2",
+          "correct": true
+        },
+        {
+          "text": "Independent",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Row 2 = [4, 5, 6]. Row 1 = [1, 2, 3]. Row 3 = [7, 8, 9]. Step 2: Row 1 + Row 3 = [8, 10, 12] = 2 · [4, 5, 6] = 2 · Row 2. So Row 2 = (Row 1 + Row 3)/2. Step 3: So row 2 is the *average* of rows 1 and 3. Step 4: This is the *arithmetic progression* structure. Step 5: Dependent. Step 6: Used in *rank* deficiency.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.9.q4",
+      "topicId": "3.9",
+      "prompt": "What does *arithmetic progression* in rows mean?",
+      "options": [
+        {
+          "text": "Equal difference",
+          "correct": true
+        },
+        {
+          "text": "Random rows",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Same values",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Rows [1,2,3], [4,5,6], [7,8,9] differ by [3,3,3]. Step 2: Each row shifts by 3 in each column. Step 3: So arithmetic progression. Step 4: This structure leads to singularity. Step 5: Used in *pattern recognition*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.9.q5",
+      "topicId": "3.9",
+      "prompt": "What is the *kernel* of A = [[1,2,3],[4,5,6],[7,8,9]]?",
+      "options": [
+        {
+          "text": "A line in ℝ³",
+          "correct": true
+        },
+        {
+          "text": "A plane",
+          "correct": false
+        },
+        {
+          "text": "Origin only",
+          "correct": false
+        },
+        {
+          "text": "All of ℝ³",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: rank(A) = 2 (two independent rows). Step 2: nullity = 3 − 2 = 1. Step 3: Kernel is 1D = a line. Step 4: The line is parametrised by (−1, 2, −1). Step 5: Used in *null space computation*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.9.q6",
+      "topicId": "3.9",
+      "prompt": "Why does *A* have a *1D* kernel?",
+      "options": [
+        {
+          "text": "Rank two",
+          "correct": true
+        },
+        {
+          "text": "Rank three",
+          "correct": false
+        },
+        {
+          "text": "Rank zero",
+          "correct": false
+        },
+        {
+          "text": "Random rank",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: rank(A) = 2 (since rows are dependent). Step 2: nullity = n − rank = 3 − 2 = 1. Step 3: So 1D kernel. Step 4: This \"rank-nullity\" rule is the central theorem. Step 5: Used in Mission 16.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.9.q7",
+      "topicId": "3.9",
+      "prompt": "What is (−1, 2, −1) · Aᵀ?",
+      "options": [
+        {
+          "text": "The zero vector",
+          "correct": true
+        },
+        {
+          "text": "Random vec",
+          "correct": false
+        },
+        {
+          "text": "First row",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: (−1, 2, −1) is in the kernel of A. Step 2: So A · (−1, 2, −1)ᵀ = (0, 0, 0)ᵀ. Step 3: Which means (−1, 2, −1) is orthogonal to each row of A. Step 4: Verified: −1·1 + 2·2 − 1·3 = 0. ✓ Step 5: Used in *null space basis*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.9.q8",
+      "topicId": "3.9",
+      "prompt": "Can the *kernel* of A be found by *row reduction*?",
+      "options": [
+        {
+          "text": "Yes, via RREF",
+          "correct": true
+        },
+        {
+          "text": "No, never",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Row reduce A to reduced row echelon form (RREF). Step 2: Free variables in RREF give kernel basis. Step 3: This is the algorithmic method. Step 4: Used in *Gaussian elimination*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.9.q9",
+      "topicId": "3.9",
+      "prompt": "What does *singular* mean for A?",
+      "options": [
+        {
+          "text": "Not invertible",
+          "correct": true
+        },
+        {
+          "text": "Always invertible",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Singular = det = 0 = not invertible. Step 2: Non-singular = det ≠ 0 = invertible. Step 3: This \"singular vs non-singular\" is the basic classification. Step 4: Used in Mission 14.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.9.q10",
+      "topicId": "3.9",
+      "prompt": "Why is *A · x = b* unsolvable for some b?",
+      "options": [
+        {
+          "text": "b not in image",
+          "correct": true
+        },
+        {
+          "text": "b in image",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: A · x always gives vectors in the column space. Step 2: If b is not in column space, no solution. Step 3: So singular A → some b have no solution. Step 4: Used in *inconsistent systems*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.9.q11",
+      "topicId": "3.9",
+      "prompt": "What is the *column space* of A?",
+      "options": [
+        {
+          "text": "2D plane",
+          "correct": true
+        },
+        {
+          "text": "3D full",
+          "correct": false
+        },
+        {
+          "text": "1D line",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: rank(A) = 2. Step 2: column space is 2D. Step 3: In ℝ³, 2D subspace = plane. Step 4: The column space is a plane through origin. Step 5: Used in *column space* theory.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.9.q12",
+      "topicId": "3.9",
+      "prompt": "What is the *row space* of A?",
+      "options": [
+        {
+          "text": "2D plane",
+          "correct": true
+        },
+        {
+          "text": "3D full",
+          "correct": false
+        },
+        {
+          "text": "1D line",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: rank(A) = 2. Step 2: row space is 2D. Step 3: The row space lives in ℝ³. Step 4: Also a plane. Step 5: Used in *row space* theory.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.9.q13",
+      "topicId": "3.9",
+      "prompt": "What is the *rank* of A?",
+      "options": [
+        {
+          "text": "Just two",
+          "correct": true
+        },
+        {
+          "text": "Just three",
+          "correct": false
+        },
+        {
+          "text": "Just one",
+          "correct": false
+        },
+        {
+          "text": "Zero only",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: rank(A) = number of independent rows = 2. Step 2: Or number of independent columns = 2. Step 3: Both equal (rank theorem). Step 4: Used in Mission 16.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.9.q14",
+      "topicId": "3.9",
+      "prompt": "What is the *nullity* of A?",
+      "options": [
+        {
+          "text": "Just one",
+          "correct": true
+        },
+        {
+          "text": "Two only",
+          "correct": false
+        },
+        {
+          "text": "Three only",
+          "correct": false
+        },
+        {
+          "text": "Zero only",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: nullity = 3 − rank = 3 − 2 = 1. Step 2: So kernel is 1D. Step 3: This \"rank-nullity\" is the central theorem. Step 4: Used in Mission 16.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.9.q15",
+      "topicId": "3.9",
+      "prompt": "Why is A · (−1, 2, −1)ᵀ = (0, 0, 0)ᵀ?",
+      "options": [
+        {
+          "text": "In kernel",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Not zero",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: (−1, 2, −1) is in the kernel of A. Step 2: A · kernel = 0. Step 3: So this equation holds. Step 4: Used in *kernel verification*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.9.q16",
+      "topicId": "3.9",
+      "prompt": "What is *Aᵀ A* for this A?",
+      "options": [
+        {
+          "text": "Singular too",
+          "correct": true
+        },
+        {
+          "text": "Always invertible",
+          "correct": false
+        },
+        {
+          "text": "Random shape",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Aᵀ A has the same null space as A. Step 2: So singular. Step 3: This is used in *ridge regression*. Step 4: Used in Mission 14.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.9.q17",
+      "topicId": "3.9",
+      "prompt": "Why is *Aᵀ* also singular?",
+      "options": [
+        {
+          "text": "Same rank",
+          "correct": true
+        },
+        {
+          "text": "Different rank",
+          "correct": false
+        },
+        {
+          "text": "Random rank",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: rank(Aᵀ) = rank(A) = 2. Step 2: So Aᵀ also has rank 2, not 3. Step 3: Singular. Step 4: This \"rank of Aᵀ = rank of A\" is the *rank theorem*. Step 5: Used in Mission 14.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.9.q18",
+      "topicId": "3.9",
+      "prompt": "What if we *changed* A slightly to break the arithmetic progression — what would happen?",
+      "options": [
+        {
+          "text": "Becomes invert",
+          "correct": true
+        },
+        {
+          "text": "Stays singular",
+          "correct": false
+        },
+        {
+          "text": "Random rank",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Changing one entry breaks the arithmetic structure. Step 2: Rows become independent. Step 3: rank = 3, invertible. Step 4: This \"small change → invertible\" is the generic case. Step 5: Singular matrices are *measure zero* in the space of matrices.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.9.q19",
+      "topicId": "3.9",
+      "prompt": "What does the *null space* of A look like visually in 3D?",
+      "options": [
+        {
+          "text": "A line",
+          "correct": true
+        },
+        {
+          "text": "A plane",
+          "correct": false
+        },
+        {
+          "text": "A point",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Kernel is 1D = a line through origin in ℝ³. Step 2: Specifically the line spanned by (−1, 2, −1). Step 3: Used in *3D geometry*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.9.q20",
+      "topicId": "3.9",
+      "prompt": "What if we added a fourth row to A — what would happen to the rank?",
+      "options": [
+        {
+          "text": "Depends on row",
+          "correct": true
+        },
+        {
+          "text": "Always three",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Any new row might be a linear combination of existing rows (stays rank 2) or independent (rank 3). Step 2: Depends on the new row. Step 3: Used in *rank extension*.\n\n---",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    }
+  ]
+}

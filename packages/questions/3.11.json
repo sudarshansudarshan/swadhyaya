@@ -1,0 +1,546 @@
+{
+  "id": "3.11",
+  "moduleId": 3,
+  "number": 11,
+  "title": "Every vector of R is perpendicular to every vector of N",
+  "vocabulary": {
+    "allowed": [
+      "perpendicular",
+      "orthogonal",
+      "R(A)",
+      "N(A)",
+      "fundamental",
+      "theorem.",
+      "Vocabulary",
+      "forbidden:",
+      "SVD",
+      "(later)."
+    ],
+    "forbidden": [
+      "SVD",
+      "(later)."
+    ]
+  },
+  "questions": [
+    {
+      "id": "3.11.q1",
+      "topicId": "3.11",
+      "prompt": "What does *R(A) ⊥ N(A)* mean?",
+      "options": [
+        {
+          "text": "Every R perp every N",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Only some",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: For any vector r ∈ R(A) and n ∈ N(A), r · n = 0. Step 2: Every row space vector ⊥ every null space vector. Step 3: This is the *Fundamental Theorem of Linear Algebra*. Step 4: Discovered by Gilbert Strang. Step 5: Used throughout linear algebra.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.11.q2",
+      "topicId": "3.11",
+      "prompt": "Why is every row of A *perpendicular* to every vector in N(A)?",
+      "options": [
+        {
+          "text": "Ax = 0 means A·x=0",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "No reason",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: For x ∈ N(A): A · x = 0. Step 2: This means each row · x = 0. Step 3: So x ⊥ each row. Step 4: Therefore x ⊥ row space. Step 5: This is the *direct algebraic proof* of FTLA.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.11.q3",
+      "topicId": "3.11",
+      "prompt": "What does *FTLA* stand for?",
+      "options": [
+        {
+          "text": "Fund Theorem LA",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Far theorem LA",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: FTLA = Fundamental Theorem of Linear Algebra. Step 2: Four parts: row space ⊥ null space, column space ⊥ left null space. Step 3: Discovered by Strang. Step 4: Used throughout linear algebra.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.11.q4",
+      "topicId": "3.11",
+      "prompt": "What is the *left null space* of A?",
+      "options": [
+        {
+          "text": "Vectors y with yᵀA=0",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Always zero",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Left null space = {y : yᵀ · A = 0}. Step 2: Vectors that annihilate A from the left. Step 3: Subspace of ℝᵐ. Step 4: Used in *least squares* and *SVD*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.11.q5",
+      "topicId": "3.11",
+      "prompt": "Why is column space ⊥ left null space?",
+      "options": [
+        {
+          "text": "FTLA theorem",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Same space",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: For any c ∈ col space and y ∈ left null space: yᵀ · (A · x) = 0. Step 2: So c ⊥ y. Step 3: This is the second part of FTLA. Step 4: Used in *SVD*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.11.q6",
+      "topicId": "3.11",
+      "prompt": "What are the *four* subspaces of A?",
+      "options": [
+        {
+          "text": "R(A), N(A), C(A), N(Aᵀ)",
+          "correct": true
+        },
+        {
+          "text": "Random four",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Three only",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Row space R(A), null space N(A), column space C(A), left null space N(Aᵀ). Step 2: The four fundamental subspaces. Step 3: FTLA describes their orthogonality. Step 4: Used in Mission 16.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.11.q7",
+      "topicId": "3.11",
+      "prompt": "Why is *dim(R) + dim(N) = n*?",
+      "options": [
+        {
+          "text": "Rank-nullity",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Always zero",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: For m×n A: dim(R) = rank, dim(N) = nullity = n − rank. Step 2: dim(R) + dim(N) = n. Step 3: This is the *rank-nullity theorem*. Step 4: Used in Mission 16.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.11.q8",
+      "topicId": "3.11",
+      "prompt": "Why is *dim(C) + dim(N(Aᵀ)) = m*?",
+      "options": [
+        {
+          "text": "Rank-nullity Aᵀ",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Always zero",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Apply rank-nullity to Aᵀ (which is n×m). Step 2: rank(Aᵀ) = rank(A). Step 3: dim(C) + dim(N(Aᵀ)) = m. Step 4: This is the \"other\" rank-nullity. Step 5: Used in *Mission 16*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.11.q9",
+      "topicId": "3.11",
+      "prompt": "What does *R ⊥ N* mean for projections?",
+      "options": [
+        {
+          "text": "Decomposition",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Same space",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: R ⊥ N means ℝⁿ = R ⊕ N. Step 2: Every vector x = x_R + x_N where x_R ∈ R, x_N ∈ N. Step 3: This is the *orthogonal decomposition*. Step 4: Used in *least squares*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.11.q10",
+      "topicId": "3.11",
+      "prompt": "How do you *project* v onto R(A)?",
+      "options": [
+        {
+          "text": "Solve least sq",
+          "correct": true
+        },
+        {
+          "text": "Random solve",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Always zero",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Find v_R ∈ R closest to v. Step 2: v − v_R ⊥ R. Step 3: Solve Aᵀ A · c = Aᵀ v. Step 4: v_R = A · c. Step 5: This is *least squares projection*. Step 6: Used in Q2.5.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.11.q11",
+      "topicId": "3.11",
+      "prompt": "Why does the *null space* complement the row space?",
+      "options": [
+        {
+          "text": "Direct sum",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Overlap only",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: R ∩ N = {0} (only zero in both). Step 2: R + N = ℝⁿ. Step 3: So ℝⁿ = R ⊕ N (direct sum). Step 4: This is the *orthogonal complement* structure. Step 5: Used in *dimension theory*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.11.q12",
+      "topicId": "3.11",
+      "prompt": "What is the *dimension* of R ⊕ N?",
+      "options": [
+        {
+          "text": "n total",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Always zero",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: dim(R ⊕ N) = dim(R) + dim(N) = n. Step 2: For A m×n. Step 3: Matches the ambient space ℝⁿ. Step 4: Used in *direct sums*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.11.q13",
+      "topicId": "3.11",
+      "prompt": "Is R(A) the same as C(Aᵀ)?",
+      "options": [
+        {
+          "text": "Yes, equivalent",
+          "correct": true
+        },
+        {
+          "text": "No, different",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Row space of A = column space of Aᵀ. Step 2: Same subspace, different description. Step 3: So R(A) = C(Aᵀ). Step 4: Used in *transpose* theory.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.11.q14",
+      "topicId": "3.11",
+      "prompt": "Is N(A) the same as N(Aᵀ)?",
+      "options": [
+        {
+          "text": "No, different",
+          "correct": true
+        },
+        {
+          "text": "Yes, same",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: N(A) is in ℝⁿ (domain). Step 2: N(Aᵀ) is in ℝᵐ (codomain). Step 3: Different spaces. Step 4: Used in *fundamental subspaces*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.11.q15",
+      "topicId": "3.11",
+      "prompt": "Why is *perpendicular* important for decompositions?",
+      "options": [
+        {
+          "text": "Clean parts",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "No reason",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Perpendicular decomposition gives unique parts. Step 2: v_R is the unique component in R. Step 3: v_N is the unique component in N. Step 4: v = v_R + v_N is the unique decomposition. Step 5: Used in *all projection methods*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.11.q16",
+      "topicId": "3.11",
+      "prompt": "What is *R ⊕ N = ℝⁿ* called?",
+      "options": [
+        {
+          "text": "Orthog decomp",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "No name",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Orthogonal decomposition of ℝⁿ. Step 2: Used in *all of applied linear algebra*. Step 3: Foundation of *Fourier series*, *least squares*, *PCA*. Step 4: Used in Mission 14.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.11.q17",
+      "topicId": "3.11",
+      "prompt": "Does *every* matrix have orthogonal row space and null space?",
+      "options": [
+        {
+          "text": "Yes, always",
+          "correct": true
+        },
+        {
+          "text": "No, sometimes",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: FTLA holds for any matrix A. Step 2: R(A) ⊥ N(A) always. Step 3: This is a theorem (proved in any linear algebra course). Step 4: Used throughout.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.11.q18",
+      "topicId": "3.11",
+      "prompt": "What if A were *square and invertible* — what would R and N be?",
+      "options": [
+        {
+          "text": "R = ℝⁿ, N = {0}",
+          "correct": true
+        },
+        {
+          "text": "Same here",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: If A invertible, rank = n. Step 2: R(A) = ℝⁿ. Step 3: N(A) = {0}. Step 4: Decomposition: ℝⁿ = ℝⁿ ⊕ {0}. Step 5: Used in *invertibility*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.11.q19",
+      "topicId": "3.11",
+      "prompt": "Why does FTLA matter in *practice*?",
+      "options": [
+        {
+          "text": "Computations",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Theory only",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: FTLA enables orthogonal projection (least squares). Step 2: Used in *data fitting*, *machine learning*, *signal processing*. Step 3: Not just theory. Step 4: Used in Mission 14.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.11.q20",
+      "topicId": "3.11",
+      "prompt": "What if R and N *weren't* perpendicular — what would change?",
+      "options": [
+        {
+          "text": "No projection",
+          "correct": true
+        },
+        {
+          "text": "Same here",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Without perpendicularity, the orthogonal decomposition doesn't exist uniquely. Step 2: No clean projection. Step 3: This would break least squares. Step 4: FTLA is essential. Step 5: Used in *applied math*.\n\n---",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    }
+  ]
+}
