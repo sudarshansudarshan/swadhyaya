@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { useCamera } from './useCamera';
+import { useCamera } from './hooks/useCamera';
 import { Eye, EyeOff, AlertCircle } from 'lucide-react';
 import { useLiveChannel } from '@/hooks/useLiveChannel';
 
