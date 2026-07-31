@@ -10,13 +10,12 @@ generator client {
 
 datasource db {
   provider = "mongodb"
-  url      = env("DATABASE_URL")
 }
 
 // ─── Auth & Identity ───────────────────────────────────────────────
 
 model User {
-  id            String   @id @default(cuid())
+  id            String   @id @default(cuid()) @map("_id")
   samagamaSub   String?  @unique
   email         String   @unique
   name          String?
@@ -41,6 +40,7 @@ model User {
   scoreResetActions ScoreReset[]     @relation("ScoreResetActor")
   questionInvalidations QuestionInvalidation[] @relation("QIUser")
   questionInvalidationsMade QuestionInvalidation[] @relation("QIActor")
+  instructorRecord   Instructor?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -55,7 +55,7 @@ enum Role {
 // ─── Course hierarchy ───────────────────────────────────────────────
 
 model Course {
-  id          String   @id @default(cuid())
+  id          String   @id @default(cuid()) @map("_id")
   title       String
   description String?
   thumbnailUrl String?
@@ -66,7 +66,7 @@ model Course {
 }
 
 model Module {
-  id           String   @id @default(cuid())
+  id           String   @id @default(cuid()) @map("_id")
   courseId     String
   course       Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
   number       Int
@@ -74,7 +74,6 @@ model Module {
   subtitle     String?
   sections     Section[]
   instructorIds String[]
-  instructors   Instructor[] @relation(fields: [instructorIds], references: [id])
   vivaBookings  VivaBooking[]
   moduleProgress ModuleProgress[]
 
@@ -82,7 +81,7 @@ model Module {
 }
 
 model Section {
-  id              String   @id @default(cuid())
+  id              String   @id @default(cuid()) @map("_id")
   moduleId        String
   module          Module   @relation(fields: [moduleId], references: [id], onDelete: Cascade)
   number          Int
@@ -97,7 +96,7 @@ model Section {
 }
 
 model Item {
-  id          String  @id @default(cuid())
+  id          String  @id @default(cuid()) @map("_id")
   sectionId   String
   section     Section @relation(fields: [sectionId], references: [id], onDelete: Cascade)
   order       Int
@@ -149,7 +148,7 @@ enum QuestionSource {
 // ─── Question bank ──────────────────────────────────────────────────
 
 model Question {
-  id           String        @id @default(cuid())
+  id           String        @id @default(cuid()) @map("_id")
   topicId      String
   prompt       String
   options      Json
@@ -163,7 +162,6 @@ model Question {
   updatedAt    DateTime      @updatedAt
 
   answerWrongOn QuestionInvalidation[]
-  attempts      QuizAttempt[]
 
   @@index([topicId, difficulty])
 }
@@ -177,7 +175,7 @@ enum Difficulty {
 // ─── Enrollment & Cohorts ───────────────────────────────────────────
 
 model Cohort {
-  id          String   @id @default(cuid())
+  id          String   @id @default(cuid()) @map("_id")
   name        String   @unique
   description String?
   courseIds   String[]
@@ -186,7 +184,7 @@ model Cohort {
 }
 
 model CourseEnrollment {
-  id         String   @id @default(cuid())
+  id         String   @id @default(cuid()) @map("_id")
   userId     String
   user       User     @relation(fields: [userId], references: [id])
   courseId   String
@@ -200,7 +198,7 @@ model CourseEnrollment {
 // ─── Per-user progress ──────────────────────────────────────────────
 
 model TopicProgress {
-  id                String   @id @default(cuid())
+  id                String   @id @default(cuid()) @map("_id")
   userId            String
   user              User     @relation(fields: [userId], references: [id])
   itemId            String
@@ -222,7 +220,7 @@ model TopicProgress {
 }
 
 model ModuleProgress {
-  id            String   @id @default(cuid())
+  id            String   @id @default(cuid()) @map("_id")
   userId        String
   user          User     @relation(fields: [userId], references: [id])
   moduleId      String
@@ -238,7 +236,7 @@ model ModuleProgress {
 // ─── Video forensics ────────────────────────────────────────────────
 
 model VideoWatch {
-  id              String   @id @default(cuid())
+  id              String   @id @default(cuid()) @map("_id")
   userId          String
   user            User     @relation(fields: [userId], references: [id])
   itemId          String
@@ -263,7 +261,7 @@ model VideoWatch {
 // ─── Proctoring ─────────────────────────────────────────────────────
 
 model EthicsConsent {
-  id          String   @id @default(cuid())
+  id          String   @id @default(cuid()) @map("_id")
   userId      String
   user        User     @relation(fields: [userId], references: [id])
   courseId    String
@@ -276,7 +274,7 @@ model EthicsConsent {
 }
 
 model ProctorSession {
-  id              String   @id @default(cuid())
+  id              String   @id @default(cuid()) @map("_id")
   userId          String
   user            User     @relation(fields: [userId], references: [id])
   itemId          String
@@ -291,7 +289,7 @@ model ProctorSession {
 }
 
 model ProctorEvent {
-  id           String   @id @default(cuid())
+  id           String   @id @default(cuid()) @map("_id")
   sessionId    String
   session      ProctorSession @relation(fields: [sessionId], references: [id])
   type         String
@@ -305,7 +303,7 @@ model ProctorEvent {
 }
 
 model EmotionResponse {
-  id          String   @id @default(cuid())
+  id          String   @id @default(cuid()) @map("_id")
   userId      String
   user        User     @relation(fields: [userId], references: [id])
   itemId      String
@@ -317,7 +315,7 @@ model EmotionResponse {
 // ─── Quizzes ────────────────────────────────────────────────────────
 
 model QuizAttempt {
-  id                String   @id @default(cuid())
+  id                String   @id @default(cuid()) @map("_id")
   userId            String
   user              User     @relation(fields: [userId], references: [id])
   itemId            String
@@ -339,7 +337,7 @@ model QuizAttempt {
 // ─── Viva ───────────────────────────────────────────────────────────
 
 model Instructor {
-  id              String   @id @default(cuid())
+  id              String   @id @default(cuid()) @map("_id")
   userId          String?  @unique
   user            User?    @relation(fields: [userId], references: [id])
   name            String
@@ -354,9 +352,7 @@ model Instructor {
   validFrom       DateTime?
   validUntil      DateTime?
   autoRevokeOnExpiry Boolean @default(true)
-  modules         Module[]    @relation(fields: [instructorIds], references: [id])
   slots           VivaSlot[]
-  bookings        VivaBooking[]
   activityLogs    InstructorActivityLog[]
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
@@ -369,7 +365,7 @@ enum StaffRole {
 }
 
 model InstructorActivityLog {
-  id           String   @id @default(cuid())
+  id           String   @id @default(cuid()) @map("_id")
   instructorId String
   instructor   Instructor @relation(fields: [instructorId], references: [id])
   action       String
@@ -383,7 +379,7 @@ model InstructorActivityLog {
 }
 
 model VivaSlot {
-  id           String   @id @default(cuid())
+  id           String   @id @default(cuid()) @map("_id")
   instructorId String
   instructor   Instructor @relation(fields: [instructorId], references: [id])
   moduleId     String
@@ -398,7 +394,7 @@ model VivaSlot {
 }
 
 model VivaBooking {
-  id             String   @id @default(cuid())
+  id             String   @id @default(cuid()) @map("_id")
   slotId         String
   slot           VivaSlot @relation(fields: [slotId], references: [id])
   userId         String
@@ -411,7 +407,6 @@ model VivaBooking {
   quizScoreSummary Json?
   bookedAt       DateTime @default(now())
 
-  moduleProgress ModuleProgress?
   scoreResets    ScoreReset[]
   invalidations  QuestionInvalidation[]
 
@@ -429,7 +424,7 @@ enum BookingStatus {
 // ─── Admin actions ──────────────────────────────────────────────────
 
 model ScoreReset {
-  id           String   @id @default(cuid())
+  id           String   @id @default(cuid()) @map("_id")
   userId       String
   user         User     @relation("ScoreResetUser", fields: [userId], references: [id])
   scope        ResetScope
@@ -459,7 +454,7 @@ enum ResetScope {
 }
 
 model QuestionInvalidation {
-  id               String   @id @default(cuid())
+  id               String   @id @default(cuid()) @map("_id")
   userId           String
   user             User     @relation("QIUser", fields: [userId], references: [id])
   questionId       String
@@ -479,7 +474,7 @@ model QuestionInvalidation {
 }
 
 model AdminNote {
-  id        String   @id @default(cuid())
+  id        String   @id @default(cuid()) @map("_id")
   userId    String
   user      User     @relation(fields: [userId], references: [id])
   authorId  String
@@ -492,7 +487,7 @@ model AdminNote {
 // ─── Activity & Live presence ───────────────────────────────────────
 
 model ActivityLog {
-  id           String   @id @default(cuid())
+  id           String   @id @default(cuid()) @map("_id")
   type         String
   severity     String   @default("info")
   actorId      String?
@@ -513,8 +508,8 @@ model ActivityLog {
 }
 
 model LiveSession {
-  id               String   @id @default(cuid())
-  userId           String
+  id               String   @id @default(cuid()) @map("_id")
+  userId           String   @unique
   user             User     @relation(fields: [userId], references: [id])
   page             String
   itemId           String?
@@ -531,6 +526,5 @@ model LiveSession {
   startedAt        DateTime @default(now())
   lastHeartbeat    DateTime @default(now())
 
-  @@index([userId, lastHeartbeat])
   @@index([lastHeartbeat])
 }
