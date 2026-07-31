@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Brahmagupta's Balance — One Equation, Three Unknowns</title>
+<script src="https://cdn.plot.ly/plotly-2.32.0.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=IBM+Plex+Mono:wght@500;600&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#FAF5E8; --paper-line:#D8CFB6; --ink:#26332B; --ink-soft:#5B6B60;
+    --fn:#1F6F5C; --fn-soft:#DCEDE7; --pt:#7B5EA7; --pt-soft:#EAE3F5;
+    --target:#B8860B; --target-soft:#F3E9CE; --d1:#B5502E; --d1-soft:#FBEFE8;
+    --card:#FFFDF7; --shadow:0 2px 10px rgba(38,51,43,0.08);
+  }
+  *{box-sizing:border-box;} html,body{margin:0;padding:0;}
+  body{
+    background:repeating-linear-gradient(#FAF5E8 0px,#FAF5E8 27px,var(--paper-line) 28px),var(--paper);
+    background-size:100% 28px; color:var(--ink); font-family:'Source Sans 3',sans-serif;
+    min-height:100vh; padding:28px 16px 60px;
+  }
+  .wrap{max-width:1100px;margin:0 auto;}
+  header.hero{background:var(--card);border:1px solid var(--paper-line);border-radius:14px;box-shadow:var(--shadow);padding:26px 28px 22px;margin-bottom:20px;}
+  .eyebrow{font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);margin:0 0 6px;}
+  h1{font-family:'Caveat',cursive;font-weight:700;font-size:38px;margin:0 0 10px;line-height:1.05;}
+  header.hero p{max-width:680px;line-height:1.55;font-size:15.5px;margin:0 0 8px;}
+  .dim-grid{display:flex;gap:14px;flex-wrap:wrap;margin-top:12px;}
+  .dim-grid span{font-family:'IBM Plex Mono',monospace;font-size:13px;padding:8px 14px;border-radius:8px;font-weight:600;border:1px solid var(--paper-line);background:var(--paper);}
+  .grid-layout{display:grid;grid-template-columns:300px 1fr;gap:20px;align-items:start;}
+  @media (max-width:800px){.grid-layout{grid-template-columns:1fr;}}
+  .card{background:var(--card);border:1px solid var(--paper-line);border-radius:14px;box-shadow:var(--shadow);padding:20px;}
+  .panel-title{font-family:'Caveat',cursive;font-weight:700;font-size:24px;margin:0 0 4px;}
+  .panel-sub{font-size:13px;color:var(--ink-soft);margin:0 0 14px;line-height:1.4;}
+  .field{margin-bottom:14px;}
+  .field label{display:flex;justify-content:space-between;font-size:13.5px;font-weight:600;margin-bottom:6px;}
+  .field label span.val{font-family:'IBM Plex Mono',monospace;font-weight:600;color:var(--pt);}
+  input[type=number]{width:100%;padding:9px 10px;border-radius:8px;border:1px solid var(--paper-line);font-family:'IBM Plex Mono',monospace;font-size:16px;background:var(--paper);color:var(--ink);}
+  input[type=number]:focus{outline:2px solid var(--pt);outline-offset:-1px;border-color:var(--pt);}
+  .helper{font-size:12px;color:var(--ink-soft);margin-top:4px;line-height:1.4;}
+  button{font-family:'Source Sans 3',sans-serif;font-weight:600;font-size:14.5px;border:none;border-radius:9px;padding:11px 16px;cursor:pointer;width:100%;transition:transform .08s ease,filter .15s ease;}
+  button:active{transform:translateY(1px);}button:disabled{opacity:.4;cursor:not-allowed;}
+  .btn-primary{background:var(--fn);color:#fff;}.btn-primary:hover:not(:disabled){filter:brightness(1.08);}
+  .btn-secondary{background:var(--paper);color:var(--ink);border:1px solid var(--paper-line);margin-top:8px;}
+  .btn-secondary:hover:not(:disabled){background:#F0E9D6;}
+  .status{font-size:13.5px;line-height:1.5;padding:12px;border-radius:9px;background:var(--paper);border:1px solid var(--paper-line);margin-bottom:14px;min-height:20px;}
+  .status.feedback-good{background:var(--fn-soft);border-color:var(--fn);color:var(--fn);font-weight:600;}
+  .status.feedback-mid{background:var(--pt-soft);border-color:var(--pt);color:var(--pt);font-weight:600;}
+  .status.feedback-target{background:var(--target-soft);border-color:var(--target);color:var(--target);font-weight:600;}
+  .steps{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap;}
+  .step-dot{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:600;border:1.5px solid var(--paper-line);color:var(--ink-soft);background:var(--paper);}
+  .step-dot.done{background:var(--fn);border-color:var(--fn);color:#fff;}
+  .step-dot.solution{background:var(--target);border-color:var(--target);color:#fff;}
+  .step-dot.active{border-color:var(--pt);color:var(--pt);background:var(--pt-soft);}
+  .reflect,.explore{margin-top:20px;padding-top:16px;border-top:1px dashed var(--paper-line);}
+  .reflect.hidden,.explore.hidden{display:none;}
+  .q{margin-bottom:16px;}.q p.qtext{font-weight:600;margin:0 0 8px;font-size:14.5px;}
+  .options{display:flex;gap:8px;flex-wrap:wrap;}
+  .opt{padding:8px 14px;border-radius:8px;border:1px solid var(--paper-line);background:var(--paper);font-size:13.5px;cursor:pointer;font-weight:600;}
+  .opt.correct{background:var(--fn-soft);border-color:var(--fn);color:var(--fn);}
+  .opt.wrong{background:#F6DCD4;border-color:var(--d1);color:#8C3A1F;}
+  .opt:disabled{cursor:default;}
+  .explore .panel-title{font-size:22px;}
+  footer.note{text-align:center;font-size:12px;color:var(--ink-soft);margin-top:26px;font-family:'IBM Plex Mono',monospace;}
+
+  .eq-display{text-align:center;font-family:'IBM Plex Mono',monospace;font-size:18px;padding:14px;border-radius:10px;background:var(--paper);border:1px solid var(--paper-line);margin-bottom:12px;line-height:2;}
+  .eq-display .matr{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;margin:0 4px;}
+  .eq-display .matr .mrow{display:flex;gap:6px;padding:0 6px;}
+  .eq-display .matr .mel{font-weight:600;min-width:20px;text-align:center;}
+  .eq-display .matr .brac{font-size:20px;color:var(--ink-soft);padding:0 2px;}
+  .eq-display .vec{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;margin:0 4px;}
+  .eq-display .vec .vel{font-weight:600;padding:1px 6px;}
+  .eq-display .vec .vbar{border-top:1.5px solid var(--ink);width:100%;margin:2px 0;}
+
+  .sol-table{width:100%;border-collapse:collapse;font-family:'IBM Plex Mono',monospace;font-size:12px;margin:8px 0;}
+  .sol-table th{font-size:10px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.05em;padding:4px 6px;border-bottom:1px solid var(--paper-line);text-align:right;}
+  .sol-table th:first-child{text-align:center;}
+  .sol-table td{padding:4px 6px;text-align:right;border-bottom:1px solid var(--paper-line);}
+  .sol-table td:first-child{text-align:center;color:var(--ink-soft);}
+  .sol-table .basis td{border-top:2px solid var(--pt);font-weight:700;}
+  .sol-table .tr0 td{color:var(--fn);font-weight:700;}
+  .var-highlight{color:var(--pt);font-weight:700;}
+
+  .calc-box{font-family:'IBM Plex Mono',monospace;font-size:13px;line-height:1.7;padding:12px;border-radius:8px;background:var(--paper);border:1px solid var(--paper-line);margin-top:10px;}
+  .calc-box .step-label{font-size:11px;color:var(--ink-soft);font-weight:600;}
+  .calc-box .eq{margin:3px 0;}
+
+  .plot-wrap{width:100%;height:380px;border-radius:10px;overflow:hidden;border:1px solid var(--paper-line);background:#fff;}
+
+  .explore-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin:10px 0;}
+  .explore-grid .field{margin-bottom:0;}
+  .explore-grid .field label{font-size:11px;}
+  .explore-grid .field input{font-size:14px;padding:6px 7px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <p class="eyebrow">Linear Systems · Underdetermined</p>
+    <h1>Brahmagupta's Balance — One Equation, Three Unknowns</h1>
+    <p>The equation <strong>1x + 2y + 3z = 0</strong> has <strong>one equation</strong> but <strong>three unknowns</strong>. This gives infinitely many solutions — a whole plane of them. Brahmagupta, who gave us the rules for zero, would appreciate that the solution space itself is a 2D plane in 3D space.</p>
+    <div class="dim-grid">
+      <span style="background:var(--pt-soft);border-color:var(--pt);color:var(--pt);">1 equation</span>
+      <span style="background:var(--target-soft);border-color:var(--target);color:var(--target);">3 unknowns</span>
+      <span style="background:var(--fn-soft);border-color:var(--fn);color:var(--fn);">∞ solutions (a plane)</span>
+    </div>
+  </header>
+
+  <div class="grid-layout">
+    <div class="card">
+      <p class="panel-title" id="stepTitle">The Equation</p>
+      <p class="panel-sub" id="stepSub">One equation in three unknowns.</p>
+
+      <div class="eq-display" id="eqDisplay">
+        <span class="matr"><span class="brac">[</span><span class="mrow"><span class="mel">1</span><span class="mel">2</span><span class="mel">3</span></span><span class="brac">]</span></span>
+        <span class="vec"><span class="vel">x</span><span class="vbar"></span><span class="vel">y</span><span class="vbar"></span><span class="vel">z</span></span>
+        <span style="font-size:24px;color:var(--target);margin:0 6px;">=</span>
+        <span style="font-size:22px;font-weight:600;color:var(--fn);">0</span>
+      </div>
+
+      <div id="stepContent"></div>
+
+      <div class="steps" id="stepDots"></div>
+
+      <div class="status" id="statusBox">Step 1 of 5 — Examine the equation.</div>
+
+      <button class="btn-primary" id="checkBtn">Reveal</button>
+      <button class="btn-secondary" id="resetBtn">Start Over</button>
+    </div>
+
+    <div class="card">
+      <p class="panel-title" id="rightTitle">3D Visualization</p>
+      <p class="panel-sub" id="rightSub">The solution set of 1x + 2y + 3z = 0 is a plane.</p>
+      <div class="plot-wrap" id="plotlyDiv"></div>
+    </div>
+  </div>
+
+  <!-- REFLECTION QUIZ -->
+  <div class="card reflect hidden" id="reflectCard">
+    <p class="panel-title">Underdetermined Systems</p>
+    <p class="panel-sub">Fewer equations than unknowns → infinitely many solutions (a subspace).</p>
+
+    <div class="q" id="q1">
+      <p class="qtext">1. How many solutions does 1x + 2y + 3z = 0 have?</p>
+      <div class="options">
+        <button class="opt" data-correct="false">Exactly one: (0, 0, 0)</button>
+        <button class="opt" data-correct="true">Infinitely many — there are 3 unknowns but only 1 equation, so there are 2 free variables.</button>
+        <button class="opt" data-correct="false">Three, one for each variable</button>
+      </div>
+    </div>
+
+    <div class="q" id="q2">
+      <p class="qtext">2. What is the dimension of the solution space?</p>
+      <div class="options">
+        <button class="opt" data-correct="false">0 (just the origin)</button>
+        <button class="opt" data-correct="false">1 (a line)</button>
+        <button class="opt" data-correct="true">2 (a plane) — nullity = n − rank = 3 − 1 = 2</button>
+      </div>
+    </div>
+
+    <div class="q" id="q3">
+      <p class="qtext">3. Which of these is a basis for the solution space?</p>
+      <div class="options">
+        <button class="opt" data-correct="true">{(1, 0, −1/3), (0, 1, −2/3)} — every solution is a linear combination of these two vectors.</button>
+        <button class="opt" data-correct="false">{(1, 2, 3)}</button>
+        <button class="opt" data-correct="false">{(0, 0, 0)}</button>
+      </div>
+    </div>
+
+    <div class="q" id="q4">
+      <p class="qtext">4. A system with more unknowns than equations is called:</p>
+      <div class="options">
+        <button class="opt" data-correct="true">Underdetermined (fewer constraints than variables)</button>
+        <button class="opt" data-correct="false">Overdetermined (more constraints)</button>
+        <button class="opt" data-correct="false">Determined (exactly one solution)</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- EXPLORE MODE -->
+  <div class="card explore hidden" id="exploreCard">
+    <p class="panel-title">Explore Your Own Equation</p>
+    <p class="panel-sub">Change the coefficients a, b, c in ax + by + cz = 0 and see how the solution plane changes.</p>
+
+    <div class="explore-grid">
+      <div class="field"><label>a <span class="val" id="eaV">1</span></label><input type="number" id="ea" value="1" step="0.5"></div>
+      <div class="field"><label>b <span class="val" id="ebV">2</span></label><input type="number" id="eb" value="2" step="0.5"></div>
+      <div class="field"><label>c <span class="val" id="ecV">3</span></label><input type="number" id="ec" value="3" step="0.5"></div>
+    </div>
+
+    <div id="expResult" style="margin-top:10px;font-family:'IBM Plex Mono',monospace;font-size:13px;line-height:1.8;background:var(--paper);border:1px solid var(--paper-line);border-radius:10px;padding:14px;"></div>
+  </div>
+
+  <footer class="note">ax + by + cz = 0 · nullity = 2 · solution space = 2D plane in ℝ³</footer>
+</div>
+
+<script>
+(function(){
+  const $ = id => document.getElementById(id);
+
+  const A = [1, 2, 3]; // coefficients a, b, c
+
+  const STEPS = [
+    { label:'The Equation', desc:'One equation, three unknowns.', key:'intro' },
+    { label:'Particular Solutions', desc:'Find specific (x,y,z) that satisfy the equation.', key:'solutions' },
+    { label:'Parameterization', desc:'Express all solutions with free variables.', key:'param' },
+    { label:'Dimension of the Solution Space', desc:'Why is it a plane?', key:'dimension' },
+    { label:'3D Visualization', desc:'The plane 1x+2y+3z=0 in ℝ³.', key:'visualize' },
+  ];
+  const TOTAL = STEPS.length;
+  let step = 0;
+  let revealed = false;
+
+  const stepDots = $('stepDots');
+  const statusBox = $('statusBox');
+  const checkBtn = $('checkBtn');
+  const resetBtn = $('resetBtn');
+  const reflectCard = $('reflectCard');
+  const exploreCard = $('exploreCard');
+  const stepTitle = $('stepTitle');
+  const stepSub = $('stepSub');
+  const stepContent = $('stepContent');
+  const rightTitle = $('rightTitle');
+  const rightSub = $('rightSub');
+
+  for(let i=1;i<=TOTAL;i++){
+    const d = document.createElement('div');
+    d.className='step-dot'; d.textContent=i; d.id='step-'+i;
+    stepDots.appendChild(d);
+  }
+
+  function getSD(){ return STEPS[step]; }
+  function fmt(n){ return Number.isInteger(n) ? n : n.toFixed(2); }
+
+  // ----- Plotly -----
+  let plotlyPlot = null;
+
+  function drawPlane(a, b, c, highlightPoints){
+    const size = 4;
+    const n = 30;
+    const x = [], y = [], z = [];
+    for(let i=0;i<n;i++){
+      x[i] = []; y[i] = []; z[i] = [];
+      for(let j=0;j<n;j++){
+        const xi = -size + 2*size*i/(n-1);
+        const yj = -size + 2*size*j/(n-1);
+        x[i][j] = xi;
+        y[i][j] = yj;
+        z[i][j] = c !== 0 ? -(a*xi + b*yj)/c : 0;
+      }
+    }
+
+    const data = [{
+      type:'surface', x:x, y:y, z:z,
+      colorscale:[[0,'#7B5EA7'],[1,'#1F6F5C']],
+      opacity:0.75, showscale:false,
+      contours:{z:{show:true,width:1,color:'rgba(255,255,255,0.3)'}}
+    }];
+
+    if(highlightPoints && highlightPoints.length > 0){
+      const px = [], py = [], pz = [], txt = [];
+      for(let p of highlightPoints){
+        px.push(p[0]); py.push(p[1]); pz.push(p[2]);
+        txt.push(`(${fmt(p[0])}, ${fmt(p[1])}, ${fmt(p[2])})`);
+      }
+      data.push({
+        type:'scatter3d', mode:'markers+text',
+        x:px, y:py, z:pz,
+        text:txt, textposition:'top center',
+        marker:{size:6, color:'#B8860B', line:{color:'#fff',width:1.5}},
+        textfont:{size:10, color:'#B8860B', family:'IBM Plex Mono'}
+      });
+    }
+
+    // axes
+    const axisStyle = {
+      showgrid:true, gridcolor:'rgba(0,0,0,0.08)',
+      zeroline:true, zerolinecolor:'rgba(0,0,0,0.2)',
+      showspikes:false,
+      title:{font:{size:12}},
+      tickfont:{size:10}
+    };
+
+    const layout = {
+      scene:{
+        xaxis:{...axisStyle, title:'x'},
+        yaxis:{...axisStyle, title:'y'},
+        zaxis:{...axisStyle, title:'z'},
+        camera:{eye:{x:1.8, y:1.8, z:1.2}},
+        aspectmode:'cube'
+      },
+      margin:{l:0, r:0, b:0, t:0, pad:0},
+      paper_bgcolor:'#FFFDF7',
+      font:{family:'Source Sans 3, sans-serif'}
+    };
+
+    const div = $('plotlyDiv');
+    if(plotlyPlot){
+      Plotly.react(div, data, layout);
+    } else {
+      Plotly.newPlot(div, data, layout).then(p => plotlyPlot = p);
+    }
+  }
+
+  // ----- Step Content -----
+  function renderStep(){
+    const sd = getSD();
+    stepTitle.textContent = sd.label;
+    stepSub.textContent = sd.desc;
+
+    let html = '';
+
+    if(sd.key === 'intro'){
+      html = `<div class="calc-box">`;
+      html += `<div class="step-label">The matrix equation</div><br>`;
+      html += `[1 2 3]·(x, y, z)ᵀ = 0 &nbsp;→&nbsp; 1x + 2y + 3z = 0<br><br>`;
+      html += `This is <strong>1 equation</strong> in <strong>3 unknowns</strong>. It's an <strong>underdetermined system</strong> — more variables than equations. There are infinitely many solutions.`;
+      html += `</div>`;
+      rightTitle.textContent = 'The Equation';
+      rightSub.textContent = '1x + 2y + 3z = 0 — a plane through the origin.';
+      drawPlane(A[0], A[1], A[2], []);
+    } else if(sd.key === 'solutions'){
+      const sols = [
+        {x:0, y:0, z:0, label:'trivial'},
+        {x:1, y:0, z:-1/3, label:''},
+        {x:0, y:1, z:-2/3, label:''},
+        {x:2, y:0, z:-2/3, label:''},
+        {x:0, y:2, z:-4/3, label:''},
+        {x:1, y:1, z:-1, label:''},
+        {x:-3, y:0, z:1, label:''},
+        {x:0, y:-3, z:2, label:''},
+      ];
+
+      html = `<div class="calc-box">`;
+      html += `<div class="step-label">Particular solutions (x, y, z) that satisfy 1x+2y+3z=0</div>`;
+      html += `<table class="sol-table"><thead><tr><th>#</th><th>x</th><th>y</th><th>z</th><th style="text-align:left;padding-left:8px;">check</th></tr></thead><tbody>`;
+      for(let i=0;i<sols.length;i++){
+        const s = sols[i];
+        const check = (s.x + 2*s.y + 3*s.z).toFixed(1);
+        html += `<tr${i===0?' class="tr0"':''}>`;
+        html += `<td>${i+1}</td>`;
+        html += `<td>${fmt(s.x)}</td><td>${fmt(s.y)}</td><td>${fmt(s.z)}</td>`;
+        html += `<td style="text-align:left;padding-left:8px;font-size:11px;color:${check==='0.0'?'var(--fn)':'var(--d1)'};">${check === '0.0' ? '✓' : '✗'}</td>`;
+        html += `</tr>`;
+      }
+      html += `</tbody></table>`;
+      html += `There are <strong>infinitely many</strong> more — these are just a few.`;
+      html += `</div>`;
+      rightTitle.textContent = 'Solutions on the Plane';
+      rightSub.textContent = 'Each point satisfies 1x+2y+3z=0.';
+      const pts = sols.map(s => [s.x, s.y, s.z]);
+      drawPlane(A[0], A[1], A[2], pts);
+    } else if(sd.key === 'param'){
+      html = `<div class="calc-box">`;
+      html += `<div class="step-label">General solution using free variables</div><br>`;
+      html += `1x + 2y + 3z = 0<br><br>`;
+      html += `Let <span class="var-highlight">x = s</span> and <span class="var-highlight">y = t</span> (free variables).<br>`;
+      html += `Then: 3z = −s − 2t → <span class="var-highlight">z = −(s + 2t)/3</span><br><br>`;
+      html += `<strong>General solution:</strong><br>`;
+      html += `(x, y, z) = (s, t, −(s+2t)/3)<br><br>`;
+      html += `<strong>In vector form:</strong><br>`;
+      html += `(x, y, z) = s·<span class="var-highlight">(1, 0, −1/3)</span> + t·<span class="var-highlight">(0, 1, −2/3)</span><br><br>`;
+      html += `These two vectors span the entire solution space.`;
+      html += `</div>`;
+      rightTitle.textContent = 'Parameterization';
+      rightSub.textContent = '(x, y, z) = s·(1,0,−¹⁄₃) + t·(0,1,−²⁄₃)';
+      drawPlane(A[0], A[1], A[2], [[0,0,0],[1,0,-1/3],[0,1,-2/3]]);
+    } else if(sd.key === 'dimension'){
+      html = `<div class="calc-box">`;
+      html += `<div class="step-label">Nullspace dimension = n − rank</div><br>`;
+      html += `Matrix: [1 2 3] &nbsp;(size 1×3)<br><br>`;
+      html += `Rank = <strong>1</strong> (only 1 equation, non-zero)<br>`;
+      html += `Number of columns (n) = <strong>3</strong><br><br>`;
+      html += `<strong>Nullity = n − rank = 3 − 1 = 2</strong><br><br>`;
+      html += `The solution space is <strong>2-dimensional</strong> — a <strong>plane</strong> in ℝ³.<br><br>`;
+      html += `Every solution is a linear combination of the two basis vectors:<br>`;
+      html += `<strong>v₁ = (1, 0, −1/3)</strong> and <strong>v₂ = (0, 1, −2/3)</strong>`;
+      html += `</div>`;
+      rightTitle.textContent = 'Dimension';
+      rightSub.textContent = 'Nullity = 2 → the solution set is a plane.';
+      drawPlane(A[0], A[1], A[2], [[0,0,0],[1,0,-1/3],[0,1,-2/3]]);
+    } else if(sd.key === 'visualize'){
+      html = `<div class="calc-box">`;
+      html += `<div class="step-label">The plane 1x + 2y + 3z = 0 in ℝ³</div><br>`;
+      html += `The purple-green surface is the solution set.<br>`;
+      html += `Every point on this plane satisfies the equation.<br><br>`;
+      html += `The plane passes through the origin (0,0,0).<br>`;
+      html += `It extends infinitely in two independent directions:<br>`;
+      html += `<strong>v₁ = (1, 0, −1/3)</strong> and <strong>v₂ = (0, 1, −2/3)</strong><br><br>`;
+      html += `Drag to rotate the plot and explore the plane!`;
+      html += `</div>`;
+      rightTitle.textContent = 'The Solution Plane';
+      rightSub.textContent = '1x + 2y + 3z = 0 in ℝ³';
+      drawPlane(A[0], A[1], A[2], [[0,0,0]]);
+    }
+
+    stepContent.innerHTML = html;
+
+    if(step >= TOTAL){
+      checkBtn.disabled = true; checkBtn.textContent = 'Complete';
+    } else if(revealed){
+      checkBtn.textContent = 'Next Step';
+    } else {
+      checkBtn.textContent = 'Reveal';
+    }
+  }
+
+  function markDots(){
+    document.querySelectorAll('.step-dot').forEach(d=>d.classList.remove('active'));
+    for(let i=0;i<step&&i<TOTAL;i++){
+      const d=$('step-'+(i+1)); if(d) d.classList.add('done');
+    }
+    if(step < TOTAL){ const d=$('step-'+(step+1)); if(d) d.classList.add('active'); }
+  }
+
+  function setStatus(html, cls){
+    statusBox.innerHTML = html;
+    statusBox.className = 'status' + (cls ? ' '+cls : '');
+  }
+
+  function advance(){
+    if(step>=TOTAL){
+      checkBtn.disabled=true;
+      setTimeout(()=>{reflectCard.classList.remove('hidden');exploreCard.classList.remove('hidden');reflectCard.scrollIntoView({behavior:'smooth',block:'nearest'});},500);
+      setStatus('Complete! Explore your own equation below.','feedback-target');
+      return;
+    }
+    revealed = true;
+    const sd = getSD();
+    let msg;
+    if(sd.key === 'intro') msg = 'One equation, three unknowns — infinitely many solutions.';
+    else if(sd.key === 'solutions') msg = 'All these (x,y,z) satisfy 1x+2y+3z=0. And infinitely more.';
+    else if(sd.key === 'param') msg = 'Two free variables → the solution space is 2D.';
+    else if(sd.key === 'dimension') msg = 'Nullity = n − rank = 3 − 1 = 2. A plane!';
+    else msg = 'The purple surface is all solutions — a plane through the origin.';
+    setStatus(msg,'feedback-good');
+    markDots(); renderStep();
+  }
+
+  function nextStep(){
+    if(!revealed){
+      advance();
+    } else {
+      step++; revealed = false;
+      if(step<TOTAL){
+        const sd = getSD();
+        setStatus(`Step ${step+1}: ${sd.desc}`);
+        renderStep(); markDots();
+      } else {
+        setStatus('All steps complete!','feedback-target');
+        checkBtn.disabled = true;
+        setTimeout(()=>{reflectCard.classList.remove('hidden');exploreCard.classList.remove('hidden');reflectCard.scrollIntoView({behavior:'smooth',block:'nearest'});},500);
+      }
+    }
+  }
+
+  checkBtn.addEventListener('click', nextStep);
+
+  resetBtn.addEventListener('click', ()=>{
+    step=0; revealed=false;
+    checkBtn.disabled=false;
+    reflectCard.classList.add('hidden');
+    exploreCard.classList.add('hidden');
+    document.querySelectorAll('.step-dot').forEach(d=>d.classList.remove('done','solution','active'));
+    const f=$('step-1'); if(f) f.classList.add('active');
+    renderStep(); markDots();
+    setStatus('Step 1 of 5 — Examine the equation.');
+  });
+
+  // ---- EXPLORE ----
+  const eA = $('ea'), eB = $('eb'), eC = $('ec');
+  const eaV = $('eaV'), ebV = $('ebV'), ecV = $('ecV');
+  const expResult = $('expResult');
+
+  function renderExplore(){
+    const a = parseFloat(eA.value) || 1;
+    const b = parseFloat(eB.value) || 2;
+    const c = parseFloat(eC.value) || 3;
+    eaV.textContent = a.toFixed(1);
+    ebV.textContent = b.toFixed(1);
+    ecV.textContent = c.toFixed(1);
+
+    // basis vectors
+    let v1, v2;
+    if(c !== 0){
+      v1 = [1, 0, -a/c];
+      v2 = [0, 1, -b/c];
+    } else if(b !== 0){
+      v1 = [1, -a/b, 0];
+      v2 = [0, 0, 1]; // c=0, so z is free? wait, if c=0 then -a/b - wait no
+      // ax + by = 0 → y = -a/b x, z free
+      v1 = [1, -a/b, 0];
+      v2 = [0, 0, 1];
+    } else if(a !== 0){
+      // ax = 0 → x = 0, y and z free
+      v1 = [0, 1, 0];
+      v2 = [0, 0, 1];
+    } else {
+      v1 = [1, 0, 0]; v2 = [0, 1, 0];
+    }
+
+    const pts = [[0,0,0], v1, v2];
+
+    let html = `<div style="margin-bottom:6px;"><span class="step-label">Equation: ${a}x + ${b}y + ${c}z = 0</span></div>`;
+    html += `<div style="display:flex;gap:16px;font-size:13px;font-weight:600;margin-bottom:6px;">`;
+    html += `<span style="color:var(--pt);">Rank: 1</span>`;
+    html += `<span style="color:var(--fn);">Nullity: 2</span>`;
+    html += `</div>`;
+
+    html += `<table class="sol-table"><thead><tr><th>#</th><th>x</th><th>y</th><th>z</th></tr></thead><tbody>`;
+    const extras = [[2,0,-2*a/c],[0,2,-2*b/c],[1,1,-(a+b)/c]].slice(0,c!==0?3:1);
+    const allPts = [[0,0,0], v1, v2, ...extras];
+    for(let i=0;i<allPts.length;i++){
+      const p = allPts[i];
+      html += `<tr${i===0?' class="tr0"':''}><td>${i+1}</td>`;
+      html += `<td>${fmt(p[0])}</td><td>${fmt(p[1])}</td><td>${fmt(p[2])}</td></tr>`;
+    }
+    html += `</tbody></table>`;
+    html += `<div style="font-size:11px;color:var(--ink-soft);margin-top:4px;">`;
+    html += `Basis: v₁ = (${fmt(v1[0])}, ${fmt(v1[1])}, ${fmt(v1[2])}), v₂ = (${fmt(v2[0])}, ${fmt(v2[1])}, ${fmt(v2[2])})`;
+    html += `</div>`;
+
+    expResult.innerHTML = html;
+
+    // update plot
+    drawPlane(a, b, c, pts);
+  }
+
+  eA.addEventListener('input', renderExplore);
+  eB.addEventListener('input', renderExplore);
+  eC.addEventListener('input', renderExplore);
+
+  // ---- QUIZ ----
+  document.querySelectorAll('.q .options').forEach(group=>{
+    group.querySelectorAll('.opt').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        const correct = btn.dataset.correct === 'true';
+        group.querySelectorAll('.opt').forEach(b=>{
+          b.disabled = true;
+          if(b.dataset.correct==='true') b.classList.add('correct');
+        });
+        if(!correct) btn.classList.add('wrong');
+      });
+    });
+  });
+
+  // ---- INIT ----
+  (function init(){
+    const f=$('step-1'); if(f) f.classList.add('active');
+    renderStep(); markDots();
+    setStatus('Step 1 of 5 — Examine the equation.');
+    renderExplore();
+  })();
+})();
+</script>
+</body>
+</html>

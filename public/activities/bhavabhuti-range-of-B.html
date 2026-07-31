@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bhavabhuti's Range — What does B = [[1,2],[2,4]] actually output?</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=IBM+Plex+Mono:wght@500;600&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#FAF5E8; --paper-line:#D8CFB6; --ink:#26332B; --ink-soft:#5B6B60;
+    --mat:#B5502E; --mat-soft:#FBEFE8;
+    --range:#0E7490; --range-soft:#CFFAFE;
+    --kernel:#7B2D8E; --kernel-soft:#F3E5F7;
+    --input:#B8860B; --input-soft:#F3E9CE;
+    --accent:#1F6F5C; --accent-soft:#DCEDE7;
+    --good:#1F6F5C; --good-soft:#DCEDE7;
+    --card:#FFFDF7; --shadow:0 2px 10px rgba(38,51,43,0.08);
+  }
+  *{box-sizing:border-box;} html,body{margin:0;padding:0;}
+  body{
+    background:repeating-linear-gradient(#FAF5E8 0px,#FAF5E8 27px,var(--paper-line) 28px),var(--paper);
+    background-size:100% 28px; color:var(--ink);
+    font-family:'Source Sans 3',sans-serif; min-height:100vh; padding:28px 16px 60px;
+  }
+  .wrap{max-width:1080px;margin:0 auto;}
+
+  header.hero{
+    background:var(--card); border:1px solid var(--paper-line);
+    border-radius:14px; box-shadow:var(--shadow);
+    padding:26px 28px 22px; margin-bottom:20px;
+  }
+  .eyebrow{font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);margin:0 0 6px;}
+  h1{font-family:'Caveat',cursive;font-weight:700;font-size:42px;margin:0 0 10px;line-height:1.05;}
+  header.hero p{max-width:760px;line-height:1.55;font-size:15.5px;margin:0 0 8px;}
+
+  .matrix-display{
+    background:var(--paper); border:1px dashed var(--paper-line);
+    border-radius:10px; padding:14px 18px; margin-top:12px;
+    font-family:'IBM Plex Mono',monospace; font-size:13px; text-align:center;
+    line-height:1.6;
+  }
+  .matrix-display .name{margin-bottom:6px;font-size:11px;color:var(--ink-soft);font-weight:700;text-transform:uppercase;letter-spacing:.05em;}
+  .matrix-display .big-matrix{
+    display:inline-block; vertical-align:middle;
+    border-left:2px solid var(--ink); border-right:2px solid var(--ink);
+    padding:4px 12px; margin:0 8px; line-height:1.2;
+  }
+  .matrix-display .big-matrix .row{display:block;font-size:18px;font-weight:700;}
+  .matrix-display .formula{margin-top:8px;color:var(--ink-soft);font-size:12px;}
+  .matrix-display .formula strong{color:var(--mat);}
+
+  .grid-layout{display:grid;grid-template-columns:340px 1fr;gap:20px;align-items:start;}
+  @media (max-width:880px){.grid-layout{grid-template-columns:1fr;}}
+
+  .card{background:var(--card);border:1px solid var(--paper-line);border-radius:14px;box-shadow:var(--shadow);padding:20px;}
+  .panel-title{font-family:'Caveat',cursive;font-weight:700;font-size:24px;margin:0 0 4px;}
+  .panel-sub{font-size:13px;color:var(--ink-soft);margin:0 0 14px;line-height:1.4;}
+
+  .q-box{
+    background:var(--range-soft); border:1.5px solid var(--range);
+    border-radius:10px; padding:14px; margin-bottom:14px;
+    text-align:center;
+  }
+  .q-box .header{
+    font-family:'Caveat',cursive; font-size:22px; font-weight:700; color:var(--range);
+    margin-bottom:4px;
+  }
+  .q-box .eq{
+    font-family:'IBM Plex Mono',monospace; font-size:18px; font-weight:700; color:var(--range);
+    margin:6px 0;
+  }
+  .q-box .small{font-size:12px;color:var(--ink-soft);font-family:'Source Sans 3',sans-serif;}
+
+  .sample-row{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap;}
+  .sample-btn{
+    flex:1; min-width:42px;
+    padding:7px 4px; border-radius:8px;
+    border:1px solid var(--paper-line); background:var(--paper);
+    font-family:'IBM Plex Mono',monospace; font-size:12px; font-weight:600;
+    cursor:pointer; color:var(--ink); text-align:center;
+  }
+  .sample-btn:hover{background:var(--range-soft);border-color:var(--range);color:var(--range);}
+  .sample-btn.active{background:var(--range-soft);border-color:var(--range);color:var(--range);}
+
+  .field{margin-bottom:12px;}
+  .field label{display:flex;justify-content:space-between;font-size:13.5px;font-weight:600;margin-bottom:6px;}
+  .field label span.val{font-family:'IBM Plex Mono',monospace;color:var(--range);font-weight:600;}
+  .xy-row{display:flex;gap:8px;}
+  .xy-row .xy-field{flex:1;}
+  .xy-row .xy-field label{font-size:11.5px;color:var(--ink-soft);margin-bottom:3px;text-transform:uppercase;letter-spacing:.04em;font-weight:700;}
+  input[type=number]{
+    width:100%; padding:9px 10px; border-radius:8px;
+    border:1px solid var(--paper-line);
+    font-family:'IBM Plex Mono',monospace; font-size:16px;
+    background:var(--paper); color:var(--ink);
+    -moz-appearance:textfield;
+  }
+  input[type=number]::-webkit-inner-spin-button,
+  input[type=number]::-webkit-outer-spin-button{-webkit-appearance:none;margin:0;}
+  input[type=number]:focus{
+    outline:2px solid var(--range); outline-offset:-1px;
+    border-color:var(--range); background:var(--card);
+  }
+  .helper{font-size:12px;color:var(--ink-soft);margin-top:6px;line-height:1.4;}
+  .helper span.k{font-family:'IBM Plex Mono',monospace;color:var(--ink);font-weight:600;}
+
+  .result-box{
+    background:var(--paper); border:1px solid var(--paper-line);
+    border-radius:9px; padding:12px; margin-bottom:14px;
+    font-family:'IBM Plex Mono',monospace; font-size:13px; text-align:center;
+    font-weight:600;
+  }
+  .result-box .formula{font-size:11px;color:var(--ink-soft);margin-bottom:4px;}
+  .result-box .value{font-size:20px;font-weight:700;}
+  .result-box.in{background:var(--good-soft);border-color:var(--good);}
+  .result-box.in .value{color:var(--good);}
+  .result-box.out{background:var(--mat-soft);border-color:var(--mat);}
+  .result-box.out .value{color:var(--mat);}
+
+  .status{
+    font-size:13.5px; line-height:1.5; padding:12px;
+    border-radius:9px; background:var(--paper);
+    border:1px solid var(--paper-line); margin-bottom:14px; min-height:20px;
+  }
+  .status.feedback-good{background:var(--good-soft);border-color:var(--good);color:var(--good);font-weight:600;}
+
+  button{
+    font-family:'Source Sans 3',sans-serif; font-weight:600; font-size:14.5px;
+    border:none; border-radius:9px; padding:11px 16px; cursor:pointer;
+    width:100%; transition:transform .08s ease, filter .15s ease;
+  }
+  button:active{transform:translateY(1px);}
+  button:disabled{opacity:.4;cursor:not-allowed;}
+
+  .graph-card{display:flex;flex-direction:column;}
+  .legend{display:flex;gap:18px;flex-wrap:wrap;margin:6px 0 12px;font-size:12.5px;font-family:'IBM Plex Mono',monospace;}
+  .legend span{display:inline-flex;align-items:center;gap:6px;}
+  .dot{width:10px;height:10px;border-radius:50%;display:inline-block;}
+  .dot.s-range{background:var(--range);}
+  .dot.s-kernel{background:var(--kernel);}
+  .dot.s-input{background:var(--input);}
+
+  svg{width:100%;height:auto;display:block;background:var(--paper);border:1px solid var(--paper-line);border-radius:8px;}
+  .axis-label{font-family:'IBM Plex Mono',monospace;font-size:12px;fill:var(--ink-soft);}
+  .tick-label{font-family:'IBM Plex Mono',monospace;font-size:10px;fill:var(--ink-soft);}
+  .point-label{font-family:'IBM Plex Mono',monospace;font-size:11px;fill:var(--ink);font-weight:600;}
+
+  .reflect,.explore{margin-top:20px;padding-top:16px;border-top:1px dashed var(--paper-line);}
+  .reflect.hidden,.explore.hidden{display:none;}
+  .q{margin-bottom:16px;}
+  .q p.qtext{font-weight:600;margin:0 0 8px;font-size:14.5px;}
+  .options{display:flex;gap:8px;flex-wrap:wrap;}
+  .opt{
+    padding:8px 14px;border-radius:8px;border:1px solid var(--paper-line);
+    background:var(--paper);font-size:13.5px;cursor:pointer;font-weight:600;
+  }
+  .opt.correct{background:var(--good-soft);border-color:var(--good);color:var(--good);}
+  .opt.wrong{background:var(--mat-soft);border-color:var(--mat);color:var(--mat);}
+  .opt:disabled{cursor:default;}
+
+  .explore .panel-title{font-size:22px;}
+  .explore-inputs{display:grid;grid-template-columns:repeat(4, 1fr);gap:8px;margin:10px 0 14px;}
+  .explore-inputs .field{margin-bottom:0;}
+  .explore-eq{
+    background:var(--range-soft); border:1.5px solid var(--range);
+    border-radius:8px; padding:10px; margin-bottom:10px;
+    font-family:'IBM Plex Mono',monospace; font-size:13px; text-align:center; color:var(--range); font-weight:700;
+  }
+
+  footer.note{text-align:center;font-size:12px;color:var(--ink-soft);margin-top:26px;font-family:'IBM Plex Mono',monospace;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <p class="eyebrow">Linear Algebra · Range (Image) of a Singular Matrix</p>
+    <h1>Bhavabhuti's Range — What does B actually output?</h1>
+    <p>For any function <em>B</em>: ℝ² → ℝ², the <strong>range</strong> is the set of all possible outputs — { B(x, y) | (x, y) ∈ ℝ² }. For B = ((1, 2), (2, 4)), the two columns are <em>linearly dependent</em> (column 2 = 2 × column 1). So B collapses the whole plane onto something smaller. What is it?</p>
+    <div class="matrix-display">
+      <div class="name">the matrix</div>
+      <span class="big-matrix">
+        <span class="row">1&nbsp;&nbsp;2</span>
+        <span class="row">2&nbsp;&nbsp;4</span>
+      </span>
+      <div class="formula">column 1 = (1, 2), column 2 = (2, 4) = <strong>2 × column 1</strong> · only one independent direction</div>
+    </div>
+  </header>
+
+  <div class="grid-layout">
+
+    <!-- LEFT CONTROL PANEL -->
+    <div class="card">
+      <p class="panel-title">Test an input</p>
+      <p class="panel-sub">Type (x, y). B(x, y) is the output. Watch which outputs are possible.</p>
+
+      <div class="field">
+        <label>Try <span class="val">(x, y)</span></label>
+        <div class="xy-row">
+          <div class="xy-field"><label>x</label><input type="number" id="inX" step="any" value="1"></div>
+          <div class="xy-field"><label>y</label><input type="number" id="inY" step="any" value="2"></div>
+        </div>
+        <div class="helper">Try several (x, y). Notice every output has the form (t, 2t) — the y is always twice the x.</div>
+      </div>
+
+      <div class="result-box" id="resultBox">
+        <div class="formula">B · (x, y)ᵀ =</div>
+        <div class="value" id="resultVal">?</div>
+      </div>
+
+      <div class="sample-row">
+        <button class="sample-btn" data-x="1"  data-y="0">(1, 0)</button>
+        <button class="sample-btn" data-x="0"  data-y="1">(0, 1)</button>
+        <button class="sample-btn" data-x="1"  data-y="1">(1, 1)</button>
+        <button class="sample-btn" data-x="3"  data-y="-1">(3, −1)</button>
+        <button class="sample-btn" data-x="-2" data-y="5">(−2, 5)</button>
+      </div>
+
+      <div class="status" id="statusBox">Every output of B has the form (t, 2t) — that is, y is always twice x.</div>
+
+      <button class="btn-secondary" id="resetBtn" style="margin-top:0;">Reset to (1, 0)</button>
+    </div>
+
+    <!-- RIGHT GRAPH -->
+    <div class="card graph-card">
+      <p class="panel-title">Input plane → output (range)</p>
+      <div class="legend">
+        <span><span style="color:var(--kernel);">─ ─</span>kernel (B · v = 0) — what gets mapped to (0, 0)</span>
+        <span style="color:var(--range);">─ ─</span>range (the image) — what B can output</span>
+        <span><i class="dot s-input"></i>your input (x, y)</span>
+        <span><i class="dot s-range"></i>your output B(x, y)</span>
+      </div>
+      <p class="panel-sub" style="margin:6px 0 10px;">The range is a <em>line</em>, not the whole plane. Type any (x, y) — every output lies on the range line. The kernel is the line of inputs that map to (0, 0).</p>
+      <svg id="graphSvg" viewBox="0 0 640 500" xmlns="http://www.w3.org/2000/svg"></svg>
+    </div>
+  </div>
+
+  <div class="q-box" style="margin-top:20px;">
+    <div class="header">The range of B</div>
+    <div class="eq">range(B) = { (t, 2t) | t ∈ ℝ } = the line y = 2x through the origin</div>
+    <div class="small">This is a <strong>1-dimensional</strong> subset of ℝ². Even though B takes a 2D input, B's output lives on a single line.</div>
+  </div>
+
+  <!-- REFLECTION QUIZ -->
+  <div class="card reflect hidden" id="reflectCard">
+    <p class="panel-title">What do you notice?</p>
+    <p class="panel-sub">The output never leaves the line y = 2x. Now check the geometry.</p>
+
+    <div class="q" id="q1">
+      <p class="qtext">1. The range of B = ((1, 2), (2, 4)) is —</p>
+      <div class="options">
+        <button class="opt" data-correct="false">all of ℝ² — the whole plane</button>
+        <button class="opt" data-correct="true">the line y = 2x (1-dimensional)</button>
+        <button class="opt" data-correct="false">a single point — the origin</button>
+      </div>
+    </div>
+
+    <div class="q" id="q2">
+      <p class="qtext">2. Why is the range a line, not the whole plane?</p>
+      <div class="options">
+        <button class="opt" data-correct="false">Because B is broken</button>
+        <button class="opt" data-correct="true">Because the two columns of B are linearly dependent — both point along (1, 2)</button>
+        <button class="opt" data-correct="false">Because B is a square matrix</button>
+      </div>
+    </div>
+
+    <div class="q" id="q3">
+      <p class="qtext">3. The kernel of B (set of inputs mapped to (0, 0)) is the line —</p>
+      <div class="options">
+        <button class="opt" data-correct="false">y = 2x (same as the range)</button>
+        <button class="opt" data-correct="false">x = 0 (the y-axis)</button>
+        <button class="opt" data-correct="true">x + 2y = 0 (slope −½, perpendicular to the range)</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- EXPLORE MODE -->
+  <div class="card explore hidden" id="exploreCard">
+    <p class="panel-title">Now you try: change the matrix</p>
+    <p class="panel-sub">Enter any 2 × 2 matrix and see its range. For non-singular matrices, the range is the whole plane.</p>
+
+    <div class="explore-inputs">
+      <div class="field"><label>B₁₁</label><input type="number" id="eB11" step="1" value="1"></div>
+      <div class="field"><label>B₁₂</label><input type="number" id="eB12" step="1" value="2"></div>
+      <div class="field"><label>B₂₁</label><input type="number" id="eB21" step="1" value="2"></div>
+      <div class="field"><label>B₂₂</label><input type="number" id="eB22" step="1" value="4"></div>
+    </div>
+
+    <div class="explore-eq" id="exploreEq">range(B) = {(t, 2t) | t ∈ ℝ} — a line</div>
+  </div>
+
+  <footer class="note">B is singular · det(B) = 0 · columns are linearly dependent · range is the column span, a 1D line</footer>
+</div>
+
+<script>
+(function(){
+  const svg = document.getElementById('graphSvg');
+  const svgNS = "http://www.w3.org/2000/svg";
+
+  // ---- STATE ----
+  let B = [1, 2, 2, 4];  // B = [[1,2],[2,4]]
+
+  // ---- DOM ----
+  const inX = document.getElementById('inX');
+  const inY = document.getElementById('inY');
+  const resultBox = document.getElementById('resultBox');
+  const resultVal = document.getElementById('resultVal');
+  const statusBox = document.getElementById('statusBox');
+  const resetBtn = document.getElementById('resetBtn');
+  const sampleBtns = document.querySelectorAll('.sample-btn');
+  const reflectCard = document.getElementById('reflectCard');
+  const exploreCard = document.getElementById('exploreCard');
+
+  function applyB(x, y){
+    return {
+      x: B[0]*x + B[1]*y,
+      y: B[2]*x + B[3]*y
+    };
+  }
+
+  function fmt(v){
+    if(Math.abs(v) < 1e-9) return '0';
+    if(Math.abs(v) < 0.01) return v.toFixed(2);
+    if(Number.isInteger(v)) return v.toString();
+    return v.toFixed(1);
+  }
+
+  function onRange(u, v){
+    // A point (u, v) is on the range if v === 2u (within tolerance)
+    return Math.abs(v - 2*u) < 0.005;
+  }
+
+  function updateLive(){
+    const x = parseFloat(inX.value);
+    const y = parseFloat(inY.value);
+    if(isNaN(x) || isNaN(y)){
+      resultVal.textContent = '(?, ?)';
+      resultBox.className = 'result-box';
+      render();
+      return;
+    }
+    const out = applyB(x, y);
+    resultVal.textContent = `(${fmt(out.x)}, ${fmt(out.y)})`;
+    const inRange = onRange(out.x, out.y);
+    resultBox.className = 'result-box ' + (inRange ? 'in' : 'out');
+
+    sampleBtns.forEach(btn => {
+      const bx = parseFloat(btn.dataset.x);
+      const by = parseFloat(btn.dataset.y);
+      btn.classList.toggle('active', Math.abs(bx - x) < 1e-9 && Math.abs(by - y) < 1e-9);
+    });
+
+    if(inRange){
+      setStatus(`B(${fmt(x)}, ${fmt(y)}) = (${fmt(out.x)}, ${fmt(out.y)}) — on the range line y = 2x ✓`, 'feedback-good');
+    } else {
+      setStatus(`B(${fmt(x)}, ${fmt(y)}) = (${fmt(out.x)}, ${fmt(out.y)}) — this can't happen! (Should be on y = 2x)`, '');
+    }
+    render();
+  }
+
+  function setStatus(html, cls){
+    statusBox.innerHTML = html;
+    statusBox.className = 'status' + (cls ? (' '+cls) : '');
+  }
+
+  function resetGame(){
+    inX.value = '1'; inY.value = '0';
+    updateLive();
+  }
+
+  inX.addEventListener('input', updateLive);
+  inY.addEventListener('input', updateLive);
+  inX.addEventListener('keydown', (e)=>{ if(e.key === 'Enter') updateLive(); });
+  inY.addEventListener('keydown', (e)=>{ if(e.key === 'Enter') updateLive(); });
+  resetBtn.addEventListener('click', resetGame);
+  sampleBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      inX.value = btn.dataset.x;
+      inY.value = btn.dataset.y;
+      updateLive();
+      reflectCard.classList.remove('hidden');
+    });
+  });
+
+  // ---- SVG rendering ----
+  function render(){
+    while(svg.firstChild) svg.removeChild(svg.firstChild);
+
+    // 2D plot
+    const PLOT_X_MIN = -6, PLOT_X_MAX = 6;
+    const PLOT_Y_MIN = -12, PLOT_Y_MAX = 14;
+    const PW = 560, PH = 420;
+    const ox = 320, oy = 240;       // SVG pixel for (0, 0)
+    const xSc = PW / (PLOT_X_MAX - PLOT_X_MIN);
+    const ySc = PH / (PLOT_Y_MAX - PLOT_Y_MIN);
+
+    function toS(x, y){
+      return {
+        sx: ox + (x - PLOT_X_MIN) * xSc,
+        sy: oy - (y - PLOT_Y_MIN) * ySc
+      };
+    }
+
+    // Plot background rect
+    const rect = document.createElementNS(svgNS, 'rect');
+    rect.setAttribute('x', ox - PLOT_X_MIN * xSc);
+    rect.setAttribute('y', oy - (PLOT_Y_MAX - PLOT_Y_MIN) * ySc);
+    rect.setAttribute('width', PW);
+    rect.setAttribute('height', PH);
+    rect.setAttribute('fill', '#FFFDF7');
+    rect.setAttribute('stroke', '#E4DCC4');
+    rect.setAttribute('stroke-width', '1');
+    svg.appendChild(rect);
+
+    // Grid lines (light gray)
+    function drawGrid(plane){
+      for(let v = -6; v <= 6; v++){
+        if(v === 0) continue;
+        let p1, p2;
+        if(plane === 'x'){
+          p1 = toS(v, PLOT_Y_MIN); p2 = toS(v, PLOT_Y_MAX);
+        } else {
+          p1 = toS(PLOT_X_MIN, v); p2 = toS(PLOT_X_MAX, v);
+        }
+        const l = mkL(p1.sx, p1.sy, p2.sx, p2.sy, '#E4DCC4', 0.5, true);
+        svg.appendChild(l);
+      }
+    }
+    drawGrid('x');
+    drawGrid('y');
+
+    // Axes
+    const xL = toS(PLOT_X_MIN, 0), xR = toS(PLOT_X_MAX, 0);
+    svg.appendChild(mkL(xL.sx, xL.sy, xR.sx, xR.sy, '#26332B', 1.5, false));
+    const yB = toS(0, PLOT_Y_MIN), yT = toS(0, PLOT_Y_MAX);
+    svg.appendChild(mkL(yB.sx, yB.sy, yT.sx, yT.sy, '#26332B', 1.5, false));
+
+    // Tick labels
+    for(let v = -5; v <= 5; v++){
+      if(v === 0) continue;
+      const p = toS(v, 0);
+      svg.appendChild(mkL(p.sx, oy - 2, p.sx, oy + 2, '#5B6B60', 1));
+      const tk = mkT(p.sx, oy + 14, fmt(v), 'tick-label');
+      tk.setAttribute('text-anchor', 'middle');
+      svg.appendChild(tk);
+      const q = toS(0, v);
+      svg.appendChild(mkL(ox - 2, q.sy, ox + 2, q.sy, '#5B6B60', 1));
+      const tk2 = mkT(ox - 8, q.sy + 3, fmt(v), 'tick-label');
+      tk2.setAttribute('text-anchor', 'end');
+      svg.appendChild(tk2);
+    }
+
+    // Axis labels
+    const xl = mkT(ox + PW/2, oy + 28, 'x', 'axis-label');
+    xl.setAttribute('text-anchor', 'middle');
+    svg.appendChild(xl);
+    const yl = mkT(ox - 20, 60, 'y', 'axis-label');
+    svg.appendChild(yl);
+
+    // KERNEL: x + 2y = 0 → y = -x/2
+    const k1 = toS(PLOT_X_MIN, -PLOT_X_MIN/2);
+    const k2 = toS(PLOT_X_MAX, -PLOT_X_MAX/2);
+    svg.appendChild(mkL(k1.sx, k1.sy, k2.sx, k2.sy, '#7B2D8E', 2, true));
+    const kMid = toS(-4, 2);
+    const kLab = mkT(kMid.sx - 8, kMid.sy - 6, 'kernel: x + 2y = 0', 'tick-label');
+    kLab.setAttribute('fill', '#7B2D8E');
+    kLab.setAttribute('font-style', 'italic');
+    kLab.setAttribute('font-weight', '700');
+    kLab.setAttribute('text-anchor', 'end');
+    svg.appendChild(kLab);
+
+    // RANGE: y = 2x
+    const r1 = toS(PLOT_X_MIN, 2*PLOT_X_MIN);
+    const r2 = toS(PLOT_X_MAX, 2*PLOT_X_MAX);
+    // draw range as a thick solid line (highlighted as the range)
+    svg.appendChild(mkL(r1.sx, r1.sy, r2.sx, r2.sy, '#0E7490', 2.5, false));
+    // Add arrowheads at both ends
+    function arrowhead(from, to, color){
+      const dx = to.sx - from.sx, dy = to.sy - from.sy;
+      const len = Math.sqrt(dx*dx + dy*dy);
+      if(len < 5) return;
+      const ux = dx/len, uy = dy/len;
+      const head = 8;
+      const lp = {x: to.sx - ux*head - uy*head*0.4, y: to.sy - uy*head + ux*head*0.4};
+      const rp = {x: to.sx - ux*head + uy*head*0.4, y: to.sy - uy*head - ux*head*0.4};
+      const hp = document.createElementNS(svgNS, 'path');
+      hp.setAttribute('d', `M ${to.sx} ${to.sy} L ${lp.x} ${lp.y} L ${rp.x} ${rp.y} Z`);
+      hp.setAttribute('fill', color);
+      svg.appendChild(hp);
+    }
+    arrowhead(r1, r2, '#0E7490');
+    arrowhead(r2, r1, '#0E7490');
+
+    // Range label
+    const rMid = toS(4, 8);
+    const rLab = mkT(rMid.sx + 8, rMid.sy - 4, 'range: y = 2x', 'tick-label');
+    rLab.setAttribute('fill', '#0E7490');
+    rLab.setAttribute('font-style', 'italic');
+    rLab.setAttribute('font-weight', '700');
+    svg.appendChild(rLab);
+
+    // Sample points on the RANGE (small blue dots)
+    const sampleTs = [-5, -3, -1, 1, 3, 5];
+    sampleTs.forEach(t => {
+      const p = toS(t, 2*t);
+      const c = document.createElementNS(svgNS, 'circle');
+      c.setAttribute('cx', p.sx); c.setAttribute('cy', p.sy);
+      c.setAttribute('r', 3);
+      c.setAttribute('fill', '#0E7490');
+      c.setAttribute('fill-opacity', '0.6');
+      svg.appendChild(c);
+    });
+
+    // Sample points on the KERNEL (small purple dots)
+    for(let s = -6; s <= 6; s += 2){
+      const p = toS(s, -s/2);
+      const c = document.createElementNS(svgNS, 'circle');
+      c.setAttribute('cx', p.sx); c.setAttribute('cy', p.sy);
+      c.setAttribute('r', 2.5);
+      c.setAttribute('fill', '#7B2D8E');
+      c.setAttribute('fill-opacity', '0.5');
+      svg.appendChild(c);
+    }
+
+    // User's input (x, y) — orange dot
+    const x = parseFloat(inX.value);
+    const y = parseFloat(inY.value);
+    if(!isNaN(x) && !isNaN(y)){
+      const sp = toS(x, y);
+      const c = document.createElementNS(svgNS, 'circle');
+      c.setAttribute('cx', sp.sx); c.setAttribute('cy', sp.sy);
+      c.setAttribute('r', 6);
+      c.setAttribute('fill', '#B8860B');
+      c.setAttribute('stroke', '#FFFDF7');
+      c.setAttribute('stroke-width', '2');
+      svg.appendChild(c);
+      const lab = mkT(sp.sx + 9, sp.sy - 6, `(x, y) = (${fmt(x)}, ${fmt(y)})`, 'point-label');
+      lab.setAttribute('fill', '#B8860B');
+      svg.appendChild(lab);
+
+      // Output B(x, y) — green dot on range line
+      const out = applyB(x, y);
+      if(out.x >= PLOT_X_MIN && out.x <= PLOT_X_MAX && out.y >= PLOT_Y_MIN && out.y <= PLOT_Y_MAX){
+        const op = toS(out.x, out.y);
+        const halo = document.createElementNS(svgNS, 'circle');
+        halo.setAttribute('cx', op.sx); halo.setAttribute('cy', op.sy);
+        halo.setAttribute('r', 12);
+        halo.setAttribute('fill', 'none');
+        halo.setAttribute('stroke', '#0E7490');
+        halo.setAttribute('stroke-width', '2');
+        halo.setAttribute('stroke-opacity', '0.4');
+        svg.appendChild(halo);
+        const oc = document.createElementNS(svgNS, 'circle');
+        oc.setAttribute('cx', op.sx); oc.setAttribute('cy', op.sy);
+        oc.setAttribute('r', 6);
+        oc.setAttribute('fill', '#0E7490');
+        oc.setAttribute('stroke', '#FFFDF7');
+        oc.setAttribute('stroke-width', '2');
+        svg.appendChild(oc);
+        const ol = mkT(op.sx + 9, op.sy - 6, `B(x, y) = (${fmt(out.x)}, ${fmt(out.y)})`, 'point-label');
+        ol.setAttribute('fill', '#0E7490');
+        svg.appendChild(ol);
+
+        // Arrow from input to output
+        const arrow = mkL(sp.sx, sp.sy, op.sx, op.sy, '#5B6B60', 1.2, true);
+        svg.appendChild(arrow);
+      }
+    }
+
+    // Origin
+    const o = toS(0, 0);
+    const oc = document.createElementNS(svgNS, 'circle');
+    oc.setAttribute('cx', o.sx); oc.setAttribute('cy', o.sy);
+    oc.setAttribute('r', 4);
+    oc.setAttribute('fill', '#26332B');
+    svg.appendChild(oc);
+    const ol = mkT(o.sx - 6, o.sy + 14, '(0, 0)', 'tick-label');
+    ol.setAttribute('font-weight', '700');
+    ol.setAttribute('text-anchor', 'end');
+    svg.appendChild(ol);
+  }
+
+  function mkL(x1, y1, x2, y2, stroke, w, dashed){
+    const l = document.createElementNS(svgNS, 'line');
+    l.setAttribute('x1', x1); l.setAttribute('y1', y1);
+    l.setAttribute('x2', x2); l.setAttribute('y2', y2);
+    l.setAttribute('stroke', stroke); l.setAttribute('stroke-width', w);
+    if(dashed) l.setAttribute('stroke-dasharray', '5 3');
+    return l;
+  }
+  function mkT(x, y, text, cls){
+    const t = document.createElementNS(svgNS, 'text');
+    t.setAttribute('x', x); t.setAttribute('y', y);
+    t.setAttribute('class', cls);
+    t.textContent = text;
+    return t;
+  }
+
+  // ---- QUIZ ----
+  document.querySelectorAll('.q .options').forEach(group => {
+    group.querySelectorAll('.opt').forEach(btn => {
+      btn.addEventListener('click', ()=>{
+        const correct = btn.dataset.correct === 'true';
+        group.querySelectorAll('.opt').forEach(b => {
+          b.disabled = true;
+          if(b.dataset.correct === 'true') b.classList.add('correct');
+        });
+        if(!correct) b.classList.add('wrong');
+        if(group.parentElement.id === 'q3' && correct){
+          setTimeout(()=>{
+            exploreCard.classList.remove('hidden');
+            exploreCard.scrollIntoView({behavior:'smooth', block:'nearest'});
+            rebuildExplore();
+          }, 400);
+        }
+      });
+    });
+  });
+
+  // ---- EXPLORE ----
+  const eB11 = document.getElementById('eB11');
+  const eB12 = document.getElementById('eB12');
+  const eB21 = document.getElementById('eB21');
+  const eB22 = document.getElementById('eB22');
+  const exploreEq = document.getElementById('exploreEq');
+
+  function rebuildExplore(){
+    const nb11 = parseFloat(eB11.value);
+    const nb12 = parseFloat(eB12.value);
+    const nb21 = parseFloat(eB21.value);
+    const nb22 = parseFloat(eB22.value);
+    if([nb11, nb12, nb21, nb22].some(v => isNaN(v))) return;
+    B = [nb11, nb12, nb21, nb22];
+    const detB = nb11*nb22 - nb12*nb21;
+    if(Math.abs(detB) < 1e-9){
+      // Singular — find range
+      // Try to identify independent column
+      if(Math.abs(nb11) > 1e-9 || Math.abs(nb21) > 1e-9){
+        const t = 1 / Math.max(Math.abs(nb11), Math.abs(nb21));
+        exploreEq.innerHTML = `range = span{ (${fmt(nb11)}, ${fmt(nb21)}) } — a line through origin`;
+      } else {
+        exploreEq.innerHTML = `range = span{ (${fmt(nb12)}, ${fmt(nb22)}) } — a line through origin`;
+      }
+    } else {
+      exploreEq.innerHTML = `range = whole ℝ² — the matrix is non-singular (det = ${fmt(detB)})`;
+    }
+    render();
+  }
+  [eB11, eB12, eB21, eB22].forEach(inp => {
+    inp.addEventListener('input', rebuildExplore);
+  });
+
+  // init
+  updateLive();
+})();
+</script>
+</body>
+</html>

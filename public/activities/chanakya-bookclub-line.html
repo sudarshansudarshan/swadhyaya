@@ -1,0 +1,981 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chanakya's Tax System — y = ax + b</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=IBM+Plex+Mono:wght@500;600&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper: #FAF5E8;
+    --paper-line: #D8CFB6;
+    --ink: #26332B;
+    --ink-soft: #5B6B60;
+    --accent: #1F6F5C;
+    --accent-soft: #DCEDE7;
+    --slope: #B8860B;
+    --slope-soft: #F3E9CE;
+    --intercept: #7B5EA7;
+    --intercept-soft: #EAE3F5;
+    --good: #1F6F5C;
+    --card: #FFFDF7;
+    --shadow: 0 2px 10px rgba(38,51,43,0.08);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:
+      repeating-linear-gradient(#FAF5E8 0px, #FAF5E8 27px, var(--paper-line) 28px),
+      var(--paper);
+    background-size: 100% 28px;
+    color:var(--ink);
+    font-family:'Source Sans 3', sans-serif;
+    min-height:100vh;
+    padding: 28px 16px 60px;
+  }
+  .wrap{max-width:1080px;margin:0 auto;}
+  header.hero{
+    background: var(--card);
+    border:1px solid var(--paper-line);
+    border-radius:14px;
+    box-shadow: var(--shadow);
+    padding: 26px 28px 22px;
+    margin-bottom:20px;
+    position:relative;
+    overflow:hidden;
+  }
+  .eyebrow{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--ink-soft);
+    margin:0 0 6px;
+  }
+  h1{
+    font-family:'Caveat', cursive;
+    font-weight:700;
+    font-size:44px;
+    margin:0 0 10px;
+    color:var(--ink);
+    line-height:1.05;
+  }
+  header.hero p{
+    max-width:640px;
+    line-height:1.55;
+    font-size:15.5px;
+    color:var(--ink);
+    margin:0 0 8px;
+  }
+  .rule-badge{
+    display:inline-flex;
+    gap:16px;
+    align-items:center;
+    background:var(--paper);
+    border:1px dashed var(--paper-line);
+    border-radius:10px;
+    padding:10px 14px;
+    margin-top:10px;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:13px;
+  }
+  .rule-badge .pill{
+    display:inline-flex; align-items:center; gap:6px;
+    padding:3px 9px; border-radius:20px; font-weight:600;
+  }
+  .pill.accent{ background:var(--accent-soft); color:var(--accent); }
+  .pill.slope{ background:var(--slope-soft); color:var(--slope); }
+
+  .grid-layout{
+    display:grid;
+    grid-template-columns: 300px 1fr;
+    gap:20px;
+    align-items:start;
+  }
+  @media (max-width: 800px){
+    .grid-layout{ grid-template-columns: 1fr; }
+  }
+
+  .card{
+    background:var(--card);
+    border:1px solid var(--paper-line);
+    border-radius:14px;
+    box-shadow: var(--shadow);
+    padding:20px;
+  }
+
+  .panel-title{
+    font-family:'Caveat', cursive;
+    font-weight:700;
+    font-size:24px;
+    margin:0 0 4px;
+  }
+  .panel-sub{
+    font-size:13px; color:var(--ink-soft); margin:0 0 16px; line-height:1.4;
+  }
+
+  .eq-box{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:24px;
+    font-weight:600;
+    text-align:center;
+    background:var(--paper);
+    border:1px solid var(--paper-line);
+    border-radius:10px;
+    padding:12px;
+    margin-bottom:16px;
+    color:var(--accent);
+  }
+
+  .field{ margin-bottom:16px; }
+  .field label{
+    display:flex; justify-content:space-between;
+    font-size:13.5px; font-weight:600; margin-bottom:6px;
+  }
+  .field label span.val{
+    font-family:'IBM Plex Mono', monospace; color:var(--slope); font-weight:600;
+  }
+  .field label span.val2{
+    font-family:'IBM Plex Mono', monospace; color:var(--intercept); font-weight:600;
+  }
+  input[type=number]{
+    width:100%;
+    padding:9px 10px;
+    border-radius:8px;
+    border:1px solid var(--paper-line);
+    font-family:'IBM Plex Mono', monospace;
+    font-size:16px;
+    background:var(--paper);
+    color:var(--ink);
+    accent-color: var(--slope);
+  }
+  input[type=number]:focus{
+    outline:2px solid var(--slope);
+    outline-offset:-1px;
+    border-color:var(--slope);
+  }
+  input[type=number]:disabled{
+    opacity:.5;
+    cursor:not-allowed;
+  }
+  .helper{ font-size:12px; color:var(--ink-soft); margin-top:4px; }
+
+  .jars{ display:flex; gap:14px; margin-bottom:18px; }
+  .jar{
+    flex:1; text-align:center; padding:12px 6px;
+    border-radius:10px; border:1px solid var(--paper-line);
+  }
+  .jar.x-jar{ background:var(--accent-soft); }
+  .jar.y-jar{ background:var(--slope-soft); }
+  .jar .name{ font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:.05em; }
+  .jar.x-jar .name{ color:var(--accent); }
+  .jar.y-jar .name{ color:var(--slope); }
+  .jar .amt{ font-family:'IBM Plex Mono', monospace; font-size:22px; font-weight:600; margin-top:4px; }
+
+  .param-row{
+    display:flex; gap:10px; margin-bottom:16px;
+  }
+  .param-row .param-field{ flex:1; }
+  .param-row .param-field label{
+    font-size:11px; font-weight:600; color:var(--ink-soft); margin-bottom:3px;
+  }
+  .param-row .param-field input[type=number]{
+    font-size:14px; padding:7px 8px;
+  }
+
+  button{
+    font-family:'Source Sans 3', sans-serif;
+    font-weight:600; font-size:14.5px;
+    border:none; border-radius:9px;
+    padding:11px 16px; cursor:pointer;
+    width:100%;
+    transition: transform .08s ease, filter .15s ease;
+  }
+  button:active{ transform: translateY(1px); }
+  button:disabled{ opacity:.4; cursor:not-allowed; }
+  .btn-primary{ background:var(--accent); color:#fff; }
+  .btn-primary:hover:not(:disabled){ filter:brightness(1.08); }
+  .btn-secondary{ background:var(--paper); color:var(--ink); border:1px solid var(--paper-line); margin-top:8px; }
+  .btn-secondary:hover:not(:disabled){ background:#F0E9D6; }
+
+  .status{
+    font-size:13.5px; line-height:1.5; padding:12px 12px; border-radius:9px;
+    background:var(--paper); border:1px solid var(--paper-line); margin-bottom:14px; min-height:20px;
+  }
+  .status.feedback-good{ background:var(--accent-soft); border-color:var(--accent); color:var(--accent); font-weight:600; }
+  .status.feedback-mid{ background:var(--intercept-soft); border-color:var(--intercept); color:var(--intercept); font-weight:600; }
+
+  .graph-card{ display:flex; flex-direction:column; }
+  .graph-card .panel-title{ margin-bottom:0; }
+  .legend{
+    display:flex; gap:18px; flex-wrap:wrap; margin: 6px 0 12px;
+    font-size:12.5px; font-family:'IBM Plex Mono', monospace;
+  }
+  .legend span{ display:inline-flex; align-items:center; gap:6px; }
+  .dot{ width:10px; height:10px; border-radius:50%; display:inline-block; }
+  .dot.predicted{ background:var(--intercept); }
+  .dot.actual{ background:var(--accent); }
+  .dot.line{ background:var(--slope); }
+
+  svg{ width:100%; height:auto; display:block; cursor:crosshair; touch-action:none; }
+  .axis-label{
+    font-family:'IBM Plex Mono', monospace; font-size:12px; fill:var(--ink-soft);
+  }
+  .tick-label{ font-family:'IBM Plex Mono', monospace; font-size:10px; fill:var(--ink-soft); }
+
+  .steps{ display:flex; gap:6px; margin-bottom:14px; flex-wrap:wrap; }
+  .step-dot{
+    width:26px; height:26px; border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    font-family:'IBM Plex Mono', monospace; font-size:12px; font-weight:600;
+    border:1.5px solid var(--paper-line); color:var(--ink-soft); background:var(--paper);
+  }
+  .step-dot.done{ background:var(--accent); border-color:var(--accent); color:#fff; }
+  .step-dot.active{ border-color:var(--slope); color:var(--slope); background:var(--slope-soft); }
+
+  .reflect{
+    margin-top:20px; padding-top:16px; border-top:1px dashed var(--paper-line);
+  }
+  .reflect.hidden, .explore.hidden{ display:none; }
+  .q{ margin-bottom:16px; }
+  .q p.qtext{ font-weight:600; margin:0 0 8px; font-size:14.5px; }
+  .options{ display:flex; gap:8px; flex-wrap:wrap; }
+  .opt{
+    padding:8px 14px; border-radius:8px; border:1px solid var(--paper-line);
+    background:var(--paper); font-size:13.5px; cursor:pointer; font-weight:600;
+  }
+  .opt.correct{ background:var(--accent-soft); border-color:var(--accent); color:var(--accent); }
+  .opt.wrong{ background:#F6DCD4; border-color:#B5502E; color:#8C3A1F; }
+  .opt:disabled{ cursor:default; }
+
+  .explore{ margin-top:20px; padding-top:16px; border-top:1px dashed var(--paper-line); }
+  .explore .panel-title{ font-size:22px; }
+
+  .explore-inputs{
+    display:flex; gap:16px; flex-wrap:wrap; margin:10px 0 16px;
+  }
+  .explore-inputs .field{
+    flex:1; min-width:120px; margin-bottom:0;
+  }
+
+  footer.note{
+    text-align:center; font-size:12px; color:var(--ink-soft); margin-top:26px;
+    font-family:'IBM Plex Mono', monospace;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <p class="eyebrow">Intuition Builder · Linear Equations in Two Variables</p>
+    <h1>Chanakya's Tax System — y = ax + b</h1>
+    <p>Chanakya designs a tax policy. Each province pays a fixed <strong>annual tax a</strong> plus a one-time <strong>base levy b</strong>. After x years, total revenue is <strong>y = ax + b</strong>. Predict the revenue each year, then check — and watch how the points line up.</p>
+    <div class="rule-badge">
+      <span class="pill slope">annual tax a = ₹2</span>
+      <span>+</span>
+      <span class="pill accent">base levy b = ₹1</span>
+      <span>=</span>
+      <span class="pill" style="background:var(--paper);border:1px solid var(--paper-line);">y = 2x + 1</span>
+    </div>
+  </header>
+
+  <div class="grid-layout">
+
+    <!-- LEFT CONTROL PANEL -->
+    <div class="card">
+      <p class="panel-title">Track the total</p>
+      <p class="panel-sub">Predict the total tax revenue for each year, then reveal the real number.</p>
+
+      <div class="eq-box" id="eqDisplay">y = 2x + 1</div>
+
+      <div class="param-row">
+        <div class="param-field">
+          <label>Annual tax a</label>
+          <input type="number" id="paramA" min="-5" max="10" step="0.5" value="2">
+        </div>
+        <div class="param-field">
+          <label>Base levy b</label>
+          <input type="number" id="paramB" min="-10" max="10" step="0.5" value="1">
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Year <span id="currentXLabel">1</span> — predict total revenue y:</label>
+        <input type="number" id="predictY" step="any" value="0">
+        <div class="helper" id="predictHelper">y = <span id="aDisplay">2</span> × <span id="xDisplay">1</span> + <span id="bDisplay">1</span> = ?</div>
+      </div>
+
+      <div class="jars">
+        <div class="jar x-jar">
+          <div class="name">Year (x)</div>
+          <div class="amt" id="xVal">1</div>
+        </div>
+        <div class="jar y-jar">
+          <div class="name">Revenue (y)</div>
+          <div class="amt" id="yVal">?</div>
+        </div>
+      </div>
+
+      <div class="steps" id="stepDots"></div>
+
+      <div class="status" id="statusBox">Chanakya's first year. What do you expect the total revenue to be?</div>
+
+      <button class="btn-primary" id="checkBtn">Predict &amp; Reveal</button>
+      <button class="btn-secondary" id="resetBtn">Start over</button>
+    </div>
+
+    <!-- RIGHT GRAPH -->
+    <div class="card graph-card">
+      <p class="panel-title">The revenue graph</p>
+      <div class="legend">
+        <span><i class="dot predicted"></i>your guess</span>
+        <span><i class="dot actual"></i>actual point</span>
+        <span><i class="dot line"></i>y = ax + b</span>
+      </div>
+      <svg id="graphSvg" viewBox="0 0 640 500" xmlns="http://www.w3.org/2000/svg"></svg>
+    </div>
+  </div>
+
+  <!-- REFLECTION QUIZ -->
+  <div class="card reflect hidden" id="reflectCard">
+    <p class="panel-title">What do you notice?</p>
+    <p class="panel-sub">All five years are plotted — and a line connects them. Look at the shape before you answer.</p>
+
+    <div class="q" id="q1">
+      <p class="qtext">1. Every year, x increases by 1. By how much does y increase?</p>
+      <div class="options">
+        <button class="opt" data-correct="false">It varies each year</button>
+        <button class="opt" data-correct="true">Always by a, the annual tax (₹2)</button>
+        <button class="opt" data-correct="false">Always by b, the registration fee (₹1)</button>
+      </div>
+    </div>
+
+    <div class="q" id="q2">
+      <p class="qtext">2. What does the base levy b represent on the graph?</p>
+      <div class="options">
+        <button class="opt" data-correct="true">The y-intercept — where the line crosses the y-axis (x=0)</button>
+        <button class="opt" data-correct="false">The steepness of the line</button>
+        <button class="opt" data-correct="false">The x-coordinate of year 1</button>
+      </div>
+    </div>
+
+    <div class="q" id="q3">
+      <p class="qtext">3. If the annual tax a increased from ₹2 to ₹4, the line would…</p>
+      <div class="options">
+        <button class="opt" data-correct="false">shift upward</button>
+        <button class="opt" data-correct="false">shift downward</button>
+        <button class="opt" data-correct="true">get steeper (revenue rises faster per year)</button>
+      </div>
+    </div>
+
+    <div class="q" id="q4">
+      <p class="qtext">4. Now try working backwards. If f(x) = 3x + 2 and f(α) = 17, what is α? (Solve 3α + 2 = 17 — Chanakya's tax year when revenue reaches 17)</p>
+      <div class="options">
+        <button class="opt" data-correct="false">α = 7 (add 2 first)</button>
+        <button class="opt" data-correct="true">α = 5 (subtract b, then divide by a)</button>
+        <button class="opt" data-correct="false">Not possible — you can't reverse a function</button>
+      </div>
+    </div>
+
+    <div class="q" id="q5">
+      <p class="qtext">5. Is α = 5 the unique answer? Could another year also give ₹17 total?</p>
+      <div class="options">
+        <button class="opt" data-correct="true">Yes, unique — each y comes from exactly one x in a linear function (a ≠ 0)</button>
+        <button class="opt" data-correct="false">No, two different years could have the same total</button>
+        <button class="opt" data-correct="false">Only if a &gt; 0</button>
+      </div>
+    </div>
+
+    <div class="q" id="q6">
+      <p class="qtext">6. Is it always possible to reverse y = ax + b? For any target y, can you find α?</p>
+      <div class="options">
+        <button class="opt" data-correct="true">Yes — as long as a ≠ 0, α = (y − b) / a gives exactly one answer for any y</button>
+        <button class="opt" data-correct="false">Only if y is positive</button>
+        <button class="opt" data-correct="false">Only if a &gt; 0</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- EXPLORE MODE -->
+  <div class="card explore hidden" id="exploreCard">
+    <p class="panel-title">Now you try: reverse any tax policy</p>
+    <p class="panel-sub">Change the annual tax a, base levy b, and target revenue y. f(x) = ax + b is invertible — every y comes from exactly one x.</p>
+
+    <div class="explore-inputs">
+      <div class="field">
+        <label>Annual tax a <span class="val" id="expAVal">2</span></label>
+        <input type="number" id="expA" step="0.5" value="2">
+      </div>
+      <div class="field">
+        <label>Base levy b <span class="val2" id="expBVal">1</span></label>
+        <input type="number" id="expB" step="0.5" value="1">
+      </div>
+      <div class="field">
+        <label>Target revenue y <span class="val" id="expTVal">17</span></label>
+        <input type="number" id="expTarget" step="any" value="17">
+      </div>
+    </div>
+
+    <div class="eq-box" id="exploreEq">y = 2x + 1</div>
+
+    <div id="exploreSolution" style="text-align:center;font-family:'IBM Plex Mono',monospace;font-size:18px;font-weight:600;padding:10px;border-radius:9px;margin:8px 0 14px;background:var(--accent-soft);border:1px solid var(--accent);color:var(--accent);">f(α) = 17 → α = 8.00</div>
+
+    <div class="helper" style="margin-bottom:10px;">Try <strong>a = 0</strong> — what happens to invertibility? Try <strong>a negative</strong> — still invertible? Every linear function with a ≠ 0 is one-to-one: each y pairs with exactly one x.</div>
+  </div>
+
+  <footer class="note">Built for exploring y = ax + b · Chanakya's tax policy: annual tax a + base levy b</footer>
+</div>
+
+<script>
+(function(){
+  const svgNS = "http://www.w3.org/2000/svg";
+  const svg = document.getElementById('graphSvg');
+  const originX = 80, originY = 460;
+  const plotW = 520, plotH = 400;
+
+  // ---- STATE ----
+  const MAIN_STEPS = 5;
+  let a = 2, b = 1;
+  let step = 0;
+  let points = [];
+  let prediction = null;
+  let revealed = false;
+  let mode = 'predict';
+
+  const paramA = document.getElementById('paramA');
+  const paramB = document.getElementById('paramB');
+  const predictY = document.getElementById('predictY');
+  const currentXLabel = document.getElementById('currentXLabel');
+  const xDisplay = document.getElementById('xDisplay');
+  const aDisplay = document.getElementById('aDisplay');
+  const bDisplay = document.getElementById('bDisplay');
+  const predictHelper = document.getElementById('predictHelper');
+  const xVal = document.getElementById('xVal');
+  const yVal = document.getElementById('yVal');
+  const eqDisplay = document.getElementById('eqDisplay');
+  const statusBox = document.getElementById('statusBox');
+  const checkBtn = document.getElementById('checkBtn');
+  const resetBtn = document.getElementById('resetBtn');
+  const stepDots = document.getElementById('stepDots');
+  const reflectCard = document.getElementById('reflectCard');
+  const exploreCard = document.getElementById('exploreCard');
+
+  for(let i=1;i<=MAIN_STEPS;i++){
+    const d = document.createElement('div');
+    d.className='step-dot';
+    d.textContent = i;
+    d.id = 'step-'+i;
+    stepDots.appendChild(d);
+  }
+
+  function updateEq(){
+    const aStr = a === 0 ? '0' : (a === 1 ? '' : (a === -1 ? '−' : a));
+    const bStr = b === 0 ? '' : (b > 0 ? ` + ${b}` : ` − ${Math.abs(b)}`);
+    eqDisplay.textContent = `y = ${aStr}x${bStr}`;
+  }
+
+  function updatePredictHelper(){
+    const currentX = step + 1;
+    currentXLabel.textContent = currentX;
+    xDisplay.textContent = currentX;
+    aDisplay.textContent = a;
+    bDisplay.textContent = b;
+    xVal.textContent = currentX;
+    yVal.textContent = '?';
+    predictHelper.innerHTML = `y = ${a} × ${currentX} + ${b} = ?`;
+  }
+
+  function updateStatus(html, cls){
+    statusBox.innerHTML = html;
+    statusBox.className = 'status' + (cls ? (' '+cls) : '');
+  }
+
+  function getCurrentTarget(){
+    const x = step + 1;
+    return {x, y: a * x + b};
+  }
+
+  function niceMax(v){
+    if(v <= 0) return 10;
+    const mag = Math.pow(10, Math.floor(Math.log10(v)));
+    const norm = v / mag;
+    let n;
+    if(norm <= 1) n = 1; else if(norm <= 2) n = 2; else if(norm <= 4) n = 4; else if(norm <= 5) n = 5; else n = 10;
+    return n * mag;
+  }
+
+  function niceMin(v){
+    if(v >= 0) return 0;
+    const mag = Math.pow(10, Math.floor(Math.log10(Math.abs(v))));
+    const norm = Math.abs(v) / mag;
+    let n;
+    if(norm <= 1) n = 1; else if(norm <= 2) n = 2; else if(norm <= 4) n = 4; else if(norm <= 5) n = 5; else n = 10;
+    return -(n * mag);
+  }
+
+  function getDataBounds(){
+    const allPts = points.concat([]);
+    const exploreA = parseFloat(document.getElementById('expA').value) || 0;
+    const exploreB = parseFloat(document.getElementById('expB').value) || 0;
+    const exploreT = parseFloat(document.getElementById('expTarget').value);
+    const eT = isNaN(exploreT) ? exploreB : exploreT;
+    const eMin = Math.min(exploreB, exploreA * 6 + exploreB, eT);
+    const eMax = Math.max(exploreB, exploreA * 6 + exploreB, eT);
+    if(allPts.length === 0){
+      const pad = Math.max(3, (eMax - eMin) * 0.2);
+      return {xMin: 0, xMax: 8, yMin: niceMin(eMin - pad), yMax: niceMax(eMax + pad)};
+    }
+    const xs = allPts.map(p => p.x);
+    const ys = allPts.map(p => p.y);
+    let maxY = Math.max(...ys, eMax, 5);
+    let minY = Math.min(...ys, eMin, 0);
+    const maxX = Math.max(...xs, 6);
+    return {
+      xMin: 0,
+      xMax: Math.max(6, niceMax(maxX * 1.15)),
+      yMin: niceMin(minY - 1),
+      yMax: niceMax(maxY * 1.15 + 1)
+    };
+  }
+
+  function render(){
+    while(svg.firstChild) svg.removeChild(svg.firstChild);
+
+    const bounds = getDataBounds();
+    const xRange = bounds.xMax - bounds.xMin;
+    const yRange = bounds.yMax - bounds.yMin;
+    const xScale = plotW / xRange;
+    const yScale = plotH / yRange;
+    const originDataX = bounds.xMin;
+    const originDataY = bounds.yMin;
+
+    function toSvg(dx, dy){
+      return {
+        x: originX + (dx - originDataX) * xScale,
+        y: originY - (dy - originDataY) * yScale
+      };
+    }
+
+    // SVG coords of the data origin (0, 0)
+    const originSvg = toSvg(0, 0);
+    const yAxisInRange = (0 >= bounds.xMin && 0 <= bounds.xMax);
+    const xAxisInRange = (0 >= bounds.yMin && 0 <= bounds.yMax);
+
+    // grid lines + tick labels — anchored to the data axes
+    const xStep = niceMax(xRange / 6) || 1;
+    const yStep = niceMax(yRange / 6) || 1;
+
+    for(let v = Math.ceil(bounds.xMin / xStep) * xStep; v <= bounds.xMax; v += xStep){
+      if(v === 0) continue;
+      const p = toSvg(v, 0);
+      if(p.x >= originX - 1 && p.x <= originX + plotW + 1){
+        const gl = mkLine(p.x, originY, p.x, originY - plotH, '#E4DCC4', 1);
+        svg.appendChild(gl);
+        const labelY = xAxisInRange ? originSvg.y + 18 : originY + 18;
+        const tl = mkText(p.x, labelY, '' + Math.round(v), 'tick-label');
+        tl.setAttribute('text-anchor', 'middle');
+        svg.appendChild(tl);
+      }
+    }
+
+    for(let v = Math.ceil(bounds.yMin / yStep) * yStep; v <= bounds.yMax; v += yStep){
+      if(v === 0) continue;
+      const p = toSvg(0, v);
+      if(p.y <= originY + 1 && p.y >= originY - plotH - 1){
+        const gl = mkLine(originX, p.y, originX + plotW, p.y, '#E4DCC4', 1);
+        svg.appendChild(gl);
+        const labelX = yAxisInRange ? originSvg.x - 8 : originX - 8;
+        const tl = mkText(labelX, p.y + 3, '' + Math.round(v), 'tick-label');
+        tl.setAttribute('text-anchor', 'end');
+        svg.appendChild(tl);
+      }
+    }
+
+    // zero grid lines (lighter than the main axes)
+    if(xAxisInRange){
+      svg.appendChild(mkLine(originX, originSvg.y, originX + plotW, originSvg.y, '#C8BEA0', 1));
+    }
+    if(yAxisInRange){
+      svg.appendChild(mkLine(originSvg.x, originY - plotH, originSvg.x, originY, '#C8BEA0', 1));
+    }
+
+    // axes — drawn THROUGH the data origin (0, 0), not at the plot corner
+    if(xAxisInRange){
+      svg.appendChild(mkLine(originX, originSvg.y, originX + plotW, originSvg.y, '#26332B', 1.5));
+    }
+    if(yAxisInRange){
+      svg.appendChild(mkLine(originSvg.x, originY - plotH, originSvg.x, originY, '#26332B', 1.5));
+    }
+
+    // axis labels — at the plot edges, away from the axes themselves
+    const xlab = mkText(originX + plotW/2, originY + 42, 'Years (x)', 'axis-label');
+    xlab.setAttribute('text-anchor', 'middle');
+    svg.appendChild(xlab);
+    const ylab = mkText(18, originY - plotH/2, 'Total revenue y', 'axis-label');
+    ylab.setAttribute('text-anchor', 'middle');
+    ylab.setAttribute('transform', `rotate(-90 18 ${originY - plotH/2})`);
+    svg.appendChild(ylab);
+
+    // origin label if visible
+    if(originSvg.x >= originX - 5 && originSvg.x <= originX + plotW + 5 &&
+       originSvg.y >= originY - plotH - 5 && originSvg.y <= originY + 5){
+      const o = document.createElementNS(svgNS, 'circle');
+      o.setAttribute('cx', originSvg.x); o.setAttribute('cy', originSvg.y);
+      o.setAttribute('r', 4);
+      o.setAttribute('fill', '#26332B');
+      svg.appendChild(o);
+      const ol = mkText(originSvg.x - 14, originSvg.y - 8, '(0,0)', 'tick-label');
+      svg.appendChild(ol);
+    }
+
+    // draw y = ax + b line in explore mode OR after all points revealed
+    const showLine = (mode === 'explore' || (mode === 'done' && points.length === MAIN_STEPS));
+    if(showLine){
+      const lineA = mode === 'explore' ? (parseFloat(document.getElementById('expA').value) || 0) : a;
+      const lineB = mode === 'explore' ? (parseFloat(document.getElementById('expB').value) || 0) : b;
+      const lineX1 = bounds.xMin;
+      const lineX2 = bounds.xMax;
+      const p1 = toSvg(lineX1, lineA * lineX1 + lineB);
+      const p2 = toSvg(lineX2, lineA * lineX2 + lineB);
+      if(p2.x >= originX && p1.x <= originX + plotW){
+        const clipP1 = Math.max(p1.x, originX);
+        const clipP2 = Math.min(p2.x, originX + plotW);
+        const l = mkLine(clipP1, p1.y + (p2.y-p1.y)*(clipP1-p1.x)/(p2.x-p1.x),
+                        clipP2, p1.y + (p2.y-p1.y)*(clipP2-p1.x)/(p2.x-p1.x),
+                        '#B8860B', 2.5);
+        svg.appendChild(l);
+      }
+    }
+
+    // connected path through confirmed points
+    if(points.length > 0 && mode !== 'explore'){
+      let d = '';
+      points.forEach((p, i) => {
+        const sp = toSvg(p.x, p.y);
+        d += (i === 0 ? 'M ' : 'L ') + sp.x + ' ' + sp.y + ' ';
+      });
+      const path = document.createElementNS(svgNS, 'path');
+      path.setAttribute('d', d);
+      path.setAttribute('stroke', '#B8860B');
+      path.setAttribute('stroke-width', '2');
+      path.setAttribute('stroke-dasharray', '5 4');
+      path.setAttribute('fill', 'none');
+      svg.appendChild(path);
+    }
+
+    // confirmed points
+    points.forEach((p, i) => {
+      const sp = toSvg(p.x, p.y);
+      if(sp.x < originX - 10 || sp.x > originX + plotW + 10 ||
+         sp.y < originY - plotH - 10 || sp.y > originY + 10) return;
+      const c = document.createElementNS(svgNS, 'circle');
+      c.setAttribute('cx', sp.x); c.setAttribute('cy', sp.y);
+      c.setAttribute('r', 7);
+      c.setAttribute('fill', '#1F6F5C');
+      c.setAttribute('stroke', '#FFFDF7'); c.setAttribute('stroke-width', '2');
+      svg.appendChild(c);
+      const lab = mkText(sp.x + 10, sp.y - 8, `M${i+1}: (${p.x},${p.y})`, 'tick-label');
+      svg.appendChild(lab);
+    });
+
+    // prediction marker
+    if(mode === 'predict' && prediction !== null && !revealed){
+      const target = getCurrentTarget();
+      const py = parseFloat(predictY.value);
+      if(!isNaN(py)){
+        const sp = toSvg(target.x, py);
+        const targetSp = toSvg(target.x, target.y);
+        // vertical dashed line showing error
+        const guide = mkLine(sp.x, sp.y, targetSp.x, targetSp.y, '#7B5EA7', 1.5);
+        guide.setAttribute('stroke-dasharray', '4 3');
+        guide.setAttribute('stroke-opacity', '0.5');
+        svg.appendChild(guide);
+
+        const c = document.createElementNS(svgNS, 'circle');
+        c.setAttribute('cx', sp.x); c.setAttribute('cy', sp.y);
+        c.setAttribute('r', 7);
+        c.setAttribute('fill', '#7B5EA7');
+        c.setAttribute('fill-opacity', '0.9');
+        c.setAttribute('stroke', '#FFFDF7'); c.setAttribute('stroke-width', '2');
+        svg.appendChild(c);
+        const lab = mkText(sp.x + 10, sp.y - 10, `you: ${py}`, 'tick-label');
+        lab.setAttribute('fill', '#7B5EA7');
+        lab.setAttribute('font-weight', '600');
+        svg.appendChild(lab);
+      }
+    }
+
+    // explore mode points
+    if(mode === 'explore'){
+      const expA = parseFloat(document.getElementById('expA').value) || 0;
+      const expB = parseFloat(document.getElementById('expB').value) || 0;
+      const expT = parseFloat(document.getElementById('expTarget').value);
+      if(isNaN(expT)) return;
+      const exploreColors = ['#1F6F5C', '#B8860B', '#7B5EA7', '#B5502E', '#8A9A8E'];
+      for(let xi = 1; xi <= 5; xi++){
+        const yi = expA * xi + expB;
+        const sp = toSvg(xi, yi);
+        if(sp.x < originX - 10 || sp.x > originX + plotW + 10 ||
+           sp.y < originY - plotH - 10 || sp.y > originY + 10) continue;
+        const c = document.createElementNS(svgNS, 'circle');
+        c.setAttribute('cx', sp.x); c.setAttribute('cy', sp.y);
+        c.setAttribute('r', 6);
+        c.setAttribute('fill', exploreColors[(xi-1) % exploreColors.length]);
+        c.setAttribute('stroke', '#FFFDF7'); c.setAttribute('stroke-width', '2');
+        c.setAttribute('opacity', '0.7');
+        svg.appendChild(c);
+        const lab = mkText(sp.x + 8, sp.y - 6, `(${xi},${yi})`, 'tick-label');
+        svg.appendChild(lab);
+      }
+
+      // target line
+      const tP = toSvg(0, expT);
+      if(tP.y >= originY - plotH - 5 && tP.y <= originY + 5){
+        const hl = mkLine(originX, tP.y, originX + plotW, tP.y, '#B8860B', 1.5);
+        hl.setAttribute('stroke-dasharray', '6 4');
+        svg.appendChild(hl);
+        const lab = mkText(originX + plotW - 5, tP.y - 6, 'y = ' + expT, 'tick-label');
+        lab.setAttribute('text-anchor', 'end');
+        lab.setAttribute('fill', '#B8860B');
+        lab.setAttribute('font-weight', '600');
+        svg.appendChild(lab);
+      }
+
+      // solution point
+      if(expA !== 0){
+        const alpha = (expT - expB) / expA;
+        const ap = toSvg(alpha, expT);
+        if(ap.x >= originX - 5 && ap.x <= originX + plotW + 5 &&
+           ap.y >= originY - plotH - 5 && ap.y <= originY + 5){
+          // glow ring
+          const hl = document.createElementNS(svgNS, 'circle');
+          hl.setAttribute('cx', ap.x); hl.setAttribute('cy', ap.y);
+          hl.setAttribute('r', 14);
+          hl.setAttribute('fill', 'none');
+          hl.setAttribute('stroke', '#B8860B');
+          hl.setAttribute('stroke-width', '2.5');
+          hl.setAttribute('stroke-opacity', '0.6');
+          svg.appendChild(hl);
+          // dot
+          const c = document.createElementNS(svgNS, 'circle');
+          c.setAttribute('cx', ap.x); c.setAttribute('cy', ap.y);
+          c.setAttribute('r', 8);
+          c.setAttribute('fill', '#B8860B');
+          c.setAttribute('stroke', '#FFFDF7');
+          c.setAttribute('stroke-width', '2');
+          svg.appendChild(c);
+          const lab = mkText(ap.x + 10, ap.y - 14, '\u2605 (' + (Number.isInteger(alpha) ? alpha : alpha.toFixed(2)) + ',' + expT + ')', 'tick-label');
+          lab.setAttribute('fill', '#B8860B');
+          lab.setAttribute('font-weight', '700');
+          svg.appendChild(lab);
+        }
+      }
+    }
+  }
+
+  function mkLine(x1, y1, x2, y2, stroke, w){
+    const l = document.createElementNS(svgNS, 'line');
+    l.setAttribute('x1', x1); l.setAttribute('y1', y1);
+    l.setAttribute('x2', x2); l.setAttribute('y2', y2);
+    l.setAttribute('stroke', stroke); l.setAttribute('stroke-width', w);
+    return l;
+  }
+  function mkText(x, y, text, cls){
+    const t = document.createElementNS(svgNS, 'text');
+    t.setAttribute('x', x); t.setAttribute('y', y);
+    t.setAttribute('class', cls);
+    t.textContent = text;
+    return t;
+  }
+
+  // ---- MAIN LOGIC ----
+  function checkPrediction(){
+    if(mode === 'done') return;
+    if(revealed){
+      // advance to next year
+      step++;
+      revealed = false;
+      prediction = null;
+      predictY.value = 0;
+      checkBtn.textContent = 'Predict & Reveal';
+      if(step >= MAIN_STEPS){
+        mode = 'done';
+        checkBtn.textContent = 'Finish';
+        checkBtn.disabled = true;
+        updateStatus('All 5 years are done — scroll down to reflect on what you found!', 'feedback-good');
+        render();
+        setTimeout(()=>{
+          reflectCard.classList.remove('hidden');
+          reflectCard.scrollIntoView({behavior:'smooth', block:'nearest'});
+        }, 500);
+        return;
+      }
+      updatePredictHelper();
+      const nextX = step + 1;
+      updateStatus(`Year ${nextX}: predict the total revenue y and press Predict.`);
+      render();
+      return;
+    }
+
+    // predict mode
+    const py = parseFloat(predictY.value);
+    if(isNaN(py)){
+      updateStatus('Enter a number for your prediction first.');
+      return;
+    }
+    prediction = py;
+    const target = getCurrentTarget();
+    const diff = Math.abs(py - target.y);
+
+    revealed = true;
+    points.push({x: target.x, y: target.y});
+
+    const dot = document.getElementById('step-' + (step + 1));
+    if(dot) dot.classList.add('done', 'active');
+    if(step > 0){
+      const prev = document.getElementById('step-' + step);
+      if(prev) prev.classList.remove('active');
+    }
+
+    yVal.textContent = '₹' + target.y;
+
+    const tolerance = Math.max(0.5, Math.abs(a) * 0.15);
+    let msg, cls;
+    if(diff < tolerance){
+      msg = `Spot on! Year ${target.x}: total revenue is ₹${target.y} = ${a}×${target.x} + ${b}.`;
+      cls = 'feedback-good';
+    } else {
+      const dir = py > target.y ? 'high' : 'low';
+      msg = `Not quite. You guessed ₹${py} (${Math.round(diff)} ${dir}). The actual total is ₹${target.y}. Remember: y = ${a}×${target.x} + ${b} = ${target.y}.`;
+      cls = 'feedback-mid';
+    }
+
+    if(step + 1 >= MAIN_STEPS){
+      checkBtn.textContent = 'See the line';
+      mode = 'done';
+    } else {
+      checkBtn.textContent = 'Next year';
+    }
+
+    updateStatus(msg, cls);
+    render();
+  }
+
+  checkBtn.addEventListener('click', checkPrediction);
+
+  function resetGame(resetParams){
+    step = 0;
+    points = [];
+    prediction = null;
+    revealed = false;
+    mode = 'predict';
+    if(resetParams !== false){
+      a = 2; b = 1;
+      paramA.value = 2; paramB.value = 1;
+    } else {
+      const av = parseFloat(paramA.value);
+      const bv = parseFloat(paramB.value);
+      a = Number.isNaN(av) ? 0 : av;
+      b = Number.isNaN(bv) ? 0 : bv;
+    }
+    predictY.value = 0;
+    checkBtn.disabled = false;
+    checkBtn.textContent = 'Predict & Reveal';
+    document.querySelectorAll('.step-dot').forEach(d => d.classList.remove('done', 'active'));
+    reflectCard.classList.add('hidden');
+    exploreCard.classList.add('hidden');
+    document.getElementById('expA').value = a;
+    document.getElementById('expB').value = b;
+    document.getElementById('expAVal').textContent = a;
+    document.getElementById('expBVal').textContent = b;
+    updateEq();
+    updatePredictHelper();
+    updateStatus('Year 1: predict the total revenue y and press Predict.');
+    render();
+  }
+
+  resetBtn.addEventListener('click', ()=>{ resetGame(true); });
+
+  function paramsChanged(){
+    a = parseFloat(paramA.value) || 0;
+    b = parseFloat(paramB.value) || 0;
+    updateEq();
+    updatePredictHelper();
+    if(mode !== 'explore') resetGame(false);
+    else render();
+  }
+  paramA.addEventListener('input', paramsChanged);
+  paramB.addEventListener('input', paramsChanged);
+
+  // ---- ENTER KEY ----
+  predictY.addEventListener('keydown', (e) => {
+    if(e.key === 'Enter') checkPrediction();
+  });
+
+  // ---- QUIZ ----
+  document.querySelectorAll('.q .options').forEach(group => {
+    group.querySelectorAll('.opt').forEach(btn => {
+      btn.addEventListener('click', ()=>{
+        const correct = btn.dataset.correct === 'true';
+        group.querySelectorAll('.opt').forEach(b => {
+          b.disabled = true;
+          if(b.dataset.correct === 'true') b.classList.add('correct');
+        });
+        if(!correct) btn.classList.add('wrong');
+        if(group.parentElement.id === 'q6' && correct){
+          setTimeout(()=>{
+            exploreCard.classList.remove('hidden');
+            exploreCard.scrollIntoView({behavior:'smooth', block:'nearest'});
+            rebuildExplore();
+          }, 400);
+        }
+      });
+    });
+  });
+
+  // ---- EXPLORE MODE ----
+  const expA = document.getElementById('expA');
+  const expB = document.getElementById('expB');
+  const expTarget = document.getElementById('expTarget');
+  const expAVal = document.getElementById('expAVal');
+  const expBVal = document.getElementById('expBVal');
+  const expTVal = document.getElementById('expTVal');
+  const exploreEq = document.getElementById('exploreEq');
+  const exploreSol = document.getElementById('exploreSolution');
+
+  function rebuildExplore(){
+    mode = 'explore';
+    const ea = parseFloat(expA.value) || 0;
+    const eb = parseFloat(expB.value) || 0;
+    const et = parseFloat(expTarget.value);
+    if(isNaN(et)) return;
+    expAVal.textContent = ea;
+    expBVal.textContent = eb;
+    expTVal.textContent = et;
+    const aStr = ea === 0 ? '0' : (ea === 1 ? '' : (ea === -1 ? '−' : ea));
+    const bStr = eb === 0 ? '' : (eb > 0 ? ` + ${eb}` : ` − ${Math.abs(eb)}`);
+    exploreEq.textContent = `y = ${aStr}x${bStr}`;
+    if(ea === 0){
+      if(eb === et) exploreSol.textContent = 'a = 0, y = b constant — every x maps to ' + eb + '. Not invertible!';
+      else exploreSol.textContent = 'a = 0, y = ' + eb + ' constant. No x gives y = ' + et + '. Not invertible!';
+    } else {
+      const alpha = (et - eb) / ea;
+      exploreSol.textContent = 'f(α) = ' + et + ' → α = ' + (Number.isInteger(alpha) ? alpha : alpha.toFixed(4));
+    }
+    render();
+  }
+
+  expA.addEventListener('input', rebuildExplore);
+  expB.addEventListener('input', rebuildExplore);
+  expTarget.addEventListener('input', rebuildExplore);
+
+  // init
+  updateEq();
+  updatePredictHelper();
+  render();
+})();
+</script>
+</body>
+</html>

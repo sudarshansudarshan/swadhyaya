@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bhavabhuti's Singular Map — B = [[1,2],[2,4]]</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=IBM+Plex+Mono:wght@500;600&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#FAF5E8; --paper-line:#D8CFB6; --ink:#26332B; --ink-soft:#5B6B60;
+    --mat:#B5502E; --mat-soft:#FBEFE8;
+    --input-line:#B8860B; --input-soft:#F3E9CE;
+    --image:#0E7490; --image-soft:#CFFAFE;
+    --kernel:#5B6B60;
+    --point:#B8860B;
+    --accent:#0E7490; --accent-soft:#CFFAFE;
+    --good:#1F6F5C; --good-soft:#DCEDE7;
+    --card:#FFFDF7; --shadow:0 2px 10px rgba(38,51,43,0.08);
+  }
+  *{box-sizing:border-box;} html,body{margin:0;padding:0;}
+  body{
+    background:repeating-linear-gradient(#FAF5E8 0px,#FAF5E8 27px,var(--paper-line) 28px),var(--paper);
+    background-size:100% 28px; color:var(--ink);
+    font-family:'Source Sans 3',sans-serif; min-height:100vh; padding:28px 16px 60px;
+  }
+  .wrap{max-width:1080px;margin:0 auto;}
+
+  header.hero{
+    background:var(--card); border:1px solid var(--paper-line);
+    border-radius:14px; box-shadow:var(--shadow);
+    padding:26px 28px 22px; margin-bottom:20px;
+  }
+  .eyebrow{font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);margin:0 0 6px;}
+  h1{font-family:'Caveat',cursive;font-weight:700;font-size:40px;margin:0 0 10px;line-height:1.05;}
+  header.hero p{max-width:760px;line-height:1.55;font-size:15.5px;margin:0 0 8px;}
+
+  .matrix-display{
+    background:var(--paper); border:1px dashed var(--paper-line);
+    border-radius:10px; padding:12px 18px; margin-top:12px;
+    font-family:'IBM Plex Mono',monospace; font-size:13px; text-align:center;
+    line-height:1.5;
+  }
+  .matrix-display .name{margin-bottom:6px;font-size:11px;color:var(--ink-soft);font-weight:700;text-transform:uppercase;letter-spacing:.05em;}
+  .matrix-display .big-matrix{
+    display:inline-block; vertical-align:middle;
+    border-left:2px solid var(--ink); border-right:2px solid var(--ink);
+    padding:4px 12px; margin:0 8px; line-height:1.2;
+  }
+  .matrix-display .big-matrix .row{display:block;font-size:18px;font-weight:700;}
+  .matrix-display .formula{margin-top:6px;color:var(--ink-soft);font-size:11px;}
+
+  .grid-layout{display:grid;grid-template-columns:340px 1fr;gap:20px;align-items:start;}
+  @media (max-width:880px){.grid-layout{grid-template-columns:1fr;}}
+
+  .card{background:var(--card);border:1px solid var(--paper-line);border-radius:14px;box-shadow:var(--shadow);padding:20px;}
+  .panel-title{font-family:'Caveat',cursive;font-weight:700;font-size:24px;margin:0 0 4px;}
+  .panel-sub{font-size:13px;color:var(--ink-soft);margin:0 0 14px;line-height:1.4;}
+
+  .line-display{
+    background:var(--input-soft); border:1.5px solid var(--input-line);
+    border-radius:10px; padding:10px 14px; margin-bottom:12px;
+    font-family:'IBM Plex Mono',monospace; font-size:14px; font-weight:600;
+    text-align:center; color:var(--input-line); line-height:1.4;
+  }
+  .line-display .small{font-size:11px;color:var(--ink-soft);font-weight:400;margin-top:4px;}
+
+  .arrow-down{
+    text-align:center; font-size:24px; color:var(--ink-soft);
+    margin:6px 0; font-family:'IBM Plex Mono',monospace;
+  }
+
+  .point-display{
+    background:var(--image-soft); border:1.5px solid var(--image);
+    border-radius:10px; padding:10px 14px; margin-bottom:12px;
+    font-family:'IBM Plex Mono',monospace; font-size:15px; font-weight:700;
+    text-align:center; color:var(--image); line-height:1.4;
+  }
+  .point-display .small{font-size:11px;color:var(--ink-soft);font-weight:400;margin-top:4px;}
+
+  .field{margin-bottom:12px;}
+  .field label{display:flex;justify-content:space-between;font-size:13.5px;font-weight:600;margin-bottom:6px;}
+  .field label span.val{font-family:'IBM Plex Mono',monospace;color:var(--accent);font-weight:600;}
+  input[type=number]{
+    width:100%; padding:9px 10px; border-radius:8px;
+    border:1px solid var(--paper-line);
+    font-family:'IBM Plex Mono',monospace; font-size:16px;
+    background:var(--paper); color:var(--ink);
+    -moz-appearance:textfield;
+  }
+  input[type=number]::-webkit-inner-spin-button,
+  input[type=number]::-webkit-outer-spin-button{-webkit-appearance:none;margin:0;}
+  input[type=number]:focus{
+    outline:2px solid var(--accent); outline-offset:-1px;
+    border-color:var(--accent); background:var(--card);
+  }
+  .helper{font-size:12px;color:var(--ink-soft);margin-top:6px;line-height:1.4;}
+  .helper span.k{font-family:'IBM Plex Mono',monospace;color:var(--ink);font-weight:600;}
+
+  .sample-row{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap;}
+  .sample-btn{
+    flex:1; min-width:50px;
+    padding:7px 4px; border-radius:8px;
+    border:1px solid var(--paper-line); background:var(--paper);
+    font-family:'IBM Plex Mono',monospace; font-size:13px; font-weight:600;
+    cursor:pointer; color:var(--ink); text-align:center;
+  }
+  .sample-btn:hover{background:var(--input-soft);border-color:var(--input-line);color:var(--input-line);}
+  .sample-btn.active{background:var(--input-soft);border-color:var(--input-line);color:var(--input-line);}
+
+  .status{
+    font-size:13.5px; line-height:1.5; padding:12px;
+    border-radius:9px; background:var(--paper);
+    border:1px solid var(--paper-line); margin-bottom:14px; min-height:20px;
+  }
+  .status.feedback-good{background:var(--good-soft);border-color:var(--good);color:var(--good);font-weight:600;}
+
+  button{
+    font-family:'Source Sans 3',sans-serif; font-weight:600; font-size:14.5px;
+    border:none; border-radius:9px; padding:11px 16px; cursor:pointer;
+    width:100%; transition:transform .08s ease, filter .15s ease;
+  }
+  button:active{transform:translateY(1px);}
+  button:disabled{opacity:.4;cursor:not-allowed;}
+
+  .graph-card{display:flex;flex-direction:column;}
+  .legend{display:flex;gap:18px;flex-wrap:wrap;margin:6px 0 12px;font-size:12.5px;font-family:'IBM Plex Mono',monospace;}
+  .legend span{display:inline-flex;align-items:center;gap:6px;}
+  .dot{width:10px;height:10px;border-radius:50%;display:inline-block;}
+  .dot.s-input-line{background:var(--input-line);}
+  .dot.s-image{background:var(--image);}
+  .dot.s-kernel{background:var(--kernel);}
+  .dot.s-sample{background:var(--accent);}
+
+  svg{width:100%;height:auto;display:block;background:var(--paper);border:1px solid var(--paper-line);border-radius:8px;}
+  .axis-label{font-family:'IBM Plex Mono',monospace;font-size:12px;fill:var(--ink-soft);}
+  .tick-label{font-family:'IBM Plex Mono',monospace;font-size:10px;fill:var(--ink-soft);}
+  .point-label{font-family:'IBM Plex Mono',monospace;font-size:11px;fill:var(--ink);font-weight:600;}
+
+  .reflect,.explore{margin-top:20px;padding-top:16px;border-top:1px dashed var(--paper-line);}
+  .reflect.hidden,.explore.hidden{display:none;}
+  .q{margin-bottom:16px;}
+  .q p.qtext{font-weight:600;margin:0 0 8px;font-size:14.5px;}
+  .options{display:flex;gap:8px;flex-wrap:wrap;}
+  .opt{
+    padding:8px 14px;border-radius:8px;border:1px solid var(--paper-line);
+    background:var(--paper);font-size:13.5px;cursor:pointer;font-weight:600;
+  }
+  .opt.correct{background:var(--good-soft);border-color:var(--good);color:var(--good);}
+  .opt.wrong{background:#FBEFE8;border-color:#B5502E;color:#8C3A1F;}
+  .opt:disabled{cursor:default;}
+
+  .explore .panel-title{font-size:22px;}
+  .explore-inputs{display:grid;grid-template-columns:repeat(4, 1fr);gap:8px;margin:10px 0 14px;}
+  .explore-inputs .field{margin-bottom:0;}
+  .explore-eq{
+    background:var(--paper); border:1px solid var(--paper-line);
+    border-radius:8px; padding:10px; margin-bottom:10px;
+    font-family:'IBM Plex Mono',monospace; font-size:13px; text-align:center; font-weight:700;
+  }
+
+  footer.note{text-align:center;font-size:12px;color:var(--ink-soft);margin-top:26px;font-family:'IBM Plex Mono',monospace;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <p class="eyebrow">Linear Algebra · Singular Matrices & Fibers</p>
+    <h1>Bhavabhuti's Singular Map — B = [[1, 2], [2, 4]]</h1>
+    <p>B is a <em>singular</em> matrix (det(B) = 0). Its columns (1, 2) and (2, 4) are linearly dependent — both point along the same direction (1, 2). The line <strong>2y + x = c</strong> (a family of parallel lines) maps under B to the single point <strong>(c, 2c)</strong>. Every whole line collapses to a single point along the image line y = 2x.</p>
+    <div class="matrix-display">
+      <div class="name">the matrix</div>
+      <span class="big-matrix">
+        <span class="row">1&nbsp;&nbsp;2</span>
+        <span class="row">2&nbsp;&nbsp;4</span>
+      </span>
+      <div class="formula">det(B) = 1·4 − 2·2 = <strong>0</strong> · columns are multiples of (1, 2)</div>
+    </div>
+  </header>
+
+  <div class="grid-layout">
+
+    <!-- LEFT CONTROL PANEL -->
+    <div class="card">
+      <p class="panel-title">Try a value of c</p>
+      <p class="panel-sub">Pick c. The line 2y + x = c maps under B to the point (c, 2c) — no matter how big c is.</p>
+
+      <div class="line-display">
+        2y + x = <span id="lineC">c</span>
+        <div class="small">the input line</div>
+      </div>
+
+      <div class="arrow-down">↓<br>B</div>
+
+      <div class="point-display">
+        B(x, y) = (<span id="imageX">x</span>, <span id="imageY">y</span>)
+        <div class="small">the image of every point on the line — collapses to a single point</div>
+      </div>
+
+      <div class="field">
+        <label>Pick <span class="val">c</span></label>
+        <input type="number" id="inC" step="any" value="4">
+        <div class="helper">Try <span class="k">c = 4</span> (the given line) · <span class="k">c = 10</span> · <span class="k">c = 62</span> · <span class="k">c = 1800</span>.</div>
+      </div>
+
+      <div class="sample-row">
+        <button class="sample-btn" data-c="4">c = 4</button>
+        <button class="sample-btn" data-c="10">c = 10</button>
+        <button class="sample-btn" data-c="62">c = 62</button>
+        <button class="sample-btn" data-c="1800">c = 1800</button>
+      </div>
+
+      <div class="status" id="statusBox">The whole line 2y + x = c — every point on it — maps to the single point (c, 2c).</div>
+
+      <button class="btn-secondary" id="resetBtn" style="margin-top:0;">Reset to c = 4</button>
+    </div>
+
+    <!-- RIGHT GRAPH -->
+    <div class="card graph-card">
+      <p class="panel-title">Input plane → single image point</p>
+      <div class="legend">
+        <span><i class="dot s-sample"></i>sample input lines (parallel 2y + x = c)</span>
+        <span style="color:var(--kernel);">─ ─</span>kernel (where B = 0)</span>
+        <span style="color:var(--image);">─ ─</span>image line (y = 2x)</span>
+        <span><i class="dot s-input-line"></i>your input line 2y + x = c</span>
+        <span><i class="dot s-image"></i>image point (c, 2c)</span>
+      </div>
+      <p class="panel-sub" style="margin:6px 0 10px;">Every parallel line 2y + x = c maps to a single point (c, 2c) on the image line y = 2x. The graph shows several such lines (different c values); the current one is highlighted.</p>
+      <svg id="graphSvg" viewBox="0 0 640 500" xmlns="http://www.w3.org/2000/svg"></svg>
+    </div>
+  </div>
+
+  <!-- REFLECTION QUIZ -->
+  <div class="card reflect hidden" id="reflectCard">
+    <p class="panel-title">What do you notice?</p>
+    <p class="panel-sub">B is singular. So lines collapse to points. Answer these.</p>
+
+    <div class="q" id="q1">
+      <p class="qtext">1. Under B = [[1,2],[2,4]], the line <strong>2y + x = 10</strong> maps to —</p>
+      <div class="options">
+        <button class="opt" data-correct="false">a line parallel to 2y + x = 10 (a different line)</button>
+        <button class="opt" data-correct="true">the single point (10, 20)</button>
+        <button class="opt" data-correct="false">the entire input plane (every point)</button>
+      </div>
+    </div>
+
+    <div class="q" id="q2">
+      <p class="qtext">2. The line <strong>2y + x = 1800</strong> maps to —</p>
+      <div class="options">
+        <button class="opt" data-correct="false">a point very far off-chart, but the formula (c, 2c) still holds — so (1800, 3600)</button>
+        <button class="opt" data-correct="true">the single point (1800, 3600) — same rule (c, 2c)</button>
+        <button class="opt" data-correct="false">no image exists — the line is too long</button>
+      </div>
+    </div>
+
+    <div class="q" id="q3">
+      <p class="qtext">3. Why does the whole line 2y + x = c collapse to a single point?</p>
+      <div class="options">
+        <button class="opt" data-correct="false">B is not defined on those points</button>
+        <button class="opt" data-correct="true">B depends only on x + 2y (one linear combination), so every point with the same x + 2y gives the same image</button>
+        <button class="opt" data-correct="false">Because 1800 is too large for the matrix</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- EXPLORE MODE -->
+  <div class="card explore hidden" id="exploreCard">
+    <p class="panel-title">Now you try: change the matrix</p>
+    <p class="panel-sub">Set any 2×2 matrix B and any line equation a₁x + a₂y = c. See where each line goes.</p>
+
+    <div class="explore-inputs">
+      <div class="field"><label>B₁₁</label><input type="number" id="eB11" step="1" value="1"></div>
+      <div class="field"><label>B₁₂</label><input type="number" id="eB12" step="1" value="2"></div>
+      <div class="field"><label>B₂₁</label><input type="number" id="eB21" step="1" value="2"></div>
+      <div class="field"><label>B₂₂</label><input type="number" id="eB22" step="1" value="4"></div>
+    </div>
+
+    <div class="explore-eq" id="exploreEq">Image of line 2y + x = c: (c, 2c)</div>
+  </div>
+
+  <footer class="note">Singular matrix B · det = 0 · whole lines collapse to points · B(x, y) depends only on x + 2y</footer>
+</div>
+
+<script>
+(function(){
+  const svg = document.getElementById('graphSvg');
+  const svgNS = "http://www.w3.org/2000/svg";
+
+  // ---- STATE ----
+  let c = 4;
+  let B = [1, 2, 2, 4];  // B = [[1,2],[2,4]]
+
+  // ---- DOM ----
+  const inC = document.getElementById('inC');
+  const lineC = document.getElementById('lineC');
+  const imageX = document.getElementById('imageX');
+  const imageY = document.getElementById('imageY');
+  const statusBox = document.getElementById('statusBox');
+  const resetBtn = document.getElementById('resetBtn');
+  const sampleBtns = document.querySelectorAll('.sample-btn');
+  const reflectCard = document.getElementById('reflectCard');
+  const exploreCard = document.getElementById('exploreCard');
+
+  function applyB(x, y){
+    return {
+      x: B[0]*x + B[1]*y,
+      y: B[2]*x + B[3]*y
+    };
+  }
+
+  function fmt(v){
+    if(Math.abs(v) < 1e-9) return '0';
+    if(Math.abs(v) < 0.01) return v.toFixed(2);
+    if(Number.isInteger(v)) return v.toString();
+    return v.toFixed(1);
+  }
+
+  function updateLive(){
+    const tc = parseFloat(inC.value);
+    if(isNaN(tc)){
+      lineC.textContent = '?';
+      imageX.textContent = '?';
+      imageY.textContent = '?';
+      render();
+      return;
+    }
+    c = tc;
+    lineC.textContent = fmt(c);
+    // The image of the whole line 2y + x = c under B
+    // B(x,y) = (x + 2y, 2x + 4y) = (x+2y, 2(x+2y))
+    // Since x + 2y = c, the image is (c, 2c)
+    imageX.textContent = fmt(c);
+    imageY.textContent = fmt(2*c);
+
+    sampleBtns.forEach(btn => {
+      const btnC = parseFloat(btn.dataset.c);
+      btn.classList.toggle('active', Math.abs(btnC - c) < 1e-9);
+    });
+
+    setStatus(`B maps every point of the line 2y + x = ${fmt(c)} to the single point (${fmt(c)}, ${fmt(2*c)}).`, 'feedback-good');
+    render();
+  }
+
+  function setStatus(html, cls){
+    statusBox.innerHTML = html;
+    statusBox.className = 'status' + (cls ? (' '+cls) : '');
+  }
+
+  function resetGame(){
+    inC.value = '4';
+    updateLive();
+  }
+
+  inC.addEventListener('input', updateLive);
+  inC.addEventListener('keydown', (e)=>{ if(e.key === 'Enter') updateLive(); });
+  resetBtn.addEventListener('click', resetGame);
+  sampleBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      inC.value = btn.dataset.c;
+      updateLive();
+      reflectCard.classList.remove('hidden');
+    });
+  });
+
+  // ---- SVG rendering ----
+  function render(){
+    while(svg.firstChild) svg.removeChild(svg.firstChild);
+
+    // The plane: x ∈ [-20, 20], y ∈ [-20, 25]
+    const PLOT_X_MIN = -20, PLOT_X_MAX = 20;
+    const PLOT_Y_MIN = -20, PLOT_Y_MAX = 25;
+    const PW = 560, PH = 420;
+    const ox = 320, oy = 280;       // SVG pixel for (0, 0)
+    const xSc = PW / (PLOT_X_MAX - PLOT_X_MIN);  // 14
+    const ySc = PH / (PLOT_Y_MAX - PLOT_Y_MIN);  // 9.3
+
+    function toS(x, y){
+      return {
+        sx: ox + (x - PLOT_X_MIN) * xSc,
+        sy: oy - (y - PLOT_Y_MIN) * ySc
+      };
+    }
+
+    // ---- Grid ----
+    for(let v = Math.ceil(PLOT_X_MIN/5)*5; v <= PLOT_X_MAX; v += 5){
+      if(Math.abs(v) < 0.01) continue;
+      const p = toS(v, 0);
+      svg.appendChild(mkL(p.sx, PLOT_Y_MIN*ySc - PLOT_Y_MIN*ySc + (oy - (PLOT_Y_MAX-PLOT_Y_MIN)*ySc), p.sx, oy + (PLOT_Y_MAX-PLOT_Y_MIN)*ySc - 0, '#E4DCC4', 0.5, true));
+    }
+    // simpler: just draw a faint rect
+    const rect = document.createElementNS(svgNS, 'rect');
+    rect.setAttribute('x', ox - PLOT_X_MIN * xSc);
+    rect.setAttribute('y', oy - (PLOT_Y_MAX-PLOT_Y_MIN) * ySc);
+    rect.setAttribute('width', PW);
+    rect.setAttribute('height', PH);
+    rect.setAttribute('fill', '#FFFDF7');
+    rect.setAttribute('stroke', '#E4DCC4');
+    rect.setAttribute('stroke-width', '1');
+    svg.appendChild(rect);
+
+    // Re-draw axes on top of the white rect
+    function axisLine(from, to, color, w, dashed){
+      svg.appendChild(mkL(from.sx, from.sy, to.sx, to.sy, color, w, dashed));
+    }
+    // X axis (y = 0)
+    axisLine(toS(PLOT_X_MIN, 0), toS(PLOT_X_MAX, 0), '#26332B', 1.5, false);
+    // Y axis (x = 0)
+    axisLine(toS(0, PLOT_Y_MIN), toS(0, PLOT_Y_MAX), '#26332B', 1.5, false);
+
+    // Tick labels on X
+    for(let v = Math.ceil(PLOT_X_MIN/5)*5; v <= PLOT_X_MAX; v += 5){
+      if(Math.abs(v) < 0.01) continue;
+      const p = toS(v, 0);
+      const tk = mkT(p.sx, oy + 14, fmt(v), 'tick-label');
+      tk.setAttribute('text-anchor', 'middle');
+      svg.appendChild(tk);
+      // tick mark
+      svg.appendChild(mkL(p.sx, oy - 2, p.sx, oy + 2, '#5B6B60', 1));
+    }
+    for(let v = Math.ceil(PLOT_Y_MIN/5)*5; v <= PLOT_Y_MAX; v += 5){
+      if(Math.abs(v) < 0.01) continue;
+      const p = toS(0, v);
+      const tk = mkT(ox - 8, p.sy + 3, fmt(v), 'tick-label');
+      tk.setAttribute('text-anchor', 'end');
+      svg.appendChild(tk);
+      svg.appendChild(mkL(ox - 2, p.sy, ox + 2, p.sy, '#5B6B60', 1));
+    }
+
+    // Axis labels
+    const xl = mkT(ox + PW - 6, oy + 28, 'x', 'axis-label');
+    xl.setAttribute('text-anchor', 'end');
+    svg.appendChild(xl);
+    const yl = mkT(ox - 18, 50, 'y', 'axis-label');
+    svg.appendChild(yl);
+
+    // ---- Kernel: B(x,y) = 0 means x + 2y = 0, so y = -x/2 ----
+    const k1 = toS(PLOT_X_MIN, -PLOT_X_MIN/2);
+    const k2 = toS(PLOT_X_MAX, -PLOT_X_MAX/2);
+    axisLine(k1, k2, '#5B6B60', 1.5, true);
+    // Label
+    const kMid = toS(-10, 5);
+    const kLab = mkT(kMid.sx - 8, kMid.sy + 8, 'kernel y = −x/2', 'tick-label');
+    kLab.setAttribute('fill', '#5B6B60');
+    kLab.setAttribute('font-style', 'italic');
+    kLab.setAttribute('text-anchor', 'end');
+    svg.appendChild(kLab);
+
+    // ---- Image line: y = 2x ----
+    const i1 = toS(PLOT_X_MIN, 2*PLOT_X_MIN);
+    const i2 = toS(PLOT_X_MAX, 2*PLOT_X_MAX);
+    axisLine(i1, i2, '#0E7490', 1.5, true);
+    const iMid = toS(8, 16);
+    const iLab = mkT(iMid.sx + 6, iMid.sy - 4, 'image y = 2x', 'tick-label');
+    iLab.setAttribute('fill', '#0E7490');
+    iLab.setAttribute('font-style', 'italic');
+    svg.appendChild(iLab);
+
+    // ---- Sample lines 2y + x = c' for various c' values (small) ----
+    const sampleCs = [-10, -6, -2, 2, 6, 10];
+    sampleCs.forEach(cs => {
+      // line 2y + x = cs → y = (cs - x) / 2
+      // Find intersections with the plot
+      const x1 = PLOT_X_MIN, y1 = (cs - x1) / 2;
+      const x2 = PLOT_X_MAX, y2 = (cs - x2) / 2;
+      const p1 = toS(x1, y1), p2 = toS(x2, y2);
+      svg.appendChild(mkL(p1.sx, p1.sy, p2.sx, p2.sy, '#B8860B', 0.8, true));
+      // Image point (cs, 2*cs) on the image line
+      const imgPt = applyB(0, cs/2);
+      // Hmm wait, the image is (cs, 2*cs) regardless of which point on line.
+      const img = {x: cs, y: 2*cs};
+      if(img.x >= PLOT_X_MIN && img.x <= PLOT_X_MAX && img.y >= PLOT_Y_MIN && img.y <= PLOT_Y_MAX){
+        const isp = toS(img.x, img.y);
+        const c = document.createElementNS(svgNS, 'circle');
+        c.setAttribute('cx', isp.sx); c.setAttribute('cy', isp.sy);
+        c.setAttribute('r', 3);
+        c.setAttribute('fill', '#0E7490');
+        c.setAttribute('fill-opacity', '0.7');
+        svg.appendChild(c);
+      }
+      // Label the image point with its c
+      if(img.x >= PLOT_X_MIN && img.x <= PLOT_X_MAX && img.y >= PLOT_Y_MIN && img.y <= PLOT_Y_MAX){
+        const isp = toS(img.x, img.y);
+        const t = mkT(isp.sx + 5, isp.sy - 5, `c=${cs}`, 'tick-label');
+        t.setAttribute('fill', '#0E7490');
+        t.setAttribute('font-size', '9');
+        svg.appendChild(t);
+      }
+    });
+
+    // ---- Current input line 2y + x = c (highlighted) ----
+    if(c >= PLOT_X_MIN - 5 && c <= PLOT_X_MAX + 50){
+      // Draw the line segment within the plot
+      const segPoints = [];
+      const cy1 = (c - PLOT_X_MIN) / 2;
+      const cy2 = (c - PLOT_X_MAX) / 2;
+      if(cy1 >= PLOT_Y_MIN && cy1 <= PLOT_Y_MAX){
+        segPoints.push(toS(PLOT_X_MIN, cy1));
+      }
+      if(cy2 >= PLOT_Y_MIN && cy2 <= PLOT_Y_MAX){
+        segPoints.push(toS(PLOT_X_MAX, cy2));
+      }
+      // Also add intersections with y = PLOT_Y_MIN, PLOT_Y_MAX
+      if(cy1 < PLOT_Y_MIN){
+        const x = c - 2 * PLOT_Y_MIN;
+        if(x >= PLOT_X_MIN && x <= PLOT_X_MAX) segPoints.push(toS(x, PLOT_Y_MIN));
+      }
+      if(cy1 > PLOT_Y_MAX){
+        const x = c - 2 * PLOT_Y_MAX;
+        if(x >= PLOT_X_MIN && x <= PLOT_X_MAX) segPoints.push(toS(x, PLOT_Y_MAX));
+      }
+      if(segPoints.length >= 2){
+        svg.appendChild(mkL(segPoints[0].sx, segPoints[0].sy, segPoints[1].sx, segPoints[1].sy, '#B8860B', 2.8, false));
+      }
+      // Arrowhead at one end
+      if(segPoints.length >= 2){
+        const arrow = document.createElementNS(svgNS, 'path');
+        const dx = segPoints[1].sx - segPoints[0].sx;
+        const dy = segPoints[1].sy - segPoints[0].sy;
+        const len = Math.sqrt(dx*dx + dy*dy);
+        const ux = dx/len, uy = dy/len;
+        const tipX = segPoints[1].sx - ux*8;
+        const tipY = segPoints[1].sy - uy*8;
+        const head = 6;
+        const lp = {x: tipX - head*uy, y: tipY + head*ux};
+        const rp = {x: tipX + head*uy, y: tipY - head*ux};
+        arrow.setAttribute('d', `M ${segPoints[1].sx} ${segPoints[1].sy} L ${lp.x} ${lp.y} L ${rp.x} ${rp.y} Z`);
+        arrow.setAttribute('fill', '#B8860B');
+        svg.appendChild(arrow);
+      }
+    }
+
+    // ---- Current image point (c, 2c) — gold dot ----
+    const cx = c, cy = 2*c;
+    const isp = toS(cx, cy);
+    const inside = (cx >= PLOT_X_MIN && cx <= PLOT_X_MAX && cy >= PLOT_Y_MIN && cy <= PLOT_Y_MAX);
+
+    if(inside){
+      const halo = document.createElementNS(svgNS, 'circle');
+      halo.setAttribute('cx', isp.sx); halo.setAttribute('cy', isp.sy);
+      halo.setAttribute('r', 14);
+      halo.setAttribute('fill', 'none');
+      halo.setAttribute('stroke', '#B8860B');
+      halo.setAttribute('stroke-width', '2');
+      halo.setAttribute('stroke-opacity', '0.4');
+      svg.appendChild(halo);
+      const c2 = document.createElementNS(svgNS, 'circle');
+      c2.setAttribute('cx', isp.sx); c2.setAttribute('cy', isp.sy);
+      c2.setAttribute('r', 7);
+      c2.setAttribute('fill', '#B8860B');
+      c2.setAttribute('stroke', '#FFFDF7');
+      c2.setAttribute('stroke-width', '2');
+      svg.appendChild(c2);
+      const lab = mkT(isp.sx + 12, isp.sy - 8, `(${fmt(cx)}, ${fmt(cy)})`, 'point-label');
+      svg.appendChild(lab);
+    } else {
+      // Off-chart indicator
+      const arrow = mkL(20, 240, 80, 240, '#B5502E', 2);
+      arrow.setAttribute('stroke-dasharray', '6 4');
+      svg.appendChild(arrow);
+      const tipPath = document.createElementNS(svgNS, 'path');
+      const lp = {x: 80, y: 234};
+      const rp = {x: 80, y: 246};
+      tipPath.setAttribute('d', `M 80 240 L ${lp.x} ${lp.y} L ${rp.x} ${rp.y} Z`);
+      tipPath.setAttribute('fill', '#B5502E');
+      svg.appendChild(tipPath);
+      const t = mkT(20, 230, `image at (${fmt(cx)}, ${fmt(cy)}) — way off-chart`, 'tick-label');
+      t.setAttribute('fill', '#B5502E');
+      t.setAttribute('font-weight', '700');
+      t.setAttribute('font-size', '11');
+      svg.appendChild(t);
+    }
+
+    // Origin
+    const o = toS(0, 0);
+    const oc = document.createElementNS(svgNS, 'circle');
+    oc.setAttribute('cx', o.sx); oc.setAttribute('cy', o.sy);
+    oc.setAttribute('r', 3);
+    oc.setAttribute('fill', '#26332B');
+    svg.appendChild(oc);
+  }
+
+  function mkL(x1, y1, x2, y2, stroke, w, dashed){
+    const l = document.createElementNS(svgNS, 'line');
+    l.setAttribute('x1', x1); l.setAttribute('y1', y1);
+    l.setAttribute('x2', x2); l.setAttribute('y2', y2);
+    l.setAttribute('stroke', stroke); l.setAttribute('stroke-width', w);
+    if(dashed) l.setAttribute('stroke-dasharray', '5 3');
+    return l;
+  }
+  function mkT(x, y, text, cls){
+    const t = document.createElementNS(svgNS, 'text');
+    t.setAttribute('x', x); t.setAttribute('y', y);
+    t.setAttribute('class', cls);
+    t.textContent = text;
+    return t;
+  }
+
+  // ---- QUIZ ----
+  document.querySelectorAll('.q .options').forEach(group => {
+    group.querySelectorAll('.opt').forEach(btn => {
+      btn.addEventListener('click', ()=>{
+        const correct = btn.dataset.correct === 'true';
+        group.querySelectorAll('.opt').forEach(b => {
+          b.disabled = true;
+          if(b.dataset.correct === 'true') b.classList.add('correct');
+        });
+        if(!correct) btn.classList.add('wrong');
+        if(group.parentElement.id === 'q3' && correct){
+          setTimeout(()=>{
+            exploreCard.classList.remove('hidden');
+            exploreCard.scrollIntoView({behavior:'smooth', block:'nearest'});
+            rebuildExplore();
+          }, 400);
+        }
+      });
+    });
+  });
+
+  // ---- EXPLORE ----
+  const eB11 = document.getElementById('eB11');
+  const eB12 = document.getElementById('eB12');
+  const eB21 = document.getElementById('eB21');
+  const eB22 = document.getElementById('eB22');
+  const exploreEq = document.getElementById('exploreEq');
+
+  function rebuildExplore(){
+    const nb11 = parseFloat(eB11.value);
+    const nb12 = parseFloat(eB12.value);
+    const nb21 = parseFloat(eB21.value);
+    const nb22 = parseFloat(eB22.value);
+    if([nb11, nb12, nb21, nb22].some(v => isNaN(v))) return;
+    B = [nb11, nb12, nb21, nb22];
+    const detB = nb11*nb22 - nb12*nb21;
+    if(Math.abs(detB) < 1e-9){
+      exploreEq.innerHTML = `B = [[${fmt(nb11)}, ${fmt(nb12)}], [${fmt(nb21)}, ${fmt(nb22)}]] · singular — image is a line (1D)`;
+    } else {
+      exploreEq.innerHTML = `B = [[${fmt(nb11)}, ${fmt(nb12)}], [${fmt(nb21)}, ${fmt(nb22)}]] · non-singular — image is whole plane`;
+    }
+    render();
+  }
+  [eB11, eB12, eB21, eB22].forEach(inp => {
+    inp.addEventListener('input', rebuildExplore);
+  });
+
+  // init
+  updateLive();
+})();
+</script>
+</body>
+</html>

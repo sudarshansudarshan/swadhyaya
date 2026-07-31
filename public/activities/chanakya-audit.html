@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chanakya's Audit — Three Equations, Two Unknowns</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=IBM+Plex+Mono:wght@500;600&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#FAF5E8; --paper-line:#D8CFB6; --ink:#26332B; --ink-soft:#5B6B60;
+    --fn:#1F6F5C; --fn-soft:#DCEDE7; --pt:#7B5EA7; --pt-soft:#EAE3F5;
+    --target:#B8860B; --target-soft:#F3E9CE; --d1:#B5502E; --d1-soft:#FBEFE8;
+    --card:#FFFDF7; --shadow:0 2px 10px rgba(38,51,43,0.08);
+  }
+  *{box-sizing:border-box;} html,body{margin:0;padding:0;}
+  body{
+    background:repeating-linear-gradient(#FAF5E8 0px,#FAF5E8 27px,var(--paper-line) 28px),var(--paper);
+    background-size:100% 28px; color:var(--ink); font-family:'Source Sans 3',sans-serif;
+    min-height:100vh; padding:28px 16px 60px;
+  }
+  .wrap{max-width:1080px;margin:0 auto;}
+  header.hero{background:var(--card);border:1px solid var(--paper-line);border-radius:14px;box-shadow:var(--shadow);padding:26px 28px 22px;margin-bottom:20px;}
+  .eyebrow{font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);margin:0 0 6px;}
+  h1{font-family:'Caveat',cursive;font-weight:700;font-size:38px;margin:0 0 10px;line-height:1.05;}
+  header.hero p{max-width:680px;line-height:1.55;font-size:15.5px;margin:0 0 8px;}
+  .dim-grid{display:flex;gap:14px;flex-wrap:wrap;margin-top:12px;}
+  .dim-grid span{font-family:'IBM Plex Mono',monospace;font-size:13px;padding:8px 14px;border-radius:8px;font-weight:600;border:1px solid var(--paper-line);background:var(--paper);}
+  .grid-layout{display:grid;grid-template-columns:300px 1fr;gap:20px;align-items:start;}
+  @media (max-width:800px){.grid-layout{grid-template-columns:1fr;}}
+  .card{background:var(--card);border:1px solid var(--paper-line);border-radius:14px;box-shadow:var(--shadow);padding:20px;}
+  .panel-title{font-family:'Caveat',cursive;font-weight:700;font-size:24px;margin:0 0 4px;}
+  .panel-sub{font-size:13px;color:var(--ink-soft);margin:0 0 14px;line-height:1.4;}
+  .field{margin-bottom:14px;}
+  .field label{display:flex;justify-content:space-between;font-size:13.5px;font-weight:600;margin-bottom:6px;}
+  .field label span.val{font-family:'IBM Plex Mono',monospace;font-weight:600;color:var(--pt);}
+  input[type=number]{width:100%;padding:9px 10px;border-radius:8px;border:1px solid var(--paper-line);font-family:'IBM Plex Mono',monospace;font-size:16px;background:var(--paper);color:var(--ink);}
+  input[type=number]:focus{outline:2px solid var(--pt);outline-offset:-1px;border-color:var(--pt);}
+  .helper{font-size:12px;color:var(--ink-soft);margin-top:4px;line-height:1.4;}
+  button{font-family:'Source Sans 3',sans-serif;font-weight:600;font-size:14.5px;border:none;border-radius:9px;padding:11px 16px;cursor:pointer;width:100%;transition:transform .08s ease,filter .15s ease;}
+  button:active{transform:translateY(1px);}button:disabled{opacity:.4;cursor:not-allowed;}
+  .btn-primary{background:var(--fn);color:#fff;}.btn-primary:hover:not(:disabled){filter:brightness(1.08);}
+  .btn-secondary{background:var(--paper);color:var(--ink);border:1px solid var(--paper-line);margin-top:8px;}
+  .btn-secondary:hover:not(:disabled){background:#F0E9D6;}
+  .status{font-size:13.5px;line-height:1.5;padding:12px;border-radius:9px;background:var(--paper);border:1px solid var(--paper-line);margin-bottom:14px;min-height:20px;}
+  .status.feedback-good{background:var(--fn-soft);border-color:var(--fn);color:var(--fn);font-weight:600;}
+  .status.feedback-mid{background:var(--pt-soft);border-color:var(--pt);color:var(--pt);font-weight:600;}
+  .status.feedback-target{background:var(--target-soft);border-color:var(--target);color:var(--target);font-weight:600;}
+  .steps{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap;}
+  .step-dot{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:600;border:1.5px solid var(--paper-line);color:var(--ink-soft);background:var(--paper);}
+  .step-dot.done{background:var(--fn);border-color:var(--fn);color:#fff;}
+  .step-dot.solution{background:var(--target);border-color:var(--target);color:#fff;}
+  .step-dot.active{border-color:var(--pt);color:var(--pt);background:var(--pt-soft);}
+  .reflect,.explore{margin-top:20px;padding-top:16px;border-top:1px dashed var(--paper-line);}
+  .reflect.hidden,.explore.hidden{display:none;}
+  .q{margin-bottom:16px;}.q p.qtext{font-weight:600;margin:0 0 8px;font-size:14.5px;}
+  .options{display:flex;gap:8px;flex-wrap:wrap;}
+  .opt{padding:8px 14px;border-radius:8px;border:1px solid var(--paper-line);background:var(--paper);font-size:13.5px;cursor:pointer;font-weight:600;}
+  .opt.correct{background:var(--fn-soft);border-color:var(--fn);color:var(--fn);}
+  .opt.wrong{background:#F6DCD4;border-color:var(--d1);color:#8C3A1F;}
+  .opt:disabled{cursor:default;}
+  .explore .panel-title{font-size:22px;}
+  footer.note{text-align:center;font-size:12px;color:var(--ink-soft);margin-top:26px;font-family:'IBM Plex Mono',monospace;}
+
+  .eq-display{font-family:'IBM Plex Mono',monospace;font-size:14px;line-height:1.8;margin-bottom:14px;}
+  .eq-display .eq-row{padding:7px 10px;border-radius:8px;margin-bottom:6px;border:1px solid transparent;}
+  .eq-display .eq-row.active-eq{border-color:var(--paper-line);background:var(--paper);}
+  .eq-display .eq-row .coeff{font-weight:600;}
+  .eq-display .eq-row .total{font-weight:700;}
+  .eq-display .eq-row .vname{color:var(--ink-soft);}
+  .eq-display .eq-row .eq-label{display:inline-block;width:20px;font-weight:700;color:var(--ink-soft);}
+  .eq1 .coeff,.eq1 .c1{color:var(--d1);} .eq2 .coeff,.eq2 .c2{color:var(--fn);} .eq3 .coeff,.eq3 .c3{color:var(--pt);}
+  .solution-box{font-family:'IBM Plex Mono',monospace;font-size:14px;padding:10px;border-radius:8px;background:var(--target-soft);border:1px solid var(--target);margin-bottom:10px;text-align:center;}
+  .solution-box strong{color:var(--target);font-size:16px;}
+  .solution-box .pair{font-weight:700;}
+
+  .graph-card{display:flex;flex-direction:column;}
+  .graph-card .panel-title{margin-bottom:0;}
+  .graph-card .panel-sub{margin-bottom:12px;}
+  .graph-wrap{flex:1;display:flex;align-items:center;justify-content:center;min-height:350px;}
+  .graph-wrap svg{width:100%;height:auto;max-height:520px;}
+  .legend{display:flex;gap:16px;flex-wrap:wrap;margin-top:10px;font-family:'IBM Plex Mono',monospace;font-size:11.5px;}
+  .legend span{display:flex;align-items:center;gap:6px;padding:5px 10px;border-radius:6px;background:var(--paper);border:1px solid var(--paper-line);}
+  .legend .swatch{width:18px;height:3px;border-radius:2px;}.legend .swatch.dot{width:10px;height:10px;border-radius:50%;}
+  .calc-below{margin-top:12px;padding:12px;border-radius:8px;background:var(--paper);border:1px solid var(--paper-line);font-family:'IBM Plex Mono',monospace;font-size:13px;line-height:1.6;}
+
+  .explore-eqs{display:flex;flex-direction:column;gap:8px;}
+  .explore-eq{display:flex;gap:6px;align-items:center;font-family:'IBM Plex Mono',monospace;font-size:13px;}
+  .explore-eq input{width:52px;padding:5px 4px;font-size:13px;border-radius:5px;border:1px solid var(--paper-line);font-family:'IBM Plex Mono',monospace;background:var(--paper);color:var(--ink);text-align:center;}
+  .explore-eq input:focus{outline:2px solid var(--pt);outline-offset:-1px;border-color:var(--pt);}
+  .explore-eq .eql{font-weight:600;color:var(--ink-soft);}
+  .explore-stat{font-size:12px;color:var(--ink-soft);margin-top:6px;font-family:'IBM Plex Mono',monospace;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <p class="eyebrow">Linear Systems · Overdetermined</p>
+    <h1>Chanakya's Audit — Three Equations, Two Unknowns</h1>
+    <p>Three scribes in the royal kitchen each recorded the purchase of two items — <strong>A</strong> and <strong>C</strong> — for the day. Each wrote down how many of each and the total cost. But the three records don't agree. When we have <strong>more equations than unknowns</strong>, a system may have <em>no clear solution</em>.</p>
+    <div class="dim-grid">
+      <span style="background:var(--d1-soft);border-color:var(--d1);color:var(--d1);">Scribe 1</span>
+      <span style="background:var(--fn-soft);border-color:var(--fn);color:var(--fn);">Scribe 2</span>
+      <span style="background:var(--pt-soft);border-color:var(--pt);color:var(--pt);">Scribe 3</span>
+      <span style="background:var(--target-soft);border-color:var(--target);color:var(--target);">3 equations, 2 unknowns</span>
+    </div>
+  </header>
+
+  <div class="grid-layout">
+    <div class="card">
+      <p class="panel-title" id="stepTitle">The Three Records</p>
+      <p class="panel-sub" id="stepSub">Examine the three equations.</p>
+
+      <div class="eq-display" id="eqDisplay"></div>
+
+      <div class="solution-box hidden" id="solutionBox"></div>
+
+      <div class="steps" id="stepDots"></div>
+
+      <div class="status" id="statusBox">Step 1 of 5 — Examine the three equations.</div>
+
+      <button class="btn-primary" id="checkBtn">Reveal</button>
+      <button class="btn-secondary" id="resetBtn">Start Over</button>
+    </div>
+
+    <div class="card graph-card">
+      <p class="panel-title" id="graphTitle">The Graph</p>
+      <p class="panel-sub" id="graphSub">Each equation is a line in the A–C plane.</p>
+      <div class="graph-wrap" id="graphWrap">
+        <svg viewBox="0 0 600 640" id="graphSvg"></svg>
+      </div>
+      <div class="legend" id="legend"></div>
+      <div class="calc-below" id="calcBelow"></div>
+    </div>
+  </div>
+
+  <!-- REFLECTION QUIZ -->
+  <div class="card reflect hidden" id="reflectCard">
+    <p class="panel-title">When Equations Outnumber Unknowns</p>
+    <p class="panel-sub">Three equations in two variables rarely share a single solution. This is called an <strong>overdetermined system</strong>.</p>
+
+    <div class="q" id="q1">
+      <p class="qtext">1. What happens when you solve pairs of equations from an overdetermined system?</p>
+      <div class="options">
+        <button class="opt" data-correct="false">All pairs give the same answer</button>
+        <button class="opt" data-correct="true">Different pairs usually give different answers — no single solution satisfies all three</button>
+        <button class="opt" data-correct="false">The system always has exactly one solution</button>
+      </div>
+    </div>
+
+    <div class="q" id="q2">
+      <p class="qtext">2. What does it mean graphically when three lines don't all intersect at one point?</p>
+      <div class="options">
+        <button class="opt" data-correct="true">There is no pair (A, C) that satisfies all three equations simultaneously. The system has no solution.</button>
+        <button class="opt" data-correct="false">The lines are parallel</button>
+        <button class="opt" data-correct="false">We need three variables, not two</button>
+      </div>
+    </div>
+
+    <div class="q" id="q3">
+      <p class="qtext">3. In practical terms, what might three conflicting records suggest?</p>
+      <div class="options">
+        <button class="opt" data-correct="false">All three are correct</button>
+        <button class="opt" data-correct="false">The items are free</button>
+        <button class="opt" data-correct="true">At least one record has an error. In real data, we find the "best fit" solution or identify the mistake.</button>
+      </div>
+    </div>
+
+    <div class="q" id="q4">
+      <p class="qtext">4. A system with more equations than unknowns is called:</p>
+      <div class="options">
+        <button class="opt" data-correct="true">Overdetermined (more constraints than variables)</button>
+        <button class="opt" data-correct="false">Underdetermined (fewer constraints)</button>
+        <button class="opt" data-correct="false">Determined (exactly one solution)</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- EXPLORE MODE -->
+  <div class="card explore hidden" id="exploreCard">
+    <p class="panel-title">Explore Your Own System</p>
+    <p class="panel-sub">Change the coefficients and totals. The graph updates live. See if you can make all three lines meet at one point!</p>
+
+    <div class="explore-eqs" id="exploreEqs">
+      <div class="explore-eq eq1">
+        <span class="eql" style="color:var(--d1);">1.</span>
+        <input type="number" id="e1a" value="3"><span class="vname">A +</span>
+        <input type="number" id="e1c" value="1"><span class="vname">C =</span>
+        <input type="number" id="e1t" value="1200">
+      </div>
+      <div class="explore-eq eq2">
+        <span class="eql" style="color:var(--fn);">2.</span>
+        <input type="number" id="e2a" value="1"><span class="vname">A +</span>
+        <input type="number" id="e2c" value="2"><span class="vname">C =</span>
+        <input type="number" id="e2t" value="1000">
+      </div>
+      <div class="explore-eq eq3">
+        <span class="eql" style="color:var(--pt);">3.</span>
+        <input type="number" id="e3a" value="1"><span class="vname">A +</span>
+        <input type="number" id="e3c" value="1"><span class="vname">C =</span>
+        <input type="number" id="e3t" value="900">
+      </div>
+    </div>
+    <div class="explore-stat" id="exploreStat"></div>
+    <div id="exploreGraph" style="margin-top:10px;border:1px solid var(--paper-line);border-radius:10px;padding:8px;background:var(--paper);">
+      <svg viewBox="0 0 600 500" id="exploreSvg" style="width:100%;height:auto;"></svg>
+    </div>
+  </div>
+
+  <footer class="note">Overdetermined system · 3 equations, 2 unknowns · no single solution</footer>
+</div>
+
+<script>
+(function(){
+  const $ = id => document.getElementById(id);
+
+  const EQS = [
+    { a:3, c:1, t:1200, label:'1', color:'var(--d1)' },
+    { a:1, c:2, t:1000, label:'2', color:'var(--fn)' },
+    { a:1, c:1, t:900, label:'3', color:'var(--pt)' },
+  ];
+
+  const SOLUTIONS = [
+    { pair: [280, 360], from:'eqs 1 & 2', eqs:[0,1] },
+    { pair: [800, 100], from:'eqs 2 & 3', eqs:[1,2] },
+    { pair: [150, 750], from:'eqs 1 & 3', eqs:[0,2] },
+  ];
+
+  const STEPS = [
+    { label:'The Three Records', desc:'Examine the three equations.', showEqs:[0,1,2], showLines:[], showSols:[], key:'intro' },
+    { label:'Solve 1 & 2', desc:'Solve the first two equations together.', showEqs:[0,1], showLines:[0,1], showSols:[0], key:'sol12' },
+    { label:'Solve 2 & 3', desc:'Solve the last two equations together.', showEqs:[1,2], showLines:[1,2], showSols:[1], key:'sol23' },
+    { label:'Solve 1 & 3', desc:'Solve the first and last equations together.', showEqs:[0,2], showLines:[0,2], showSols:[2], key:'sol13' },
+    { label:'All Three Lines', desc:'Three lines. No single intersection.', showEqs:[0,1,2], showLines:[0,1,2], showSols:[0,1,2], key:'all' },
+  ];
+  const TOTAL = STEPS.length;
+  let step = 0;
+  let revealed = false;
+
+  const stepDots = $('stepDots');
+  const statusBox = $('statusBox');
+  const checkBtn = $('checkBtn');
+  const resetBtn = $('resetBtn');
+  const reflectCard = $('reflectCard');
+  const exploreCard = $('exploreCard');
+  const stepTitle = $('stepTitle');
+  const stepSub = $('stepSub');
+  const eqDisplay = $('eqDisplay');
+  const solutionBox = $('solutionBox');
+  const graphTitle = $('graphTitle');
+  const graphSub = $('graphSub');
+  const graphSvg = $('graphSvg');
+  const legend = $('legend');
+  const calcBelow = $('calcBelow');
+  const exploreStat = $('exploreStat');
+  const exploreSvg = $('exploreSvg');
+
+  for(let i=1;i<=TOTAL;i++){
+    const d = document.createElement('div');
+    d.className='step-dot'; d.textContent=i; d.id='step-'+i;
+    stepDots.appendChild(d);
+  }
+
+  function getSD(){ return STEPS[step]; }
+
+  function fmt(n){ return Number.isInteger(n) ? n : n.toFixed(2); }
+
+  // ---- drawing ----
+  const GRAPH = { xMin:0, xMax:1000, yMin:0, yMax:1200, padL:55, padR:15, padT:15, padB:45 };
+  function toSvg(ax, ay, svgW, svgH){
+    const dw = GRAPH.xMax - GRAPH.xMin;
+    const dh = GRAPH.yMax - GRAPH.yMin;
+    const drawW = svgW - GRAPH.padL - GRAPH.padR;
+    const drawH = svgH - GRAPH.padT - GRAPH.padB;
+    return {
+      x: GRAPH.padL + (ax - GRAPH.xMin) / dw * drawW,
+      y: GRAPH.padT + (1 - (ay - GRAPH.yMin) / dh) * drawH
+    };
+  }
+
+  function drawAxes(svg, svgW, svgH){
+    const dw = GRAPH.xMax - GRAPH.xMin;
+    const dh = GRAPH.yMax - GRAPH.yMin;
+    const drawW = svgW - GRAPH.padL - GRAPH.padR;
+    const drawH = svgH - GRAPH.padT - GRAPH.padB;
+    const ori = toSvg(0,0,svgW,svgH);
+    let g = document.createElementNS('http://www.w3.org/2000/svg','g');
+    g.setAttribute('class','axes');
+
+    // axis lines
+    let l = document.createElementNS('http://www.w3.org/2000/svg','line');
+    l.setAttribute('x1',GRAPH.padL); l.setAttribute('y1',ori.y);
+    l.setAttribute('x2',svgW-GRAPH.padR); l.setAttribute('y2',ori.y);
+    l.setAttribute('stroke','var(--ink-soft)'); l.setAttribute('stroke-width','1');
+    g.appendChild(l);
+
+    l = document.createElementNS('http://www.w3.org/2000/svg','line');
+    l.setAttribute('x1',ori.x); l.setAttribute('y1',GRAPH.padT);
+    l.setAttribute('x2',ori.x); l.setAttribute('y2',svgH-GRAPH.padB);
+    l.setAttribute('stroke','var(--ink-soft)'); l.setAttribute('stroke-width','1');
+    g.appendChild(l);
+
+    // tick labels
+    const xTicks = [0,200,400,600,800,1000];
+    const yTicks = [0,200,400,600,800,1000,1200];
+    for(let v of xTicks){
+      const p = toSvg(v,0,svgW,svgH);
+      let t = document.createElementNS('http://www.w3.org/2000/svg','text');
+      t.setAttribute('x',p.x); t.setAttribute('y',svgH-GRAPH.padB+16);
+      t.setAttribute('text-anchor','middle'); t.setAttribute('font-size','11');
+      t.setAttribute('fill','var(--ink-soft)'); t.setAttribute('font-family','IBM Plex Mono,monospace');
+      t.textContent = v;
+      g.appendChild(t);
+    }
+    for(let v of yTicks){
+      const p = toSvg(0,v,svgW,svgH);
+      let t = document.createElementNS('http://www.w3.org/2000/svg','text');
+      t.setAttribute('x',GRAPH.padL-10); t.setAttribute('y',p.y+4);
+      t.setAttribute('text-anchor','end'); t.setAttribute('font-size','11');
+      t.setAttribute('fill','var(--ink-soft)'); t.setAttribute('font-family','IBM Plex Mono,monospace');
+      t.textContent = v;
+      g.appendChild(t);
+    }
+
+    // axis labels
+    let t = document.createElementNS('http://www.w3.org/2000/svg','text');
+    t.setAttribute('x',svgW/2+20); t.setAttribute('y',svgH-4);
+    t.setAttribute('text-anchor','middle'); t.setAttribute('font-size','13');
+    t.setAttribute('font-weight','600'); t.setAttribute('fill','var(--ink)');
+    t.setAttribute('font-family','Source Sans 3,sans-serif');
+    t.textContent = 'A (quantity of item A)';
+    g.appendChild(t);
+
+    t = document.createElementNS('http://www.w3.org/2000/svg','text');
+    t.setAttribute('x',14); t.setAttribute('y',svgH/2-20);
+    t.setAttribute('text-anchor','middle'); t.setAttribute('font-size','13');
+    t.setAttribute('font-weight','600'); t.setAttribute('fill','var(--ink)');
+    t.setAttribute('font-family','Source Sans 3,sans-serif');
+    t.setAttribute('transform',`rotate(-90,14,${svgH/2-20})`);
+    t.textContent = 'C (quantity of item C)';
+    g.appendChild(t);
+
+    svg.appendChild(g);
+  }
+
+  function drawLine(svg, a, c, total, color, svgW, svgH){
+    // line: a*A + c*C = total  => C = (total - a*A)/c
+    if(c === 0) return;
+    let x1 = GRAPH.xMin, x2 = GRAPH.xMax;
+    let y1 = (total - a*x1)/c;
+    let y2 = (total - a*x2)/c;
+    // clamp to visible y range
+    if(y1 < GRAPH.yMin && a !== 0){ y1 = GRAPH.yMin; x1 = (total - c*y1)/a; }
+    if(y1 > GRAPH.yMax && a !== 0){ y1 = GRAPH.yMax; x1 = (total - c*y1)/a; }
+    if(y2 < GRAPH.yMin && a !== 0){ y2 = GRAPH.yMin; x2 = (total - c*y2)/a; }
+    if(y2 > GRAPH.yMax && a !== 0){ y2 = GRAPH.yMax; x2 = (total - c*y2)/a; }
+    if(x1 < GRAPH.xMin || x1 > GRAPH.xMax || x2 < GRAPH.xMin || x2 > GRAPH.xMax) return;
+
+    const p1 = toSvg(x1, y1, svgW, svgH);
+    const p2 = toSvg(x2, y2, svgW, svgH);
+    let l = document.createElementNS('http://www.w3.org/2000/svg','line');
+    l.setAttribute('x1',p1.x); l.setAttribute('y1',p1.y);
+    l.setAttribute('x2',p2.x); l.setAttribute('y2',p2.y);
+    l.setAttribute('stroke',color); l.setAttribute('stroke-width','2.5');
+    l.setAttribute('stroke-linecap','round');
+    svg.appendChild(l);
+  }
+
+  function drawPoint(svg, ax, ay, color, label, svgW, svgH){
+    const p = toSvg(ax, ay, svgW, svgH);
+    if(p.x < GRAPH.padL || p.x > svgW-GRAPH.padR || p.y < GRAPH.padT || p.y > svgH-GRAPH.padB) return;
+    let c = document.createElementNS('http://www.w3.org/2000/svg','circle');
+    c.setAttribute('cx',p.x); c.setAttribute('cy',p.y);
+    c.setAttribute('r','6'); c.setAttribute('fill',color);
+    c.setAttribute('stroke','#fff'); c.setAttribute('stroke-width','2');
+    svg.appendChild(c);
+
+    if(label){
+      let t = document.createElementNS('http://www.w3.org/2000/svg','text');
+      t.setAttribute('x',p.x+10); t.setAttribute('y',p.y-6);
+      t.setAttribute('font-size','11'); t.setAttribute('font-weight','600');
+      t.setAttribute('fill',color); t.setAttribute('font-family','IBM Plex Mono,monospace');
+      t.textContent = label;
+      svg.appendChild(t);
+    }
+  }
+
+  function getSvgSize(svgEl){
+    const vb = svgEl.getAttribute('viewBox').split(' ').map(Number);
+    return { w: vb[2], h: vb[3] };
+  }
+
+  function renderGraph(showLines, showSols, eqs){
+    const sz = getSvgSize(graphSvg);
+    graphSvg.innerHTML = '';
+    drawAxes(graphSvg, sz.w, sz.h);
+
+    const colors = [EQS[0].color, EQS[1].color, EQS[2].color];
+    for(let idx of showLines){
+      const e = eqs ? eqs[idx] : EQS[idx];
+      drawLine(graphSvg, e.a, e.c, e.t, colors[idx], sz.w, sz.h);
+    }
+
+    for(let si of showSols){
+      const sol = SOLUTIONS[si];
+      const p = sol.pair;
+      drawPoint(graphSvg, p[0], p[1], 'var(--target)', `(${p[0]}, ${p[1]})`, sz.w, sz.h);
+    }
+
+    // legend
+    const legendHtml = [];
+    for(let idx of showLines){
+      const e = EQS[idx];
+      legendHtml.push(`<span><span class="swatch" style="background:${e.color};"></span> Eq ${e.label}: ${e.a}A + ${e.c}C = ${e.t}</span>`);
+    }
+    for(let si of showSols){
+      const sol = SOLUTIONS[si];
+      legendHtml.push(`<span><span class="swatch dot" style="background:var(--target);"></span> ${sol.from}: (${sol.pair[0]}, ${sol.pair[1]})</span>`);
+    }
+    legend.innerHTML = legendHtml.join('');
+  }
+
+  function renderEqs(activeIndices){
+    let html = '';
+    for(let i=0;i<3;i++){
+      const e = EQS[i];
+      const active = activeIndices.includes(i);
+      const cls = `eq-row eq${i+1}${active ? ' active-eq' : ''}`;
+      const coeffs = [`<span class="coeff">${e.a}</span><span class="vname">A</span>`,
+                      `<span class="coeff">${e.c}</span><span class="vname">C</span>`];
+      html += `<div class="${cls}"><span class="eq-label">${e.label}.</span> ${coeffs[0]} + ${coeffs[1]} = <span class="total">${e.t}</span></div>`;
+    }
+    eqDisplay.innerHTML = html;
+  }
+
+  function renderSolution(solIdx){
+    const sol = SOLUTIONS[solIdx];
+    solutionBox.classList.remove('hidden');
+    solutionBox.innerHTML = `<strong>From ${sol.from}:</strong> A = <span class="pair">${sol.pair[0]}</span>, C = <span class="pair">${sol.pair[1]}</span>`;
+  }
+
+  function renderCalcBelow(stepKey){
+    let html = '';
+    if(stepKey === 'sol12'){
+      html = `Eq 1: 3A + C = 1200 → C = 1200 − 3A<br>`;
+      html += `Eq 2: A + 2C = 1000 → A + 2(1200−3A) = 1000 → A + 2400 − 6A = 1000 → −5A = −1400 → A = 280<br>`;
+      html += `C = 1200 − 3·280 = 360 → <strong>A=280, C=360</strong>`;
+    } else if(stepKey === 'sol23'){
+      html = `Eq 2: A + 2C = 1000 → A = 1000 − 2C<br>`;
+      html += `Eq 3: A + C = 900 → (1000−2C) + C = 900 → 1000 − C = 900 → C = 100<br>`;
+      html += `A = 1000 − 2·100 = 800 → <strong>A=800, C=100</strong>`;
+      html += `<br><span style="color:var(--d1);font-weight:600;">Different from before!</span>`;
+    } else if(stepKey === 'sol13'){
+      html = `Eq 1: 3A + C = 1200 → C = 1200 − 3A<br>`;
+      html += `Eq 3: A + C = 900 → A + (1200−3A) = 900 → 1200 − 2A = 900 → 2A = 300 → A = 150<br>`;
+      html += `C = 1200 − 3·150 = 750 → <strong>A=150, C=750</strong>`;
+      html += `<br><span style="color:var(--d1);font-weight:600;">All three pairs give different answers!</span>`;
+    } else if(stepKey === 'all'){
+      html = `Three different pairs of equations → three different intersection points.<br>`;
+      html += `<strong>No single (A, C) satisfies all three equations simultaneously.</strong><br>`;
+      html += `This is an <strong style="color:var(--d1);">overdetermined system</strong>: more equations than unknowns.`;
+    }
+    calcBelow.innerHTML = html;
+  }
+
+  function updateUI(){
+    const sd = getSD();
+    stepTitle.textContent = sd.label;
+    stepSub.textContent = sd.desc;
+
+    renderEqs(sd.showEqs);
+    renderGraph(sd.showLines, sd.showSols, null);
+
+    if(sd.key === 'intro'){
+      solutionBox.classList.add('hidden');
+      calcBelow.innerHTML = '<span style="color:var(--ink-soft);">Each equation is a line. Two unknowns → two dimensions. Three lines may not all meet.</span>';
+    } else if(sd.key === 'sol12'){
+      renderSolution(0);
+      renderCalcBelow('sol12');
+    } else if(sd.key === 'sol23'){
+      renderSolution(1);
+      renderCalcBelow('sol23');
+    } else if(sd.key === 'sol13'){
+      renderSolution(2);
+      renderCalcBelow('sol13');
+    } else if(sd.key === 'all'){
+      solutionBox.innerHTML = ''; // don't show a single solution
+      solutionBox.classList.add('hidden');
+      renderCalcBelow('all');
+    }
+
+    // graph title/sub
+    if(sd.key === 'intro'){
+      graphTitle.textContent = 'Three Lines';
+      graphSub.textContent = 'Each equation is a straight line in the A–C plane.';
+    } else if(sd.showLines.length === 2){
+      graphTitle.textContent = 'Two Lines Intersect';
+      graphSub.textContent = 'Each pair of equations gives an intersection point.';
+    } else {
+      graphTitle.textContent = 'All Three Lines';
+      graphSub.textContent = 'No single point lies on all three lines.';
+    }
+
+    if(step >= TOTAL){
+      checkBtn.disabled = true; checkBtn.textContent = 'Complete';
+    } else if(revealed){
+      checkBtn.textContent = 'Next Step';
+    } else {
+      checkBtn.textContent = 'Reveal';
+    }
+  }
+
+  function markDots(){
+    document.querySelectorAll('.step-dot').forEach(d=>d.classList.remove('active'));
+    for(let i=0;i<step&&i<TOTAL;i++){
+      const d=$('step-'+(i+1)); if(d) d.classList.add('done');
+    }
+    if(step < TOTAL){ const d=$('step-'+(step+1)); if(d) d.classList.add('active'); }
+  }
+
+  function setStatus(html, cls){
+    statusBox.innerHTML = html;
+    statusBox.className = 'status' + (cls ? ' '+cls : '');
+  }
+
+  function advance(){
+    if(step>=TOTAL){
+      checkBtn.disabled=true;
+      setTimeout(()=>{reflectCard.classList.remove('hidden');exploreCard.classList.remove('hidden');reflectCard.scrollIntoView({behavior:'smooth',block:'nearest'});},500);
+      setStatus('Complete! Explore overdetermined systems below.','feedback-target');
+      return;
+    }
+    revealed = true;
+    const sd = getSD();
+    let msg;
+    if(sd.key === 'intro') msg = 'Three equations, two unknowns. Each pair gives a different intersection.';
+    else if(sd.key === 'sol12') msg = 'Eq 1 & 2: (280, 360). One possible answer — but is it the only one?';
+    else if(sd.key === 'sol23') msg = 'Eq 2 & 3: (800, 100). A different answer!';
+    else if(sd.key === 'sol13') msg = 'Eq 1 & 3: (150, 750). Three pairs, three different answers.';
+    else msg = 'No single point satisfies all three. The system is overdetermined.';
+    setStatus(msg,'feedback-good');
+    markDots(); updateUI();
+  }
+
+  function nextStep(){
+    if(!revealed){
+      advance();
+    } else {
+      step++; revealed = false;
+      if(step<TOTAL){
+        const sd = getSD();
+        setStatus(`Step ${step+1}: ${sd.desc}`);
+        updateUI(); markDots();
+      } else {
+        setStatus('All steps complete!','feedback-target');
+        checkBtn.disabled = true;
+        setTimeout(()=>{reflectCard.classList.remove('hidden');exploreCard.classList.remove('hidden');reflectCard.scrollIntoView({behavior:'smooth',block:'nearest'});},500);
+      }
+    }
+  }
+
+  checkBtn.addEventListener('click', nextStep);
+
+  resetBtn.addEventListener('click', ()=>{
+    step=0; revealed=false;
+    checkBtn.disabled=false;
+    reflectCard.classList.add('hidden');
+    exploreCard.classList.add('hidden');
+    document.querySelectorAll('.step-dot').forEach(d=>d.classList.remove('done','solution','active'));
+    const f=$('step-1'); if(f) f.classList.add('active');
+    updateUI(); markDots();
+    setStatus('Step 1 of 5 — Examine the three equations.');
+  });
+
+  // ---- EXPLORE ----
+  const eInputs = [$('e1a'),$('e1c'),$('e1t'),$('e2a'),$('e2c'),$('e2t'),$('e3a'),$('e3c'),$('e3t')];
+  function drawExploreGraph(){
+    const eqs = [
+      { a:+eInputs[0].value||0, c:+eInputs[1].value||0, t:+eInputs[2].value||0, label:'1', color:'var(--d1)' },
+      { a:+eInputs[3].value||0, c:+eInputs[4].value||0, t:+eInputs[5].value||0, label:'2', color:'var(--fn)' },
+      { a:+eInputs[6].value||0, c:+eInputs[7].value||0, t:+eInputs[8].value||0, label:'3', color:'var(--pt)' },
+    ];
+
+    const sz = { w:600, h:500 };
+    exploreSvg.innerHTML = '';
+    drawAxes(exploreSvg, sz.w, sz.h);
+
+    for(let i=0;i<3;i++){
+      const e = eqs[i];
+      if(e.c !== 0){
+        drawLine(exploreSvg, e.a, e.c, e.t, e.color, sz.w, sz.h);
+      }
+    }
+
+    // compute pairwise intersections (if possible)
+    const pairs = [[0,1],[1,2],[0,2]];
+    let allMeet = false;
+    const intPts = [];
+    for(let pi=0;pi<3;pi++){
+      const [i,j] = pairs[pi];
+      const e1 = eqs[i], e2 = eqs[j];
+      const det = e1.a*e2.c - e2.a*e1.c;
+      if(det !== 0){
+        const a = (e1.t*e2.c - e2.t*e1.c)/det;
+        const c = (e1.a*e2.t - e2.a*e1.t)/det;
+        intPts.push({a,c,i,j});
+      }
+    }
+
+    // check if all three meet at same point
+    if(intPts.length === 3){
+      const eps = 0.5;
+      const p0 = [intPts[0].a, intPts[0].c];
+      const allClose = intPts.every(p => Math.abs(p.a-p0[0])<eps && Math.abs(p.c-p0[1])<eps);
+      if(allClose){
+        allMeet = true;
+        drawPoint(exploreSvg, p0[0], p0[1], 'var(--target)', `(${fmt(p0[0])}, ${fmt(p0[1])})`, sz.w, sz.h);
+      }
+    }
+
+    // show all intersection points
+    for(let pi=0;pi<intPts.length;pi++){
+      const p = intPts[pi];
+      drawPoint(exploreSvg, p.a, p.c, 'var(--pt)', '', sz.w, sz.h);
+    }
+
+    // stats
+    let statHtml = '';
+    if(allMeet){
+      statHtml = `<span style="color:var(--fn);font-weight:600;">All three lines meet at (${fmt(p0[0])}, ${fmt(p0[1])})!</span>`;
+    } else {
+      statHtml = `<span style="color:var(--ink-soft);">Three lines — ` +
+        (intPts.length > 0 ? `${intPts.length} intersection point(s), but no single point satisfies all three.` : `no intersections.`) +
+        `</span>`;
+    }
+    exploreStat.innerHTML = statHtml;
+  }
+
+  for(let inp of eInputs) inp.addEventListener('input', drawExploreGraph);
+
+  // ---- QUIZ ----
+  document.querySelectorAll('.q .options').forEach(group=>{
+    group.querySelectorAll('.opt').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        const correct = btn.dataset.correct === 'true';
+        group.querySelectorAll('.opt').forEach(b=>{
+          b.disabled = true;
+          if(b.dataset.correct==='true') b.classList.add('correct');
+        });
+        if(!correct) btn.classList.add('wrong');
+      });
+    });
+  });
+
+  // ---- INIT ----
+  (function init(){
+    const f=$('step-1'); if(f) f.classList.add('active');
+    updateUI(); markDots();
+    setStatus('Step 1 of 5 — Examine the three equations.');
+    drawExploreGraph();
+  })();
+})();
+</script>
+</body>
+</html>
