@@ -1,0 +1,36 @@
+{
+  "totalTopics": 53,
+  "totalQuestions": 1060,
+  "byModule": [
+    {
+      "module": 1,
+      "topics": 16,
+      "questions": 320
+    },
+    {
+      "module": 2,
+      "topics": 7,
+      "questions": 140
+    },
+    {
+      "module": 3,
+      "topics": 15,
+      "questions": 300
+    },
+    {
+      "module": 4,
+      "topics": 7,
+      "questions": 140
+    },
+    {
+      "module": 5,
+      "topics": 5,
+      "questions": 100
+    },
+    {
+      "module": 6,
+      "topics": 3,
+      "questions": 60
+    }
+  ]
+}
