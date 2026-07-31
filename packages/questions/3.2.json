@@ -1,0 +1,546 @@
+{
+  "id": "3.2",
+  "moduleId": 3,
+  "number": 2,
+  "title": "Vectors perpendicular to (1,1) as [1,1] · [x,y]ᵀ = 0",
+  "vocabulary": {
+    "allowed": [
+      "matrix",
+      "equation",
+      "[1",
+      "1]·x",
+      "row",
+      "vector",
+      "dot",
+      "product.",
+      "Vocabulary",
+      "forbidden:",
+      "eigenvalue."
+    ],
+    "forbidden": [
+      "eigenvalue."
+    ]
+  },
+  "questions": [
+    {
+      "id": "3.2.q1",
+      "topicId": "3.2",
+      "prompt": "How do we write \"perpendicular to (1, 1)\" as a *matrix equation*?",
+      "options": [
+        {
+          "text": "[1,1]·[x,y]ᵀ = 0",
+          "correct": true
+        },
+        {
+          "text": "[1,1]·[x,y]ᵀ = 1",
+          "correct": false
+        },
+        {
+          "text": "[x,y]·[1,1]ᵀ = 0",
+          "correct": false
+        },
+        {
+          "text": "Random form",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: [1, 1] is the *row vector* of (1, 1)'s components. Step 2: [x, y]ᵀ is the column vector of unknowns. Step 3: [1, 1] · [x, y]ᵀ = x + y. Step 4: Setting = 0 gives the perpendicularity condition. Step 5: This \"row · column = dot\" is the matrix form.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.2.q2",
+      "topicId": "3.2",
+      "prompt": "Why is [1, 1] · [x, y]ᵀ = 0 a *linear* equation?",
+      "options": [
+        {
+          "text": "Linear in x,y",
+          "correct": true
+        },
+        {
+          "text": "Quadratic here",
+          "correct": false
+        },
+        {
+          "text": "Cubic here",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: x + y = 0 is a first-degree equation. Step 2: No x², y², xy terms. Step 3: So linear. Step 4: The trap \"quadratic\" misses the form. Step 5: This \"linear equation\" is the standard form of constraints.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.2.q3",
+      "topicId": "3.2",
+      "prompt": "What is the *geometric* shape of x + y = 0?",
+      "options": [
+        {
+          "text": "A line",
+          "correct": true
+        },
+        {
+          "text": "A circle",
+          "correct": false
+        },
+        {
+          "text": "A parabola",
+          "correct": false
+        },
+        {
+          "text": "A random shape",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: x + y = 0 is a linear equation. Step 2: Linear equations graph as straight lines. Step 3: The trap \"circle\" describes x² + y² = 0 (different equation). Step 4: This \"linear → line\" is the basic graph-equation connection. Step 5: Used in Q3.4.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.2.q4",
+      "topicId": "3.2",
+      "prompt": "How many solutions does [1, 1] · [x, y]ᵀ = 0 have?",
+      "options": [
+        {
+          "text": "Infinitely many",
+          "correct": true
+        },
+        {
+          "text": "One only",
+          "correct": false
+        },
+        {
+          "text": "No solutions",
+          "correct": false
+        },
+        {
+          "text": "Random count",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: The equation x + y = 0 defines a line. Step 2: A line has infinitely many points. Step 3: So infinitely many solutions (x, y) = (t, −t) for any t. Step 4: The trap \"one\" describes a unique solution case. Step 5: This \"line = infinite solutions\" is the seed of *null space*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.2.q5",
+      "topicId": "3.2",
+      "prompt": "What is the *parametrisation* of x + y = 0?",
+      "options": [
+        {
+          "text": "(t, −t)",
+          "correct": true
+        },
+        {
+          "text": "(t, t) only",
+          "correct": false
+        },
+        {
+          "text": "(t, 0) only",
+          "correct": false
+        },
+        {
+          "text": "(0, t) only",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Let y = t. Then x = −t. Step 2: So (x, y) = (−t, t) = t · (−1, 1). Step 3: This parametrises the line x + y = 0. Step 4: The trap (t, t) describes x − y = 0 (different line). Step 5: This \"parametrise the line\" is the foundation of *vector parametrisation*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.2.q6",
+      "topicId": "3.2",
+      "prompt": "Why is the *solution set* a *line* in 2D?",
+      "options": [
+        {
+          "text": "One constraint",
+          "correct": true
+        },
+        {
+          "text": "Two constraints",
+          "correct": false
+        },
+        {
+          "text": "Random number",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: In ℝ², one linear equation (one constraint) cuts the plane into a 1D line. Step 2: Two constraints would give a 0D point. Step 3: So one equation → one line. Step 4: This \"constraints ↔ dimension\" is the seed of *codimension*. Step 5: Used in Q3.4.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.2.q7",
+      "topicId": "3.2",
+      "prompt": "What is the *direction vector* of x + y = 0?",
+      "options": [
+        {
+          "text": "(1, −1)",
+          "correct": true
+        },
+        {
+          "text": "(1, 1)",
+          "correct": false
+        },
+        {
+          "text": "(0, 1)",
+          "correct": false
+        },
+        {
+          "text": "(1, 0)",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: The line x + y = 0 has direction (1, −1). Step 2: This direction is perpendicular to the normal (1, 1). Step 3: The trap (1, 1) is the normal, not the direction. Step 4: This \"direction = perpendicular to normal\" is the geometric meaning. Step 5: Used in *physics*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.2.q8",
+      "topicId": "3.2",
+      "prompt": "What is the *normal vector* of x + y = 0?",
+      "options": [
+        {
+          "text": "(1, 1)",
+          "correct": true
+        },
+        {
+          "text": "(1, −1)",
+          "correct": false
+        },
+        {
+          "text": "(0, 1)",
+          "correct": false
+        },
+        {
+          "text": "(1, 0)",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: The normal vector points perpendicular to the line. Step 2: For x + y = 0, the normal is (1, 1). Step 3: The trap (1, −1) is the direction. Step 4: This \"normal = coefficients\" is the bridge. Step 5: Used in *computer graphics*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.2.q9",
+      "topicId": "3.2",
+      "prompt": "Why is (1, 1) the *normal* to x + y = 0?",
+      "options": [
+        {
+          "text": "Perp to line",
+          "correct": true
+        },
+        {
+          "text": "Parallel line",
+          "correct": false
+        },
+        {
+          "text": "Random vec",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: The normal vector is perpendicular to the line. Step 2: For x + y = 0, any point on the line is perpendicular to (1, 1). Step 3: So (1, 1) is the normal. Step 4: This \"normal = perpendicular to direction\" is the definition. Step 5: Used in *3D graphics*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.2.q10",
+      "topicId": "3.2",
+      "prompt": "Can we write x + y = 0 using a *column* vector?",
+      "options": [
+        {
+          "text": "Yes, x+y=0",
+          "correct": true
+        },
+        {
+          "text": "No, only row",
+          "correct": false
+        },
+        {
+          "text": "Random form",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: [x, y]ᵀ · [1, 1]ᵀ = x + y. Step 2: Setting = 0 is the same equation. Step 3: Just a different matrix form (column · column). Step 4: This \"row or column = dot product\" is the same algebra. Step 5: Used in Q1.13.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.2.q11",
+      "topicId": "3.2",
+      "prompt": "What is the *matrix* A in [1, 1] · x = 0?",
+      "options": [
+        {
+          "text": "Just [1, 1]",
+          "correct": true
+        },
+        {
+          "text": "Just [1, 1]ᵀ",
+          "correct": false
+        },
+        {
+          "text": "Random mat",
+          "correct": false
+        },
+        {
+          "text": "Skip mat",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: A is the 1×2 row matrix [1, 1]. Step 2: A · x = [1, 1] · [x, y]ᵀ = x + y. Step 3: So the matrix is [1, 1]. Step 4: This \"1×n row matrix\" is a single linear constraint. Step 5: Used in Q3.4.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.2.q12",
+      "topicId": "3.2",
+      "prompt": "Why is the equation A · x = 0 called *homogeneous*?",
+      "options": [
+        {
+          "text": "Right side zero",
+          "correct": true
+        },
+        {
+          "text": "Right side one",
+          "correct": false
+        },
+        {
+          "text": "Random side",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: \"Homogeneous\" means right-hand side is 0. Step 2: A · x = 0 (not = b). Step 3: This is the *homogeneous* form. Step 4: Inhomogeneous is A · x = b (nonzero b). Step 5: Used in Q1.16.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.2.q13",
+      "topicId": "3.2",
+      "prompt": "What is the *kernel* of A = [1, 1]?",
+      "options": [
+        {
+          "text": "Line x+y=0",
+          "correct": true
+        },
+        {
+          "text": "Plane x+y=0",
+          "correct": false
+        },
+        {
+          "text": "Point origin",
+          "correct": false
+        },
+        {
+          "text": "Random set",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: kernel = {x : A · x = 0} = {(x, y) : x + y = 0}. Step 2: This is a line through origin. Step 3: The trap \"plane\" describes 3D case. Step 4: This \"kernel = line in 2D\" is the 2D version. Step 5: Used in Q3.4.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.2.q14",
+      "topicId": "3.2",
+      "prompt": "What does *rank*[1, 1] = 1 mean?",
+      "options": [
+        {
+          "text": "One indep row",
+          "correct": true
+        },
+        {
+          "text": "Two indep rows",
+          "correct": false
+        },
+        {
+          "text": "Zero rows",
+          "correct": false
+        },
+        {
+          "text": "Random rank",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: [1, 1] has one row. Step 2: That row is nonzero (independent). Step 3: So rank = 1. Step 4: Used in *rank-nullity*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.2.q15",
+      "topicId": "3.2",
+      "prompt": "Why does the kernel of [1, 1] have *dimension 1*?",
+      "options": [
+        {
+          "text": "One free var",
+          "correct": true
+        },
+        {
+          "text": "Two free vars",
+          "correct": false
+        },
+        {
+          "text": "Zero free vars",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: x + y = 0 has 2 variables, 1 equation. Step 2: So 1 variable is free. Step 3: Free variables ↔ kernel dimension. Step 4: This \"free var = kernel dim\" is the seed of *dimension counting*. Step 5: Used in Mission 16.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.2.q16",
+      "topicId": "3.2",
+      "prompt": "Is (1, 1) *in* the kernel of [1, 1]?",
+      "options": [
+        {
+          "text": "No, fails",
+          "correct": true
+        },
+        {
+          "text": "Yes, satisfies",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Plug (1, 1) into [1, 1] · [1, 1]ᵀ = 1 + 1 = 2 ≠ 0. Step 2: So (1, 1) is NOT in the kernel. Step 3: Only vectors perpendicular to (1, 1) are in the kernel. Step 4: This \"kernel ⊥ normal\" is the geometric meaning. Step 5: Used in Q3.10.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.2.q17",
+      "topicId": "3.2",
+      "prompt": "What is the *basis* for the kernel of [1, 1]?",
+      "options": [
+        {
+          "text": "[(1, −1)]",
+          "correct": true
+        },
+        {
+          "text": "[(1, 1)]",
+          "correct": false
+        },
+        {
+          "text": "[(1, 0)]",
+          "correct": false
+        },
+        {
+          "text": "[(0, 1)]",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Kernel = {(t, −t) : t ∈ ℝ} = span{(1, −1)}. Step 2: So basis = {(1, −1)}. Step 3: The trap (1, 1) is the normal (not in kernel). Step 4: This \"basis from parametrisation\" is the standard technique. Step 5: Used in Q1.16.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.2.q18",
+      "topicId": "3.2",
+      "prompt": "What if the matrix were [2, 3] instead of [1, 1] — what would the kernel be?",
+      "options": [
+        {
+          "text": "3x−2y=0 line",
+          "correct": true
+        },
+        {
+          "text": "Same line",
+          "correct": false
+        },
+        {
+          "text": "Plane here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: [2, 3] · [x, y]ᵀ = 2x + 3y. Step 2: Set = 0: 2x + 3y = 0. Step 3: This is a different line (with direction (3, −2)). Step 4: Different matrix, different kernel. Step 5: This \"kernel depends on A\" is the standard fact.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.2.q19",
+      "topicId": "3.2",
+      "prompt": "Why does [1, 1] have *no* inverse?",
+      "options": [
+        {
+          "text": "Not square",
+          "correct": true
+        },
+        {
+          "text": "Square here",
+          "correct": false
+        },
+        {
+          "text": "Random shape",
+          "correct": false
+        },
+        {
+          "text": "Always inverse",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: [1, 1] is 1×2 — rectangular. Step 2: Only square matrices have inverses. Step 3: So [1, 1] has no inverse. Step 4: This \"rectangular = no inverse\" is the rule. Step 5: Used in Q2.4.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.2.q20",
+      "topicId": "3.2",
+      "prompt": "What if we had [1, 1, 1] · [x, y, z]ᵀ = 0 — what shape is the solution?",
+      "options": [
+        {
+          "text": "Plane in ℝ³",
+          "correct": true
+        },
+        {
+          "text": "Line in ℝ³",
+          "correct": false
+        },
+        {
+          "text": "Point only",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: One equation in 3 unknowns = one constraint. Step 2: One constraint in 3D = plane (2D). Step 3: So solutions form a plane. Step 4: This \"1 constraint in 3D → plane\" is the dimensional analysis. Step 5: Used in Q3.4.\n\n---",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    }
+  ]
+}

@@ -1,0 +1,544 @@
+{
+  "id": "3.4",
+  "moduleId": 3,
+  "number": 4,
+  "title": "Vectors (x, y, z) with [1, 2, 3] · [x, y, z]ᵀ = 0",
+  "vocabulary": {
+    "allowed": [
+      "3D",
+      "plane",
+      "normal",
+      "perpendicular",
+      "(x",
+      "z).",
+      "Vocabulary",
+      "forbidden:",
+      "eigenvalue."
+    ],
+    "forbidden": [
+      "eigenvalue."
+    ]
+  },
+  "questions": [
+    {
+      "id": "3.4.q1",
+      "topicId": "3.4",
+      "prompt": "What is the shape of [1, 2, 3] · [x, y, z]ᵀ = 0 in ℝ³?",
+      "options": [
+        {
+          "text": "A plane",
+          "correct": true
+        },
+        {
+          "text": "A line only",
+          "correct": false
+        },
+        {
+          "text": "A point only",
+          "correct": false
+        },
+        {
+          "text": "A circle only",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: One linear equation in 3 unknowns = a 2D plane. Step 2: So solutions form a plane through origin. Step 3: The trap \"line\" describes 2 equations. Step 4: This \"1 constraint in 3D → plane\" is the dimensional rule. Step 5: Used in *3D geometry*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.4.q2",
+      "topicId": "3.4",
+      "prompt": "What is the *normal* to the plane x + 2y + 3z = 0?",
+      "options": [
+        {
+          "text": "(1, 2, 3)",
+          "correct": true
+        },
+        {
+          "text": "(1, −2, 3)",
+          "correct": false
+        },
+        {
+          "text": "(3, 2, 1)",
+          "correct": false
+        },
+        {
+          "text": "Random vec",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: The normal vector points perpendicular to the plane. Step 2: For x + 2y + 3z = 0, the normal is (1, 2, 3). Step 3: The trap (3, 2, 1) is a permutation. Step 4: This \"normal = coefficients\" is the standard rule. Step 5: Used in *3D graphics*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.4.q3",
+      "topicId": "3.4",
+      "prompt": "Why is the kernel of [1, 2, 3] a *plane*?",
+      "options": [
+        {
+          "text": "2D in ℝ³",
+          "correct": true
+        },
+        {
+          "text": "1D only",
+          "correct": false
+        },
+        {
+          "text": "3D full",
+          "correct": false
+        },
+        {
+          "text": "Random dim",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Kernel has dim = 3 − 1 = 2. Step 2: 2D subspace of ℝ³ = plane. Step 3: The trap \"1D\" describes 2 constraints. Step 4: This \"dim - rank = nullity\" is the rank-nullity theorem. Step 5: Used in Q3.10.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.4.q4",
+      "topicId": "3.4",
+      "prompt": "Is (1, 1, 1) in the plane x + 2y + 3z = 0?",
+      "options": [
+        {
+          "text": "No, fails eq",
+          "correct": true
+        },
+        {
+          "text": "Yes, satisfies",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Substitute (1, 1, 1): 1 + 2 + 3 = 6 ≠ 0. Step 2: So (1, 1, 1) is not on the plane. Step 3: The trap \"yes\" misses the substitution. Step 4: This \"substitute to check\" is the standard verification.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.4.q5",
+      "topicId": "3.4",
+      "prompt": "Is (2, −1, 0) in the plane x + 2y + 3z = 0?",
+      "options": [
+        {
+          "text": "Yes, dot zero",
+          "correct": true
+        },
+        {
+          "text": "No, fails eq",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Substitute (2, −1, 0): 2 − 2 + 0 = 0. ✓ Step 2: So (2, −1, 0) is on the plane. Step 3: This \"substitute to verify\" works. Step 4: Used in *membership testing*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.4.q6",
+      "topicId": "3.4",
+      "prompt": "What is the *rank* of [1, 2, 3]?",
+      "options": [
+        {
+          "text": "Just one",
+          "correct": true
+        },
+        {
+          "text": "Two only",
+          "correct": false
+        },
+        {
+          "text": "Three only",
+          "correct": false
+        },
+        {
+          "text": "Zero only",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: [1, 2, 3] has one row, which is nonzero. Step 2: So rank = 1. Step 3: Nullity = 3 − 1 = 2. Step 4: So kernel is 2D (plane). Step 5: This \"rank-nullity\" rule is the central theorem.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.4.q7",
+      "topicId": "3.4",
+      "prompt": "What is the *nullity* of [1, 2, 3]?",
+      "options": [
+        {
+          "text": "Just two",
+          "correct": true
+        },
+        {
+          "text": "Just one",
+          "correct": false
+        },
+        {
+          "text": "Three only",
+          "correct": false
+        },
+        {
+          "text": "Zero only",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Nullity = 3 − rank = 3 − 1 = 2. Step 2: So kernel has dim 2 (a plane). Step 3: This \"nullity = n − rank\" is the rank-nullity theorem. Step 4: Used in Mission 16.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.4.q8",
+      "topicId": "3.4",
+      "prompt": "Why does the plane x + 2y + 3z = 0 pass through origin?",
+      "options": [
+        {
+          "text": "Homogeneous eq",
+          "correct": true
+        },
+        {
+          "text": "Inhomogeneous",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Right-hand side is 0. Step 2: Substituting (0, 0, 0) gives 0 = 0, true. Step 3: So origin is on the plane. Step 4: All homogeneous planes pass through origin. Step 5: Used in Q1.5 vs Q1.4.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.4.q9",
+      "topicId": "3.4",
+      "prompt": "What does *2D subspace of ℝ³* look like?",
+      "options": [
+        {
+          "text": "Plane",
+          "correct": true
+        },
+        {
+          "text": "Line",
+          "correct": false
+        },
+        {
+          "text": "Point",
+          "correct": false
+        },
+        {
+          "text": "Empty",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: 2D subspace in ℝ³ = plane through origin. Step 2: All points satisfy ax + by + cz = 0. Step 3: This is the geometric picture. Step 4: Used in *3D computer graphics*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.4.q10",
+      "topicId": "3.4",
+      "prompt": "How is the kernel of [1, 2, 3] a *vector subspace*?",
+      "options": [
+        {
+          "text": "Closed ops",
+          "correct": true
+        },
+        {
+          "text": "Random set",
+          "correct": false
+        },
+        {
+          "text": "Always empty",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Kernel is closed under addition and scalar multiplication. Step 2: If u, v in kernel, A(u + v) = 0. Step 3: If u in kernel, A(cu) = 0. Step 4: So kernel is a subspace. Step 5: This \"kernel is subspace\" is the central theorem.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.4.q11",
+      "topicId": "3.4",
+      "prompt": "What is a *basis* for the plane x + 2y + 3z = 0?",
+      "options": [
+        {
+          "text": "[(2,−1,0),(3,0,−1)]",
+          "correct": true
+        },
+        {
+          "text": "[(1,2,3)]",
+          "correct": false
+        },
+        {
+          "text": "[(0,0,0)]",
+          "correct": false
+        },
+        {
+          "text": "[(1,0,0)]",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Need two independent vectors satisfying x + 2y + 3z = 0. Step 2: (2, −1, 0): 2 − 2 + 0 = 0. ✓ Step 3: (3, 0, −1): 3 + 0 − 3 = 0. ✓ Step 4: These are independent. Step 5: So basis = {(2, −1, 0), (3, 0, −1)}. Step 6: Used in *parametrising planes*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.4.q12",
+      "topicId": "3.4",
+      "prompt": "Can the kernel of [1, 2, 3] be the *xy",
+      "options": [
+        {
+          "text": "No, different",
+          "correct": true
+        },
+        {
+          "text": "Yes, same",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: xy-plane has z = 0, no constraint on x, y. Step 2: Kernel of [1, 2, 3] is x + 2y + 3z = 0 — a different plane. Step 3: Different normals, different planes. Step 4: This \"different normal → different plane\" is the geometric rule.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.4.q13",
+      "topicId": "3.4",
+      "prompt": "What is the *intersection* of two different planes in ℝ³?",
+      "options": [
+        {
+          "text": "A line",
+          "correct": true
+        },
+        {
+          "text": "A plane",
+          "correct": false
+        },
+        {
+          "text": "A point",
+          "correct": false
+        },
+        {
+          "text": "Empty",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Two planes in ℝ³ intersect in a line (typically). Step 2: Two constraints → 1D solution. Step 3: The trap \"point\" describes parallel non-coincident planes. Step 4: This \"2 planes → 1 line\" is the geometric rule.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.4.q14",
+      "topicId": "3.4",
+      "prompt": "Why is the *plane* equation a *linear* equation?",
+      "options": [
+        {
+          "text": "First-degree",
+          "correct": true
+        },
+        {
+          "text": "Second-degree",
+          "correct": false
+        },
+        {
+          "text": "Cubic here",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Plane equations like ax + by + cz = 0 are first-degree. Step 2: No x², y², z² terms. Step 3: So linear. Step 4: This \"linear = plane\" is the rule. Step 5: Used in *3D geometry*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.4.q15",
+      "topicId": "3.4",
+      "prompt": "How is (1, 2, 3) *perpendicular* to the plane x + 2y + 3z = 0?",
+      "options": [
+        {
+          "text": "Perp to all vec",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Parallel only",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: The normal (1, 2, 3) is perpendicular to every vector in the plane. Step 2: For any (x, y, z) in the plane, (1, 2, 3) · (x, y, z) = 0. Step 3: This is the definition of normal. Step 4: Used in *3D graphics*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.4.q16",
+      "topicId": "3.4",
+      "prompt": "What is the *null space* notation for [1, 2, 3]?",
+      "options": [
+        {
+          "text": "Null([1,2,3])",
+          "correct": true
+        },
+        {
+          "text": "Ran([1,2,3])",
+          "correct": false
+        },
+        {
+          "text": "Det([1,2,3])",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Null(A) = kernel = {x : Ax = 0}. Step 2: Notation varies (null, kernel, N(A)). Step 3: All mean the same. Step 4: Used in Mission 16.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.4.q17",
+      "topicId": "3.4",
+      "prompt": "Can the plane x + 2y + 3z = 0 be *parametrised* by two parameters?",
+      "options": [
+        {
+          "text": "Yes, two params",
+          "correct": true
+        },
+        {
+          "text": "No, only one",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Plane is 2D, so 2 free parameters (s, t). Step 2: E.g., (x, y, z) = s · (2, −1, 0) + t · (3, 0, −1). Step 3: This \"2-param parametrisation\" covers all plane points. Step 4: Used in *surface parametrisation*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.4.q18",
+      "topicId": "3.4",
+      "prompt": "What if the plane were x + 2y + 3z = 6 (nonzero RHS) — what changes?",
+      "options": [
+        {
+          "text": "Not through orig",
+          "correct": true
+        },
+        {
+          "text": "Through origin",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: x + 2y + 3z = 6 has constant 6. Step 2: Substituting (0, 0, 0): 0 ≠ 6. So not through origin. Step 3: Plane is parallel to x + 2y + 3z = 0 but shifted. Step 4: This \"shifted plane\" is *affine*, not *linear*. Step 5: Used in Q1.5.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.4.q19",
+      "topicId": "3.4",
+      "prompt": "Why does *one* plane in ℝ³ have a *2D* kernel?",
+      "options": [
+        {
+          "text": "3 minus 1",
+          "correct": true
+        },
+        {
+          "text": "3 plus 1",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: ℝ³ is 3D. Step 2: One constraint reduces dimension by 1. Step 3: 3 − 1 = 2 (kernel dimension). Step 4: This \"dim − rank = nullity\" is the central formula. Step 5: Used in Mission 16.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.4.q20",
+      "topicId": "3.4",
+      "prompt": "What if we had *two* constraints in ℝ³ — what would the kernel be?",
+      "options": [
+        {
+          "text": "A line",
+          "correct": true
+        },
+        {
+          "text": "A plane",
+          "correct": false
+        },
+        {
+          "text": "A point",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Two equations in 3 unknowns. Step 2: 3 − 2 = 1 (kernel dimension). Step 3: So 1D line. Step 4: This \"2 constraints → line\" is the geometric rule. Step 5: Used in Q3.7.\n\n---",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    }
+  ]
+}

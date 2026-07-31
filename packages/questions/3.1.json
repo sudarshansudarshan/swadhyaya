@@ -1,0 +1,549 @@
+{
+  "id": "3.1",
+  "moduleId": 3,
+  "number": 1,
+  "title": "Vectors perpendicular to (1, 1)",
+  "vocabulary": {
+    "allowed": [
+      "perpendicular",
+      "vector",
+      "dot",
+      "product",
+      "90°",
+      "orthogonal",
+      "rotation.",
+      "Vocabulary",
+      "forbidden:",
+      "matrix",
+      "eigenvalue",
+      "(Q3.11+)."
+    ],
+    "forbidden": [
+      "matrix",
+      "eigenvalue",
+      "(Q3.11+)."
+    ]
+  },
+  "questions": [
+    {
+      "id": "3.1.q1",
+      "topicId": "3.1",
+      "prompt": "What does it mean for two vectors to be *perpendicular*?",
+      "options": [
+        {
+          "text": "They meet at 90°",
+          "correct": true
+        },
+        {
+          "text": "They are parallel",
+          "correct": false
+        },
+        {
+          "text": "They are random",
+          "correct": false
+        },
+        {
+          "text": "They overlap fully",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Perpendicular vectors meet at a right angle (90°). Step 2: Geometrically, they form an \"L\" shape. Step 3: The trap \"parallel\" describes 0° angle. Step 4: This \"perpendicular = 90°\" is the geometric definition. Step 5: Used throughout geometry and physics.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.1.q2",
+      "topicId": "3.1",
+      "prompt": "How is the *dot product* of two vectors related to perpendicularity?",
+      "options": [
+        {
+          "text": "Zero if perp",
+          "correct": true
+        },
+        {
+          "text": "One if perp",
+          "correct": false
+        },
+        {
+          "text": "Random value",
+          "correct": false
+        },
+        {
+          "text": "Negative only",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: For perpendicular vectors u · v = 0. Step 2: This is the *algebraic test* for perpendicularity. Step 3: Conversely, u · v = 0 means perpendicular. Step 4: This \"dot = 0 ↔ perpendicular\" is the central connection. Step 5: Used in Q3.2 and Q3.8 throughout.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.1.q3",
+      "topicId": "3.1",
+      "prompt": "Is (1, 1) perpendicular to (1, −1)?",
+      "options": [
+        {
+          "text": "Yes, dot is zero",
+          "correct": true
+        },
+        {
+          "text": "No, dot is one",
+          "correct": false
+        },
+        {
+          "text": "No, dot is two",
+          "correct": false
+        },
+        {
+          "text": "Random dot",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: (1, 1) · (1, −1) = (1)(1) + (1)(−1) = 1 − 1 = 0. Step 2: Dot product is 0. Step 3: So perpendicular. Step 4: This specific pair is a classic \"perpendicular pair\". Step 5: Used in *signal processing*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.1.q4",
+      "topicId": "3.1",
+      "prompt": "Why is (1, 0) perpendicular to (0, 1)?",
+      "options": [
+        {
+          "text": "Dot product zero",
+          "correct": true
+        },
+        {
+          "text": "Random dot",
+          "correct": false
+        },
+        {
+          "text": "Same direction",
+          "correct": false
+        },
+        {
+          "text": "One dot only",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: (1, 0) · (0, 1) = (1)(0) + (0)(1) = 0. Step 2: Dot product zero → perpendicular. Step 3: These are the standard basis vectors. Step 4: Used in *orthonormal bases*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.1.q5",
+      "topicId": "3.1",
+      "prompt": "Why does the *dot product* test work for perpendicularity?",
+      "options": [
+        {
+          "text": "Cosine zero",
+          "correct": true
+        },
+        {
+          "text": "Cosine one",
+          "correct": false
+        },
+        {
+          "text": "Cosine random",
+          "correct": false
+        },
+        {
+          "text": "Cosine negative",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: u · v = |u| |v| cos(θ) where θ is the angle between. Step 2: cos(90°) = 0. Step 3: So perpendicular ↔ dot = 0. Step 4: This \"dot = |u||v|cos θ\" formula is the geometric interpretation. Step 5: Used in *physics*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.1.q6",
+      "topicId": "3.1",
+      "prompt": "What is the *angle* between two perpendicular vectors?",
+      "options": [
+        {
+          "text": "Ninety degrees",
+          "correct": true
+        },
+        {
+          "text": "Forty-five",
+          "correct": false
+        },
+        {
+          "text": "Zero degrees",
+          "correct": false
+        },
+        {
+          "text": "One-eighty",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Perpendicular means 90° angle. Step 2: cos(90°) = 0. Step 3: So angle is 90°. Step 4: The trap \"180\" describes opposite (anti-parallel). Step 5: This \"perpendicular = 90°\" is the definition.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.1.q7",
+      "topicId": "3.1",
+      "prompt": "Can *more than one* vector be perpendicular to (1, 1)?",
+      "options": [
+        {
+          "text": "Yes, infinitely many",
+          "correct": true
+        },
+        {
+          "text": "No, only one",
+          "correct": false
+        },
+        {
+          "text": "No, none",
+          "correct": false
+        },
+        {
+          "text": "Random number",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Any vector (a, b) with a + b = 0 is perpendicular to (1, 1). Step 2: (1, −1), (2, −2), (3, −3), ... all satisfy this. Step 3: Infinitely many such vectors (a line in vector space). Step 4: This \"many perpendiculars\" is the geometric meaning of the *null space*. Step 5: Used in Q3.2.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.1.q8",
+      "topicId": "3.1",
+      "prompt": "If u · v = 0, what *else* must be true about u and v?",
+      "options": [
+        {
+          "text": "Both nonzero",
+          "correct": true
+        },
+        {
+          "text": "One zero only",
+          "correct": false
+        },
+        {
+          "text": "Both zero only",
+          "correct": false
+        },
+        {
+          "text": "Random",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: For u · v = 0 to mean perpendicular, both must be nonzero. Step 2: Otherwise 0 = 0 is trivially true. Step 3: The zero vector is \"perpendicular\" to everything trivially. Step 4: We usually exclude the zero vector. Step 5: This \"nonzero requirement\" is part of the formal definition.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.1.q9",
+      "topicId": "3.1",
+      "prompt": "Why does *rotating* (1, 1) by 90° give a perpendicular vector?",
+      "options": [
+        {
+          "text": "Rotation 90°",
+          "correct": true
+        },
+        {
+          "text": "Rotation 45°",
+          "correct": false
+        },
+        {
+          "text": "Rotation 0°",
+          "correct": false
+        },
+        {
+          "text": "Rotation 180°",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Rotating a vector by 90° changes its angle by 90°. Step 2: So the new vector is perpendicular to the original. Step 3: For (1, 1), rotating 90° gives (−1, 1) or (1, −1). Step 4: The trap \"180°\" gives opposite (anti-parallel). Step 5: Used in *computer graphics*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.1.q10",
+      "topicId": "3.1",
+      "prompt": "How many perpendicular directions does (1, 1) have in ℝ²?",
+      "options": [
+        {
+          "text": "One direction",
+          "correct": true
+        },
+        {
+          "text": "Two directions",
+          "correct": false
+        },
+        {
+          "text": "Three only",
+          "correct": false
+        },
+        {
+          "text": "No directions",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: All perpendiculars to (1, 1) are scalar multiples of (1, −1) (or (−1, 1)). Step 2: These point along one line — one direction. Step 3: So one perpendicular direction. Step 4: This \"single perpendicular direction\" is geometric. Step 5: Used in *normals* to lines.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.1.q11",
+      "topicId": "3.1",
+      "prompt": "Why is (1, 1) perpendicular to (−1, 1)?",
+      "options": [
+        {
+          "text": "Dot is zero",
+          "correct": true
+        },
+        {
+          "text": "Dot is one",
+          "correct": false
+        },
+        {
+          "text": "Random dot",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: (1, 1) · (−1, 1) = (1)(−1) + (1)(1) = −1 + 1 = 0. Step 2: Dot product zero → perpendicular. Step 3: These vectors point at 90°. Step 4: Used in *2D rotations*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.1.q12",
+      "topicId": "3.1",
+      "prompt": "What is the *negation* of (1, −1)?",
+      "options": [
+        {
+          "text": "(−1, 1)",
+          "correct": true
+        },
+        {
+          "text": "(1, 1)",
+          "correct": false
+        },
+        {
+          "text": "(1, −1) itself",
+          "correct": false
+        },
+        {
+          "text": "Random vec",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Negation flips both components: (1, −1) → (−1, 1). Step 2: Negation preserves perpendicularity. Step 3: But points in the opposite direction. Step 4: Used in *vector negation*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.1.q13",
+      "topicId": "3.1",
+      "prompt": "Can a vector be *perpendicular to itself*?",
+      "options": [
+        {
+          "text": "No, never",
+          "correct": true
+        },
+        {
+          "text": "Yes, sometimes",
+          "correct": false
+        },
+        {
+          "text": "Only if zero",
+          "correct": false
+        },
+        {
+          "text": "Always yes",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: For v · v = 0, need v = 0 vector. Step 2: The zero vector is trivial. Step 3: Nonzero vectors cannot be perpendicular to themselves (angle 0, not 90°). Step 4: This \"self-perpendicular = zero\" is a key property. Step 5: Used in *positive definite matrices*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.1.q14",
+      "topicId": "3.1",
+      "prompt": "What is the *dot product* (1, 1) · (1, 0)?",
+      "options": [
+        {
+          "text": "Just one",
+          "correct": true
+        },
+        {
+          "text": "Just two",
+          "correct": false
+        },
+        {
+          "text": "Random",
+          "correct": false
+        },
+        {
+          "text": "Zero value",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: (1, 1) · (1, 0) = (1)(1) + (1)(0) = 1 + 0 = 1. Step 2: So dot product = 1. Step 3: This is *not* perpendicular (dot ≠ 0). Step 4: Used in *coordinate geometry*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.1.q15",
+      "topicId": "3.1",
+      "prompt": "What is the *geometric* meaning of dot product zero?",
+      "options": [
+        {
+          "text": "Vectors perp",
+          "correct": true
+        },
+        {
+          "text": "Vectors same",
+          "correct": false
+        },
+        {
+          "text": "Vectors random",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Dot product zero ↔ vectors perpendicular. Step 2: This is the bridge from algebra to geometry. Step 3: Used in *graphics* (visibility tests), *physics* (work done). Step 4: This \"dot = 0 ↔ perp\" is the central connection.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.1.q16",
+      "topicId": "3.1",
+      "prompt": "What does *perpendicular* mean in 3D?",
+      "options": [
+        {
+          "text": "Three D ninety",
+          "correct": true
+        },
+        {
+          "text": "Two D ninety",
+          "correct": false
+        },
+        {
+          "text": "One D ninety",
+          "correct": false
+        },
+        {
+          "text": "Skip ninety",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: In 3D, perpendicular still means 90° angle. Step 2: Two vectors in 3D can be perpendicular. Step 3: Just like 2D. Step 4: Used in *3D geometry*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.1.q17",
+      "topicId": "3.1",
+      "prompt": "What is the *angle* between two perpendicular vectors in 3D?",
+      "options": [
+        {
+          "text": "Ninety degrees",
+          "correct": true
+        },
+        {
+          "text": "Forty-five",
+          "correct": false
+        },
+        {
+          "text": "Zero degrees",
+          "correct": false
+        },
+        {
+          "text": "One-eighty",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: 90° in any dimension. Step 2: Perpendicularity is dimension-independent. Step 3: Just the angle is 90°. Step 4: Used in *3D graphics*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.1.q18",
+      "topicId": "3.1",
+      "prompt": "What if the vectors were *parallel* (same direction) — what would their dot product be?",
+      "options": [
+        {
+          "text": "Maximum positive",
+          "correct": true
+        },
+        {
+          "text": "Zero value",
+          "correct": false
+        },
+        {
+          "text": "Random value",
+          "correct": false
+        },
+        {
+          "text": "Negative value",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: For parallel vectors u = c · v (c > 0), dot product = c · |v|² > 0. Step 2: Specifically, u · u = |u|² (positive). Step 3: For anti-parallel (c < 0), dot product is negative. Step 4: Used in *cosine similarity* in *machine learning*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.1.q19",
+      "topicId": "3.1",
+      "prompt": "Why is (1, 1) perpendicular to (1, −1) but *not* to (1, 0)?",
+      "options": [
+        {
+          "text": "Different dots",
+          "correct": true
+        },
+        {
+          "text": "Same dots",
+          "correct": false
+        },
+        {
+          "text": "Random dots",
+          "correct": false
+        },
+        {
+          "text": "Skip dots",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: (1, 1) · (1, −1) = 0 (perpendicular). Step 2: (1, 1) · (1, 0) = 1 (not perpendicular). Step 3: Different dot products give different angles. Step 4: This \"different dots, different angles\" is the bridge. Step 5: Used in *perpendicularity testing*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.1.q20",
+      "topicId": "3.1",
+      "prompt": "What if we replaced (1, 1) with (2, 3) — would the perpendicular idea still work?",
+      "options": [
+        {
+          "text": "Yes, same idea",
+          "correct": true
+        },
+        {
+          "text": "No, broken",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Perpendicularity is defined for any two vectors. Step 2: (2, 3) is perpendicular to any (3, −2) (since 6 − 6 = 0). Step 3: Same concept, different numbers. Step 4: The trap \"broken\" misses the generality. Step 5: This \"universal concept\" is the power of *abstract algebra*.\n\n---",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    }
+  ]
+}

@@ -1,0 +1,547 @@
+{
+  "id": "3.5",
+  "moduleId": 3,
+  "number": 5,
+  "title": "T = {α(1, 2, 1) | α ∈ ℝ}",
+  "vocabulary": {
+    "allowed": [
+      "span",
+      "scalar",
+      "multiple",
+      "line",
+      "through",
+      "origin",
+      "parametrised.",
+      "Vocabulary",
+      "forbidden:",
+      "basis",
+      "(Q3.10)."
+    ],
+    "forbidden": [
+      "basis",
+      "(Q3.10)."
+    ]
+  },
+  "questions": [
+    {
+      "id": "3.5.q1",
+      "topicId": "3.5",
+      "prompt": "What is the *span* of a single vector v?",
+      "options": [
+        {
+          "text": "All scalar mults",
+          "correct": true
+        },
+        {
+          "text": "Only origin",
+          "correct": false
+        },
+        {
+          "text": "All vectors",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: span{v} = {αv : α ∈ ℝ}. Step 2: All scalar multiples of v. Step 3: Forms a line through origin. Step 4: The trap \"origin only\" describes α = 0. Step 5: Used in *vector spaces* throughout Mission 3.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.5.q2",
+      "topicId": "3.5",
+      "prompt": "What is T = {α(1, 2, 1) | α ∈ ℝ}?",
+      "options": [
+        {
+          "text": "A line in ℝ³",
+          "correct": true
+        },
+        {
+          "text": "A plane",
+          "correct": false
+        },
+        {
+          "text": "A point",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: T = span{(1, 2, 1)} = all scalar multiples of (1, 2, 1). Step 2: Forms a line through origin in ℝ³. Step 3: The trap \"plane\" describes 2 vectors. Step 4: This \"1 vector → 1D span = line\" is the rule.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.5.q3",
+      "topicId": "3.5",
+      "prompt": "Why does T *pass through origin*?",
+      "options": [
+        {
+          "text": "α can be zero",
+          "correct": true
+        },
+        {
+          "text": "α must be one",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: α = 0 gives 0 · (1, 2, 1) = (0, 0, 0). Step 2: So origin is in T. Step 3: Span always contains origin. Step 4: This \"span contains 0\" is a key property.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.5.q4",
+      "topicId": "3.5",
+      "prompt": "What does α do in the *parametrisation* α(1, 2, 1)?",
+      "options": [
+        {
+          "text": "Controls position",
+          "correct": true
+        },
+        {
+          "text": "Random control",
+          "correct": false
+        },
+        {
+          "text": "No control",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: α determines which point on the line. Step 2: α = 0 → origin. Step 3: α = 1 → (1, 2, 1). Step 4: α = 2 → (2, 4, 2). Step 5: This \"α as parameter\" is the standard *line parametrisation*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.5.q5",
+      "topicId": "3.5",
+      "prompt": "Is (2, 4, 2) in T = {α(1, 2, 1)}?",
+      "options": [
+        {
+          "text": "Yes, α = two",
+          "correct": true
+        },
+        {
+          "text": "No, fails",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: α = 2 gives 2 · (1, 2, 1) = (2, 4, 2). Step 2: So yes, (2, 4, 2) ∈ T. Step 3: This \"verify by α\" is the membership test.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.5.q6",
+      "topicId": "3.5",
+      "prompt": "Is (1, 2, 0) in T = {α(1, 2, 1)}?",
+      "options": [
+        {
+          "text": "No, no α fits",
+          "correct": true
+        },
+        {
+          "text": "Yes, fits",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Need α · 1 = 1, α · 2 = 2, α · 1 = 0. Step 2: α = 1 from first two, but then α · 1 = 1 ≠ 0. Contradiction. Step 3: So (1, 2, 0) not in T. Step 4: This \"membership test\" reveals the constraint.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.5.q7",
+      "topicId": "3.5",
+      "prompt": "What is the *direction* of T?",
+      "options": [
+        {
+          "text": "(1, 2, 1)",
+          "correct": true
+        },
+        {
+          "text": "(2, 4, 2)",
+          "correct": false
+        },
+        {
+          "text": "(1, 1, 1)",
+          "correct": false
+        },
+        {
+          "text": "Random vec",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: The direction is the spanning vector itself. Step 2: (2, 4, 2) = 2 · (1, 2, 1), same direction. Step 3: The trap (1, 1, 1) is different direction. Step 4: This \"direction = spanning vector\" is the geometric interpretation.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.5.q8",
+      "topicId": "3.5",
+      "prompt": "Why is T *1",
+      "options": [
+        {
+          "text": "One generator",
+          "correct": true
+        },
+        {
+          "text": "Two generators",
+          "correct": false
+        },
+        {
+          "text": "Random number",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: T is spanned by one vector. Step 2: One vector = 1D. Step 3: The trap \"two\" describes 2D span. Step 4: This \"n generators → nD span (if independent)\" is the dimension rule. Step 5: Used in Mission 3 generally.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.5.q9",
+      "topicId": "3.5",
+      "prompt": "Is (0, 0, 0) in T?",
+      "options": [
+        {
+          "text": "Yes, α = zero",
+          "correct": true
+        },
+        {
+          "text": "No, excluded",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: α = 0 gives origin. Step 2: So (0, 0, 0) ∈ T. Step 3: Origin is always in any span. Step 4: Used in *subspace* definition.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.5.q10",
+      "topicId": "3.5",
+      "prompt": "What is the *negative* of (1, 2, 1)?",
+      "options": [
+        {
+          "text": "(−1, −2, −1)",
+          "correct": true
+        },
+        {
+          "text": "(1, 2, 1) itself",
+          "correct": false
+        },
+        {
+          "text": "Random vec",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Negation flips all components. Step 2: So (−1, −2, −1). Step 3: This is in T with α = −1. Step 4: So T extends in both directions. Step 5: Used in *vector negation*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.5.q11",
+      "topicId": "3.5",
+      "prompt": "Does T extend *infinitely* in both directions?",
+      "options": [
+        {
+          "text": "Yes, all α",
+          "correct": true
+        },
+        {
+          "text": "No, finite",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: α can be any real number. Step 2: So T extends infinitely in both directions (positive and negative). Step 3: This \"infinite line\" is the standard picture. Step 4: Used in *1D subspaces*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.5.q12",
+      "topicId": "3.5",
+      "prompt": "How is T *similar to* the x",
+      "options": [
+        {
+          "text": "Both lines origin",
+          "correct": true
+        },
+        {
+          "text": "Different shapes",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: The x-axis is span{(1, 0, 0)} — also a line through origin. Step 2: T is span{(1, 2, 1)} — different direction but same shape. Step 3: Both are 1D subspaces of ℝ³. Step 4: Used in *coordinate geometry*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.5.q13",
+      "topicId": "3.5",
+      "prompt": "What is the *angle* between T and the x",
+      "options": [
+        {
+          "text": "Some angle",
+          "correct": true
+        },
+        {
+          "text": "Always zero",
+          "correct": false
+        },
+        {
+          "text": "Always ninety",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: T has direction (1, 2, 1); x-axis has direction (1, 0, 0). Step 2: Angle = arccos((1·1 + 2·0 + 1·0) / (√6 · 1)) = arccos(1/√6). Step 3: Some non-zero angle. Step 4: Used in *geometry*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.5.q14",
+      "topicId": "3.5",
+      "prompt": "Can T be *parametrised* by other vectors?",
+      "options": [
+        {
+          "text": "Yes, any scalar",
+          "correct": true
+        },
+        {
+          "text": "No, fixed only",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: T = span{(1, 2, 1)} = span{(2, 4, 2)} = span{(−1, −2, −1)}. Step 2: Different scalar multiples span the same line. Step 3: So parametrisation is not unique. Step 4: Used in *basis choice*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.5.q15",
+      "topicId": "3.5",
+      "prompt": "What is the *basis* for T?",
+      "options": [
+        {
+          "text": "{(1, 2, 1)}",
+          "correct": true
+        },
+        {
+          "text": "{(1, 0, 0)}",
+          "correct": false
+        },
+        {
+          "text": "{(0, 0, 0)}",
+          "correct": false
+        },
+        {
+          "text": "{(1, 1, 1)}",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: A basis spans T with one independent vector. Step 2: {(1, 2, 1)} is a basis. Step 3: (0, 0, 0) cannot be a basis. Step 4: Used in *basis construction*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.5.q16",
+      "topicId": "3.5",
+      "prompt": "Is T a *subspace* of ℝ³?",
+      "options": [
+        {
+          "text": "Yes, closed ops",
+          "correct": true
+        },
+        {
+          "text": "No, not closed",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: T is closed under addition and scaling. Step 2: Contains origin. Step 3: So T is a subspace. Step 4: This \"1D subspace = line\" is the standard. Step 5: Used in Mission 12.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.5.q17",
+      "topicId": "3.5",
+      "prompt": "What is the *rank* of T (as a span)?",
+      "options": [
+        {
+          "text": "Just one",
+          "correct": true
+        },
+        {
+          "text": "Two only",
+          "correct": false
+        },
+        {
+          "text": "Three only",
+          "correct": false
+        },
+        {
+          "text": "Zero only",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: T is spanned by one independent vector. Step 2: So rank = 1. Step 3: dim(T) = 1. Step 4: This \"rank = dim of span\" is the standard. Step 5: Used in Mission 16.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.5.q18",
+      "topicId": "3.5",
+      "prompt": "What if we had T = {α(0, 0, 0)} — what is T?",
+      "options": [
+        {
+          "text": "Just origin",
+          "correct": true
+        },
+        {
+          "text": "A line",
+          "correct": false
+        },
+        {
+          "text": "A plane",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: α(0, 0, 0) = (0, 0, 0) for any α. Step 2: So T = {origin}. Step 3: This is the *trivial* subspace (0-dimensional). Step 4: Used in *subspace classification*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.5.q19",
+      "topicId": "3.5",
+      "prompt": "What does T look like *visually* in 3D?",
+      "options": [
+        {
+          "text": "A straight line",
+          "correct": true
+        },
+        {
+          "text": "A flat plane",
+          "correct": false
+        },
+        {
+          "text": "A point cloud",
+          "correct": false
+        },
+        {
+          "text": "Random shape",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: T = span{(1, 2, 1)} is a 1D subspace of ℝ³. Step 2: 1D subspaces are lines through origin. Step 3: So T looks like a line in 3D. Step 4: Used in *3D graphics*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.5.q20",
+      "topicId": "3.5",
+      "prompt": "What if T were {α(1, 2, 1) + (1, 0, 0)} — what changes?",
+      "options": [
+        {
+          "text": "Not through orig",
+          "correct": true
+        },
+        {
+          "text": "Through origin",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: The \"+ (1, 0, 0)\" is a translation. Step 2: T is now parallel to span{(1, 2, 1)} but offset. Step 3: Not through origin. Step 4: This \"translated span\" is *affine*. Step 5: Used in *physics*.\n\n---",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    }
+  ]
+}

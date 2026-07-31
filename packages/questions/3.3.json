@@ -1,0 +1,543 @@
+{
+  "id": "3.3",
+  "moduleId": 3,
+  "number": 3,
+  "title": "[a, b] · [x, y]ᵀ = 0 with parameters (a, b)",
+  "vocabulary": {
+    "allowed": [
+      "parameter",
+      "vary",
+      "family",
+      "constraint",
+      "vector.",
+      "Vocabulary",
+      "forbidden:",
+      "eigenvalue."
+    ],
+    "forbidden": [
+      "eigenvalue."
+    ]
+  },
+  "questions": [
+    {
+      "id": "3.3.q1",
+      "topicId": "3.3",
+      "prompt": "What does it mean for (a, b) to be *parameters*?",
+      "options": [
+        {
+          "text": "They vary",
+          "correct": true
+        },
+        {
+          "text": "They are fixed",
+          "correct": false
+        },
+        {
+          "text": "Random values",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Parameters are values that can be chosen/changed. Step 2: For [a, b] · [x, y]ᵀ = 0, we can vary (a, b) and see how solutions change. Step 3: This \"varying parameters\" explores a *family* of constraints. Step 4: Used in *statistics* and *physics*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.3.q2",
+      "topicId": "3.3",
+      "prompt": "As (a, b) varies, what stays the *same* about the perpendicularity?",
+      "options": [
+        {
+          "text": "Perpendicular",
+          "correct": true
+        },
+        {
+          "text": "Always random",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Always zero",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Whatever (a, b) is, [a, b] · [x, y]ᵀ = 0 means (x, y) is perpendicular to (a, b). Step 2: So the *perpendicularity concept* is invariant. Step 3: This \"concept invariant\" is the seed of *abstraction*. Step 4: Used in *abstract algebra*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.3.q3",
+      "topicId": "3.3",
+      "prompt": "What is the *family* of lines ax + by = 0?",
+      "options": [
+        {
+          "text": "All perp to (a,b)",
+          "correct": true
+        },
+        {
+          "text": "Same one line",
+          "correct": false
+        },
+        {
+          "text": "Random lines",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: For varying (a, b), the equation ax + by = 0 defines a different line each time. Step 2: Each line is perpendicular to its (a, b). Step 3: The family covers many directions. Step 4: Used in *geometry* (parallel families of lines).",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.3.q4",
+      "topicId": "3.3",
+      "prompt": "Why is the line ax + by = 0 *always* through origin?",
+      "options": [
+        {
+          "text": "Homogeneous eq",
+          "correct": true
+        },
+        {
+          "text": "Inhomogeneous",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: The equation ax + by = 0 has zero on the right. Step 2: Substituting (0, 0) gives 0 = 0, true. Step 3: So (0, 0) is on the line. Step 4: All homogeneous equations pass through origin. Step 5: This \"homogeneous → through origin\" is the seed of *linear subspaces*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.3.q5",
+      "topicId": "3.3",
+      "prompt": "What if a = 0, b ≠ 0 — what is the equation?",
+      "options": [
+        {
+          "text": "Just y = 0",
+          "correct": true
+        },
+        {
+          "text": "x + y = 0",
+          "correct": false
+        },
+        {
+          "text": "Just x = 0",
+          "correct": false
+        },
+        {
+          "text": "Random eq",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: a = 0, so ax = 0. Equation: by = 0. Step 2: b ≠ 0, divide: y = 0. Step 3: So y = 0 is the line (the x-axis). Step 4: This \"a = 0 → y-axis direction\" is a special case. Step 5: Used in *coordinate axes*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.3.q6",
+      "topicId": "3.3",
+      "prompt": "What if b = 0, a ≠ 0 — what is the equation?",
+      "options": [
+        {
+          "text": "Just x = 0",
+          "correct": true
+        },
+        {
+          "text": "x + y = 0",
+          "correct": false
+        },
+        {
+          "text": "Just y = 0",
+          "correct": false
+        },
+        {
+          "text": "Random eq",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: b = 0, equation: ax = 0. Step 2: a ≠ 0, divide: x = 0. Step 3: So x = 0 is the line (the y-axis). Step 4: This \"b = 0 → x-axis direction\" is the other axis. Step 5: Together with Q5, the axes are special cases.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.3.q7",
+      "topicId": "3.3",
+      "prompt": "What if a = b = 0 — what's the equation?",
+      "options": [
+        {
+          "text": "Always true",
+          "correct": true
+        },
+        {
+          "text": "Always false",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: 0·x + 0·y = 0 → 0 = 0. Step 2: Always true. Step 3: So every (x, y) satisfies — empty constraint. Step 4: The matrix [0, 0] has rank 0. Step 5: This \"zero matrix\" is the degenerate case.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.3.q8",
+      "topicId": "3.3",
+      "prompt": "As (a, b) varies over all nonzero values, the family of perpendiculars covers what?",
+      "options": [
+        {
+          "text": "All directions",
+          "correct": true
+        },
+        {
+          "text": "Some directions",
+          "correct": false
+        },
+        {
+          "text": "Random dirs",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: For each nonzero (a, b), the perpendicular direction is (−b, a). Step 2: As (a, b) varies, (−b, a) covers all directions in ℝ². Step 3: So every direction has a perpendicular line. Step 4: This \"all directions covered\" is the completeness of 2D. Step 5: Used in *physics*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.3.q9",
+      "topicId": "3.3",
+      "prompt": "What does the *kernel* look like for varying [a, b]?",
+      "options": [
+        {
+          "text": "Varies too",
+          "correct": true
+        },
+        {
+          "text": "Always same",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Kernel depends on the matrix [a, b]. Step 2: As [a, b] changes, kernel changes. Step 3: For [1, 1], kernel = (1, −1) direction. Step 4: For [1, 2], kernel = (2, −1) direction. Step 5: Different kernels for different matrices.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.3.q10",
+      "topicId": "3.3",
+      "prompt": "Can *two* different (a, b) give the *same* kernel direction?",
+      "options": [
+        {
+          "text": "Yes, scalings",
+          "correct": true
+        },
+        {
+          "text": "No, different",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: [1, 1] and [2, 2] = 2 · [1, 1] define the same line. Step 2: Same line → same kernel direction. Step 3: So scalings give the same kernel. Step 4: This \"scale-invariant kernel\" is the seed of *projective geometry*. Step 5: Used in *computer vision*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.3.q11",
+      "topicId": "3.3",
+      "prompt": "Why is (a, b) and (−a, −b) the *same* line?",
+      "options": [
+        {
+          "text": "Same equation",
+          "correct": true
+        },
+        {
+          "text": "Different eqs",
+          "correct": false
+        },
+        {
+          "text": "Random eq",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: (−a)x + (−b)y = −(ax + by) = 0 ↔ ax + by = 0. Step 2: Same equation, same line. Step 3: This \"sign flip = same line\" is the same as Q10. Step 4: Used in *2D geometry*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.3.q12",
+      "topicId": "3.3",
+      "prompt": "How is the line ax + by = 0 different from ax + by = c (c ≠ 0)?",
+      "options": [
+        {
+          "text": "Through origin",
+          "correct": true
+        },
+        {
+          "text": "Not through origin",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: ax + by = 0 passes through (0, 0). Step 2: ax + by = c (c ≠ 0) does NOT pass through origin. Step 3: Different lines (parallel but shifted). Step 4: This \"homogeneous vs inhomogeneous\" is the distinction. Step 5: Used in Q1.5.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.3.q13",
+      "topicId": "3.3",
+      "prompt": "What is the *angle* between ax + by = 0 and cx + dy = 0?",
+      "options": [
+        {
+          "text": "Perp if ac+bd=0",
+          "correct": true
+        },
+        {
+          "text": "Always parallel",
+          "correct": false
+        },
+        {
+          "text": "Random angle",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Lines are perpendicular iff their normals are perpendicular. Step 2: (a, b) · (c, d) = ac + bd = 0. Step 3: So ac + bd = 0 means perpendicular. Step 4: Used in *geometry*. Step 5: This \"perpendicularity via coefficients\" is the bridge.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.3.q14",
+      "topicId": "3.3",
+      "prompt": "Why is the kernel of [a, b] *always* 1D?",
+      "options": [
+        {
+          "text": "One constraint",
+          "correct": true
+        },
+        {
+          "text": "Two constraints",
+          "correct": false
+        },
+        {
+          "text": "Random dim",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: In ℝ², one linear equation defines a 1D subspace (line). Step 2: So kernel always 1D (for nonzero [a, b]). Step 3: This \"1D kernel in 2D\" is the standard. Step 4: Used in Q3.4.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.3.q15",
+      "topicId": "3.3",
+      "prompt": "What happens to the kernel as (a, b) → (0, 0)?",
+      "options": [
+        {
+          "text": "Whole space",
+          "correct": true
+        },
+        {
+          "text": "Just origin",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: As [a, b] → 0, the constraint becomes \"no constraint\". Step 2: Every (x, y) satisfies 0 = 0. Step 3: So kernel → all of ℝ². Step 4: This \"vanishing constraint → whole space\" is the degenerate limit. Step 5: Used in *degenerate cases*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.3.q16",
+      "topicId": "3.3",
+      "prompt": "How do (a, b) and (b, −a) relate?",
+      "options": [
+        {
+          "text": "Perpendicular",
+          "correct": true
+        },
+        {
+          "text": "Parallel",
+          "correct": false
+        },
+        {
+          "text": "Random",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: (a, b) · (b, −a) = ab − ab = 0. Step 2: So they're perpendicular. Step 3: The trap \"parallel\" describes scalings. Step 4: This \"rotate by 90°\" is the standard perpendicular construction. Step 5: Used in *2D rotations*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.3.q17",
+      "topicId": "3.3",
+      "prompt": "Why is (b, −a) the *rotation* of (a, b) by 90°?",
+      "options": [
+        {
+          "text": "Perp of equal len",
+          "correct": true
+        },
+        {
+          "text": "Random vec",
+          "correct": false
+        },
+        {
+          "text": "Parallel here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: (b, −a) is perpendicular to (a, b). Step 2: Same length: √(b² + a²) = √(a² + b²). Step 3: So it's a 90° rotation. Step 4: This \"rotate (a, b) by 90°\" formula is standard. Step 5: Used in *computer graphics*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.3.q18",
+      "topicId": "3.3",
+      "prompt": "What if we had [a, b, c] · [x, y, z]ᵀ = 0 — what shape is the solution?",
+      "options": [
+        {
+          "text": "Plane in ℝ³",
+          "correct": true
+        },
+        {
+          "text": "Line in ℝ³",
+          "correct": false
+        },
+        {
+          "text": "Point only",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: One equation in 3 unknowns = plane (2D subspace). Step 2: So solutions form a plane. Step 3: This is the 3D version of Q3.2's line in 2D. Step 4: Used in Q3.4.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.3.q19",
+      "topicId": "3.3",
+      "prompt": "What is the *normal* to the plane ax + by + cz = 0?",
+      "options": [
+        {
+          "text": "(a, b, c)",
+          "correct": true
+        },
+        {
+          "text": "(−b, a, 0)",
+          "correct": false
+        },
+        {
+          "text": "(0, 0, 1)",
+          "correct": false
+        },
+        {
+          "text": "Random vec",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: The normal is perpendicular to the plane. Step 2: For ax + by + cz = 0, the normal is (a, b, c) (the coefficients). Step 3: This \"normal = coefficients\" generalises 2D to 3D. Step 4: Used in *3D graphics*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.3.q20",
+      "topicId": "3.3",
+      "prompt": "What if (a, b) = (1, 1) and we wanted (1, 1) · x = 5 — what changes?",
+      "options": [
+        {
+          "text": "Not homogene",
+          "correct": true
+        },
+        {
+          "text": "Same line",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: (1, 1) · x = 5 is non-homogeneous. Step 2: This is a different line (parallel but shifted). Step 3: Solutions: x + y = 5, a line not through origin. Step 4: This \"inhomogeneous shift\" is the basis of *affine geometry*. Step 5: Used in *physics*.\n\n---",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    }
+  ]
+}

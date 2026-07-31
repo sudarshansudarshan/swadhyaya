@@ -1,0 +1,547 @@
+{
+  "id": "3.6",
+  "moduleId": 3,
+  "number": 6,
+  "title": "S = {β(2, 7, 3) | β ∈ ℝ}",
+  "vocabulary": {
+    "allowed": [
+      "span",
+      "scalar",
+      "multiple",
+      "line",
+      "independent.",
+      "Vocabulary",
+      "forbidden:",
+      "basis",
+      "details",
+      "(Q3.10)."
+    ],
+    "forbidden": [
+      "basis",
+      "details",
+      "(Q3.10)."
+    ]
+  },
+  "questions": [
+    {
+      "id": "3.6.q1",
+      "topicId": "3.6",
+      "prompt": "How does S = span{(2, 7, 3)} differ from T = span{(1, 2, 1)}?",
+      "options": [
+        {
+          "text": "Different direction",
+          "correct": true
+        },
+        {
+          "text": "Same direction",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: (2, 7, 3) ≠ scalar · (1, 2, 1). Step 2: So different directions. Step 3: S and T are different lines in ℝ³. Step 4: Used in *line geometry*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.6.q2",
+      "topicId": "3.6",
+      "prompt": "Are S and T *parallel*?",
+      "options": [
+        {
+          "text": "No, skew lines",
+          "correct": true
+        },
+        {
+          "text": "Yes, parallel",
+          "correct": false
+        },
+        {
+          "text": "Same line",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Different directions and both through origin. Step 2: Two lines through origin with different directions = distinct lines. Step 3: They intersect only at origin. Step 4: Used in *3D geometry*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.6.q3",
+      "topicId": "3.6",
+      "prompt": "What is the *intersection* of S and T?",
+      "options": [
+        {
+          "text": "Just origin",
+          "correct": true
+        },
+        {
+          "text": "Whole line",
+          "correct": false
+        },
+        {
+          "text": "Empty",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Both lines pass through origin. Step 2: For other points, directions differ. Step 3: So only origin is common. Step 4: This \"lines through origin intersect at origin\" is the geometric rule. Step 5: Used in Q3.7.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.6.q4",
+      "topicId": "3.6",
+      "prompt": "What is the *span* of (2, 7, 3) and (1, 2, 1)?",
+      "options": [
+        {
+          "text": "A plane",
+          "correct": true
+        },
+        {
+          "text": "Two lines",
+          "correct": false
+        },
+        {
+          "text": "A point",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Two independent vectors in ℝ³ span a 2D subspace. Step 2: 2D subspace = plane through origin. Step 3: The trap \"two lines\" is wrong — span combines them. Step 4: This \"2 vectors → plane\" is the rule. Step 5: Used in Q3.7.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.6.q5",
+      "topicId": "3.6",
+      "prompt": "Why is span{(2, 7, 3), (1, 2, 1)} a *plane*?",
+      "options": [
+        {
+          "text": "2 vectors 3D",
+          "correct": true
+        },
+        {
+          "text": "1 vector 3D",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Two independent vectors in ℝ³ span 2D. Step 2: 2D subspace of ℝ³ = plane. Step 3: The trap \"1 vector\" describes 1D line. Step 4: This \"dim = independent vectors\" is the standard. Step 5: Used in Mission 3 generally.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.6.q6",
+      "topicId": "3.6",
+      "prompt": "Is (3, 9, 4) in S = span{(2, 7, 3)}?",
+      "options": [
+        {
+          "text": "No, no β fits",
+          "correct": true
+        },
+        {
+          "text": "Yes, β fits",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Need β · (2, 7, 3) = (3, 9, 4). Step 2: β · 2 = 3 → β = 1.5. But then β · 7 = 10.5 ≠ 9. Contradiction. Step 3: So not in S. Step 4: This \"membership test\" reveals inconsistency.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.6.q7",
+      "topicId": "3.6",
+      "prompt": "Is (4, 14, 6) in S = span{(2, 7, 3)}?",
+      "options": [
+        {
+          "text": "Yes, β = two",
+          "correct": true
+        },
+        {
+          "text": "No, fails",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: β = 2 gives 2 · (2, 7, 3) = (4, 14, 6). Step 2: So (4, 14, 6) ∈ S. Step 3: This \"verify by β\" works.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.6.q8",
+      "topicId": "3.6",
+      "prompt": "What is the *direction* of S?",
+      "options": [
+        {
+          "text": "(2, 7, 3)",
+          "correct": true
+        },
+        {
+          "text": "(1, 2, 1)",
+          "correct": false
+        },
+        {
+          "text": "(0, 0, 0)",
+          "correct": false
+        },
+        {
+          "text": "Random vec",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: The direction is the spanning vector. Step 2: (2, 7, 3) (or any scalar multiple). Step 3: The trap (1, 2, 1) is T's direction. Step 4: Used in *line geometry*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.6.q9",
+      "topicId": "3.6",
+      "prompt": "Is S *1",
+      "options": [
+        {
+          "text": "Yes, one vector",
+          "correct": true
+        },
+        {
+          "text": "No, two-dim",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: S is spanned by one vector. Step 2: So dim = 1. Step 3: This \"1 generator → 1D\" is the rule. Step 4: Used in *dimension counting*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.6.q10",
+      "topicId": "3.6",
+      "prompt": "What is the *angle* between S and T?",
+      "options": [
+        {
+          "text": "Some non-zero",
+          "correct": true
+        },
+        {
+          "text": "Always zero",
+          "correct": false
+        },
+        {
+          "text": "Always ninety",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Direction (2, 7, 3) and (1, 2, 1) are not parallel. Step 2: So angle between S and T is some non-zero value. Step 3: Used in *3D geometry*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.6.q11",
+      "topicId": "3.6",
+      "prompt": "Are S and T *equal* as sets?",
+      "options": [
+        {
+          "text": "No, different",
+          "correct": true
+        },
+        {
+          "text": "Yes, equal",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: S and T have different directions. Step 2: So different lines. Step 3: Not equal as sets. Step 4: Used in *set comparison*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.6.q12",
+      "topicId": "3.6",
+      "prompt": "Can *every* vector in ℝ³ be written as β(2, 7, 3)?",
+      "options": [
+        {
+          "text": "No, only line",
+          "correct": true
+        },
+        {
+          "text": "Yes, all of ℝ³",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: S is just the line span{(2, 7, 3)}. Step 2: A line is 1D, much smaller than ℝ³ (3D). Step 3: So no — only vectors on that line can be written this way. Step 4: This \"1 vector can't span ℝ³\" is the rule.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.6.q13",
+      "topicId": "3.6",
+      "prompt": "What is the *basis* for S?",
+      "options": [
+        {
+          "text": "{(2, 7, 3)}",
+          "correct": true
+        },
+        {
+          "text": "{(2, 7), (3, 0)}",
+          "correct": false
+        },
+        {
+          "text": "{(1, 2, 1)}",
+          "correct": false
+        },
+        {
+          "text": "Random set",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: One independent vector → one basis element. Step 2: {(2, 7, 3)} is a basis. Step 3: The trap {(1, 2, 1)} is T's basis. Step 4: Used in *basis construction*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.6.q14",
+      "topicId": "3.6",
+      "prompt": "Is S a *subspace* of ℝ³?",
+      "options": [
+        {
+          "text": "Yes, closed ops",
+          "correct": true
+        },
+        {
+          "text": "No, not closed",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: S = span{(2, 7, 3)} is closed under addition and scaling. Step 2: Contains origin. Step 3: So S is a subspace. Step 4: Used in Mission 12.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.6.q15",
+      "topicId": "3.6",
+      "prompt": "What is the *rank* of S?",
+      "options": [
+        {
+          "text": "Just one",
+          "correct": true
+        },
+        {
+          "text": "Two only",
+          "correct": false
+        },
+        {
+          "text": "Three only",
+          "correct": false
+        },
+        {
+          "text": "Zero only",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: S is 1D. Step 2: rank = 1. Step 3: This \"rank = dim\" is the rule.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.6.q16",
+      "topicId": "3.6",
+      "prompt": "Are (2, 7, 3) and (1, 2, 1) *independent*?",
+      "options": [
+        {
+          "text": "Yes, different dirs",
+          "correct": true
+        },
+        {
+          "text": "No, dependent",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: (2, 7, 3) ≠ c · (1, 2, 1) for any c. Step 2: Different directions. Step 3: So independent. Step 4: Used in Q3.7.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.6.q17",
+      "topicId": "3.6",
+      "prompt": "What is the *smallest* subspace containing (2, 7, 3)?",
+      "options": [
+        {
+          "text": "Just S",
+          "correct": true
+        },
+        {
+          "text": "All of ℝ³",
+          "correct": false
+        },
+        {
+          "text": "Random set",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: The smallest subspace containing a vector is its span. Step 2: span{(2, 7, 3)} = S. Step 3: So S is the smallest such subspace. Step 4: This \"span = smallest subspace\" is the standard. Step 5: Used in *subspace theory*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.6.q18",
+      "topicId": "3.6",
+      "prompt": "What if we had S = {β(2, 7, 3) : β ≥ 0} — what changes?",
+      "options": [
+        {
+          "text": "Half line only",
+          "correct": true
+        },
+        {
+          "text": "Full line",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: β ≥ 0 restricts to non-negative scalars. Step 2: So only the \"positive\" half of the line. Step 3: Not a subspace (not closed under negation). Step 4: Used in *convex cones*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.6.q19",
+      "topicId": "3.6",
+      "prompt": "Why does S *not contain* (1, 1, 1)?",
+      "options": [
+        {
+          "text": "Different direction",
+          "correct": true
+        },
+        {
+          "text": "Same direction",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: (1, 1, 1) is not a scalar multiple of (2, 7, 3). Step 2: So (1, 1, 1) not in S. Step 3: Used in *membership testing*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.6.q20",
+      "topicId": "3.6",
+      "prompt": "What if S = span{(2, 7, 3), (4, 14, 6)} — what does S look like?",
+      "options": [
+        {
+          "text": "Same as before",
+          "correct": true
+        },
+        {
+          "text": "Bigger here",
+          "correct": false
+        },
+        {
+          "text": "Smaller here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: (4, 14, 6) = 2 · (2, 7, 3). Step 2: So dependent. Step 3: span doesn't change. Step 4: S is still the line. Step 5: Used in *dependent vectors*.\n\n---",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    }
+  ]
+}

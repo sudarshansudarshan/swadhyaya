@@ -1,0 +1,546 @@
+{
+  "id": "3.7",
+  "moduleId": 3,
+  "number": 7,
+  "title": "W = {α(1, 2, 1) + β(2, 7, 3) | α, β ∈ ℝ}",
+  "vocabulary": {
+    "allowed": [
+      "span",
+      "plane",
+      "two",
+      "parameters",
+      "independent",
+      "basis.",
+      "Vocabulary",
+      "forbidden:",
+      "rank-nullity",
+      "(Q3.10)."
+    ],
+    "forbidden": [
+      "rank-nullity",
+      "(Q3.10)."
+    ]
+  },
+  "questions": [
+    {
+      "id": "3.7.q1",
+      "topicId": "3.7",
+      "prompt": "What is W = {α(1, 2, 1) + β(2, 7, 3)}?",
+      "options": [
+        {
+          "text": "A plane",
+          "correct": true
+        },
+        {
+          "text": "A line",
+          "correct": false
+        },
+        {
+          "text": "A point",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: W = span{(1, 2, 1), (2, 7, 3)} — span of two independent vectors. Step 2: In ℝ³, two independent vectors span a 2D plane. Step 3: The trap \"line\" describes only one vector. Step 4: This \"2 vectors → plane\" is the rule. Step 5: Used in Mission 3 throughout.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.7.q2",
+      "topicId": "3.7",
+      "prompt": "Why is W a *plane* (not a line)?",
+      "options": [
+        {
+          "text": "Two indep vectors",
+          "correct": true
+        },
+        {
+          "text": "One vector only",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Two independent vectors span 2D. Step 2: 2D subspace of ℝ³ = plane. Step 3: One vector would span only a line. Step 4: This \"n independent vectors → nD span\" is the rule. Step 5: Used in Mission 3.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.7.q3",
+      "topicId": "3.7",
+      "prompt": "What are the two *parameters* α and β?",
+      "options": [
+        {
+          "text": "Free variables",
+          "correct": true
+        },
+        {
+          "text": "Fixed values",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: α, β ∈ ℝ can be any real number. Step 2: They parameterise the plane. Step 3: Each (α, β) gives a point in W. Step 4: This \"2 params for plane\" is the standard. Step 5: Used in *surface parametrisation*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.7.q4",
+      "topicId": "3.7",
+      "prompt": "Is (1, 2, 1) ∈ W?",
+      "options": [
+        {
+          "text": "Yes, α=1,β=0",
+          "correct": true
+        },
+        {
+          "text": "No, fails",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: α = 1, β = 0: 1 · (1, 2, 1) + 0 · (2, 7, 3) = (1, 2, 1). Step 2: So (1, 2, 1) ∈ W. Step 3: The basis vectors are in their own span. Step 4: Used in *basis verification*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.7.q5",
+      "topicId": "3.7",
+      "prompt": "Is (3, 9, 4) ∈ W?",
+      "options": [
+        {
+          "text": "Yes, α=1,β=1",
+          "correct": true
+        },
+        {
+          "text": "No, fails",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: 1 · (1, 2, 1) + 1 · (2, 7, 3) = (3, 9, 4). Step 2: So (3, 9, 4) ∈ W. Step 3: This \"linear combination\" gives a sum vector.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.7.q6",
+      "topicId": "3.7",
+      "prompt": "Is (5, 20, 8) ∈ W?",
+      "options": [
+        {
+          "text": "No, fails",
+          "correct": true
+        },
+        {
+          "text": "Yes, fits",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Need α · (1, 2, 1) + β · (2, 7, 3) = (5, 20, 8). Step 2: α + 2β = 5, 2α + 7β = 20, α + 3β = 8. Step 3: From first and third: α + 2β = 5 and α + 3β = 8 → β = 3, α = −1. Step 4: But 2(−1) + 7(3) = −2 + 21 = 19 ≠ 20. Contradiction. Step 5: So (5, 20, 8) not in W.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.7.q7",
+      "topicId": "3.7",
+      "prompt": "What is the *basis* for W?",
+      "options": [
+        {
+          "text": "{(1,2,1),(2,7,3)}",
+          "correct": true
+        },
+        {
+          "text": "{(1,0,0),(0,1,0)}",
+          "correct": false
+        },
+        {
+          "text": "{(0,0,1)}",
+          "correct": false
+        },
+        {
+          "text": "Random set",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: The spanning vectors are a basis (if independent). Step 2: (1, 2, 1) and (2, 7, 3) are independent. Step 3: So they form a basis. Step 4: Used in *basis construction*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.7.q8",
+      "topicId": "3.7",
+      "prompt": "How is W *different from* the plane x + 2y + 3z = 0?",
+      "options": [
+        {
+          "text": "Different plane",
+          "correct": true
+        },
+        {
+          "text": "Same plane",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: W is the plane spanned by (1,2,1) and (2,7,3). Step 2: x + 2y + 3z = 0 is a different plane. Step 3: Different normals. Step 4: Used in *plane comparison*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.7.q9",
+      "topicId": "3.7",
+      "prompt": "What is the *normal* to W?",
+      "options": [
+        {
+          "text": "Some perp vec",
+          "correct": true
+        },
+        {
+          "text": "(1, 2, 1)",
+          "correct": false
+        },
+        {
+          "text": "(2, 7, 3)",
+          "correct": false
+        },
+        {
+          "text": "Random vec",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: The normal is perpendicular to both spanning vectors. Step 2: Computed as cross product: (1, 2, 1) × (2, 7, 3) = (−1, −1, 3). Step 3: So normal is (−1, −1, 3) (or any scalar). Step 4: Used in *cross product*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.7.q10",
+      "topicId": "3.7",
+      "prompt": "Why are (1, 2, 1) and (2, 7, 3) *independent*?",
+      "options": [
+        {
+          "text": "Not scalar mults",
+          "correct": true
+        },
+        {
+          "text": "Are scalar mults",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: (2, 7, 3) ≠ c · (1, 2, 1) for any c. Step 2: So they're independent. Step 3: Used in *linear independence* testing.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.7.q11",
+      "topicId": "3.7",
+      "prompt": "Does W pass through *origin*?",
+      "options": [
+        {
+          "text": "Yes, α=β=0",
+          "correct": true
+        },
+        {
+          "text": "No, excluded",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: α = 0, β = 0: 0 · (1, 2, 1) + 0 · (2, 7, 3) = (0, 0, 0). Step 2: Origin in W. Step 3: All spans contain origin. Step 4: Used in *subspace verification*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.7.q12",
+      "topicId": "3.7",
+      "prompt": "What is the *dimension* of W?",
+      "options": [
+        {
+          "text": "Two",
+          "correct": true
+        },
+        {
+          "text": "One only",
+          "correct": false
+        },
+        {
+          "text": "Three only",
+          "correct": false
+        },
+        {
+          "text": "Zero only",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: W is spanned by 2 independent vectors. Step 2: dim = 2. Step 3: This \"dim = number of independent generators\" is the rule. Step 4: Used in Mission 3.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.7.q13",
+      "topicId": "3.7",
+      "prompt": "How is W *different from* ℝ³?",
+      "options": [
+        {
+          "text": "Smaller subspace",
+          "correct": true
+        },
+        {
+          "text": "Same size",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: W is 2D, ℝ³ is 3D. Step 2: W is a *proper* subspace of ℝ³. Step 3: Not all of ℝ³ is in W. Step 4: Used in *subspace comparison*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.7.q14",
+      "topicId": "3.7",
+      "prompt": "What is the *rank* of W (as a span)?",
+      "options": [
+        {
+          "text": "Two",
+          "correct": true
+        },
+        {
+          "text": "One only",
+          "correct": false
+        },
+        {
+          "text": "Three only",
+          "correct": false
+        },
+        {
+          "text": "Zero only",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: W has 2 independent generators. Step 2: rank = 2. Step 3: This \"rank = independent count\" is the rule. Step 4: Used in Mission 16.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.7.q15",
+      "topicId": "3.7",
+      "prompt": "Can we *add* a third vector to W and increase its size?",
+      "options": [
+        {
+          "text": "Depends on vec",
+          "correct": true
+        },
+        {
+          "text": "Always larger",
+          "correct": false
+        },
+        {
+          "text": "Never larger",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: If third vector is independent of (1,2,1) and (2,7,3), W grows to 3D = ℝ³. Step 2: If third vector is dependent (in W), W stays the same. Step 3: So \"depends on the vector\". Step 4: Used in *dimension counting*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.7.q16",
+      "topicId": "3.7",
+      "prompt": "What if the two vectors were *dependent* (like (1, 2, 1) and (2, 4, 2)) — what would W be?",
+      "options": [
+        {
+          "text": "Just a line",
+          "correct": true
+        },
+        {
+          "text": "Bigger plane",
+          "correct": false
+        },
+        {
+          "text": "All of ℝ³",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: (2, 4, 2) = 2 · (1, 2, 1). Step 2: Dependent. Step 3: W = span of one vector = line. Step 4: Not a plane. Step 5: Used in *dependent vectors*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.7.q17",
+      "topicId": "3.7",
+      "prompt": "Is W a *vector space*?",
+      "options": [
+        {
+          "text": "Yes, subspace",
+          "correct": true
+        },
+        {
+          "text": "No, not closed",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: W is a subspace of ℝ³. Step 2: Subspaces are vector spaces themselves. Step 3: So W is a vector space. Step 4: Used in *vector space theory*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.7.q18",
+      "topicId": "3.7",
+      "prompt": "What if W = {α(1, 2, 1) + β(2, 7, 3) + (1, 0, 0)} — what changes?",
+      "options": [
+        {
+          "text": "Not through orig",
+          "correct": true
+        },
+        {
+          "text": "Through origin",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: The \"+ (1, 0, 0)\" is translation. Step 2: W' is parallel to W but shifted. Step 3: Not through origin. Step 4: This \"translated span\" is *affine*. Step 5: Used in *affine geometry*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.7.q19",
+      "topicId": "3.7",
+      "prompt": "How is W *related to* the x",
+      "options": [
+        {
+          "text": "Different dir",
+          "correct": true
+        },
+        {
+          "text": "Same dir",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: W is 2D (plane), x-axis is 1D (line). Step 2: Different dimensions. Step 3: Different subspaces. Step 4: Used in *subspace comparison*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "3.7.q20",
+      "topicId": "3.7",
+      "prompt": "Does W contain *every* vector in ℝ³?",
+      "options": [
+        {
+          "text": "No, only plane",
+          "correct": true
+        },
+        {
+          "text": "Yes, all ℝ³",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: W is a 2D plane, ℝ³ is 3D. Step 2: W doesn't contain vectors outside the plane. Step 3: E.g., (0, 0, 1) is not in W. Step 4: Used in *subspace theory*.\n\n---",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    }
+  ]
+}
