@@ -1,0 +1,550 @@
+{
+  "id": "4.5",
+  "moduleId": 4,
+  "number": 5,
+  "title": "A = [[1,2,3],[4,5,6],[7,8,9]]: N, C, R, N(Aᵀ)",
+  "vocabulary": {
+    "allowed": [
+      "3×3",
+      "magic",
+      "matrix",
+      "four",
+      "subspaces",
+      "compute.",
+      "Vocabulary",
+      "forbidden:",
+      "rank-nullity",
+      "theorem",
+      "statement",
+      "(Q4.6)."
+    ],
+    "forbidden": [
+      "rank-nullity",
+      "theorem",
+      "statement",
+      "(Q4.6)."
+    ]
+  },
+  "questions": [
+    {
+      "id": "4.5.q1",
+      "topicId": "4.5",
+      "prompt": "What is special about A = [[1,2,3],[4,5,6],[7,8,9]]?",
+      "options": [
+        {
+          "text": "Magic matrix",
+          "correct": true
+        },
+        {
+          "text": "Identity",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: This is the famous \"magic\" matrix with rows in arithmetic progression. Step 2: Known to be singular. Step 3: Used in *numerical analysis* and *singular examples*. Step 4: Used in *rank deficiency*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "4.5.q2",
+      "topicId": "4.5",
+      "prompt": "What is the *rank* of A?",
+      "options": [
+        {
+          "text": "Two",
+          "correct": true
+        },
+        {
+          "text": "Three only",
+          "correct": false
+        },
+        {
+          "text": "One only",
+          "correct": false
+        },
+        {
+          "text": "Zero only",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: rank(A) = 2 (rows 1, 2 are independent; row 3 = sum of rows 1, 2). Step 2: So rank = 2. Step 3: Used in *rank computation*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "4.5.q3",
+      "topicId": "4.5",
+      "prompt": "What is the *row space* of A?",
+      "options": [
+        {
+          "text": "Plane in ℝ³",
+          "correct": true
+        },
+        {
+          "text": "A line",
+          "correct": false
+        },
+        {
+          "text": "Just origin",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: rank = 2 → row space is 2D. Step 2: Subspace of ℝ³. Step 3: A plane. Step 4: Used in *row space*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "4.5.q4",
+      "topicId": "4.5",
+      "prompt": "What is a *basis* for R(A)?",
+      "options": [
+        {
+          "text": "{rows 1, 2}",
+          "correct": true
+        },
+        {
+          "text": "{row 3}",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Rows 1 and 2 are independent. Step 2: Row 3 = row 1 + row 2 (dependent). Step 3: So basis = {(1, 2, 3), (4, 5, 6)}. Step 4: Used in *basis construction*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "4.5.q5",
+      "topicId": "4.5",
+      "prompt": "What is the *column space* of A?",
+      "options": [
+        {
+          "text": "Plane in ℝ³",
+          "correct": true
+        },
+        {
+          "text": "A line",
+          "correct": false
+        },
+        {
+          "text": "Just origin",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: rank = 2 → column space is 2D. Step 2: Same dimension as row space. Step 3: Plane in ℝ³. Step 4: Used in *column space*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "4.5.q6",
+      "topicId": "4.5",
+      "prompt": "What is a *basis* for C(A)?",
+      "options": [
+        {
+          "text": "First two cols",
+          "correct": true
+        },
+        {
+          "text": "Last col",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Columns 1 and 2 of A are independent. Step 2: Column 3 = column 1 + column 2. Step 3: So basis = {(1, 4, 7), (2, 5, 8)}. Step 4: Used in *column basis*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "4.5.q7",
+      "topicId": "4.5",
+      "prompt": "What is the *null space* of A?",
+      "options": [
+        {
+          "text": "A line in ℝ³",
+          "correct": true
+        },
+        {
+          "text": "A plane",
+          "correct": false
+        },
+        {
+          "text": "Just origin",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: rank = 2, nullity = 3 − 2 = 1. Step 2: 1D kernel = a line. Step 3: Specifically span{(-1, 2, -1)} (the famous magic vector). Step 4: Used in *kernel computation*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "4.5.q8",
+      "topicId": "4.5",
+      "prompt": "Why is N(A) *1",
+      "options": [
+        {
+          "text": "Rank two",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Always 1D",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: rank = 2, so nullity = 3 − 2 = 1. Step 2: 1D kernel. Step 3: This is rank-nullity. Step 4: Used in *dimension counting*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "4.5.q9",
+      "topicId": "4.5",
+      "prompt": "What is a *basis* for N(A)?",
+      "options": [
+        {
+          "text": "{(−1, 2, −1)}",
+          "correct": true
+        },
+        {
+          "text": "{(1, 2, 3)}",
+          "correct": false
+        },
+        {
+          "text": "{(0, 0, 0)}",
+          "correct": false
+        },
+        {
+          "text": "Random set",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: From row reduction: x + 2y + 3z = 0, 4x + 5y + 6z = 0. Step 2: Subtract 4×first from second: −3y − 6z = 0 → y = −2z. Step 3: Then x = −2y − 3z = 4z − 3z = z. Step 4: So (x, y, z) = (z, −2z, z) = z · (1, −2, 1) = z · -(−1, 2, −1). Step 5: So basis = {(-1, 2, -1)}. Step 6: Used in *kernel basis*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "4.5.q10",
+      "topicId": "4.5",
+      "prompt": "What is the *left null space* of A?",
+      "options": [
+        {
+          "text": "A line in ℝ³",
+          "correct": true
+        },
+        {
+          "text": "A plane",
+          "correct": false
+        },
+        {
+          "text": "Just origin",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: rank(Aᵀ) = rank(A) = 2. Step 2: nullity(Aᵀ) = 3 − 2 = 1. Step 3: 1D left null space = a line. Step 4: Specifically span{something}. Step 5: Used in *left null space*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "4.5.q11",
+      "topicId": "4.5",
+      "prompt": "What is a *basis* for N(Aᵀ)?",
+      "options": [
+        {
+          "text": "{(1, −2, 1)}",
+          "correct": true
+        },
+        {
+          "text": "{(1, 2, 3)}",
+          "correct": false
+        },
+        {
+          "text": "{(0, 0, 0)}",
+          "correct": false
+        },
+        {
+          "text": "Random set",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Solve Aᵀ · y = 0: y₁ + 4y₂ + 7y₃ = 0 and 2y₁ + 5y₂ + 8y₃ = 0. Step 2: Subtract 2×first from second: −3y₂ − 6y₃ = 0 → y₂ = −2y₃. Step 3: Then y₁ = −4y₂ − 7y₃ = 8y₃ − 7y₃ = y₃. Step 4: So y = (y₃, −2y₃, y₃) = y₃ · (1, −2, 1). Step 5: So basis = {(1, -2, 1)}. Step 6: Used in *left kernel basis*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "4.5.q12",
+      "topicId": "4.5",
+      "prompt": "What is the *geometric shape* of all four subspaces of A?",
+      "options": [
+        {
+          "text": "Two lines, two planes",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Four planes",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: rank = 2. Step 2: R and C are 2D (planes). Step 3: N and N(Aᵀ) are 1D (lines). Step 4: Two planes and two lines. Step 5: Used in *geometry of subspaces*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "4.5.q13",
+      "topicId": "4.5",
+      "prompt": "Why are *all four* subspaces computable?",
+      "options": [
+        {
+          "text": "Algorithm exists",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Only some",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Row reduction (RREF) gives all four subspaces. Step 2: So always computable. Step 3: Used in *computational linear algebra*. Step 4: Used in Gaussian elimination.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "4.5.q14",
+      "topicId": "4.5",
+      "prompt": "How do you *find* R(A) given A?",
+      "options": [
+        {
+          "text": "Row reduce",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Always zero",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Reduce A to RREF. Step 2: Nonzero rows are basis for R(A). Step 3: This is the algorithmic method. Step 4: Used in *Gaussian elimination*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "4.5.q15",
+      "topicId": "4.5",
+      "prompt": "How do you *find* N(A)?",
+      "options": [
+        {
+          "text": "Free variables",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Diagonal only",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: In RREF, identify free variables. Step 2: Set each to 1, others to 0. Step 3: Read off basis vectors for N(A). Step 4: This is the algorithmic method. Step 5: Used in *kernel computation*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "4.5.q16",
+      "topicId": "4.5",
+      "prompt": "Why is *A = [[1,2,3],[4,5,6],[7,8,9]]* a good example?",
+      "options": [
+        {
+          "text": "Singular magic",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Always invert",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Singular but not obviously so (looks normal). Step 2: Famous in numerical analysis (ill-conditioning). Step 3: Used to teach rank deficiency. Step 4: Used in *example matrices*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "4.5.q17",
+      "topicId": "4.5",
+      "prompt": "What does N(A) ⊥ C(Aᵀ) tell us?",
+      "options": [
+        {
+          "text": "FTLA part 2",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "No info",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: N(A) and C(Aᵀ) = R(A) are perpendicular. Step 2: This is FTLA applied to A. Step 3: Used in *orthogonal decompositions*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "4.5.q18",
+      "topicId": "4.5",
+      "prompt": "What if A had rank 3 (full rank) — what would N(A) be?",
+      "options": [
+        {
+          "text": "Just origin",
+          "correct": true
+        },
+        {
+          "text": "A line",
+          "correct": false
+        },
+        {
+          "text": "A plane",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: rank = 3 = n, nullity = 0. Step 2: N(A) = {0}. Step 3: Invertible case. Step 4: Used in *full-rank matrices*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "4.5.q19",
+      "topicId": "4.5",
+      "prompt": "Why is computing *all four* subspaces useful?",
+      "options": [
+        {
+          "text": "Complete picture",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Only one needed",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: The four subspaces together describe A completely. Step 2: Solve systems, project, find least squares — all possible. Step 3: Used in *complete matrix analysis*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "4.5.q20",
+      "topicId": "4.5",
+      "prompt": "What if A were the *identity matrix* — what would all four subspaces be?",
+      "options": [
+        {
+          "text": "Special cases",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "All zero",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: For I: R = ℝ³, C = ℝ³, N = {0}, N(Iᵀ) = {0}. Step 2: All at extreme cases. Step 3: Used in *identity matrix*.\n\n---",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    }
+  ]
+}

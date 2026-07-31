@@ -1,0 +1,546 @@
+{
+  "id": "4.4",
+  "moduleId": 4,
+  "number": 4,
+  "title": "C(M) ⊥ N(Mᵀ), R(M) ⊥ N(M)",
+  "vocabulary": {
+    "allowed": [
+      "orthogonality",
+      "C(M)",
+      "N(Mᵀ)",
+      "R(M)",
+      "N(M)",
+      "pairs.",
+      "Vocabulary",
+      "forbidden:",
+      "SVD",
+      "(later)."
+    ],
+    "forbidden": [
+      "SVD",
+      "(later)."
+    ]
+  },
+  "questions": [
+    {
+      "id": "4.4.q1",
+      "topicId": "4.4",
+      "prompt": "What is the *first* orthogonality relation?",
+      "options": [
+        {
+          "text": "R perp N",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "C perp C",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: First part of FTLA: R(M) ⊥ N(M). Step 2: This is the row space / null space relation. Step 3: Used in *projections*. Step 4: Used in Q4.2.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "4.4.q2",
+      "topicId": "4.4",
+      "prompt": "What is the *second* orthogonality relation?",
+      "options": [
+        {
+          "text": "C perp N(Mᵀ)",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "R perp R",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Second part of FTLA: C(M) ⊥ N(Mᵀ). Step 2: Column space perpendicular to left null space. Step 3: Used in *projections*. Step 4: Used in Q4.3.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "4.4.q3",
+      "topicId": "4.4",
+      "prompt": "Why are there *two* orthogonality relations?",
+      "options": [
+        {
+          "text": "Symmetry",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "No reason",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: M and Mᵀ have parallel structure. Step 2: M gives R ⊥ N. Mᵀ gives C ⊥ N(Mᵀ). Step 3: Two complementary relations. Step 4: Used in *symmetry of M and Mᵀ*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "4.4.q4",
+      "topicId": "4.4",
+      "prompt": "Are R ⊥ N and C ⊥ N(Mᵀ) *equivalent*?",
+      "options": [
+        {
+          "text": "Yes, equivalent",
+          "correct": true
+        },
+        {
+          "text": "No, different",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: R(M) = C(Mᵀ) and N(Mᵀ) = left null space. Step 2: So R ⊥ N ↔ C(Mᵀ) ⊥ N(Mᵀ) ↔ C(M) ⊥ N(Mᵀ). Step 3: Equivalent statements. Step 4: Used in *fundamental subspaces*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "4.4.q5",
+      "topicId": "4.4",
+      "prompt": "What is the *sum* of dim(R) and dim(N)?",
+      "options": [
+        {
+          "text": "Just n",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "m",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: rank + nullity = n (where n = column count). Step 2: For first relation. Step 3: Used in *rank-nullity*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "4.4.q6",
+      "topicId": "4.4",
+      "prompt": "What is the *sum* of dim(C) and dim(N(Mᵀ))?",
+      "options": [
+        {
+          "text": "Just m",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "n",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: rank + nullity = m (where m = row count, applied to Mᵀ). Step 2: For second relation. Step 3: Used in *rank-nullity for transpose*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "4.4.q7",
+      "topicId": "4.4",
+      "prompt": "Why does R ⊥ N have the same *flavour* as C ⊥ N(Mᵀ)?",
+      "options": [
+        {
+          "text": "Both perp",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "No link",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Both are orthogonality relations. Step 2: Both come from A · x = 0. Step 3: Both are instances of FTLA. Step 4: Used in *unified theorem*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "4.4.q8",
+      "topicId": "4.4",
+      "prompt": "Which relation is more useful in *practice*?",
+      "options": [
+        {
+          "text": "Both equally",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Neither",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Both are equally useful in different contexts. Step 2: R ⊥ N for least squares on rows. Step 3: C ⊥ N(Mᵀ) for solvability. Step 4: Both used in applications.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "4.4.q9",
+      "topicId": "4.4",
+      "prompt": "How do you *state* FTLA in one sentence?",
+      "options": [
+        {
+          "text": "Two pairs perp",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Always true",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: \"Row space is perpendicular to null space, and column space is perpendicular to left null space.\" Step 2: This is the full statement. Step 3: Used in *theorem statement*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "4.4.q10",
+      "topicId": "4.4",
+      "prompt": "What are the *four* fundamental subspaces?",
+      "options": [
+        {
+          "text": "R, N, C, N(Mᵀ)",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Three only",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: For any A: R(A), N(A), C(A), N(Aᵀ). Step 2: These are the four subspaces. Step 3: Pairwise: R ⊥ N, C ⊥ N(Aᵀ). Step 4: Used in *four subspaces*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "4.4.q11",
+      "topicId": "4.4",
+      "prompt": "Why is N(Aᵀ) called the *left null space*?",
+      "options": [
+        {
+          "text": "Left multiply",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Always zero",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: N(Aᵀ) = {y : yᵀ · A = 0}. Step 2: y multiplies A from the left. Step 3: Hence \"left null space\". Step 4: Used in *terminology*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "4.4.q12",
+      "topicId": "4.4",
+      "prompt": "Is the *column space* of Mᵀ the same as the *row space* of M?",
+      "options": [
+        {
+          "text": "Yes, same set",
+          "correct": true
+        },
+        {
+          "text": "No, different",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: C(Mᵀ) = row space of M = R(M). Step 2: Same subspace. Step 3: Used in *transpose theory*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "4.4.q13",
+      "topicId": "4.4",
+      "prompt": "Is the *column space* of M the same as the *row space* of Mᵀ?",
+      "options": [
+        {
+          "text": "Yes, same set",
+          "correct": true
+        },
+        {
+          "text": "No, different",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: C(M) = R(Mᵀ). Step 2: Same subspace. Step 3: Used in *transpose theory*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "4.4.q14",
+      "topicId": "4.4",
+      "prompt": "What is the *dimension* of R(Mᵀ)?",
+      "options": [
+        {
+          "text": "Same as R(M)",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Always zero",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: R(Mᵀ) = C(M) (column space of M). Step 2: dim = rank. Step 3: Same as rank(M). Step 4: Used in *dimension invariance*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "4.4.q15",
+      "topicId": "4.4",
+      "prompt": "Why is R(M) ⊥ N(M) the *more famous* relation?",
+      "options": [
+        {
+          "text": "First taught",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "No reason",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Strang teaches R ⊥ N first. Step 2: More intuitive. Step 3: Used in basic courses. Step 4: Used in *pedagogy*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "4.4.q16",
+      "topicId": "4.4",
+      "prompt": "Why are R ⊥ N and C ⊥ N(Mᵀ) sometimes called *dual relations*?",
+      "options": [
+        {
+          "text": "M and Mᵀ swap",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Same thing",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: M ↔ Mᵀ swaps R ↔ C and N ↔ N(Mᵀ). Step 2: So the two relations are *dual*. Step 3: Used in *duality*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "4.4.q17",
+      "topicId": "4.4",
+      "prompt": "Are the *sums* dim(R) + dim(N) and dim(C) + dim(N(Mᵀ)) equal?",
+      "options": [
+        {
+          "text": "No, different",
+          "correct": true
+        },
+        {
+          "text": "Yes, both m or n",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: dim(R) + dim(N) = n (column count). Step 2: dim(C) + dim(N(Mᵀ)) = m (row count). Step 3: For square m = n, both are n. Step 4: For non-square, different. Step 5: Used in *general case*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "4.4.q18",
+      "topicId": "4.4",
+      "prompt": "What if m = n (square matrix) — what is dim(R) + dim(N)?",
+      "options": [
+        {
+          "text": "Just n",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Two n",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: rank + nullity = n for square A. Step 2: Same formula. Step 3: Used in *square matrices*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "4.4.q19",
+      "topicId": "4.4",
+      "prompt": "Why does the *orthogonal decomposition* ℝⁿ = R ⊕ N help in practice?",
+      "options": [
+        {
+          "text": "Splits vectors",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "No use",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Any vector v = v_R + v_N where v_R ∈ R, v_N ∈ N. Step 2: This decomposition is unique. Step 3: Used in *signal decomposition*, *regression*. Step 4: Used in applied math.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "4.4.q20",
+      "topicId": "4.4",
+      "prompt": "What if R and N were *not* orthogonal — would C ⊥ N(Mᵀ) still hold?",
+      "options": [
+        {
+          "text": "Depends on A",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Always holds",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Both are consequences of A being linear. Step 2: If R ⊥ N fails for some A, C ⊥ N(Mᵀ) might still hold (different relation). Step 3: Actually if A is linear, both hold. Step 4: So always both hold. Step 5: Used in *linear theory*.\n\n---",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    }
+  ]
+}

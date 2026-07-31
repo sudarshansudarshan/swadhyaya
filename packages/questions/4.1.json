@@ -1,0 +1,553 @@
+{
+  "id": "4.1",
+  "moduleId": 4,
+  "number": 1,
+  "title": "M = [[1,3],[2,6]]: plot R, C, N",
+  "vocabulary": {
+    "allowed": [
+      "row",
+      "space",
+      "column",
+      "space",
+      "null",
+      "space",
+      "line",
+      "plane",
+      "direction.",
+      "Vocabulary",
+      "forbidden:",
+      "rank-nullity",
+      "theorem",
+      "details",
+      "(Q4.4)."
+    ],
+    "forbidden": [
+      "rank-nullity",
+      "theorem",
+      "details",
+      "(Q4.4)."
+    ]
+  },
+  "questions": [
+    {
+      "id": "4.1.q1",
+      "topicId": "4.1",
+      "prompt": "What is special about M = [[1, 3], [2, 6]]?",
+      "options": [
+        {
+          "text": "Rank one",
+          "correct": true
+        },
+        {
+          "text": "Rank two",
+          "correct": false
+        },
+        {
+          "text": "Random shape",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Row 2 = 2 · row 1, so rows are dependent. Step 2: rank = 1 (only one independent row). Step 3: The matrix collapses dimensions. Step 4: This \"rank 1\" property is special. Step 5: Used in *rank-deficient matrices*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "4.1.q2",
+      "topicId": "4.1",
+      "prompt": "Why is *rank(M) = 1* for M = [[1,3],[2,6]]?",
+      "options": [
+        {
+          "text": "Rows dependent",
+          "correct": true
+        },
+        {
+          "text": "Rows independent",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Row 2 = (2, 6) = 2 · (1, 3) = 2 · row 1. Step 2: So row 2 is a multiple of row 1. Step 3: Dependent → rank = 1. Step 4: This \"row dependency = low rank\" is the standard. Step 5: Used in *rank computation*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "4.1.q3",
+      "topicId": "4.1",
+      "prompt": "What is the *row space* of M?",
+      "options": [
+        {
+          "text": "Line direction (1,3)",
+          "correct": true
+        },
+        {
+          "text": "Whole plane",
+          "correct": false
+        },
+        {
+          "text": "Just origin",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Row space = span of rows. Step 2: Only one independent row (1, 3). Step 3: So row space is the line through origin with direction (1, 3). Step 4: This is the *1D row space*. Step 5: Used in Q4.4.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "4.1.q4",
+      "topicId": "4.1",
+      "prompt": "What is the *column space* of M?",
+      "options": [
+        {
+          "text": "Line direction (1, 2)",
+          "correct": true
+        },
+        {
+          "text": "Whole plane",
+          "correct": false
+        },
+        {
+          "text": "Just origin",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Columns are (1, 2) and (3, 6) = 3 · (1, 2). Step 2: Only one independent column (1, 2). Step 3: So column space is the line with direction (1, 2). Step 4: This is the *1D column space*. Step 5: Used in Q4.4.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "4.1.q5",
+      "topicId": "4.1",
+      "prompt": "What is the *null space* of M?",
+      "options": [
+        {
+          "text": "Line direction (−3, 1)",
+          "correct": true
+        },
+        {
+          "text": "Whole plane",
+          "correct": false
+        },
+        {
+          "text": "Just origin",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Solve M · x = 0: x + 3y = 0 and 2x + 6y = 0. Step 2: Both equations give x = −3y. Step 3: Parametrise: (x, y) = (−3t, t) = t · (−3, 1). Step 4: So null space is the line span{(-3, 1)}. Step 5: Used in Q4.3.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "4.1.q6",
+      "topicId": "4.1",
+      "prompt": "Why is the row space *different* from the column space?",
+      "options": [
+        {
+          "text": "Different vecs",
+          "correct": true
+        },
+        {
+          "text": "Same vecs",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Row space direction is (1, 3). Step 2: Column space direction is (1, 2). Step 3: Different directions (not parallel). Step 4: So different subspaces (in ℝ²). Step 5: Used in *subspace distinction*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "4.1.q7",
+      "topicId": "4.1",
+      "prompt": "Are row space and null space *perpendicular*?",
+      "options": [
+        {
+          "text": "Yes, always",
+          "correct": true
+        },
+        {
+          "text": "No, never",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Row direction (1, 3) · null direction (−3, 1) = −3 + 3 = 0. Step 2: Dot product zero → perpendicular. Step 3: This is FTLA in action. Step 4: Used in Q4.4.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "4.1.q8",
+      "topicId": "4.1",
+      "prompt": "Why does the *null space* have dimension 1?",
+      "options": [
+        {
+          "text": "Rank one",
+          "correct": true
+        },
+        {
+          "text": "Rank two",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: rank = 1, so nullity = n − rank = 2 − 1 = 1. Step 2: 1D kernel. Step 3: This is rank-nullity. Step 4: Used in *dimension counting*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "4.1.q9",
+      "topicId": "4.1",
+      "prompt": "What is the *kernel direction* visually?",
+      "options": [
+        {
+          "text": "Perp to row",
+          "correct": true
+        },
+        {
+          "text": "Parallel to row",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Kernel direction (−3, 1) is perpendicular to row direction (1, 3). Step 2: (1, 3) · (−3, 1) = 0. Step 3: So kernel ⊥ row space. Step 4: This is FTLA. Step 5: Used in Q4.4.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "4.1.q10",
+      "topicId": "4.1",
+      "prompt": "What does the *rank",
+      "options": [
+        {
+          "text": "Collapses 2D to 1D",
+          "correct": true
+        },
+        {
+          "text": "Preserves 2D",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: rank 1 means M's image is 1D. Step 2: So M maps ℝ² → a line. Step 3: 2D collapses to 1D. Step 4: Used in *rank-deficient matrices*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "4.1.q11",
+      "topicId": "4.1",
+      "prompt": "Can we *recover* any vector in ℝ² from M · x?",
+      "options": [
+        {
+          "text": "No, only line",
+          "correct": true
+        },
+        {
+          "text": "Yes, all",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: M · x is always in the column space (1D line). Step 2: So outputs are only on a line, not all of ℝ². Step 3: Cannot recover arbitrary ℝ² vectors. Step 4: Used in *image size*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "4.1.q12",
+      "topicId": "4.1",
+      "prompt": "Why is the column space a *line through origin*?",
+      "options": [
+        {
+          "text": "Through origin",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Not through orig",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Column space is a subspace (closed under addition/scaling). Step 2: Subspaces contain origin. Step 3: So line through origin. Step 4: Used in *subspace property*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "4.1.q13",
+      "topicId": "4.1",
+      "prompt": "Why are *all four* subspaces of M 1D or smaller?",
+      "options": [
+        {
+          "text": "Rank one",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Always same",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: rank(M) = 1. Step 2: row space 1D, column space 1D. Step 3: nullity = 1, null space 1D. Step 4: All are 1D or smaller (origin). Step 5: Used in *subspace dimensions*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "4.1.q14",
+      "topicId": "4.1",
+      "prompt": "What is the *left null space* of M?",
+      "options": [
+        {
+          "text": "Span {(-3, 1)}",
+          "correct": true
+        },
+        {
+          "text": "Span {(1, 2)}",
+          "correct": false
+        },
+        {
+          "text": "Just origin",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Left null space = {y : yᵀ · M = 0}. Step 2: Solve (−3, 1) · M = (−3 + 2, −9 + 6) = (−1, −3) ≠ 0. Hmm, let me recompute. Step 3: Solve yᵀ · M = 0: y₁ + 2y₂ = 0 and 3y₁ + 6y₂ = 0. Step 4: Same constraint: y₁ = −2y₂. Step 5: So left null space = span{(-2, 1)}. Actually let me re-do: y₁ + 2y₂ = 0 gives y = (−2t, t) = t · (−2, 1). Step 6: So left null space = span{(-2, 1)}.\n\n(Correcting) **Correct:** a) Span {(-2, 1)}\n\n**Explanation (corrected):** Step 1: Left null space = {y : yᵀ · M = 0}. Step 2: Solve: y₁ + 2y₂ = 0 and 3y₁ + 6y₂ = 0. Step 3: Both give y₁ = −2y₂. Step 4: So left null space = span{(-2, 1)}. Step 5: Used in *left null space*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "4.1.q15",
+      "topicId": "4.1",
+      "prompt": "Is the *left null space* perpendicular to the column space?",
+      "options": [
+        {
+          "text": "Yes, always",
+          "correct": true
+        },
+        {
+          "text": "No, never",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: For y in left null space and column c: y · c = yᵀ · M · x = 0 · x = 0. Step 2: So y ⊥ c. Step 3: This is FTLA part 2. Step 4: Used in Q4.4.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "4.1.q16",
+      "topicId": "4.1",
+      "prompt": "Can a 2×2 rank",
+      "options": [
+        {
+          "text": "No, never",
+          "correct": true
+        },
+        {
+          "text": "Yes, always",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: rank 1 < 2 (n for square matrix). Step 2: Not full rank → not invertible. Step 3: This is the standard test. Step 4: Used in Mission 14.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "4.1.q17",
+      "topicId": "4.1",
+      "prompt": "What is the *rank* of M?",
+      "options": [
+        {
+          "text": "Just one",
+          "correct": true
+        },
+        {
+          "text": "Two only",
+          "correct": false
+        },
+        {
+          "text": "Three only",
+          "correct": false
+        },
+        {
+          "text": "Zero only",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: rank(M) = 1 (verified above). Step 2: This is the answer. Step 3: Used in *rank computation*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "4.1.q18",
+      "topicId": "4.1",
+      "prompt": "What if we had M = [[1, 3], [3, 9]] — would the row space change?",
+      "options": [
+        {
+          "text": "Same line",
+          "correct": true
+        },
+        {
+          "text": "Different line",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: New row 2 = (3, 9) = 3 · (1, 3) = 3 · row 1. Step 2: So row space direction still (1, 3). Step 3: Same row space. Step 4: Used in *row space invariance*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "4.1.q19",
+      "topicId": "4.1",
+      "prompt": "Why is the *null space* (kernel direction) so important?",
+      "options": [
+        {
+          "text": "Collapses dir",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Always zero",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: The null space is the direction M \"collapses\" to zero. Step 2: Knowing this direction = understanding M. Step 3: Used in *matrix understanding*. Step 4: Important in *SVD* and *rank deficiency*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "4.1.q20",
+      "topicId": "4.1",
+      "prompt": "What if M had rank 2 — what would the null space be?",
+      "options": [
+        {
+          "text": "Just origin",
+          "correct": true
+        },
+        {
+          "text": "A line",
+          "correct": false
+        },
+        {
+          "text": "A plane",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: rank = 2, nullity = 0. Step 2: Null space = just origin. Step 3: Invertible. Step 4: This is the \"full rank\" case. Step 5: Used in *full-rank matrices*.\n\n---",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    }
+  ]
+}

@@ -1,0 +1,545 @@
+{
+  "id": "4.6",
+  "moduleId": 4,
+  "number": 6,
+  "title": "4×4 matrix M with range of various dimensions",
+  "vocabulary": {
+    "allowed": [
+      "rank",
+      "range",
+      "dimension",
+      "examples",
+      "4×4.",
+      "Vocabulary",
+      "forbidden:",
+      "SVD",
+      "(later)."
+    ],
+    "forbidden": [
+      "SVD",
+      "(later)."
+    ]
+  },
+  "questions": [
+    {
+      "id": "4.6.q1",
+      "topicId": "4.6",
+      "prompt": "What is the *range* of a matrix M?",
+      "options": [
+        {
+          "text": "Image of M",
+          "correct": true
+        },
+        {
+          "text": "Domain of M",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Range(M) = {M · x : x ∈ ℝ⁴} = image. Step 2: Same as column space. Step 3: Used in *column space = range*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "4.6.q2",
+      "topicId": "4.6",
+      "prompt": "Why does the *dimension* of the range vary?",
+      "options": [
+        {
+          "text": "Different ranks",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Always same",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Different matrices have different ranks. Step 2: Range dimension = rank. Step 3: So varies. Step 4: Used in *rank examples*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "4.6.q3",
+      "topicId": "4.6",
+      "prompt": "What is the *maximum* possible range dimension for a 4×4 matrix?",
+      "options": [
+        {
+          "text": "Four",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Less",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: 4×4 matrix can have rank up to 4. Step 2: Maximum range dimension = 4. Step 3: Full rank case. Step 4: Used in *rank bounds*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "4.6.q4",
+      "topicId": "4.6",
+      "prompt": "What is the *minimum* possible range dimension for a 4×4 matrix?",
+      "options": [
+        {
+          "text": "Just zero",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Always one",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Zero matrix has rank 0. Step 2: Range = {origin}. Step 3: Min = 0. Step 4: Used in *zero matrix*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "4.6.q5",
+      "topicId": "4.6",
+      "prompt": "Can a 4×4 matrix have range dimension = 1?",
+      "options": [
+        {
+          "text": "Yes, rank one",
+          "correct": true
+        },
+        {
+          "text": "No, never",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Rank 1 matrix has 1D range. Step 2: e.g., M = all-ones (or outer product). Step 3: Possible. Step 4: Used in *rank-1 matrices*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "4.6.q6",
+      "topicId": "4.6",
+      "prompt": "Can a 4×4 matrix have range dimension = 2?",
+      "options": [
+        {
+          "text": "Yes, rank two",
+          "correct": true
+        },
+        {
+          "text": "No, never",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Rank 2 matrix has 2D range. Step 2: e.g., outer products of 2 vectors. Step 3: Possible. Step 4: Used in *rank-2 matrices*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "4.6.q7",
+      "topicId": "4.6",
+      "prompt": "Can a 4×4 matrix have range dimension = 3?",
+      "options": [
+        {
+          "text": "Yes, rank three",
+          "correct": true
+        },
+        {
+          "text": "No, never",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Rank 3 matrix has 3D range. Step 2: e.g., identity with one zero row. Step 3: Possible. Step 4: Used in *rank-3 matrices*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "4.6.q8",
+      "topicId": "4.6",
+      "prompt": "What does *rank = 0* mean for the range?",
+      "options": [
+        {
+          "text": "Just origin",
+          "correct": true
+        },
+        {
+          "text": "A line",
+          "correct": false
+        },
+        {
+          "text": "A plane",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: rank 0 means only origin in range. Step 2: The zero matrix. Step 3: Used in *zero matrix*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "4.6.q9",
+      "topicId": "4.6",
+      "prompt": "Why does rank = 4 mean *invertible* for 4×4?",
+      "options": [
+        {
+          "text": "Full rank",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Always invert",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: rank = n (full rank) ↔ invertible (for square). Step 2: Det ≠ 0. Step 3: So 4×4 with rank 4 is invertible. Step 4: Used in *invertibility*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "4.6.q10",
+      "topicId": "4.6",
+      "prompt": "What is the *range* of a rank",
+      "options": [
+        {
+          "text": "2D plane",
+          "correct": true
+        },
+        {
+          "text": "3D space",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: rank = 2 → range is 2D. Step 2: A plane in ℝ⁴. Step 3: Used in *rank examples*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "4.6.q11",
+      "topicId": "4.6",
+      "prompt": "Why is the *range* a *subspace*?",
+      "options": [
+        {
+          "text": "Closed ops",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Random set",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Range is closed under addition and scaling. Step 2: Contains origin. Step 3: So a subspace. Step 4: Used in Mission 12.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "4.6.q12",
+      "topicId": "4.6",
+      "prompt": "Can two 4×4 matrices have the *same range* but different ranks?",
+      "options": [
+        {
+          "text": "No, same rank",
+          "correct": true
+        },
+        {
+          "text": "Yes, possible",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Range dimension = rank. Step 2: Same range → same rank. Step 3: So ranks must match. Step 4: Used in *rank uniqueness*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "4.6.q13",
+      "topicId": "4.6",
+      "prompt": "What is the *range* of a *diagonal* matrix with nonzero entries d₁, d₂, ..., d₄?",
+      "options": [
+        {
+          "text": "Spans axes",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Always full",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Diagonal M has columns = dᵢ · eᵢ. Step 2: Range = span of nonzero eᵢ's. Step 3: For all nonzero dᵢ, range = span of all eᵢ = full space. Step 4: Used in *diagonal matrices*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "4.6.q14",
+      "topicId": "4.6",
+      "prompt": "What if the diagonal has a *zero entry* — what happens to range?",
+      "options": [
+        {
+          "text": "Missing axis",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Always full",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Zero diagonal entry → that column is zero. Step 2: Range doesn't include that axis. Step 3: Used in *singular diagonal matrices*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "4.6.q15",
+      "topicId": "4.6",
+      "prompt": "Why is the *range dimension* a *property* of the matrix?",
+      "options": [
+        {
+          "text": "Intrinsic",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Depends on input",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Range dimension = rank = intrinsic property of M. Step 2: Doesn't depend on input. Step 3: Used in *matrix invariants*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "4.6.q16",
+      "topicId": "4.6",
+      "prompt": "What is the *rank* of the identity matrix I (4×4)?",
+      "options": [
+        {
+          "text": "Four",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Less",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: I has 4 independent rows and columns. Step 2: rank = 4 = n. Step 3: Full rank. Step 4: Used in *identity matrix*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "4.6.q17",
+      "topicId": "4.6",
+      "prompt": "What is the *rank* of the all",
+      "options": [
+        {
+          "text": "Just one",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Four",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: All rows are identical (= all ones). Step 2: rank = 1. Step 3: 1D range = span{(1, 1, 1, 1)}. Step 4: Used in *all-ones matrix*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "4.6.q18",
+      "topicId": "4.6",
+      "prompt": "What if a 4×4 matrix had two distinct nonzero eigenvalues — what would rank be?",
+      "options": [
+        {
+          "text": "Two at least",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Always four",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Each distinct nonzero eigenvalue gives at least one independent eigenvector. Step 2: 2 eigenvalues → rank ≥ 2. Step 3: Used in *eigenvalues and rank*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "4.6.q19",
+      "topicId": "4.6",
+      "prompt": "How does *column* rank relate to *row* rank?",
+      "options": [
+        {
+          "text": "Always equal",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Sometimes equal",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: rank(M) = column rank = row rank. Step 2: Always equal (rank theorem). Step 3: Used in *rank invariance*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "4.6.q20",
+      "topicId": "4.6",
+      "prompt": "What if a 4×4 matrix had rank 2 — how many eigenvalues (counted with multiplicity) could it have?",
+      "options": [
+        {
+          "text": "Up to four",
+          "correct": true
+        },
+        {
+          "text": "Exactly two",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Always 4 eigenvalues (with multiplicity). Step 2: Some might be 0 (2 nonzero + 2 zero is possible for rank 2). Step 3: Number of *nonzero* eigenvalues = rank (for nice matrices). Step 4: Used in *eigenvalue-rank connection*.\n\n---",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    }
+  ]
+}

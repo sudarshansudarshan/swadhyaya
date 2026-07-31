@@ -1,0 +1,545 @@
+{
+  "id": "4.2",
+  "moduleId": 4,
+  "number": 2,
+  "title": "R and N are orthogonal",
+  "vocabulary": {
+    "allowed": [
+      "orthogonal",
+      "perpendicular",
+      "R(A)",
+      "N(A)",
+      "proof.",
+      "Vocabulary",
+      "forbidden:",
+      "SVD",
+      "(later)."
+    ],
+    "forbidden": [
+      "SVD",
+      "(later)."
+    ]
+  },
+  "questions": [
+    {
+      "id": "4.2.q1",
+      "topicId": "4.2",
+      "prompt": "What does it mean for *R* and *N* to be *orthogonal*?",
+      "options": [
+        {
+          "text": "Every R perp N",
+          "correct": true
+        },
+        {
+          "text": "Some R perp N",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: For every r ∈ R(A) and every n ∈ N(A), r · n = 0. Step 2: So every row space vector is perpendicular to every null space vector. Step 3: This is the full orthogonality. Step 4: Used in Q4.4.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "4.2.q2",
+      "topicId": "4.2",
+      "prompt": "Why is *R ⊥ N* the fundamental theorem?",
+      "options": [
+        {
+          "text": "Central idea",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Marginal fact",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: This orthogonality is the *central* result of linear algebra (Strang). Step 2: It underlies least squares, projections, etc. Step 3: So \"fundamental\". Step 4: Used throughout linear algebra.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "4.2.q3",
+      "topicId": "4.2",
+      "prompt": "How do you *prove* R ⊥ N algebraically?",
+      "options": [
+        {
+          "text": "Row · null vec",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "No proof",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: For x ∈ N(A): A · x = 0. Step 2: Each row of A dotted with x = 0. Step 3: So x ⊥ each row of A. Step 4: So x ⊥ row space. Step 5: This is the direct proof.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "4.2.q4",
+      "topicId": "4.2",
+      "prompt": "Why is every row of A ⊥ every x in N(A)?",
+      "options": [
+        {
+          "text": "A · x = 0",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Always zero",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: A · x = 0 means each row of A times x = 0. Step 2: So row · x = 0 for each row. Step 3: So x ⊥ each row. Step 4: This is the algebraic basis. Step 5: Used in *kernel property*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "4.2.q5",
+      "topicId": "4.2",
+      "prompt": "Why does R ⊥ N imply *every* x ∈ N(A) is ⊥ R(A)?",
+      "options": [
+        {
+          "text": "Holds for all",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Only some",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: The proof works for any x ∈ N(A). Step 2: So the orthogonality holds universally. Step 3: This is the *for all* quantifier. Step 4: Used in *theorem statement*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "4.2.q6",
+      "topicId": "4.2",
+      "prompt": "Why is R ⊥ N useful in *practice*?",
+      "options": [
+        {
+          "text": "Projections",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "No use",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: R ⊥ N means we can project onto R (using the perpendicular complement). Step 2: This is least squares. Step 3: Used in *regression*, *signal processing*, *ML*. Step 4: Used throughout applied math.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "4.2.q7",
+      "topicId": "4.2",
+      "prompt": "What is the *sum* of dim(R) and dim(N)?",
+      "options": [
+        {
+          "text": "Just n",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Always n squared",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: rank + nullity = n. Step 2: dim(R) = rank, dim(N) = nullity. Step 3: So sum = n. Step 4: This is rank-nullity. Step 5: Used in Mission 16.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "4.2.q8",
+      "topicId": "4.2",
+      "prompt": "Why is *R ⊥ N* called a *fundamental* theorem?",
+      "options": [
+        {
+          "text": "Central",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Minor result",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: It's the foundation of many results. Step 2: Strang named it *Fundamental Theorem of Linear Algebra*. Step 3: Used throughout the field. Step 4: This \"fundamental\" designation is rare.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "4.2.q9",
+      "topicId": "4.2",
+      "prompt": "Does R ⊥ N hold for *all* matrices A?",
+      "options": [
+        {
+          "text": "Yes, always",
+          "correct": true
+        },
+        {
+          "text": "No, sometimes",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: The proof works for any A. Step 2: So FTLA holds universally. Step 3: This is a theorem, always true. Step 4: Used in *applied math*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "4.2.q10",
+      "topicId": "4.2",
+      "prompt": "What is the *intuition* for R ⊥ N?",
+      "options": [
+        {
+          "text": "Rows kill null",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Always true",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Null space vectors are killed (sent to 0) by A's rows. Step 2: \"Killed\" means orthogonal to rows. Step 3: So intuition: rows annihilate null. Step 4: Used in *conceptual understanding*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "4.2.q11",
+      "topicId": "4.2",
+      "prompt": "If A · x = 0, what is row · x?",
+      "options": [
+        {
+          "text": "Zero",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "One",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: A · x = 0 means each row · x = 0. Step 2: So row · x = 0 (each row). Step 3: Used in *kernel property*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "4.2.q12",
+      "topicId": "4.2",
+      "prompt": "What does *row · x = 0* mean geometrically?",
+      "options": [
+        {
+          "text": "Row perp x",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Row par x",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: row · x = 0 ↔ row ⊥ x (assuming both nonzero). Step 2: So x is perpendicular to each row. Step 3: Used in *perpendicularity test*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "4.2.q13",
+      "topicId": "4.2",
+      "prompt": "Why is the *geometric interpretation* of R ⊥ N important?",
+      "options": [
+        {
+          "text": "Pictures help",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "No reason",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Pictures make abstract algebra intuitive. Step 2: Helps learners. Step 3: Used in *visualisation*. Step 4: Used in *Strang's teaching approach*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "4.2.q14",
+      "topicId": "4.2",
+      "prompt": "What does *dim(R) + dim(N) = n* imply for the geometry?",
+      "options": [
+        {
+          "text": "Direct sum",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "No relation",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: R and N have complementary dimensions (sum to n). Step 2: R ∩ N = {0}, R + N = ℝⁿ. Step 3: So ℝⁿ = R ⊕ N. Step 4: This \"direct sum\" is geometric. Step 5: Used in *direct sums*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "4.2.q15",
+      "topicId": "4.2",
+      "prompt": "Is the *orthogonal complement* of R the same as N?",
+      "options": [
+        {
+          "text": "Yes, R⊥ = N",
+          "correct": true
+        },
+        {
+          "text": "No, different",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: R⊥ = {v : v ⊥ all of R} = N (by FTLA). Step 2: So R⊥ = N. Step 3: This is the orthogonal complement identity. Step 4: Used in *orthogonal complement*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "4.2.q16",
+      "topicId": "4.2",
+      "prompt": "Does R ⊕ N = ℝⁿ *always*?",
+      "options": [
+        {
+          "text": "Yes, always",
+          "correct": true
+        },
+        {
+          "text": "No, sometimes",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: For any A m×n: ℝⁿ = R ⊕ N. Step 2: Direct sum decomposition. Step 3: This is a theorem. Step 4: Used throughout linear algebra.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "4.2.q17",
+      "topicId": "4.2",
+      "prompt": "How does R ⊥ N *enable* least squares?",
+      "options": [
+        {
+          "text": "Orthogonal proj",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "No link",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: R ⊥ N means we can decompose any vector v = v_R + v_N. Step 2: v_R is the projection onto R (orthogonal projection). Step 3: This is the basis of least squares. Step 4: Used in Q2.5.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "4.2.q18",
+      "topicId": "4.2",
+      "prompt": "What if A were *not* linear — would R ⊥ N still hold?",
+      "options": [
+        {
+          "text": "No, only linear",
+          "correct": true
+        },
+        {
+          "text": "Yes, still",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: FTLA relies on A being linear. Step 2: For nonlinear A, no FTLA. Step 3: Used in *nonlinear systems*. Step 4: This \"linearity is essential\" is the rule.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "4.2.q19",
+      "topicId": "4.2",
+      "prompt": "Why is *R ⊥ N* more useful than R ⊕ N?",
+      "options": [
+        {
+          "text": "Adds perp info",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Same info",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: R ⊕ N is just decomposition. Step 2: R ⊥ N adds the perpendicularity property. Step 3: Perpendicularity enables projections. Step 4: Used in *projection theory*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "4.2.q20",
+      "topicId": "4.2",
+      "prompt": "What if R and N were *not* perpendicular — would least squares still work?",
+      "options": [
+        {
+          "text": "No, needs perp",
+          "correct": true
+        },
+        {
+          "text": "Yes, still",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Least squares requires orthogonal projection. Step 2: Orthogonal projection requires R ⊥ N. Step 3: Without perpendicularity, no clean projection. Step 4: Used in *least squares*.\n\n---",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    }
+  ]
+}

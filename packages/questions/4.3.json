@@ -1,0 +1,547 @@
+{
+  "id": "4.3",
+  "moduleId": 4,
+  "number": 3,
+  "title": "Null space of M and of Mᵀ",
+  "vocabulary": {
+    "allowed": [
+      "Mᵀ",
+      "transpose",
+      "null",
+      "space",
+      "of",
+      "transpose",
+      "computation.",
+      "Vocabulary",
+      "forbidden:",
+      "SVD",
+      "(later)."
+    ],
+    "forbidden": [
+      "SVD",
+      "(later)."
+    ]
+  },
+  "questions": [
+    {
+      "id": "4.3.q1",
+      "topicId": "4.3",
+      "prompt": "What is Mᵀ for M = [[1, 3], [2, 6]]?",
+      "options": [
+        {
+          "text": "[[1,2],[3,6]]",
+          "correct": true
+        },
+        {
+          "text": "[[1,3],[2,6]]",
+          "correct": false
+        },
+        {
+          "text": "[[6,3],[2,1]]",
+          "correct": false
+        },
+        {
+          "text": "Random shape",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Transpose swaps rows and columns. Step 2: Mᵀ = [[1, 2], [3, 6]]. Step 3: Step 2 is the result. Step 4: This is the *transpose* operation.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "4.3.q2",
+      "topicId": "4.3",
+      "prompt": "Why is Mᵀ a *different matrix* than M?",
+      "options": [
+        {
+          "text": "Swapped rows/cols",
+          "correct": true
+        },
+        {
+          "text": "Same mat",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: M = [[1, 3], [2, 6]]. Mᵀ = [[1, 2], [3, 6]]. Step 2: Rows and columns swapped. Step 3: So different. Step 4: Used in *transpose*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "4.3.q3",
+      "topicId": "4.3",
+      "prompt": "What is the *rank* of Mᵀ?",
+      "options": [
+        {
+          "text": "Just one",
+          "correct": true
+        },
+        {
+          "text": "Two only",
+          "correct": false
+        },
+        {
+          "text": "Three only",
+          "correct": false
+        },
+        {
+          "text": "Zero only",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: rank(Mᵀ) = rank(M) = 1. Step 2: Both have rank 1. Step 3: Used in *rank invariance*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "4.3.q4",
+      "topicId": "4.3",
+      "prompt": "What is the *null space* of Mᵀ?",
+      "options": [
+        {
+          "text": "Span {(-2, 1)}",
+          "correct": true
+        },
+        {
+          "text": "Span {(1, 2)}",
+          "correct": false
+        },
+        {
+          "text": "Just origin",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Solve Mᵀ · y = 0: y₁ + 2y₂ = 0 and 3y₁ + 6y₂ = 0. Step 2: Both give y₁ = −2y₂. Step 3: So y = (−2t, t) = t · (−2, 1). Step 4: Null space of Mᵀ = span{(-2, 1)}. Step 5: Used in *left null space*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "4.3.q5",
+      "topicId": "4.3",
+      "prompt": "Why is N(Mᵀ) called the *left null space* of M?",
+      "options": [
+        {
+          "text": "Left multiply",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Always right",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: N(Mᵀ) = {y : Mᵀ · y = 0} = {y : yᵀ · M = 0ᵀ}. Step 2: So yᵀ · M = 0 — y annihilates M from the left. Step 3: Hence \"left null space\". Step 4: Used in *terminology*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "4.3.q6",
+      "topicId": "4.3",
+      "prompt": "How does N(Mᵀ) differ from N(M)?",
+      "options": [
+        {
+          "text": "Different spaces",
+          "correct": true
+        },
+        {
+          "text": "Same space",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: N(M) ⊆ ℝⁿ (column count = 2). Step 2: N(Mᵀ) ⊆ ℝᵐ (row count = 2). Step 3: Both in ℝ² but different meanings. Step 4: N(M) = span{(-3, 1)}, N(Mᵀ) = span{(-2, 1)}. Step 5: Different. Step 6: Used in *fundamental subspaces*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "4.3.q7",
+      "topicId": "4.3",
+      "prompt": "What is the *dimension* of N(Mᵀ)?",
+      "options": [
+        {
+          "text": "Just one",
+          "correct": true
+        },
+        {
+          "text": "Two only",
+          "correct": false
+        },
+        {
+          "text": "Three only",
+          "correct": false
+        },
+        {
+          "text": "Zero only",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: rank(Mᵀ) = 1. Step 2: nullity(Mᵀ) = m − rank = 2 − 1 = 1. Step 3: So dim = 1. Step 4: Used in *rank-nullity for transpose*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "4.3.q8",
+      "topicId": "4.3",
+      "prompt": "How do you *compute* N(Mᵀ) step by step?",
+      "options": [
+        {
+          "text": "Solve Mᵀy=0",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Always zero",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Set up the equation Mᵀ · y = 0. Step 2: Solve the system. Step 3: Find parametrisation. Step 4: This is the standard procedure. Step 5: Used in *kernel computation*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "4.3.q9",
+      "topicId": "4.3",
+      "prompt": "What is the *basis* for N(Mᵀ)?",
+      "options": [
+        {
+          "text": "{(−2, 1)}",
+          "correct": true
+        },
+        {
+          "text": "{(1, 2)}",
+          "correct": false
+        },
+        {
+          "text": "{(0, 0)}",
+          "correct": false
+        },
+        {
+          "text": "Random set",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: From Q4, N(Mᵀ) = span{(-2, 1)}. Step 2: So basis = {(-2, 1)}. Step 3: Used in *basis construction*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "4.3.q10",
+      "topicId": "4.3",
+      "prompt": "Why is N(Mᵀ) ⊥ C(M)?",
+      "options": [
+        {
+          "text": "FTLA theorem",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Same space",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: For y ∈ N(Mᵀ) and column c of M: yᵀ · c = (yᵀ · M) · e = 0 · e = 0. Step 2: So y ⊥ c. Step 3: This is FTLA. Step 4: Used in Q4.4.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "4.3.q11",
+      "topicId": "4.3",
+      "prompt": "Is the *transpose* operation always *defined*?",
+      "options": [
+        {
+          "text": "Yes, any mat",
+          "correct": true
+        },
+        {
+          "text": "No, only square",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Any matrix has a transpose. Step 2: Just swap rows and columns. Step 3: Always possible. Step 4: Used in *transpose*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "4.3.q12",
+      "topicId": "4.3",
+      "prompt": "What is the *rank* of Mᵀ · M?",
+      "options": [
+        {
+          "text": "Just one",
+          "correct": true
+        },
+        {
+          "text": "Two only",
+          "correct": false
+        },
+        {
+          "text": "Three only",
+          "correct": false
+        },
+        {
+          "text": "Zero only",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Mᵀ · M is 2×2. Step 2: rank(Mᵀ · M) = rank(M) = 1. Step 3: Same rank. Step 4: Used in *rank of products*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "4.3.q13",
+      "topicId": "4.3",
+      "prompt": "Why is N(Mᵀ · M) = N(M)?",
+      "options": [
+        {
+          "text": "Same kernel",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Always zero",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: For any x: Mᵀ · M · x = 0 ↔ M · x = 0 (since Mᵀ is injective on column space). Step 2: So same kernel. Step 3: Used in *kernel of products*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "4.3.q14",
+      "topicId": "4.3",
+      "prompt": "Can you *always* transpose a vector?",
+      "options": [
+        {
+          "text": "Yes, always",
+          "correct": true
+        },
+        {
+          "text": "No, only mats",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Vectors can be transposed (column ↔ row). Step 2: Used in dot products (row · column). Step 3: Always possible. Step 4: Used in *transpose*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "4.3.q15",
+      "topicId": "4.3",
+      "prompt": "Why is Mᵀ *important* in linear algebra?",
+      "options": [
+        {
+          "text": "Dual role",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "No reason",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Mᵀ gives the \"transpose\" or \"dual\" view of M. Step 2: Reveals column space, left null space, etc. Step 3: Used in *dual spaces*. Step 4: Fundamental in linear algebra.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "4.3.q16",
+      "topicId": "4.3",
+      "prompt": "What does the *left null space* mean for *solvability*?",
+      "options": [
+        {
+          "text": "Compatibility",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "No link",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: For A · x = b to be solvable, b must be ⊥ left null space. Step 2: This is the *Fredholm alternative*. Step 3: Used in *least squares solvability*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "4.3.q17",
+      "topicId": "4.3",
+      "prompt": "Can N(M) and N(Mᵀ) be the *same set*?",
+      "options": [
+        {
+          "text": "Sometimes",
+          "correct": true
+        },
+        {
+          "text": "Never",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Always",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: For symmetric M (Mᵀ = M), N(M) = N(Mᵀ). Step 2: For non-symmetric, generally different. Step 3: Used in *symmetric matrices*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "4.3.q18",
+      "topicId": "4.3",
+      "prompt": "What if M were symmetric (Mᵀ = M) — what would N(Mᵀ) equal?",
+      "options": [
+        {
+          "text": "N(M)",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Whole space",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Symmetric Mᵀ = M. Step 2: So N(Mᵀ) = N(M). Step 3: They coincide. Step 4: Used in *symmetric matrices*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "4.3.q19",
+      "topicId": "4.3",
+      "prompt": "Is the *basis* for N(Mᵀ) unique?",
+      "options": [
+        {
+          "text": "No, scalings",
+          "correct": true
+        },
+        {
+          "text": "Yes, unique",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: N(Mᵀ) = span{(-2, 1)} = span{(-4, 2)} = ... Step 2: Many bases (scalings). Step 3: Basis not unique. Step 4: Used in *basis uniqueness*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "4.3.q20",
+      "topicId": "4.3",
+      "prompt": "What if M were the *zero matrix* — what would N(Mᵀ) be?",
+      "options": [
+        {
+          "text": "All of ℝ²",
+          "correct": true
+        },
+        {
+          "text": "Just origin",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: M = 0 → Mᵀ = 0. Step 2: 0 · y = 0 for any y. Step 3: So N(Mᵀ) = ℝ². Step 4: Used in *zero matrix*.\n\n---",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    }
+  ]
+}

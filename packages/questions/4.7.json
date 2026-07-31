@@ -1,0 +1,548 @@
+{
+  "id": "4.7",
+  "moduleId": 4,
+  "number": 7,
+  "title": "Range of A contains S, T",
+  "vocabulary": {
+    "allowed": [
+      "contains",
+      "closed",
+      "under",
+      "addition",
+      "closed",
+      "under",
+      "scaling",
+      "subspace.",
+      "Vocabulary",
+      "forbidden:",
+      "kernel",
+      "(separate)."
+    ],
+    "forbidden": [
+      "kernel",
+      "(separate)."
+    ]
+  },
+  "questions": [
+    {
+      "id": "4.7.q1",
+      "topicId": "4.7",
+      "prompt": "Why does the *range* of A contain *any* output A · x?",
+      "options": [
+        {
+          "text": "By definition",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "No reason",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Range(A) = {A · x : x ∈ ℝⁿ}. Step 2: So every output is by definition in the range. Step 3: Trivially true. Step 4: Used in *definition*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "4.7.q2",
+      "topicId": "4.7",
+      "prompt": "Why is the range *closed under addition*?",
+      "options": [
+        {
+          "text": "Linear maps",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Always random",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: If s = A · x and t = A · y, then s + t = A · (x + y). Step 2: So s + t ∈ Range(A). Step 3: This uses linearity of A. Step 4: Used in *closure*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "4.7.q3",
+      "topicId": "4.7",
+      "prompt": "Why is the range *closed under scaling*?",
+      "options": [
+        {
+          "text": "Linear maps",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "No closure",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: If s = A · x, then c · s = A · (c · x). Step 2: So c · s ∈ Range(A). Step 3: Uses linearity. Step 4: Used in *homogeneity*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "4.7.q4",
+      "topicId": "4.7",
+      "prompt": "Does the range contain *origin*?",
+      "options": [
+        {
+          "text": "Yes, always",
+          "correct": true
+        },
+        {
+          "text": "No, never",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: A · 0 = 0. Step 2: So origin is in range. Step 3: This is true for any A. Step 4: Used in *subspace axiom*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "4.7.q5",
+      "topicId": "4.7",
+      "prompt": "Why are *closure* properties important?",
+      "options": [
+        {
+          "text": "Subspace test",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "No reason",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Closed under addition + scaling + origin = subspace. Step 2: This is the *subspace test*. Step 3: Used in *subspace verification*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "4.7.q6",
+      "topicId": "4.7",
+      "prompt": "If S and T are in range(A), is *S + T* in range(A)?",
+      "options": [
+        {
+          "text": "Yes, by closure",
+          "correct": true
+        },
+        {
+          "text": "No, never",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Range is closed under addition. Step 2: So S + T ∈ Range(A). Step 3: Used in *closure*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "4.7.q7",
+      "topicId": "4.7",
+      "prompt": "If S is in range(A), is *3S* in range(A)?",
+      "options": [
+        {
+          "text": "Yes, by closure",
+          "correct": true
+        },
+        {
+          "text": "No, never",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Range is closed under scaling. Step 2: So 3S ∈ Range(A). Step 3: Used in *scaling closure*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "4.7.q8",
+      "topicId": "4.7",
+      "prompt": "Does the range *shrink* under closure operations?",
+      "options": [
+        {
+          "text": "No, stable",
+          "correct": true
+        },
+        {
+          "text": "Yes, shrinks",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Closure doesn't change the set. Step 2: Range is stable under these operations. Step 3: Used in *subspace stability*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "4.7.q9",
+      "topicId": "4.7",
+      "prompt": "Is the range a *subspace* of ℝᵐ?",
+      "options": [
+        {
+          "text": "Yes, by axioms",
+          "correct": true
+        },
+        {
+          "text": "No, not closed",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Contains origin. Step 2: Closed under addition. Step 3: Closed under scaling. Step 4: So a subspace. Step 5: Used in Mission 12.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "4.7.q10",
+      "topicId": "4.7",
+      "prompt": "Why does the range have *only* outputs, not arbitrary vectors?",
+      "options": [
+        {
+          "text": "Image of A",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "All vectors",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Range is the image of A — only vectors A · x are in it. Step 2: Arbitrary vectors generally aren't. Step 3: Used in *image*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "4.7.q11",
+      "topicId": "4.7",
+      "prompt": "If A is invertible, what is range(A)?",
+      "options": [
+        {
+          "text": "All of ℝⁿ",
+          "correct": true
+        },
+        {
+          "text": "Just origin",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: A invertible ↔ every b ∈ ℝⁿ has x with A · x = b. Step 2: So range = ℝⁿ. Step 3: Used in *invertibility*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "4.7.q12",
+      "topicId": "4.7",
+      "prompt": "Is range(A) a *subspace* of the *codomain*?",
+      "options": [
+        {
+          "text": "Yes, of ℝᵐ",
+          "correct": true
+        },
+        {
+          "text": "No, of ℝⁿ",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: A : ℝⁿ → ℝᵐ. Step 2: Range is subset of ℝᵐ (codomain). Step 3: Subspace of ℝᵐ. Step 4: Used in *subspace of codomain*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "4.7.q13",
+      "topicId": "4.7",
+      "prompt": "What is the *smallest* subspace containing all A · x?",
+      "options": [
+        {
+          "text": "Range(A) itself",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Always ℝᵐ",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Range(A) is already a subspace (we showed closure). Step 2: So Range(A) is the smallest. Step 3: Used in *minimality*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "4.7.q14",
+      "topicId": "4.7",
+      "prompt": "Why is range(A) a *linear span*?",
+      "options": [
+        {
+          "text": "Combinations",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Random set",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Range(A) = span of columns of A. Step 2: This is the *linear span*. Step 3: Used in *column space = span*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "4.7.q15",
+      "topicId": "4.7",
+      "prompt": "What is the *basis* of the range?",
+      "options": [
+        {
+          "text": "Indep columns",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Zero only",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: The independent columns of A form a basis for range(A). Step 2: Number = rank. Step 3: Used in *basis construction*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "4.7.q16",
+      "topicId": "4.7",
+      "prompt": "Can range(A) be the *whole codomain*?",
+      "options": [
+        {
+          "text": "Yes, if surjective",
+          "correct": true
+        },
+        {
+          "text": "No, never",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: If A is surjective (onto), range = ℝᵐ. Step 2: For square A, onto ↔ invertible. Step 3: Used in *surjectivity*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "4.7.q17",
+      "topicId": "4.7",
+      "prompt": "Does *linearity* of A imply closure of range?",
+      "options": [
+        {
+          "text": "Yes, always",
+          "correct": true
+        },
+        {
+          "text": "No, not always",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: A linear → A(cx + y) = cAx + Ay. Step 2: So range is closed. Step 3: Used in *linearity → closure*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "4.7.q18",
+      "topicId": "4.7",
+      "prompt": "What if A were *nonlinear* — would range still be a subspace?",
+      "options": [
+        {
+          "text": "Not necessarily",
+          "correct": true
+        },
+        {
+          "text": "Always subspace",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Nonlinear A may not have range closed under addition/scaling. Step 2: So may not be subspace. Step 3: Used in *nonlinear theory*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "4.7.q19",
+      "topicId": "4.7",
+      "prompt": "Why is the range *important* in applications?",
+      "options": [
+        {
+          "text": "All outputs",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "No reason",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Range is the set of all outputs. Step 2: Determines what A can produce. Step 3: Used in *control theory*, *machine learning*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "4.7.q20",
+      "topicId": "4.7",
+      "prompt": "What if range(A) were *just origin* — what would that imply about A?",
+      "options": [
+        {
+          "text": "Zero map",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Always invert",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Range = {0} means A · x = 0 for all x. Step 2: So A is the zero matrix. Step 3: Used in *zero map*.\n\n---\n\n# End of Mission 4\n\n> 7 topics × 20 questions = **140 questions** complete.\n>\n> Continue with Mission 5 (5 topics × 20 = 100 questions) and Mission 6 (3 topics × 20 = 60 questions).",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    }
+  ]
+}
