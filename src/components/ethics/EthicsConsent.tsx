@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Shield, Video, AlertTriangle } from 'lucide-react';
 
 type Props = {
@@ -11,6 +11,19 @@ type Props = {
 export function EthicsConsent({ onAccept, onDecline }: Props) {
   const [loading, setLoading] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    const check = () => {
+      if (el.scrollHeight - el.clientHeight < 20) setScrolled(true);
+    };
+    check();
+    const observer = new ResizeObserver(check);
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
 
   async function handleAccept() {
     setLoading(true);
@@ -35,6 +48,7 @@ export function EthicsConsent({ onAccept, onDecline }: Props) {
         </div>
 
         <div
+          ref={scrollRef}
           className="p-6 overflow-y-auto flex-1 space-y-4 text-sm"
           onScroll={(e) => {
             const el = e.currentTarget;
