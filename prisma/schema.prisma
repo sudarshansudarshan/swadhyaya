@@ -69,6 +69,7 @@ model Module {
   id           String   @id @default(cuid()) @map("_id")
   courseId     String
   course       Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  vivaSlots    VivaSlot[]
   number       Int
   title        String?
   subtitle     String?
@@ -349,6 +350,7 @@ model Instructor {
   permissions     Json
   preset          String?
   permissionScopes Json?
+  moduleIds       String[]
   validFrom       DateTime?
   validUntil      DateTime?
   autoRevokeOnExpiry Boolean @default(true)
@@ -382,12 +384,13 @@ model VivaSlot {
   id           String   @id @default(cuid()) @map("_id")
   instructorId String
   instructor   Instructor @relation(fields: [instructorId], references: [id])
+  bookings     VivaBooking[]
+  module       Module?    @relation(fields: [moduleId], references: [id])
   moduleId     String
   startUtc     DateTime
   endUtc       DateTime
   capacity     Int      @default(1)
   meetingsUrl  String?
-  bookings     VivaBooking[]
 
   @@unique([instructorId, startUtc])
   @@index([moduleId, startUtc])
