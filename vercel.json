@@ -1,0 +1,16 @@
+{
+  "crons": [
+    {
+      "path": "/api/cron/flush-heartbeats",
+      "schedule": "*/1 * * * *"
+    },
+    {
+      "path": "/api/cron/cleanup-live",
+      "schedule": "*/5 * * * *"
+    },
+    {
+      "path": "/api/cron/cleanup-activity",
+      "schedule": "0 3 * * *"
+    }
+  ]
+}
