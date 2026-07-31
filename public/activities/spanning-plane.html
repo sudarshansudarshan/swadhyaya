@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Spanning the Plane — Two Vectors Generate a Subspace</title>
+<script src="https://cdn.plot.ly/plotly-2.32.0.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=IBM+Plex+Mono:wght@500;600&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#FAF5E8; --paper-line:#D8CFB6; --ink:#26332B; --ink-soft:#5B6B60;
+    --fn:#1F6F5C; --fn-soft:#DCEDE7; --pt:#7B5EA7; --pt-soft:#EAE3F5;
+    --target:#B8860B; --target-soft:#F3E9CE; --d1:#B5502E; --d1-soft:#FBEFE8;
+    --card:#FFFDF7; --shadow:0 2px 10px rgba(38,51,43,0.08);
+  }
+  *{box-sizing:border-box;} html,body{margin:0;padding:0;}
+  body{
+    background:repeating-linear-gradient(#FAF5E8 0px,#FAF5E8 27px,var(--paper-line) 28px),var(--paper);
+    background-size:100% 28px; color:var(--ink); font-family:'Source Sans 3',sans-serif;
+    min-height:100vh; padding:28px 16px 60px;
+  }
+  .wrap{max-width:1100px;margin:0 auto;}
+  header.hero{background:var(--card);border:1px solid var(--paper-line);border-radius:14px;box-shadow:var(--shadow);padding:26px 28px 22px;margin-bottom:20px;}
+  .eyebrow{font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);margin:0 0 6px;}
+  h1{font-family:'Caveat',cursive;font-weight:700;font-size:38px;margin:0 0 10px;line-height:1.05;}
+  header.hero p{max-width:680px;line-height:1.55;font-size:15.5px;margin:0 0 8px;}
+  .dim-grid{display:flex;gap:14px;flex-wrap:wrap;margin-top:12px;}
+  .dim-grid span{font-family:'IBM Plex Mono',monospace;font-size:13px;padding:8px 14px;border-radius:8px;font-weight:600;border:1px solid var(--paper-line);background:var(--paper);}
+  .grid-layout{display:grid;grid-template-columns:300px 1fr;gap:20px;align-items:start;}
+  @media (max-width:800px){.grid-layout{grid-template-columns:1fr;}}
+  .card{background:var(--card);border:1px solid var(--paper-line);border-radius:14px;box-shadow:var(--shadow);padding:20px;}
+  .panel-title{font-family:'Caveat',cursive;font-weight:700;font-size:24px;margin:0 0 4px;}
+  .panel-sub{font-size:13px;color:var(--ink-soft);margin:0 0 14px;line-height:1.4;}
+  .field{margin-bottom:14px;}
+  .field label{display:flex;justify-content:space-between;font-size:13.5px;font-weight:600;margin-bottom:6px;}
+  .field label span.val{font-family:'IBM Plex Mono',monospace;font-weight:600;color:var(--pt);}
+  input[type=number]{width:100%;padding:9px 10px;border-radius:8px;border:1px solid var(--paper-line);font-family:'IBM Plex Mono',monospace;font-size:16px;background:var(--paper);color:var(--ink);}
+  input[type=number]:focus{outline:2px solid var(--pt);outline-offset:-1px;border-color:var(--pt);}
+  .helper{font-size:12px;color:var(--ink-soft);margin-top:4px;line-height:1.4;}
+  button{font-family:'Source Sans 3',sans-serif;font-weight:600;font-size:14.5px;border:none;border-radius:9px;padding:11px 16px;cursor:pointer;width:100%;transition:transform .08s ease,filter .15s ease;}
+  button:active{transform:translateY(1px);}button:disabled{opacity:.4;cursor:not-allowed;}
+  .btn-primary{background:var(--fn);color:#fff;}.btn-primary:hover:not(:disabled){filter:brightness(1.08);}
+  .btn-secondary{background:var(--paper);color:var(--ink);border:1px solid var(--paper-line);margin-top:8px;}
+  .btn-secondary:hover:not(:disabled){background:#F0E9D6;}
+  .status{font-size:13.5px;line-height:1.5;padding:12px;border-radius:9px;background:var(--paper);border:1px solid var(--paper-line);margin-bottom:14px;min-height:20px;}
+  .status.feedback-good{background:var(--fn-soft);border-color:var(--fn);color:var(--fn);font-weight:600;}
+  .status.feedback-mid{background:var(--pt-soft);border-color:var(--pt);color:var(--pt);font-weight:600;}
+  .status.feedback-target{background:var(--target-soft);border-color:var(--target);color:var(--target);font-weight:600;}
+  .steps{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap;}
+  .step-dot{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:600;border:1.5px solid var(--paper-line);color:var(--ink-soft);background:var(--paper);}
+  .step-dot.done{background:var(--fn);border-color:var(--fn);color:#fff;}
+  .step-dot.solution{background:var(--target);border-color:var(--target);color:#fff;}
+  .step-dot.active{border-color:var(--pt);color:var(--pt);background:var(--pt-soft);}
+  .reflect,.explore{margin-top:20px;padding-top:16px;border-top:1px dashed var(--paper-line);}
+  .reflect.hidden,.explore.hidden{display:none;}
+  .q{margin-bottom:16px;}.q p.qtext{font-weight:600;margin:0 0 8px;font-size:14.5px;}
+  .options{display:flex;gap:8px;flex-wrap:wrap;}
+  .opt{padding:8px 14px;border-radius:8px;border:1px solid var(--paper-line);background:var(--paper);font-size:13.5px;cursor:pointer;font-weight:600;}
+  .opt.correct{background:var(--fn-soft);border-color:var(--fn);color:var(--fn);}
+  .opt.wrong{background:#F6DCD4;border-color:var(--d1);color:#8C3A1F;}
+  .opt:disabled{cursor:default;}
+  .explore .panel-title{font-size:22px;}
+  footer.note{text-align:center;font-size:12px;color:var(--ink-soft);margin-top:26px;font-family:'IBM Plex Mono',monospace;}
+
+  .set-def{text-align:center;font-family:'IBM Plex Mono',monospace;font-size:17px;padding:14px;border-radius:10px;background:var(--paper);border:1px solid var(--paper-line);margin-bottom:12px;line-height:2;}
+  .set-def .vh{color:var(--pt);font-weight:700;}
+  .set-def .v1{color:var(--fn);font-weight:700;}
+  .set-def .v2{color:var(--target);font-weight:700;}
+
+  .sol-table{width:100%;border-collapse:collapse;font-family:'IBM Plex Mono',monospace;font-size:12px;margin:8px 0;}
+  .sol-table th{font-size:10px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.05em;padding:3px 5px;border-bottom:1px solid var(--paper-line);text-align:right;}
+  .sol-table th:first-child{text-align:center;}
+  .sol-table td{padding:3px 5px;text-align:right;border-bottom:1px solid var(--paper-line);}
+  .sol-table td:first-child{text-align:center;color:var(--ink-soft);}
+  .sol-table .tr0 td{color:var(--fn);font-weight:700;}
+  .sol-table .basis td{border-top:2px solid var(--pt);font-weight:700;}
+
+  .calc-box{font-family:'IBM Plex Mono',monospace;font-size:13px;line-height:1.7;padding:12px;border-radius:8px;background:var(--paper);border:1px solid var(--paper-line);margin-top:10px;}
+  .calc-box .step-label{font-size:11px;color:var(--ink-soft);font-weight:600;}
+  .calc-box .eq{margin:3px 0;}
+
+  .plot-wrap{width:100%;height:380px;border-radius:10px;overflow:hidden;border:1px solid var(--paper-line);background:#fff;}
+
+  .explore-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0;}
+  .explore-grid .field{margin-bottom:0;}
+  .explore-grid .field label{font-size:11px;}
+  .explore-grid .field input{font-size:14px;padding:6px 7px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <p class="eyebrow">Linear Algebra · Span</p>
+    <h1>Spanning the Plane — Two Vectors Generate a Subspace</h1>
+    <p>The set <strong>W = {α(1,2,1) + β(2,7,3) | α, β ∈ ℝ}</strong> is the collection of all possible linear combinations of two vectors in ℝ³. Since the vectors are independent, W is a <strong>2D plane</strong> through the origin — a subspace of ℝ³.</p>
+    <div class="dim-grid">
+      <span style="background:var(--fn-soft);border-color:var(--fn);color:var(--fn);">v₁ = (1,2,1)</span>
+      <span style="background:var(--target-soft);border-color:var(--target);color:var(--target);">v₂ = (2,7,3)</span>
+      <span style="background:var(--pt-soft);border-color:var(--pt);color:var(--pt);">ℝ³ → plane (2D)</span>
+    </div>
+  </header>
+
+  <div class="grid-layout">
+    <div class="card">
+      <p class="panel-title" id="stepTitle">The Spanning Set</p>
+      <p class="panel-sub" id="stepSub">Two vectors generating a space.</p>
+
+      <div class="set-def" id="setDisplay">
+        W = {α·<span class="v1">(1,2,1)</span> + β·<span class="v2">(2,7,3)</span> | α,β∈ℝ}
+      </div>
+
+      <div id="stepContent"></div>
+
+      <div class="steps" id="stepDots"></div>
+
+      <div class="status" id="statusBox">Step 1 of 5 — Examine the spanning set.</div>
+
+      <button class="btn-primary" id="checkBtn">Reveal</button>
+      <button class="btn-secondary" id="resetBtn">Start Over</button>
+    </div>
+
+    <div class="card">
+      <p class="panel-title" id="rightTitle">3D Visualization</p>
+      <p class="panel-sub" id="rightSub">The span is a plane through the origin.</p>
+      <div class="plot-wrap" id="plotlyDiv"></div>
+    </div>
+  </div>
+
+  <!-- REFLECTION QUIZ -->
+  <div class="card reflect hidden" id="reflectCard">
+    <p class="panel-title">Span and Subspaces</p>
+    <p class="panel-sub">The span of a set of vectors is the set of all their linear combinations.</p>
+
+    <div class="q" id="q1">
+      <p class="qtext">1. Are v₁ = (1,2,1) and v₂ = (2,7,3) linearly independent?</p>
+      <div class="options">
+        <button class="opt" data-correct="true">Yes — one is not a scalar multiple of the other. They span a 2D plane.</button>
+        <button class="opt" data-correct="false">No — they are collinear.</button>
+        <button class="opt" data-correct="false">It depends on α and β.</button>
+      </div>
+    </div>
+
+    <div class="q" id="q2">
+      <p class="qtext">2. What is the dimension of span{(1,2,1), (2,7,3)}?</p>
+      <div class="options">
+        <button class="opt" data-correct="false">1 (a line)</button>
+        <button class="opt" data-correct="true">2 (a plane) — two independent vectors span a 2D subspace.</button>
+        <button class="opt" data-correct="false">3 (all of ℝ³)</button>
+      </div>
+    </div>
+
+    <div class="q" id="q3">
+      <p class="qtext">3. Which of these points belongs to W?</p>
+      <div class="options">
+        <button class="opt" data-correct="false">(0, 1, 0) — cannot write as α(1,2,1)+β(2,7,3)</button>
+        <button class="opt" data-correct="true">(3, 9, 4) = 1·(1,2,1) + 1·(2,7,3)</button>
+        <button class="opt" data-correct="false">(1, 1, 1)</button>
+      </div>
+    </div>
+
+    <div class="q" id="q4">
+      <p class="qtext">4. The span of two independent vectors in ℝ³ is:</p>
+      <div class="options">
+        <button class="opt" data-correct="true">A plane through the origin (a 2D subspace of ℝ³)</button>
+        <button class="opt" data-correct="false">A line through the origin</button>
+        <button class="opt" data-correct="false">The entire ℝ³</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- EXPLORE MODE -->
+  <div class="card explore hidden" id="exploreCard">
+    <p class="panel-title">Explore Your Own Span</p>
+    <p class="panel-sub">Change the spanning vectors and see how W changes.</p>
+
+    <div class="explore-grid">
+      <div class="field"><label>v₁ x</label><input type="number" id="e1x" value="1" step="0.5"></div>
+      <div class="field"><label>v₁ y</label><input type="number" id="e1y" value="2" step="0.5"></div>
+      <div class="field"><label>v₁ z</label><input type="number" id="e1z" value="1" step="0.5"></div>
+      <div class="field"><label>v₂ x</label><input type="number" id="e2x" value="2" step="0.5"></div>
+      <div class="field"><label>v₂ y</label><input type="number" id="e2y" value="7" step="0.5"></div>
+      <div class="field"><label>v₂ z</label><input type="number" id="e2z" value="3" step="0.5"></div>
+    </div>
+
+    <div id="expResult" style="margin-top:10px;font-family:'IBM Plex Mono',monospace;font-size:13px;line-height:1.8;background:var(--paper);border:1px solid var(--paper-line);border-radius:10px;padding:14px;"></div>
+  </div>
+
+  <footer class="note">W = span{(1,2,1), (2,7,3)} · dim = 2 · plane in ℝ³</footer>
+</div>
+
+<script>
+(function(){
+  const $ = id => document.getElementById(id);
+
+  const V1 = [1,2,1];
+  const V2 = [2,7,3];
+
+  const STEPS = [
+    { label:'The Spanning Set', desc:'What does it mean to span a space?', key:'intro' },
+    { label:'Points on the Plane', desc:'Compute points for different α, β.', key:'points' },
+    { label:'Linear Independence', desc:'Are v₁ and v₂ independent?', key:'independence' },
+    { label:'Dimension of W', desc:'Why is this a 2D plane?', key:'dimension' },
+    { label:'3D Visualization', desc:'The plane spanned by v₁ and v₂.', key:'visualize' },
+  ];
+  const TOTAL = STEPS.length;
+  let step = 0;
+  let revealed = false;
+
+  const stepDots = $('stepDots');
+  const statusBox = $('statusBox');
+  const checkBtn = $('checkBtn');
+  const resetBtn = $('resetBtn');
+  const reflectCard = $('reflectCard');
+  const exploreCard = $('exploreCard');
+  const stepTitle = $('stepTitle');
+  const stepSub = $('stepSub');
+  const stepContent = $('stepContent');
+  const rightTitle = $('rightTitle');
+  const rightSub = $('rightSub');
+
+  for(let i=1;i<=TOTAL;i++){
+    const d = document.createElement('div');
+    d.className='step-dot'; d.textContent=i; d.id='step-'+i;
+    stepDots.appendChild(d);
+  }
+
+  function getSD(){ return STEPS[step]; }
+  function fmt(n){ return Number.isInteger(n) ? n : parseFloat(n.toFixed(4)); }
+
+  // ----- Plotly -----
+  let plotlyPlot = null;
+
+  function drawSpanPlane(v1, v2, extraPts, highlightVectors){
+    const size = 5;
+    const n = 30;
+    const x = [], y = [], z = [];
+
+    // compute normal via cross product
+    const nx = v1[1]*v2[2] - v1[2]*v2[1];
+    const ny = v1[2]*v2[0] - v1[0]*v2[2];
+    const nz = v1[0]*v2[1] - v1[1]*v2[0];
+    const normLen = Math.sqrt(nx*nx + ny*ny + nz*nz);
+
+    // parameterize: z as function of x,y if possible
+    for(let i=0;i<n;i++){
+      x[i] = []; y[i] = []; z[i] = [];
+      for(let j=0;j<n;j++){
+        const xi = -size + 2*size*i/(n-1);
+        const yj = -size + 2*size*j/(n-1);
+        x[i][j] = xi;
+        y[i][j] = yj;
+        if(normLen > 1e-10 && Math.abs(nz) > 1e-10){
+          z[i][j] = -(nx*xi + ny*yj)/nz;
+        } else {
+          // plane is vertical or xy-plane — use the two vectors directly
+          // param: p = s*v1 + t*v2, solve for s,t from x,y then compute z
+          const det = v1[0]*v2[1] - v1[1]*v2[0];
+          if(Math.abs(det) > 1e-10){
+            const s = (xi*v2[1] - yj*v2[0])/det;
+            const t = (v1[0]*yj - v1[1]*xi)/det;
+            z[i][j] = s*v1[2] + t*v2[2];
+          } else {
+            z[i][j] = 0;
+          }
+        }
+      }
+    }
+
+    const data = [{
+      type:'surface', x:x, y:y, z:z,
+      colorscale:[[0,'#7B5EA7'],[1,'#1F6F5C']],
+      opacity:0.7, showscale:false,
+      contours:{z:{show:true,width:1,color:'rgba(255,255,255,0.3)'}}
+    }];
+
+    // spanning vectors as arrows
+    if(highlightVectors){
+      // use cones or scatter3d with lines
+      for(let vi=0;vi<2;vi++){
+        const vec = vi===0 ? v1 : v2;
+        const color = vi===0 ? '#1F6F5C' : '#B8860B';
+        const label = vi===0 ? 'v₁' : 'v₂';
+        data.push({
+          type:'scatter3d', mode:'lines+text',
+          x:[0, vec[0], null], y:[0, vec[1], null], z:[0, vec[2], null],
+          line:{width:4, color:color},
+          text:[null, label, null], textposition:'top center',
+          textfont:{size:13, color:color, family:'IBM Plex Mono, monospace'}
+        });
+        // arrow tip dot
+        data.push({
+          type:'scatter3d', mode:'markers',
+          x:[vec[0]], y:[vec[1]], z:[vec[2]],
+          marker:{size:7, color:color, symbol:'diamond'}
+        });
+      }
+    }
+
+    // extra points
+    if(extraPts && extraPts.length > 0){
+      const px = extraPts.map(p=>p[0]);
+      const py = extraPts.map(p=>p[1]);
+      const pz = extraPts.map(p=>p[2]);
+      const ptLabels = extraPts.map((p,i) => `(${fmt(p[0])}, ${fmt(p[1])}, ${fmt(p[2])})`);
+      data.push({
+        type:'scatter3d', mode:'markers+text',
+        x:px, y:py, z:pz,
+        text:ptLabels, textposition:'top center',
+        marker:{size:5, color:'#B5502E', line:{color:'#fff',width:1}},
+        textfont:{size:9, color:'#B5502E', family:'IBM Plex Mono'}
+      });
+    }
+
+    const axisStyle = {
+      showgrid:true, gridcolor:'rgba(0,0,0,0.08)',
+      zeroline:true, zerolinecolor:'rgba(0,0,0,0.2)',
+      showspikes:false,
+      title:{font:{size:12}},
+      tickfont:{size:10}
+    };
+
+    const layout = {
+      scene:{
+        xaxis:{...axisStyle, title:'x'},
+        yaxis:{...axisStyle, title:'y'},
+        zaxis:{...axisStyle, title:'z'},
+        camera:{eye:{x:1.8, y:1.8, z:1.2}},
+        aspectmode:'cube'
+      },
+      margin:{l:0, r:0, b:0, t:0, pad:0},
+      paper_bgcolor:'#FFFDF7',
+      font:{family:'Source Sans 3, sans-serif'}
+    };
+
+    const div = $('plotlyDiv');
+    if(plotlyPlot){
+      Plotly.react(div, data, layout);
+    } else {
+      Plotly.newPlot(div, data, layout).then(p => plotlyPlot = p);
+    }
+  }
+
+  // ----- Step Content -----
+  function renderStep(){
+    const sd = getSD();
+    stepTitle.textContent = sd.label;
+    stepSub.textContent = sd.desc;
+
+    let html = '';
+
+    if(sd.key === 'intro'){
+      html = `<div class="calc-box">`;
+      html += `<div class="step-label">The span of two vectors in ℝ³</div><br>`;
+      html += `<strong>W</strong> = { α·<strong style="color:var(--fn);">(1,2,1)</strong> + β·<strong style="color:var(--target);">(2,7,3)</strong> | α,β ∈ ℝ }<br><br>`;
+      html += `Every point in W is a linear combination of v₁ and v₂.<br>`;
+      html += `If v₁ and v₂ are independent, W is a <strong>plane</strong> through the origin.`;
+      html += `</div>`;
+      rightTitle.textContent = 'The Span';
+      rightSub.textContent = 'v₁=(1,2,1), v₂=(2,7,3)';
+      drawSpanPlane(V1, V2, [[0,0,0]], false);
+    } else if(sd.key === 'points'){
+      const points = [];
+      const pairs = [[0,0],[1,0],[0,1],[1,1],[2,0],[0,2],[1,-1],[2,1],[ -1,2],[3,-1]];
+      for(let [a,b] of pairs){
+        points.push({
+          a, b,
+          x: a*V1[0] + b*V2[0],
+          y: a*V1[1] + b*V2[1],
+          z: a*V1[2] + b*V2[2]
+        });
+      }
+
+      html = `<div class="calc-box">`;
+      html += `<div class="step-label">Sample points in W = α·v₁ + β·v₂</div>`;
+      html += `<table class="sol-table"><thead><tr><th>α</th><th>β</th><th>x</th><th>y</th><th>z</th></tr></thead><tbody>`;
+      for(let i=0;i<points.length;i++){
+        const p = points[i];
+        html += `<tr${i===0?' class="tr0"':''}>`;
+        html += `<td>${p.a}</td><td>${p.b}</td>`;
+        html += `<td>${fmt(p.x)}</td><td>${fmt(p.y)}</td><td>${fmt(p.z)}</td>`;
+        html += `</tr>`;
+      }
+      html += `</tbody></table>`;
+      html += `Each row is α·(1,2,1) + β·(2,7,3). All lie on the same plane.`;
+      html += `</div>`;
+      rightTitle.textContent = 'Points on W';
+      rightSub.textContent = 'Each combination (α,β) gives a point on the plane.';
+      const ptData = points.map(p => [p.x, p.y, p.z]);
+      drawSpanPlane(V1, V2, ptData, true);
+    } else if(sd.key === 'independence'){
+      html = `<div class="calc-box">`;
+      html += `<div class="step-label">Checking linear independence</div><br>`;
+      html += `v₁ = <strong style="color:var(--fn);">(1,2,1)</strong>, v₂ = <strong style="color:var(--target);">(2,7,3)</strong><br><br>`;
+      html += `Is v₂ = k·v₁ for some k?<br>`;
+      html += `If k=2: 2·(1,2,1) = (2,4,2) ≠ (2,7,3)<br>`;
+      html += `If k=3: 3·(1,2,1) = (3,6,3) ≠ (2,7,3)<br><br>`;
+      html += `No k works → v₁ and v₂ are <strong>linearly independent</strong>.<br><br>`;
+      html += `Two independent vectors in ℝ³ span a <strong>2D plane</strong>.`;
+      html += `</div>`;
+      rightTitle.textContent = 'Independence';
+      rightSub.textContent = 'v₁ and v₂ are not multiples → independent.';
+      drawSpanPlane(V1, V2, [[0,0,0], V1, V2], true);
+    } else if(sd.key === 'dimension'){
+      html = `<div class="calc-box">`;
+      html += `<div class="step-label">Dimension of W = span{v₁, v₂}</div><br>`;
+      html += `Number of independent vectors = <strong>2</strong><br><br>`;
+      html += `dim(W) = number of vectors in a basis = <strong>2</strong><br><br>`;
+      html += `W is a <strong>2-dimensional subspace</strong> of ℝ³.<br>`;
+      html += `It is a <strong>plane through the origin</strong>.<br><br>`;
+      html += `Every point in W can be written uniquely as:<br>`;
+      html += `<strong>α·(1,2,1) + β·(2,7,3)</strong><br><br>`;
+      html += `The coefficients (α, β) act as coordinates on this plane.`;
+      html += `</div>`;
+      rightTitle.textContent = 'Dimension';
+      rightSub.textContent = 'dim(W) = 2 → a plane in ℝ³';
+      drawSpanPlane(V1, V2, [[0,0,0], V1, V2], true);
+    } else if(sd.key === 'visualize'){
+      html = `<div class="calc-box">`;
+      html += `<div class="step-label">The plane W = span{(1,2,1), (2,7,3)}</div><br>`;
+      html += `The purple-green surface is the span — all linear combinations.<br><br>`;
+      html += `Green arrow: <strong style="color:var(--fn);">v₁ = (1,2,1)</strong><br>`;
+      html += `Amber arrow: <strong style="color:var(--target);">v₂ = (2,7,3)</strong><br><br>`;
+      html += `The plane extends infinitely in the directions of v₁ and v₂.<br>`;
+      html += `It passes through the origin (0,0,0).<br><br>`;
+      html += `Drag to rotate and explore!`;
+      html += `</div>`;
+      rightTitle.textContent = 'The Span';
+      rightSub.textContent = 'W = span{(1,2,1), (2,7,3)} in ℝ³';
+      drawSpanPlane(V1, V2, [], true);
+    }
+
+    stepContent.innerHTML = html;
+
+    if(step >= TOTAL){
+      checkBtn.disabled = true; checkBtn.textContent = 'Complete';
+    } else if(revealed){
+      checkBtn.textContent = 'Next Step';
+    } else {
+      checkBtn.textContent = 'Reveal';
+    }
+  }
+
+  function markDots(){
+    document.querySelectorAll('.step-dot').forEach(d=>d.classList.remove('active'));
+    for(let i=0;i<step&&i<TOTAL;i++){
+      const d=$('step-'+(i+1)); if(d) d.classList.add('done');
+    }
+    if(step < TOTAL){ const d=$('step-'+(step+1)); if(d) d.classList.add('active'); }
+  }
+
+  function setStatus(html, cls){
+    statusBox.innerHTML = html;
+    statusBox.className = 'status' + (cls ? ' '+cls : '');
+  }
+
+  function advance(){
+    if(step>=TOTAL){
+      checkBtn.disabled=true;
+      setTimeout(()=>{reflectCard.classList.remove('hidden');exploreCard.classList.remove('hidden');reflectCard.scrollIntoView({behavior:'smooth',block:'nearest'});},500);
+      setStatus('Complete! Explore your own spanning set below.','feedback-target');
+      return;
+    }
+    revealed = true;
+    const sd = getSD();
+    let msg;
+    if(sd.key === 'intro') msg = 'Two vectors span a set. Independent vectors → a plane.';
+    else if(sd.key === 'points') msg = 'All these points satisfy the same plane equation.';
+    else if(sd.key === 'independence') msg = 'v₁ and v₂ are not multiples → linearly independent.';
+    else if(sd.key === 'dimension') msg = 'Two independent vectors → 2D subspace (a plane).';
+    else msg = 'The green and amber arrows span this entire plane.';
+    setStatus(msg,'feedback-good');
+    markDots(); renderStep();
+  }
+
+  function nextStep(){
+    if(!revealed){
+      advance();
+    } else {
+      step++; revealed = false;
+      if(step<TOTAL){
+        const sd = getSD();
+        setStatus(`Step ${step+1}: ${sd.desc}`);
+        renderStep(); markDots();
+      } else {
+        setStatus('All steps complete!','feedback-target');
+        checkBtn.disabled = true;
+        setTimeout(()=>{reflectCard.classList.remove('hidden');exploreCard.classList.remove('hidden');reflectCard.scrollIntoView({behavior:'smooth',block:'nearest'});},500);
+      }
+    }
+  }
+
+  checkBtn.addEventListener('click', nextStep);
+
+  resetBtn.addEventListener('click', ()=>{
+    step=0; revealed=false;
+    checkBtn.disabled=false;
+    reflectCard.classList.add('hidden');
+    exploreCard.classList.add('hidden');
+    document.querySelectorAll('.step-dot').forEach(d=>d.classList.remove('done','solution','active'));
+    const f=$('step-1'); if(f) f.classList.add('active');
+    renderStep(); markDots();
+    setStatus('Step 1 of 5 — Examine the spanning set.');
+  });
+
+  // ---- EXPLORE ----
+  const eInps = [$('e1x'),$('e1y'),$('e1z'),$('e2x'),$('e2y'),$('e2z')];
+  const expResult = $('expResult');
+
+  function renderExplore(){
+    const v1 = [parseFloat(eInps[0].value)||0, parseFloat(eInps[1].value)||0, parseFloat(eInps[2].value)||0];
+    const v2 = [parseFloat(eInps[3].value)||0, parseFloat(eInps[4].value)||0, parseFloat(eInps[5].value)||0];
+
+    // check independence
+    let independent = false;
+    if((v1[0]!==0||v1[1]!==0||v1[2]!==0) && (v2[0]!==0||v2[1]!==0||v2[2]!==0)){
+      const ratio = v2[0]/v1[0];
+      if(!isFinite(ratio)){ // v1[0] = 0
+        independent = v2[0] !== 0 || v2[1]/v1[1] !== v2[2]/v1[2];
+      } else {
+        independent = v2[0]/v1[0] !== v2[1]/v1[1] || v2[0]/v1[0] !== v2[2]/v1[2];
+      }
+    }
+
+    let html = `<div class="step-label" style="margin-bottom:4px;">v₁ = (${v1.map(fmt).join(', ')}), v₂ = (${v2.map(fmt).join(', ')})</div>`;
+    html += `<div style="display:flex;gap:12px;font-size:13px;font-weight:600;margin-bottom:6px;">`;
+    html += `<span style="color:${independent?'var(--fn)':'var(--d1)'};">${independent ? 'Independent' : 'Dependent'}</span>`;
+    html += `<span style="color:var(--ink-soft);">→ dim = ${independent ? '2 (plane)' : '1 (line)'}</span>`;
+    html += `</div>`;
+
+    // table of points
+    const pairs = [[0,0],[1,0],[0,1],[1,1],[2,0],[0,2],[1,-1],[2,1]];
+    html += `<table class="sol-table"><thead><tr><th>α</th><th>β</th><th>x</th><th>y</th><th>z</th></tr></thead><tbody>`;
+    const pts = [];
+    for(let i=0;i<pairs.length;i++){
+      const [a,b] = pairs[i];
+      const p = [a*v1[0]+b*v2[0], a*v1[1]+b*v2[1], a*v1[2]+b*v2[2]];
+      pts.push(p);
+      html += `<tr${i===0?' class="tr0"':''}>`;
+      html += `<td>${a}</td><td>${b}</td>`;
+      html += `<td>${fmt(p[0])}</td><td>${fmt(p[1])}</td><td>${fmt(p[2])}</td>`;
+      html += `</tr>`;
+    }
+    html += `</tbody></table>`;
+
+    expResult.innerHTML = html;
+
+    // update plot
+    const highlight = [[0,0,0], v1, v2];
+    drawSpanPlane(v1, v2, pts, true);
+  }
+
+  for(let inp of eInpts) inp.addEventListener('input', renderExplore);
+
+  // ---- QUIZ ----
+  document.querySelectorAll('.q .options').forEach(group=>{
+    group.querySelectorAll('.opt').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        const correct = btn.dataset.correct === 'true';
+        group.querySelectorAll('.opt').forEach(b=>{
+          b.disabled = true;
+          if(b.dataset.correct==='true') b.classList.add('correct');
+        });
+        if(!correct) btn.classList.add('wrong');
+      });
+    });
+  });
+
+  // ---- INIT ----
+  (function init(){
+    const f=$('step-1'); if(f) f.classList.add('active');
+    renderStep(); markDots();
+    setStatus('Step 1 of 5 — Examine the spanning set.');
+    renderExplore();
+  })();
+})();
+</script>
+</body>
+</html>

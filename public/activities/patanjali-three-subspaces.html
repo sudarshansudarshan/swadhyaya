@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Patanjali's Three Sets — Column Space, Row Space, Null Space</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=IBM+Plex+Mono:wght@500;600&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#FAF5E8; --paper-line:#D8CFB6; --ink:#26332B; --ink-soft:#5B6B60;
+    --mat:#B5502E;
+    --col-sp:#7B2D8E; --col-soft:#F3E5F7;
+    --row-sp:#0E7490; --row-soft:#CFFAFE;
+    --null-sp:#1F6F5C; --null-soft:#DCEDE7;
+    --accent:#0E7490; --accent-soft:#CFFAFE;
+    --good:#1F6F5C; --good-soft:#DCEDE7;
+    --warn:#B5502E; --warn-soft:#FBEFE8;
+    --card:#FFFDF7; --shadow:0 2px 10px rgba(38,51,43,0.08);
+  }
+  *{box-sizing:border-box;} html,body{margin:0;padding:0;}
+  body{
+    background:repeating-linear-gradient(#FAF5E8 0px,#FAF5E8 27px,var(--paper-line) 28px),var(--paper);
+    background-size:100% 28px; color:var(--ink);
+    font-family:'Source Sans 3',sans-serif; min-height:100vh; padding:28px 16px 60px;
+  }
+  .wrap{max-width:1080px;margin:0 auto;}
+
+  header.hero{
+    background:var(--card); border:1px solid var(--paper-line);
+    border-radius:14px; box-shadow:var(--shadow);
+    padding:26px 28px 22px; margin-bottom:20px;
+  }
+  .eyebrow{font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);margin:0 0 6px;}
+  h1{font-family:'Caveat',cursive;font-weight:700;font-size:40px;margin:0 0 10px;line-height:1.05;}
+  header.hero p{max-width:760px;line-height:1.55;font-size:15.5px;margin:0 0 8px;}
+  .matrix-display{
+    background:var(--paper); border:1px dashed var(--paper-line);
+    border-radius:10px; padding:12px 18px; margin-top:12px;
+    font-family:'IBM Plex Mono',monospace; font-size:13px; text-align:center;
+    line-height:1.5;
+  }
+  .matrix-display .name{margin-bottom:6px;font-size:11px;color:var(--ink-soft);font-weight:700;text-transform:uppercase;letter-spacing:.05em;}
+  .matrix-display .big-matrix{
+    display:inline-block; vertical-align:middle;
+    border-left:2px solid var(--ink); border-right:2px solid var(--ink);
+    padding:4px 12px; margin:0 8px; line-height:1.2;
+  }
+  .matrix-display .big-matrix .row{display:block;font-size:18px;font-weight:700;}
+
+  .grid-layout{display:grid;grid-template-columns:340px 1fr;gap:20px;align-items:start;}
+  @media (max-width:880px){.grid-layout{grid-template-columns:1fr;}}
+
+  .card{background:var(--card);border:1px solid var(--paper-line);border-radius:14px;box-shadow:var(--shadow);padding:20px;}
+  .panel-title{font-family:'Caveat',cursive;font-weight:700;font-size:24px;margin:0 0 4px;}
+  .panel-sub{font-size:13px;color:var(--ink-soft);margin:0 0 14px;line-height:1.4;}
+
+  .tab-row{display:flex;gap:6px;margin-bottom:14px;}
+  .tab-btn{
+    flex:1; padding:9px 6px; border-radius:8px;
+    border:1.5px solid var(--paper-line); background:var(--paper);
+    font-family:'Source Sans 3',sans-serif; font-weight:600; font-size:13px;
+    cursor:pointer; color:var(--ink-soft); text-align:center;
+  }
+  .tab-btn.active-R{background:var(--col-soft);border-color:var(--col-sp);color:var(--col-sp);}
+  .tab-btn.active-C{background:var(--row-soft);border-color:var(--row-sp);color:var(--row-sp);}
+  .tab-btn.active-N{background:var(--null-soft);border-color:var(--null-sp);color:var(--null-sp);}
+
+  .set-detail{
+    border-radius:10px; padding:12px 14px; margin-bottom:14px;
+    font-family:'IBM Plex Mono',monospace; font-size:13px;
+    line-height:1.55;
+  }
+  .set-detail .header{
+    font-family:'Caveat',cursive; font-size:22px; font-weight:700;
+    margin-bottom:4px;
+  }
+  .set-detail .eq{
+    font-weight:600;
+  }
+  .set-detail .vec-inline{
+    border-left:1.5px solid var(--ink); border-right:1.5px solid var(--ink);
+    padding:1px 6px; font-size:12px; line-height:1.0; display:inline-block; vertical-align:middle;
+  }
+  .set-detail .vec-inline .row{display:block;}
+  .set-detail .small{font-size:11px;color:var(--ink-soft);font-weight:400;margin-top:4px;}
+
+  .detail-R{background:var(--col-soft);border:1px solid var(--col-sp);}
+  .detail-R .header{color:var(--col-sp);}
+  .detail-R .eq{color:var(--col-sp);}
+  .detail-C{background:var(--row-soft);border:1px solid var(--row-sp);}
+  .detail-C .header{color:var(--row-sp);}
+  .detail-C .eq{color:var(--row-sp);}
+  .detail-N{background:var(--null-soft);border:1px solid var(--null-sp);}
+  .detail-N .header{color:var(--null-sp);}
+  .detail-N .eq{color:var(--null-sp);}
+
+  .summary-box{
+    background:var(--paper); border:1px solid var(--paper-line);
+    border-radius:9px; padding:12px; margin-bottom:14px;
+    font-size:13px; line-height:1.55;
+  }
+  .summary-box .row{margin:3px 0;}
+  .summary-box .badge{
+    display:inline-block; padding:1px 8px; border-radius:8px; font-weight:700; font-family:'IBM Plex Mono',monospace;
+    font-size:12px; margin-right:6px;
+  }
+  .badge-R{background:var(--col-soft);color:var(--col-sp);}
+  .badge-C{background:var(--row-soft);color:var(--row-sp);}
+  .badge-N{background:var(--null-soft);color:var(--null-sp);}
+
+  .status{
+    font-size:13.5px; line-height:1.5; padding:12px;
+    border-radius:9px; background:var(--paper);
+    border:1px solid var(--paper-line); margin-bottom:14px; min-height:20px;
+  }
+  .status.feedback-good{background:var(--good-soft);border-color:var(--good);color:var(--good);font-weight:600;}
+
+  .graph-card{display:flex;flex-direction:column;}
+  .legend{display:flex;gap:18px;flex-wrap:wrap;margin:6px 0 12px;font-size:12.5px;font-family:'IBM Plex Mono',monospace;}
+  .legend span{display:inline-flex;align-items:center;gap:6px;}
+  .dot{width:10px;height:10px;border-radius:50%;display:inline-block;}
+  .dot.s-R{background:var(--col-sp);}
+  .dot.s-C{background:var(--row-sp);}
+  .dot.s-N{background:var(--null-sp);}
+
+  svg{width:100%;height:auto;display:block;background:var(--paper);border:1px solid var(--paper-line);border-radius:8px;}
+  .axis-label{font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:700;}
+  .tick-label{font-family:'IBM Plex Mono',monospace;font-size:10px;fill:var(--ink-soft);}
+  .vec-label{font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:600;}
+
+  .reflect,.explore{margin-top:20px;padding-top:16px;border-top:1px dashed var(--paper-line);}
+  .reflect.hidden,.explore.hidden{display:none;}
+  .q{margin-bottom:16px;}
+  .q p.qtext{font-weight:600;margin:0 0 8px;font-size:14.5px;}
+  .options{display:flex;gap:8px;flex-wrap:wrap;}
+  .opt{
+    padding:8px 14px;border-radius:8px;border:1px solid var(--paper-line);
+    background:var(--paper);font-size:13.5px;cursor:pointer;font-weight:600;
+  }
+  .opt.correct{background:var(--good-soft);border-color:var(--good);color:var(--good);}
+  .opt.wrong{background:var(--warn-soft);border-color:var(--warn);color:var(--warn);}
+  .opt:disabled{cursor:default;}
+
+  .explore .panel-title{font-size:22px;}
+  .explore-inputs{display:grid;grid-template-columns:repeat(3, 1fr);gap:8px;margin:10px 0 14px;}
+  .explore-inputs .field{margin-bottom:0;}
+  .explore-eq{
+    background:var(--paper); border:1px solid var(--paper-line);
+    border-radius:8px; padding:10px; margin-bottom:10px;
+    font-family:'IBM Plex Mono',monospace; font-size:13px; text-align:center; font-weight:700;
+  }
+
+  footer.note{text-align:center;font-size:12px;color:var(--ink-soft);margin-top:26px;font-family:'IBM Plex Mono',monospace;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <p class="eyebrow">Linear Algebra · Three Fundamental Subspaces</p>
+    <h1>Patanjali's Three Sets — Column Space, Row Space, Null Space</h1>
+    <p>Given the 3 × 3 matrix A = ((1, 4, 7), (2, 5, 8), (3, 6, 9)), three sets arise. Each is a <em>subspace</em> of ℝ³ — a line or plane through the origin. They are not equal, but they are related. Tap a tab to inspect each.</p>
+    <div class="matrix-display">
+      <div class="name">the matrix</div>
+      <span class="big-matrix">
+        <span class="row">1&nbsp;&nbsp;4&nbsp;&nbsp;7</span>
+        <span class="row">2&nbsp;&nbsp;5&nbsp;&nbsp;8</span>
+        <span class="row">3&nbsp;&nbsp;6&nbsp;&nbsp;9</span>
+      </span>
+      <span style="margin:0 12px;">·</span>
+      <span style="color:var(--ink-soft);font-size:12px;">rank(A) = 2</span>
+      <span style="margin:0 12px;">·</span>
+      <span style="color:var(--ink-soft);font-size:12px;">det(A) = 0</span>
+    </div>
+  </header>
+
+  <div class="grid-layout">
+
+    <!-- LEFT CONTROL PANEL -->
+    <div class="card">
+      <p class="panel-title">Inspect each set</p>
+      <p class="panel-sub">Click a tab to highlight that set on the graph. Each is a different kind of "space" inside ℝ³.</p>
+
+      <div class="tab-row">
+        <button class="tab-btn active-R" id="tabR">ℛ — column space</button>
+        <button class="tab-btn" id="tabC">𝒞 — row space</button>
+        <button class="tab-btn" id="tabN">𝒩 — null space</button>
+      </div>
+
+      <div id="detailPanel">
+        <!-- Filled by JS -->
+      </div>
+
+      <div class="summary-box">
+        <div class="row"><span class="badge badge-R">ℛ</span>2D plane through origin, dim = 2</div>
+        <div class="row"><span class="badge badge-C">𝒞</span>2D plane through origin, dim = 2</div>
+        <div class="row"><span class="badge badge-N">𝒩</span>1D line through origin, dim = 1</div>
+        <div class="row" style="margin-top:6px;color:var(--ink-soft);font-size:12px;">By rank-nullity: dim(ℛ) + dim(𝒩) = 3 ✓</div>
+      </div>
+
+      <div class="status" id="statusBox">Tap a tab above. The graph will highlight that subspace and dim the others.</div>
+    </div>
+
+    <!-- RIGHT GRAPH -->
+    <div class="card graph-card">
+      <p class="panel-title">3D space — three subspaces at once</p>
+      <div class="legend">
+        <span><i class="dot s-R"></i>ℛ — column space (plane)</span>
+        <span><i class="dot s-C"></i>𝒞 — row space (plane)</span>
+        <span><i class="dot s-N"></i>𝒩 — null space (line)</span>
+      </div>
+      <p class="panel-sub" style="margin:6px 0 10px;">Both ℛ and 𝒞 are 2D planes through origin. They share the direction (1, 1, 1). The line 𝒩 is perpendicular to <em>both</em> planes.</p>
+      <svg id="graphSvg" viewBox="0 0 640 500" xmlns="http://www.w3.org/2000/svg"></svg>
+    </div>
+  </div>
+
+  <!-- REFLECTION QUIZ -->
+  <div class="card reflect hidden" id="reflectCard">
+    <p class="panel-title">What do you notice?</p>
+    <p class="panel-sub">All three subspaces live in the same ℝ³. Now check the geometry.</p>
+
+    <div class="q" id="q1">
+      <p class="qtext">1. ℛ (the column space of A) is —</p>
+      <div class="options">
+        <button class="opt" data-correct="false">a single line through the origin in direction (1, 2, 3)</button>
+        <button class="opt" data-correct="true">a 2D plane through the origin, spanned by (1, 2, 3) and (1, 1, 1)</button>
+        <button class="opt" data-correct="false">the entire 3D space ℝ³</button>
+      </div>
+    </div>
+
+    <div class="q" id="q2">
+      <p class="qtext">2. 𝒞 (the row space of A) has dimension —</p>
+      <div class="options">
+        <button class="opt" data-correct="false">1 (one independent row)</button>
+        <button class="opt" data-correct="true">2 (two independent rows)</button>
+        <button class="opt" data-correct="false">3 (three independent rows)</button>
+      </div>
+    </div>
+
+    <div class="q" id="q3">
+      <p class="qtext">3. The vector (1, −2, 1) is in 𝒩 because —</p>
+      <div class="options">
+        <button class="opt" data-correct="false">it lies on the line through (1, 1, 1)</button>
+        <button class="opt" data-correct="true">Aᵀ · (1, −2, 1)ᵀ = (0, 0, 0)ᵀ — every row of A is perpendicular to it</button>
+        <button class="opt" data-correct="false">it equals the column vector (1, 4, 7)</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- EXPLORE MODE -->
+  <div class="card explore hidden" id="exploreCard">
+    <p class="panel-title">Now you try: change the matrix</p>
+    <p class="panel-sub">Enter any 3 × 3 matrix. The graph shows its three subspaces and their dimensions.</p>
+
+    <div class="explore-inputs">
+      <div class="field"><label>a₁₁</label><input type="number" id="m11" step="1" value="1"></div>
+      <div class="field"><label>a₁₂</label><input type="number" id="m12" step="1" value="4"></div>
+      <div class="field"><label>a₁₃</label><input type="number" id="m13" step="1" value="7"></div>
+      <div class="field"><label>a₂₁</label><input type="number" id="m21" step="1" value="2"></div>
+      <div class="field"><label>a₂₂</label><input type="number" id="m22" step="1" value="5"></div>
+      <div class="field"><label>a₂₃</label><input type="number" id="m23" step="1" value="8"></div>
+      <div class="field"><label>a₃₁</label><input type="number" id="m31" step="1" value="3"></div>
+      <div class="field"><label>a₃₂</label><input type="number" id="m32" step="1" value="6"></div>
+      <div class="field"><label>a₃₃</label><input type="number" id="m33" step="1" value="9"></div>
+    </div>
+
+    <div class="explore-eq" id="exploreEq">rank = 2 · ℛ dim = 2 · 𝒞 dim = 2 · 𝒩 dim = 1</div>
+  </div>
+
+  <footer class="note">Three fundamental subspaces · column space (image) · row space · null space (kernel of Aᵀ) · all are subspaces of ℝ³</footer>
+</div>
+
+<script>
+(function(){
+  const svg = document.getElementById('graphSvg');
+  const svgNS = "http://www.w3.org/2000/svg";
+
+  // ---- STATE ----
+  let A = [[1,4,7],[2,5,8],[3,6,9]];
+  let activeSet = 'R'; // 'R' | 'C' | 'N'
+
+  // ---- DOM ----
+  const detailPanel = document.getElementById('detailPanel');
+  const tabR = document.getElementById('tabR');
+  const tabC = document.getElementById('tabC');
+  const tabN = document.getElementById('tabN');
+  const statusBox = document.getElementById('statusBox');
+  const reflectCard = document.getElementById('reflectCard');
+  const exploreCard = document.getElementById('exploreCard');
+
+  function fmt(v){
+    if(Math.abs(v) < 1e-9) return '0';
+    if(Number.isInteger(v)) return v.toString();
+    return (Math.round(v*100)/100).toString();
+  }
+
+  // ---- Compute row-space basis (column vectors are rows of Aᵀ) ----
+  // For R: span of columns of A
+  // For C: span of rows of A (rows of Aᵀ)
+  function columnVectors(){
+    return [0,1,2].map(j => ({x: A[0][j], y: A[1][j], z: A[2][j]}));
+  }
+  function rowVectors(){
+    return A.map(r => ({x: r[0], y: r[1], z: r[2]}));
+  }
+
+  // Find basis for span of up to 3 vectors in R^3 via Gaussian elimination
+  function basisOf(vecs){
+    // Stack as rows of a matrix, row reduce
+    const n = 3; // coordinates
+    const m = vecs.length;
+    // Copy
+    const A = vecs.map(v => ({x: v.x, y: v.y, z: v.z, used: false}));
+    // Convert to ref
+    const pivots = [];
+    for(let c = 0; c < n; c++){
+      // find pivot
+      let pivot = -1;
+      for(let r = 0; r < m; r++){
+        if(!A[r].used && Math.abs([A[r].x, A[r].y, A[r].z][c]) > 1e-9){
+          pivot = r;
+          break;
+        }
+      }
+      if(pivot < 0) continue;
+      A[pivot].used = true;
+      // Get pivot value
+      const pv = [A[pivot].x, A[pivot].y, A[pivot].z][c];
+      // Scale pivot row
+      for(let k = 0; k < n; k++){
+        [A[pivot].x, A[pivot].y, A[pivot].z][k] /= pv;
+      }
+      // Eliminate other rows
+      for(let r = 0; r < m; r++){
+        if(r === pivot) continue;
+        const factor = [A[r].x, A[r].y, A[r].z][c];
+        if(Math.abs(factor) < 1e-9) continue;
+        for(let k = 0; k < n; k++){
+          [A[r].x, A[r].y, A[r].z][k] -= factor * [A[pivot].x, A[pivot].y, A[pivot].z][k];
+        }
+      }
+      pivots.push({x: A[pivot].x, y: A[pivot].y, z: A[pivot].z});
+    }
+    return pivots;
+  }
+
+  function rankOf(M){
+    // M is 3x3
+    // Copy
+    const A = M.map(r => [...r]);
+    let rank = 0;
+    for(let c = 0; c < 3; c++){
+      let pivot = -1;
+      for(let r = rank; r < 3; r++){
+        if(Math.abs(A[r][c]) > 1e-9){ pivot = r; break; }
+      }
+      if(pivot < 0) continue;
+      // Swap
+      [A[rank], A[pivot]] = [A[pivot], A[rank]];
+      // Normalize
+      const pv = A[rank][c];
+      for(let k = 0; k < 3; k++) A[rank][k] /= pv;
+      // Eliminate
+      for(let r = 0; r < 3; r++){
+        if(r === rank) continue;
+        const factor = A[r][c];
+        if(Math.abs(factor) < 1e-9) continue;
+        for(let k = 0; k < 3; k++) A[r][k] -= factor * A[rank][k];
+      }
+      rank++;
+    }
+    return rank;
+  }
+
+  function nullSpaceOfAT(){
+    // Solve A^T · v = 0
+    // Copy A^T
+    const AT = [[A[0][0], A[1][0], A[2][0]], [A[0][1], A[1][1], A[2][1]], [A[0][2], A[1][2], A[2][2]]];
+    let rank = 0;
+    for(let c = 0; c < 3; c++){
+      let pivot = -1;
+      for(let r = rank; r < 3; r++){
+        if(Math.abs(AT[r][c]) > 1e-9){ pivot = r; break; }
+      }
+      if(pivot < 0) continue;
+      [AT[rank], AT[pivot]] = [AT[pivot], AT[rank]];
+      const pv = AT[rank][c];
+      for(let k = 0; k < 3; k++) AT[rank][k] /= pv;
+      for(let r = 0; r < 3; r++){
+        if(r === rank) continue;
+        const factor = AT[r][c];
+        if(Math.abs(factor) < 1e-9) continue;
+        for(let k = 0; k < 3; k++) AT[r][k] -= factor * AT[rank][k];
+      }
+      rank++;
+    }
+    // Find free variables
+    if(rank === 3) return [];
+    // Identify pivot columns
+    const pivotCols = [];
+    for(let r = 0; r < rank; r++){
+      for(let c = 0; c < 3; c++){
+        if(Math.abs(AT[r][c] - 1) < 1e-9){ pivotCols.push(c); break; }
+      }
+    }
+    const freeCols = [0,1,2].map(c => pivotCols.indexOf(c) < 0 ? c : -1).filter(c => c >= 0);
+    // For each free column, build a basis vector
+    const basis = [];
+    for(const fc of freeCols){
+      const v = [0, 0, 0];
+      v[fc] = 1;
+      for(let r = 0; r < rank; r++){
+        const pivotCol = pivotCols[r];
+        v[pivotCol] = -AT[r][fc];
+      }
+      basis.push({x: v[0], y: v[1], z: v[2]});
+    }
+    return basis;
+  }
+
+  // ---- Render the panel ----
+  function vecHtml(v){
+    return `<span class="vec-inline"><span class="row">${fmt(v.x)}</span><span class="row">${fmt(v.y)}</span><span class="row">${fmt(v.z)}</span></span>`;
+  }
+
+  function renderDetail(){
+    const cols = columnVectors();
+    const rows = rowVectors();
+    const colBasis = basisOf(cols);
+    const rowBasis = basisOf(rows);
+    const nullBasis = nullSpaceOfAT();
+
+    if(activeSet === 'R'){
+      detailPanel.className = 'set-detail detail-R';
+      detailPanel.innerHTML = `
+        <div class="header">ℛ — Column space of A</div>
+        <div>ℛ = { α·<strong>(1,2,3)</strong> + β·<strong>(4,5,6)</strong> + γ·<strong>(7,8,9)</strong> | α,β,γ ∈ ℝ }</div>
+        <div class="small">The three column vectors are linearly dependent — rank(A) = 2. The space is a 2D plane through the origin.</div>
+        <div style="margin-top:6px;"><strong>basis of ℛ:</strong> ${colBasis.map(v => vecHtml(v)).join(', ')}</div>
+        <div class="small">dim(ℛ) = ${colBasis.length}</div>
+      `;
+      setStatus('Column space ℛ: all linear combinations of the columns of A. Here, all three columns span a 2D plane.', 'feedback-good');
+    } else if(activeSet === 'C'){
+      detailPanel.className = 'set-detail detail-C';
+      detailPanel.innerHTML = `
+        <div class="header">𝒞 — Row space of A</div>
+        <div>𝒞 = { α·<strong>(1,4,7)</strong> + β·<strong>(2,5,8)</strong> + γ·<strong>(3,6,9)</strong> | α,β,γ ∈ ℝ }</div>
+        <div class="small">The three row vectors are linearly dependent — rank(A) = 2. The space is a 2D plane through the origin.</div>
+        <div style="margin-top:6px;"><strong>basis of 𝒞:</strong> ${rowBasis.map(v => vecHtml(v)).join(', ')}</div>
+        <div class="small">dim(𝒞) = ${rowBasis.length}</div>
+      `;
+      setStatus('Row space 𝒞: all linear combinations of the rows of A. Here, all three rows span a 2D plane.', 'feedback-good');
+    } else {
+      detailPanel.className = 'set-detail detail-N';
+      const basisHtml = nullBasis.length ? nullBasis.map(v => vecHtml(v)).join(', ') : '— (Aᵀ is full rank)';
+      detailPanel.innerHTML = `
+        <div class="header">𝒩 — Null space (kernel of Aᵀ)</div>
+        <div>𝒩 = { (x,y,z) | x·<strong>(1,4,7)</strong> + y·<strong>(2,5,8)</strong> + z·<strong>(3,6,9)</strong> = 0 }</div>
+        <div class="small">This is the set of vectors perpendicular to every row of A — equivalently, all v with Aᵀ·v = 0.</div>
+        <div style="margin-top:6px;"><strong>basis of 𝒩:</strong> ${basisHtml}</div>
+        <div class="small">dim(𝒩) = ${nullBasis.length}</div>
+      `;
+      if(nullBasis.length){
+        setStatus(`Null space 𝒩: ${nullBasis.length}-dimensional — every vector in 𝒩 is perpendicular to every row of A.`, 'feedback-good');
+      } else {
+        setStatus('Null space 𝒩 is trivial (only the zero vector).', 'feedback-good');
+      }
+    }
+  }
+
+  function setActive(set){
+    activeSet = set;
+    tabR.className = 'tab-btn' + (set === 'R' ? ' active-R' : '');
+    tabC.className = 'tab-btn' + (set === 'C' ? ' active-C' : '');
+    tabN.className = 'tab-btn' + (set === 'N' ? ' active-N' : '');
+    renderDetail();
+    render();
+  }
+
+  tabR.addEventListener('click', ()=> setActive('R'));
+  tabC.addEventListener('click', ()=> setActive('C'));
+  tabN.addEventListener('click', ()=> setActive('N'));
+
+  // ---- SVG rendering ----
+  function project(x, y, z){
+    const scale = 22;
+    const ox = 320, oy = 290;
+    return {
+      sx: ox + (x + z * 0.5) * scale,
+      sy: oy + (-y * 0.5 + z * 0.3) * scale
+    };
+  }
+
+  function drawArrow(from, to, color, w, dashed){
+    const f = project(from.x, from.y, from.z);
+    const t = project(to.x, to.y, to.z);
+    svg.appendChild(mkL(f.sx, f.sy, t.sx, t.sy, color, w, dashed));
+    const dx = t.sx - f.sx, dy = t.sy - f.sy;
+    const len = Math.sqrt(dx*dx + dy*dy);
+    if(len < 5) return;
+    const ux = dx/len, uy = dy/len;
+    const head = 7;
+    const lpt = {x: t.sx - ux*head - uy*head*0.4, y: t.sy - uy*head + ux*head*0.4};
+    const rpt = {x: t.sx - ux*head + uy*head*0.4, y: t.sy - uy*head - ux*head*0.4};
+    const hp = document.createElementNS(svgNS, 'path');
+    hp.setAttribute('d', `M ${t.sx} ${t.sy} L ${lpt.x} ${lpt.y} L ${rpt.x} ${rpt.y} Z`);
+    hp.setAttribute('fill', color);
+    svg.appendChild(hp);
+  }
+
+  function drawPlane(spanVecs, color, fillColor, opacity, dashed){
+    if(spanVecs.length < 2) return;
+    const u = spanVecs[0], v = spanVecs[1];
+    // Vertices: 0, u, u+v, v
+    const O = project(0, 0, 0);
+    const U = project(u.x, u.y, u.z);
+    const V = project(v.x, v.y, v.z);
+    const UV = project(u.x + v.x, u.y + v.y, u.z + v.z);
+    const poly = document.createElementNS(svgNS, 'path');
+    poly.setAttribute('d', `M ${O.sx} ${O.sy} L ${U.sx} ${U.sy} L ${UV.sx} ${UV.sy} L ${V.sx} ${V.sy} Z`);
+    poly.setAttribute('fill', fillColor);
+    poly.setAttribute('fill-opacity', opacity);
+    poly.setAttribute('stroke', color);
+    poly.setAttribute('stroke-width', '2');
+    if(dashed) poly.setAttribute('stroke-dasharray', '5 4');
+    svg.appendChild(poly);
+    // Grid lines on the plane (3 in each direction)
+    for(let i = 1; i < 4; i++){
+      const a1 = project(i/4 * u.x, i/4 * u.y, i/4 * u.z);
+      const a2 = project(v.x + i/4 * u.x, v.y + i/4 * u.y, v.z + i/4 * u.z);
+      svg.appendChild(mkL(a1.sx, a1.sy, a2.sx, a2.sy, color, 0.4, true));
+      const b1 = project(i/4 * v.x, i/4 * v.y, i/4 * v.z);
+      const b2 = project(u.x + i/4 * v.x, u.y + i/4 * v.y, u.z + i/4 * v.z);
+      svg.appendChild(mkL(b1.sx, b1.sy, b2.sx, b2.sy, color, 0.4, true));
+    }
+  }
+
+  function render(){
+    while(svg.firstChild) svg.removeChild(svg.firstChild);
+
+    const cols = columnVectors();
+    const rows = rowVectors();
+    const colBasis = basisOf(cols);
+    const rowBasis = basisOf(rows);
+    const nullBasis = nullSpaceOfAT();
+
+    // Background grid
+    for(let v = -3; v <= 3; v++){
+      const c1 = project(v, -3, 0), c2 = project(v, 3, 0);
+      svg.appendChild(mkL(c1.sx, c1.sy, c2.sx, c2.sy, '#C8BEA0', 0.4, true));
+      const c3 = project(-3, v, 0), c4 = project(3, v, 0);
+      svg.appendChild(mkL(c3.sx, c3.sy, c4.sx, c4.sy, '#C8BEA0', 0.4, true));
+      const c5 = project(v, 0, -3), c6 = project(v, 0, 3);
+      svg.appendChild(mkL(c5.sx, c5.sy, c6.sx, c6.sy, '#C8BEA0', 0.4, true));
+      const c7 = project(0, v, -3), c8 = project(0, v, 3);
+      svg.appendChild(mkL(c7.sx, c7.sy, c8.sx, c8.sy, '#C8BEA0', 0.4, true));
+    }
+
+    // Axes
+    function drawAxis(dirX, dirY, dirZ, color, label, lx, ly, anchor){
+      const end = project(dirX, dirY, dirZ);
+      svg.appendChild(mkL(320, 290, end.sx, end.sy, color, 1.5, false));
+      const t = mkT(end.sx + lx, end.sy + ly, label, 'axis-label');
+      t.setAttribute('fill', color);
+      t.setAttribute('text-anchor', anchor || 'start');
+      svg.appendChild(t);
+    }
+    drawAxis(5, 0, 0, '#B5502E', 'X', 4, 6, 'start');
+    drawAxis(0, 5, 0, '#1F6F5C', 'Y', -8, -6, 'end');
+    drawAxis(0, 0, 5, '#0E7490', 'Z', 8, -2, 'start');
+
+    // Active vs inactive opacities
+    const isActive = (s) => s === activeSet;
+    const R_op = isActive('R') ? 0.22 : 0.10;
+    const C_op = isActive('C') ? 0.22 : 0.10;
+    const N_op = isActive('N') ? 1.0 : 0.6;
+
+    // R plane (purple)
+    drawPlane(colBasis, '#7B2D8E', '#7B2D8E', R_op, !isActive('R'));
+    // C plane (teal)
+    drawPlane(rowBasis, '#0E7490', '#0E7490', C_op, !isActive('C'));
+
+    // Plane labels
+    if(colBasis.length >= 2){
+      const m = project((colBasis[0].x + colBasis[1].x) / 2.5, (colBasis[0].y + colBasis[1].y) / 2.5, (colBasis[0].z + colBasis[1].z) / 2.5);
+      const lab = mkT(m.sx, m.sy, 'ℛ', 'vec-label');
+      lab.setAttribute('fill', '#7B2D8E');
+      lab.setAttribute('font-size', '20');
+      svg.appendChild(lab);
+    }
+    if(rowBasis.length >= 2){
+      const m = project((rowBasis[0].x + rowBasis[1].x) / 2.5, (rowBasis[0].y + rowBasis[1].y) / 2.5, (rowBasis[0].z + rowBasis[1].z) / 2.5);
+      const lab = mkT(m.sx + 14, m.sy - 6, '𝒞', 'vec-label');
+      lab.setAttribute('fill', '#0E7490');
+      lab.setAttribute('font-size', '20');
+      svg.appendChild(lab);
+    }
+
+    // N line (green)
+    if(nullBasis.length >= 1){
+      const v = nullBasis[0];
+      const scaleN = 3 / Math.sqrt(v.x*v.x + v.y*v.y + v.z*v.z);
+      const vS = {x: v.x*scaleN, y: v.y*scaleN, z: v.z*scaleN};
+      drawArrow({x:0,y:0,z:0}, vS, '#1F6F5C', 2.5, !isActive('N'));
+      drawArrow(vS, {x:0,y:0,z:0}, '#1F6F5C', 2.5, !isActive('N'));
+      const mid = project(vS.x / 2, vS.y / 2, vS.z / 2);
+      const lab = mkT(mid.sx + 8, mid.sy, '𝒩', 'vec-label');
+      lab.setAttribute('fill', '#1F6F5C');
+      lab.setAttribute('font-size', '20');
+      svg.appendChild(lab);
+    }
+
+    // Origin
+    const o = project(0,0,0);
+    const oc = document.createElementNS(svgNS, 'circle');
+    oc.setAttribute('cx', o.sx); oc.setAttribute('cy', o.sy);
+    oc.setAttribute('r', 4);
+    oc.setAttribute('fill', '#26332B');
+    svg.appendChild(oc);
+    const ol = mkT(o.sx - 8, o.sy + 14, '(0, 0, 0)', 'tick-label');
+    ol.setAttribute('font-weight', '700');
+    ol.setAttribute('text-anchor', 'end');
+    svg.appendChild(ol);
+  }
+
+  function mkL(x1, y1, x2, y2, stroke, w, dashed){
+    const l = document.createElementNS(svgNS, 'line');
+    l.setAttribute('x1', x1); l.setAttribute('y1', y1);
+    l.setAttribute('x2', x2); l.setAttribute('y2', y2);
+    l.setAttribute('stroke', stroke); l.setAttribute('stroke-width', w);
+    if(dashed) l.setAttribute('stroke-dasharray', '5 4');
+    return l;
+  }
+  function mkT(x, y, text, cls){
+    const t = document.createElementNS(svgNS, 'text');
+    t.setAttribute('x', x); t.setAttribute('y', y);
+    t.setAttribute('class', cls);
+    t.textContent = text;
+    return t;
+  }
+
+  // ---- QUIZ ----
+  document.querySelectorAll('.q .options').forEach(group => {
+    group.querySelectorAll('.opt').forEach(btn => {
+      btn.addEventListener('click', ()=>{
+        const correct = btn.dataset.correct === 'true';
+        group.querySelectorAll('.opt').forEach(b => {
+          b.disabled = true;
+          if(b.dataset.correct === 'true') b.classList.add('correct');
+        });
+        if(!correct) btn.classList.add('wrong');
+        if(group.parentElement.id === 'q3' && correct){
+          setTimeout(()=>{
+            exploreCard.classList.remove('hidden');
+            exploreCard.scrollIntoView({behavior:'smooth', block:'nearest'});
+            rebuildExplore();
+          }, 400);
+        }
+      });
+    });
+  });
+
+  // ---- EXPLORE ----
+  const mInps = [
+    document.getElementById('m11'), document.getElementById('m12'), document.getElementById('m13'),
+    document.getElementById('m21'), document.getElementById('m22'), document.getElementById('m23'),
+    document.getElementById('m31'), document.getElementById('m32'), document.getElementById('m33')
+  ];
+  const exploreEq = document.getElementById('exploreEq');
+
+  function rebuildExplore(){
+    const newA = [];
+    let valid = true;
+    for(let r = 0; r < 3; r++){
+      const row = [];
+      for(let c = 0; c < 3; c++){
+        const v = parseFloat(mInps[r*3 + c].value);
+        if(isNaN(v)){ valid = false; break; }
+        row.push(v);
+      }
+      if(!valid) break;
+      newA.push(row);
+    }
+    if(!valid) return;
+    A = newA;
+    const r = rankOf(A);
+    const dimN = 3 - r;
+    const cols = columnVectors();
+    const rows = rowVectors();
+    const colBasis = basisOf(cols);
+    const rowBasis = basisOf(rows);
+    const nullBasis = nullSpaceOfAT();
+    exploreEq.innerHTML = `rank = ${r} · ℛ dim = ${colBasis.length} · 𝒞 dim = ${rowBasis.length} · 𝒩 dim = ${nullBasis.length}`;
+    render();
+  }
+  mInps.forEach(inp => inp.addEventListener('input', rebuildExplore));
+
+  // init
+  setActive('R');
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Panini's Grammar of Space — ℝ, ℝ², ℝ³</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=IBM+Plex+Mono:wght@500;600&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/plotly.js/2.32.0/plotly.min.js"></script>
+<style>
+  :root{
+    --paper:#FAF5E8; --paper-line:#D8CFB6; --ink:#26332B; --ink-soft:#5B6B60;
+    --fn:#1F6F5C; --fn-soft:#DCEDE7; --pt:#7B5EA7; --pt-soft:#EAE3F5;
+    --target:#B8860B; --target-soft:#F3E9CE; --d1:#B5502E; --d1-soft:#FBEFE8;
+    --card:#FFFDF7; --shadow:0 2px 10px rgba(38,51,43,0.08);
+  }
+  *{box-sizing:border-box;} html,body{margin:0;padding:0;}
+  body{
+    background:repeating-linear-gradient(#FAF5E8 0px,#FAF5E8 27px,var(--paper-line) 28px),var(--paper);
+    background-size:100% 28px; color:var(--ink); font-family:'Source Sans 3',sans-serif;
+    min-height:100vh; padding:28px 16px 60px;
+  }
+  .wrap{max-width:1080px;margin:0 auto;}
+  header.hero{background:var(--card);border:1px solid var(--paper-line);border-radius:14px;box-shadow:var(--shadow);padding:26px 28px 22px;margin-bottom:20px;}
+  .eyebrow{font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);margin:0 0 6px;}
+  h1{font-family:'Caveat',cursive;font-weight:700;font-size:38px;margin:0 0 10px;line-height:1.05;}
+  header.hero p{max-width:680px;line-height:1.55;font-size:15.5px;margin:0 0 8px;}
+  .dim-grid{display:flex;gap:14px;flex-wrap:wrap;margin-top:12px;}
+  .dim-grid span{font-family:'IBM Plex Mono',monospace;font-size:13px;padding:8px 14px;border-radius:8px;font-weight:600;border:1px solid var(--paper-line);background:var(--paper);}
+  .dim-grid .r1{background:var(--d1-soft);border-color:var(--d1);color:var(--d1);}
+  .dim-grid .r2{background:var(--pt-soft);border-color:var(--pt);color:var(--pt);}
+  .dim-grid .r3{background:var(--fn-soft);border-color:var(--fn);color:var(--fn);}
+  .dim-label{font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-soft);margin-bottom:2px;}
+  .dim-value{font-family:'IBM Plex Mono',monospace;font-size:20px;font-weight:600;color:var(--ink);}
+  .grid-layout{display:grid;grid-template-columns:300px 1fr;gap:20px;align-items:start;}
+  @media (max-width:800px){.grid-layout{grid-template-columns:1fr;}}
+  .card{background:var(--card);border:1px solid var(--paper-line);border-radius:14px;box-shadow:var(--shadow);padding:20px;}
+  .panel-title{font-family:'Caveat',cursive;font-weight:700;font-size:24px;margin:0 0 4px;}
+  .panel-sub{font-size:13px;color:var(--ink-soft);margin:0 0 14px;line-height:1.4;}
+  .eq-highlight{
+    font-family:'IBM Plex Mono',monospace;font-size:20px;font-weight:600;text-align:center;
+    padding:12px;border-radius:10px;margin-bottom:14px;border:1px solid var(--paper-line);
+    background:var(--fn-soft);border-color:var(--fn);color:var(--fn);line-height:1.3;word-break:break-all;
+  }
+  .field{margin-bottom:14px;}
+  .field label{display:flex;justify-content:space-between;font-size:13.5px;font-weight:600;margin-bottom:6px;}
+  .field label span.val{font-family:'IBM Plex Mono',monospace;font-weight:600;color:var(--pt);}
+  .coord-row{display:flex;gap:8px;}
+  .coord-row .cflex{flex:1;}
+  .coord-row .cflex label{font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--ink-soft);margin-bottom:2px;}
+  .coord-row .cflex input{font-size:13px;padding:6px 7px;width:100%;border-radius:8px;border:1px solid var(--paper-line);font-family:'IBM Plex Mono',monospace;background:var(--paper);color:var(--ink);}
+  .coord-row .cflex input:focus{outline:2px solid var(--pt);outline-offset:-1px;border-color:var(--pt);}
+  input[type=number]{width:100%;padding:9px 10px;border-radius:8px;border:1px solid var(--paper-line);font-family:'IBM Plex Mono',monospace;font-size:16px;background:var(--paper);color:var(--ink);}
+  input[type=number]:focus{outline:2px solid var(--pt);outline-offset:-1px;border-color:var(--pt);}
+  .helper{font-size:12px;color:var(--ink-soft);margin-top:4px;line-height:1.4;}
+  .jars{display:flex;gap:14px;margin-bottom:14px;}
+  .jar{flex:1;text-align:center;padding:10px 6px;border-radius:10px;border:1px solid var(--paper-line);}
+  .jar.d1-jar{background:var(--d1-soft);} .jar.d2-jar{background:var(--pt-soft);} .jar.d3-jar{background:var(--fn-soft);}
+  .jar .name{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;}
+  .jar.d1-jar .name{color:var(--d1);} .jar.d2-jar .name{color:var(--pt);} .jar.d3-jar .name{color:var(--fn);}
+  .jar .amt{font-family:'IBM Plex Mono',monospace;font-size:20px;font-weight:600;margin-top:4px;}
+  button{font-family:'Source Sans 3',sans-serif;font-weight:600;font-size:14.5px;border:none;border-radius:9px;padding:11px 16px;cursor:pointer;width:100%;transition:transform .08s ease,filter .15s ease;}
+  button:active{transform:translateY(1px);}button:disabled{opacity:.4;cursor:not-allowed;}
+  .btn-primary{background:var(--fn);color:#fff;}.btn-primary:hover:not(:disabled){filter:brightness(1.08);}
+  .btn-secondary{background:var(--paper);color:var(--ink);border:1px solid var(--paper-line);margin-top:8px;}
+  .btn-secondary:hover:not(:disabled){background:#F0E9D6;}
+  .status{font-size:13.5px;line-height:1.5;padding:12px;border-radius:9px;background:var(--paper);border:1px solid var(--paper-line);margin-bottom:14px;min-height:20px;}
+  .status.feedback-good{background:var(--fn-soft);border-color:var(--fn);color:var(--fn);font-weight:600;}
+  .status.feedback-mid{background:var(--pt-soft);border-color:var(--pt);color:var(--pt);font-weight:600;}
+  .status.feedback-target{background:var(--target-soft);border-color:var(--target);color:var(--target);font-weight:600;}
+  .graph-card{display:flex;flex-direction:column;}
+  .graph-card .panel-title{margin-bottom:0;}
+  .graph-card .panel-sub{margin-bottom:6px;}
+  .legend{display:flex;gap:18px;flex-wrap:wrap;margin:6px 0 12px;font-size:12.5px;font-family:'IBM Plex Mono',monospace;}
+  .legend span{display:inline-flex;align-items:center;gap:6px;}
+  .dot{width:10px;height:10px;border-radius:50%;display:inline-block;}
+  .dot.pred{background:var(--pt);} .dot.actual{background:var(--fn);}
+  .graph-wrap svg{width:100%;height:auto;display:block;background:#FFFDF7;border:1px solid var(--paper-line);border-radius:8px;}
+  .graph-wrap{position:relative;}
+  .graph-wrap svg{width:100%;height:auto;display:block;background:#FFFDF7;border:1px solid var(--paper-line);border-radius:8px;}
+  .axis-label{font-family:'IBM Plex Mono',monospace;font-size:12px;fill:var(--ink-soft);}
+  .tick-label{font-family:'IBM Plex Mono',monospace;font-size:10px;fill:var(--ink-soft);}
+  .steps{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap;}
+  .step-dot{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:600;border:1.5px solid var(--paper-line);color:var(--ink-soft);background:var(--paper);}
+  .step-dot.done{background:var(--fn);border-color:var(--fn);color:#fff;}
+  .step-dot.solution{background:var(--target);border-color:var(--target);color:#fff;}
+  .step-dot.active{border-color:var(--pt);color:var(--pt);background:var(--pt-soft);}
+  .reflect,.explore{margin-top:20px;padding-top:16px;border-top:1px dashed var(--paper-line);}
+  .reflect.hidden,.explore.hidden{display:none;}
+  .q{margin-bottom:16px;}.q p.qtext{font-weight:600;margin:0 0 8px;font-size:14.5px;}
+  .options{display:flex;gap:8px;flex-wrap:wrap;}
+  .opt{padding:8px 14px;border-radius:8px;border:1px solid var(--paper-line);background:var(--paper);font-size:13.5px;cursor:pointer;font-weight:600;}
+  .opt.correct{background:var(--fn-soft);border-color:var(--fn);color:var(--fn);}
+  .opt.wrong{background:#F6DCD4;border-color:var(--d1);color:#8C3A1F;}
+  .opt:disabled{cursor:default;}
+  .explore .panel-title{font-size:22px;}
+  .explore-inputs{display:flex;gap:10px;flex-wrap:wrap;margin:10px 0 14px;}
+  .explore-inputs .field{flex:1;min-width:70px;margin-bottom:0;}
+  .explore-inputs .field label{font-size:11px;}
+  .explore-inputs input[type=number]{font-size:13px;padding:7px 8px;}
+  #explorePlot3d,#graph3d{width:100%;height:460px;background:#FFFDF7;border:1px solid var(--paper-line);border-radius:8px;}
+  footer.note{text-align:center;font-size:12px;color:var(--ink-soft);margin-top:26px;font-family:'IBM Plex Mono',monospace;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <p class="eyebrow">Intuition Builder · Dimensions of Space</p>
+    <h1>Panini's Grammar of Space — ℝ, ℝ², ℝ³</h1>
+    <p>Panini, the ancient grammarian, classified words into dimensions: a single sound (1D), a root (2D), a complete sentence (3D). In the same way, a point lives in ℝ (one number), ℝ² (two numbers), or ℝ³ (three numbers). Locate points at each level and feel what "dimension" means.</p>
+    <div class="dim-grid">
+      <span class="r1">ℝ — 1 number</span>
+      <span class="r2">ℝ² — 2 numbers (x, y)</span>
+      <span class="r3">ℝ³ — 3 numbers (x, y, z)</span>
+    </div>
+  </header>
+
+  <div class="grid-layout">
+    <div class="card">
+      <p class="panel-title" id="stepTitle">Locate in ℝ</p>
+      <p class="panel-sub" id="stepSub">A point on the number line needs just 1 number. Guess the coordinate.</p>
+
+      <div class="eq-highlight" id="eqDisplay">P ∈ ℝ</div>
+
+      <div class="field" id="predictField">
+        <label id="predictLabel">Coordinate x = <span class="val">?</span></label>
+        <input type="number" id="predictSingle" step="any" placeholder="Enter coordinate">
+      </div>
+
+      <div class="coord-row" id="multiField" style="display:none;">
+        <div class="cflex"><label>x</label><input type="number" id="predX" step="any" placeholder="x"></div>
+        <div class="cflex" id="yField"><label>y</label><input type="number" id="predY" step="any" placeholder="y"></div>
+        <div class="cflex" id="zField" style="display:none;"><label>z</label><input type="number" id="predZ" step="any" placeholder="z"></div>
+      </div>
+
+      <div class="jars" id="coordJars">
+        <div class="jar d1-jar"><div class="name">ℝ (dim 1)</div><div class="amt" id="jar1">?</div></div>
+        <div class="jar d2-jar"><div class="name">ℝ² (dim 2)</div><div class="amt" id="jar2">—</div></div>
+        <div class="jar d3-jar"><div class="name">ℝ³ (dim 3)</div><div class="amt" id="jar3">—</div></div>
+      </div>
+
+      <div class="steps" id="stepDots"></div>
+
+      <div class="status" id="statusBox">Panini's first dimension: <strong>ℝ</strong>. Where is the point on the number line?</div>
+
+      <button class="btn-primary" id="checkBtn">Predict &amp; Reveal</button>
+      <button class="btn-secondary" id="resetBtn">Start over</button>
+    </div>
+
+    <div class="card graph-card">
+      <p class="panel-title" id="graphTitle">ℝ — The Number Line</p>
+      <div class="legend" id="graphLegend">
+        <span><i class="dot actual"></i>point P</span>
+        <span><i class="dot pred"></i>your guess</span>
+      </div>
+      <div class="graph-wrap" id="graphContainer">
+        <svg id="graphSvg1d" viewBox="0 0 640 160" xmlns="http://www.w3.org/2000/svg"></svg>
+        <svg id="graphSvg2d" viewBox="0 0 640 460" xmlns="http://www.w3.org/2000/svg" style="display:none;"></svg>
+        <div id="graph3d" style="width:100%;height:460px;display:none;"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- REFLECTION QUIZ -->
+  <div class="card reflect hidden" id="reflectCard">
+    <p class="panel-title">What is a dimension?</p>
+    <p class="panel-sub">Each dimension adds a new degree of freedom — a new number you need to locate a point.</p>
+
+    <div class="q" id="q1">
+      <p class="qtext">1. How many numbers do you need to describe a point in ℝ²?</p>
+      <div class="options">
+        <button class="opt" data-correct="false">1</button>
+        <button class="opt" data-correct="true">2</button>
+        <button class="opt" data-correct="false">3</button>
+      </div>
+    </div>
+
+    <div class="q" id="q2">
+      <p class="qtext">2. The point (4, −2, 7) lives in which space?</p>
+      <div class="options">
+        <button class="opt" data-correct="false">ℝ</button>
+        <button class="opt" data-correct="false">ℝ²</button>
+        <button class="opt" data-correct="true">ℝ³</button>
+      </div>
+    </div>
+
+    <div class="q" id="q3">
+      <p class="qtext">3. What does the "3" in ℝ³ mean?</p>
+      <div class="options">
+        <button class="opt" data-correct="false">You can only count up to 3</button>
+        <button class="opt" data-correct="true">You need 3 independent coordinates (x, y, z) to locate a point</button>
+        <button class="opt" data-correct="false">The point is 3 units from the origin</button>
+      </div>
+    </div>
+
+    <div class="q" id="q4">
+      <p class="qtext">4. Can you have ℝ⁴, ℝ⁵, … ?</p>
+      <div class="options">
+        <button class="opt" data-correct="true">Yes — ℝⁿ is the space of n-tuples (x₁, x₂, …, xₙ), used everywhere in data science and physics</button>
+        <button class="opt" data-correct="false">No — only 1D, 2D, and 3D exist</button>
+        <button class="opt" data-correct="false">Only up to ℝ⁴ (space-time)</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- EXPLORE MODE -->
+  <div class="card explore hidden" id="exploreCard">
+    <p class="panel-title">Plot any point in ℝ³</p>
+    <p class="panel-sub">Move the point around 3D space by changing x, y, z. See how ℝ (the line) and ℝ² (the plane) sit inside ℝ³ as slices.</p>
+
+    <div class="explore-inputs">
+      <div class="field"><label>x <span class="val" id="expXVal">2</span></label><input type="number" id="expX" step="0.5" value="2"></div>
+      <div class="field"><label>y <span class="val" id="expYVal">1</span></label><input type="number" id="expY" step="0.5" value="1"></div>
+      <div class="field"><label>z <span class="val" id="expZVal">3</span></label><input type="number" id="expZ" step="0.5" value="3"></div>
+    </div>
+
+    <div class="eq-highlight" id="exploreEq" style="font-size:18px;padding:10px;">P = (2, 1, 3) ∈ ℝ³</div>
+
+    <div id="explorePlot3d"></div>
+    <div class="helper" style="margin-top:4px;">ℝ is a line (only x varies), ℝ² is a plane (x and y vary), ℝ³ is space (x, y, z all vary). Drag the view to explore!</div>
+  </div>
+
+  <footer class="note">Built for exploring dimensions · ℝⁿ is the space of n-tuples of real numbers — each n is a degree of freedom</footer>
+</div>
+
+<script>
+(function(){
+  const $ = id => document.getElementById(id);
+
+  // ---- STATE ----
+  const STEPS = [
+    {dim:1, coord:[3], label:'ℝ — 1 coordinate', pt:'P = 3', hint:'the number line'},
+    {dim:1, coord:[-2], label:'ℝ — 1 coordinate', pt:'P = −2', hint:'the number line'},
+    {dim:2, coord:[4,3], label:'ℝ² — 2 coordinates', pt:'P = (4, 3)', hint:'the plane'},
+    {dim:2, coord:[-1,2], label:'ℝ² — 2 coordinates', pt:'P = (−1, 2)', hint:'the plane'},
+    {dim:3, coord:[2,-1,3], label:'ℝ³ — 3 coordinates', pt:'P = (2, −1, 3)', hint:'space'},
+    {dim:3, coord:[-3,0,4], label:'ℝ³ — 3 coordinates', pt:'P = (−3, 0, 4)', hint:'space'},
+  ];
+  const TOTAL = STEPS.length;
+  let step = 0;
+  let prediction = null;
+  let revealed = false;
+  let mode = 'predict';
+
+  const stepDots = $('stepDots');
+  const statusBox = $('statusBox');
+  const checkBtn = $('checkBtn');
+  const resetBtn = $('resetBtn');
+  const reflectCard = $('reflectCard');
+  const exploreCard = $('exploreCard');
+  const stepTitle = $('stepTitle');
+  const stepSub = $('stepSub');
+  const eqDisplay = $('eqDisplay');
+  const predictField = $('predictField');
+  const predictSingle = $('predictSingle');
+  const multiField = $('multiField');
+  const predX = $('predX'), predY = $('predY'), predZ = $('predZ');
+  const yField = $('yField'), zField = $('zField');
+  const jar1 = $('jar1'), jar2 = $('jar2'), jar3 = $('jar3');
+  const coordJars = $('coordJars');
+  const graphTitle = $('graphTitle');
+  const graphLegend = $('graphLegend');
+  const svg1d = $('graphSvg1d');
+  const svg2d = $('graphSvg2d');
+  const graph3d = $('graph3d');
+  const svgNS = "http://www.w3.org/2000/svg";
+
+  for(let i=1;i<=TOTAL;i++){
+    const d = document.createElement('div');
+    d.className='step-dot'; d.textContent=i; d.id='step-'+i;
+    stepDots.appendChild(d);
+  }
+
+  function getSD(){ return STEPS[step]; }
+
+  function fmt(v){ return Number.isInteger(v) ? v : v.toFixed(3); }
+
+  function updateUI(){
+    const sd = getSD();
+    stepTitle.textContent = sd.label;
+    stepSub.textContent = `A point in ${sd.hint}. Guess the coordinate${sd.dim>1 ? 's' : ''}.`;
+
+    const c = sd.coord;
+    eqDisplay.textContent = `${sd.pt} ∈ ℝ${sd.dim}`;
+
+    graphTitle.textContent = `ℝ${sd.dim} — ${sd.hint}`;
+
+    // show/hide input fields
+    if(sd.dim === 1){
+      predictField.style.display = 'block';
+      multiField.style.display = 'none';
+      predictSingle.value = '';
+      predictSingle.placeholder = 'Enter coordinate';
+    } else {
+      predictField.style.display = 'none';
+      multiField.style.display = 'flex';
+      predX.value = ''; predY.value = ''; predZ.value = '';
+      predX.placeholder = 'x';
+      yField.style.display = 'block';
+      predY.placeholder = 'y';
+      if(sd.dim === 2){
+        zField.style.display = 'none';
+      } else {
+        zField.style.display = 'block';
+        predZ.placeholder = 'z';
+      }
+    }
+
+    // update jars
+    jar1.textContent = sd.dim >= 1 ? (revealed ? fmt(c[0]) : '?') : '—';
+    jar2.textContent = sd.dim >= 2 ? (revealed ? `(${fmt(c[0])}, ${fmt(c[1])})` : '(?, ?)') : '—';
+    jar3.textContent = sd.dim >= 3 ? (revealed ? `(${fmt(c[0])}, ${fmt(c[1])}, ${fmt(c[2])})` : '(?, ?, ?)') : '—';
+
+    // last step
+    if(step >= TOTAL - 1 && revealed){
+      checkBtn.textContent = 'See all dimensions';
+    } else if(step >= TOTAL){
+      checkBtn.disabled = true;
+      checkBtn.textContent = 'Complete';
+    } else if(revealed && step < TOTAL - 1){
+      checkBtn.textContent = 'Next dimension';
+    } else {
+      checkBtn.textContent = 'Predict & Reveal';
+    }
+
+    if(step >= TOTAL){
+      checkBtn.disabled = true;
+    }
+  }
+
+  function markDots(){
+    document.querySelectorAll('.step-dot').forEach(d => d.classList.remove('active'));
+    for(let i=0;i<step&&i<TOTAL;i++){
+      const d = $('step-'+(i+1));
+      if(d) d.classList.add('done');
+    }
+    if(step < TOTAL){
+      const d = $('step-'+(step+1));
+      if(d) d.classList.add('active');
+    }
+  }
+
+  function setStatus(html, cls){
+    statusBox.innerHTML = html;
+    statusBox.className = 'status' + (cls ? ' '+cls : '');
+  }
+
+  // ---- SVG: 1D number line ----
+  function draw1D(coord, guessVal){
+    while(svg1d.firstChild) svg1d.firstChild.remove();
+    const W=640,H=160,midY=80;
+    const pad=50, xMin=-6,xMax=6;
+    const sx=(W-2*pad)/(xMax-xMin);
+    const toX=v=>pad+(v-xMin)*sx;
+
+    // axis line
+    const ax = document.createElementNS(svgNS,'line');
+    ax.setAttribute('x1',pad-20); ax.setAttribute('y1',midY);
+    ax.setAttribute('x2',W-pad+20); ax.setAttribute('y2',midY);
+    ax.setAttribute('stroke','#26332B'); ax.setAttribute('stroke-width',1.5);
+    svg1d.appendChild(ax);
+
+    // arrow
+    const arr = document.createElementNS(svgNS,'polygon');
+    arr.setAttribute('points',`${W-pad+20},${midY} ${W-pad+10},${midY-6} ${W-pad+10},${midY+6}`);
+    arr.setAttribute('fill','#26332B');
+    svg1d.appendChild(arr);
+
+    // ticks
+    for(let v=Math.ceil(xMin);v<=Math.floor(xMax);v++){
+      if(v===0) continue;
+      const tx=toX(v);
+      const t=document.createElementNS(svgNS,'line');
+      t.setAttribute('x1',tx); t.setAttribute('y1',midY-6);
+      t.setAttribute('x2',tx); t.setAttribute('y2',midY+6);
+      t.setAttribute('stroke','#26332B'); t.setAttribute('stroke-width',1);
+      svg1d.appendChild(t);
+      const lbl=document.createElementNS(svgNS,'text');
+      lbl.setAttribute('x',tx); lbl.setAttribute('y',midY+22);
+      lbl.setAttribute('text-anchor','middle');
+      lbl.setAttribute('class','tick-label');
+      lbl.textContent=v;
+      svg1d.appendChild(lbl);
+    }
+    // 0
+    const zt=toX(0);
+    const zl=document.createElementNS(svgNS,'text');
+    zl.setAttribute('x',zt); zl.setAttribute('y',midY+22);
+    zl.setAttribute('text-anchor','middle');
+    zl.setAttribute('class','tick-label');
+    zl.textContent='0';
+    svg1d.appendChild(zl);
+
+    // actual point
+    const px=toX(coord);
+    const circ=document.createElementNS(svgNS,'circle');
+    circ.setAttribute('cx',px); circ.setAttribute('cy',midY);
+    circ.setAttribute('r',8);
+    circ.setAttribute('fill','var(--fn)');
+    svg1d.appendChild(circ);
+    const lbl=document.createElementNS(svgNS,'text');
+    lbl.setAttribute('x',px); lbl.setAttribute('y',midY-14);
+    lbl.setAttribute('text-anchor','middle');
+    lbl.setAttribute('font-size','14');
+    lbl.setAttribute('font-weight','600');
+    lbl.setAttribute('fill','var(--fn)');
+    lbl.setAttribute('font-family',"'IBM Plex Mono',monospace");
+    lbl.textContent=fmt(coord);
+    svg1d.appendChild(lbl);
+
+    // guess marker
+    if(guessVal !== null && guessVal !== undefined){
+      const gx=toX(guessVal);
+      if(gx>=pad-20 && gx<=W-pad+20){
+        const gc=document.createElementNS(svgNS,'circle');
+        gc.setAttribute('cx',gx); gc.setAttribute('cy',midY);
+        gc.setAttribute('r',7);
+        gc.setAttribute('fill','none');
+        gc.setAttribute('stroke','var(--pt)');
+        gc.setAttribute('stroke-width',2.5);
+        svg1d.appendChild(gc);
+      }
+    }
+  }
+
+  // ---- SVG: 2D plane ----
+  function draw2D(coord, guessCoord){
+    while(svg2d.firstChild) svg2d.firstChild.remove();
+    const W=640,H=460, ox=70, oy=H-60, pw=W-ox-30, ph=oy-30;
+    const xMin=-6,xMax=6,yMin=-6,yMax=6;
+    const sx=pw/(xMax-xMin), sy=ph/(yMin-yMax);
+
+    function tx(v){return ox+(v-xMin)*sx;}
+    function ty(v){return oy+(v-yMin)*sy;}
+
+    // grid
+    for(let v=Math.ceil(xMin);v<=Math.floor(xMax);v++){
+      const l=document.createElementNS(svgNS,'line');
+      l.setAttribute('x1',tx(v)); l.setAttribute('y1',oy);
+      l.setAttribute('x2',tx(v)); l.setAttribute('y2',oy-ph);
+      l.setAttribute('stroke','#E4DCC4'); l.setAttribute('stroke-width',0.5);
+      svg2d.appendChild(l);
+    }
+    for(let v=Math.ceil(yMin);v<=Math.floor(yMax);v++){
+      const l=document.createElementNS(svgNS,'line');
+      l.setAttribute('x1',ox); l.setAttribute('y1',ty(v));
+      l.setAttribute('x2',ox+pw); l.setAttribute('y2',ty(v));
+      l.setAttribute('stroke','#E4DCC4'); l.setAttribute('stroke-width',0.5);
+      svg2d.appendChild(l);
+    }
+
+    // axes
+    const ax1=document.createElementNS(svgNS,'line');
+    ax1.setAttribute('x1',ox); ax1.setAttribute('y1',oy);
+    ax1.setAttribute('x2',ox+pw); ax1.setAttribute('y2',oy);
+    ax1.setAttribute('stroke','#26332B'); ax1.setAttribute('stroke-width',1.5);
+    svg2d.appendChild(ax1);
+    const ax2=document.createElementNS(svgNS,'line');
+    ax2.setAttribute('x1',ox); ax2.setAttribute('y1',oy);
+    ax2.setAttribute('x2',ox); ax2.setAttribute('y2',oy-ph);
+    ax2.setAttribute('stroke','#26332B'); ax2.setAttribute('stroke-width',1.5);
+    svg2d.appendChild(ax2);
+
+    // tick labels
+    const tl=document.createElementNS(svgNS,'text');
+    tl.setAttribute('x',ox+pw+10); tl.setAttribute('y',oy+4);
+    tl.setAttribute('class','axis-label'); tl.textContent='x';
+    svg2d.appendChild(tl);
+    const tl2=document.createElementNS(svgNS,'text');
+    tl2.setAttribute('x',ox-12); tl2.setAttribute('y',oy-ph-8);
+    tl2.setAttribute('class','axis-label'); tl2.textContent='y';
+    svg2d.appendChild(tl2);
+
+    for(let v=Math.ceil(xMin);v<=Math.floor(xMax);v++){
+      if(v===0) continue;
+      const l=document.createElementNS(svgNS,'text');
+      l.setAttribute('x',tx(v)); l.setAttribute('y',oy+16);
+      l.setAttribute('text-anchor','middle'); l.setAttribute('class','tick-label');
+      l.textContent=v; svg2d.appendChild(l);
+    }
+    for(let v=Math.ceil(yMin);v<=Math.floor(yMax);v++){
+      if(v===0) continue;
+      const l=document.createElementNS(svgNS,'text');
+      l.setAttribute('x',ox-10); l.setAttribute('y',ty(v)+4);
+      l.setAttribute('text-anchor','end'); l.setAttribute('class','tick-label');
+      l.textContent=v; svg2d.appendChild(l);
+    }
+    const zl=document.createElementNS(svgNS,'text');
+    zl.setAttribute('x',tx(0)); zl.setAttribute('y',oy+16);
+    zl.setAttribute('text-anchor','middle'); zl.setAttribute('class','tick-label');
+    zl.textContent='0'; svg2d.appendChild(zl);
+
+    const [cx,cy]=coord;
+    const p=document.createElementNS(svgNS,'circle');
+    p.setAttribute('cx',tx(cx)); p.setAttribute('cy',ty(cy));
+    p.setAttribute('r',8); p.setAttribute('fill','var(--fn)');
+    svg2d.appendChild(p);
+    const pl=document.createElementNS(svgNS,'text');
+    pl.setAttribute('x',tx(cx)); pl.setAttribute('y',ty(cy)-14);
+    pl.setAttribute('text-anchor','middle'); pl.setAttribute('font-size','14');
+    pl.setAttribute('font-weight','600'); pl.setAttribute('fill','var(--fn)');
+    pl.setAttribute('font-family',"'IBM Plex Mono',monospace");
+    pl.textContent=`(${fmt(cx)}, ${fmt(cy)})`;
+    svg2d.appendChild(pl);
+
+    if(guessCoord){
+      const [gx,gy]=guessCoord;
+      const gc=document.createElementNS(svgNS,'circle');
+      gc.setAttribute('cx',tx(gx)); gc.setAttribute('cy',ty(gy));
+      gc.setAttribute('r',7); gc.setAttribute('fill','none');
+      gc.setAttribute('stroke','var(--pt)'); gc.setAttribute('stroke-width',2.5);
+      svg2d.appendChild(gc);
+    }
+  }
+
+  // ---- Plotly 3D ----
+  function draw3D(coord, guessCoord, container){
+    const [cX,cY,cZ]=coord;
+    const trace = {
+      x:[cX], y:[cY], z:[cZ],
+      mode:'markers+text',
+      type:'scatter3d',
+      marker:{size:14, color:'#1F6F5C', line:{color:'#fff',width:1.5}},
+      text:[`P (${fmt(cX)},${fmt(cY)},${fmt(cZ)})`],
+      textposition:'top center',
+      name:'Actual'
+    };
+    const traces=[trace];
+
+    // projection lines from point to each axis
+    const style = {mode:'lines',type:'scatter3d',hoverinfo:'none',showlegend:false};
+    traces.push(
+      {x:[cX,cX],y:[cY,cY],z:[0,cZ],line:{color:'#B8860B',width:2,dash:'dot'}, ...style},
+      {x:[cX,cX],y:[0,cY],z:[cZ,cZ],line:{color:'#7B5EA7',width:2,dash:'dot'}, ...style},
+      {x:[0,cX],y:[cY,cY],z:[cZ,cZ],line:{color:'#B5502E',width:2,dash:'dot'}, ...style},
+      {x:[0,cX],y:[0,0],z:[0,0],line:{color:'#26332B',width:1.5}, ...style},
+      {x:[0,0],y:[0,cY],z:[0,0],line:{color:'#26332B',width:1.5}, ...style},
+      {x:[0,0],y:[0,0],z:[0,cZ],line:{color:'#26332B',width:1.5}, ...style}
+    );
+
+    if(guessCoord){
+      const [gX,gY,gZ]=guessCoord;
+      traces.push({
+        x:[gX], y:[gY], z:[gZ],
+        mode:'markers',
+        type:'scatter3d',
+        marker:{size:11, color:'#7B5EA7', symbol:'x', line:{color:'#fff',width:1}},
+        name:'Your guess'
+      });
+    }
+
+    const layout = {
+      margin:{l:0,r:0,t:0,b:0},
+      scene:{
+        xaxis:{title:'x', range:[-6,6], gridcolor:'#E4DCC4', showspikes:false},
+        yaxis:{title:'y', range:[-6,6], gridcolor:'#E4DCC4', showspikes:false},
+        zaxis:{title:'z', range:[-6,6], gridcolor:'#E4DCC4', showspikes:false},
+        bgcolor:'#FFFDF7'
+      },
+      plot_bgcolor:'#FFFDF7', paper_bgcolor:'#FFFDF7',
+      showlegend:false
+    };
+    Plotly.react(container, traces, layout, {displayModeBar:false, responsive:true});
+  }
+
+  function renderGraph(){
+    const sd = getSD();
+    svg1d.style.display='none'; svg2d.style.display='none'; graph3d.style.display='none';
+    if(sd.dim === 1){
+      svg1d.style.display='block';
+      const guess = revealed && prediction !== null ? prediction : null;
+      draw1D(sd.coord[0], guess);
+    } else if(sd.dim === 2){
+      svg2d.style.display='block';
+      const guess = revealed && prediction ? prediction : null;
+      draw2D(sd.coord, guess);
+    } else {
+      graph3d.style.display='block';
+      const guess = revealed && prediction ? prediction : null;
+      draw3D(sd.coord, guess, graph3d);
+    }
+  }
+
+  function resetGame(){
+    step=0; prediction=null; revealed=false; mode='predict';
+    checkBtn.disabled=false;
+    reflectCard.classList.add('hidden');
+    exploreCard.classList.add('hidden');
+    document.querySelectorAll('.step-dot').forEach(d=>d.classList.remove('done','solution','active'));
+    const f=$('step-1'); if(f) f.classList.add('active');
+    updateUI(); markDots(); renderGraph();
+    setStatus('Panini\'s first dimension: <strong>ℝ</strong>. Where is the point on the number line?');
+  }
+
+  resetBtn.addEventListener('click', resetGame);
+
+  function getGuess(){
+    const sd=getSD();
+    if(sd.dim===1){
+      const v=parseFloat(predictSingle.value);
+      return isNaN(v) ? null : v;
+    } else {
+      const x=parseFloat(predX.value);
+      const y=parseFloat(predY.value);
+      if(isNaN(x)||isNaN(y)) return null;
+      if(sd.dim===2) return [x,y];
+      const z=parseFloat(predZ.value);
+      return isNaN(z) ? null : [x,y,z];
+    }
+  }
+
+  function checkGuess(){
+    if(mode==='done') return;
+    if(step>=TOTAL){
+      mode='done'; checkBtn.disabled=true;
+      setTimeout(()=>{reflectCard.classList.remove('hidden');exploreCard.classList.remove('hidden');reflectCard.scrollIntoView({behavior:'smooth',block:'nearest'});},500);
+      setStatus('All dimensions explored! Scroll down to reflect and explore freely.','feedback-target');
+      return;
+    }
+    const sd = getSD();
+    if(revealed){
+      step++; revealed=false; prediction=null;
+      if(step>=TOTAL){
+        checkBtn.textContent = 'Finish';
+        setStatus('All dimensions explored! Click Finish to reflect.','feedback-target');
+      } else {
+        checkBtn.textContent = 'Predict & Reveal';
+        const next = STEPS[step];
+        setStatus(`Now <strong>ℝ${next.dim}</strong>: ${next.hint}. Enter the coordinate${next.dim>1?'s':''}.`);
+      }
+      updateUI(); markDots(); renderGraph();
+      return;
+    }
+
+    const guess = getGuess();
+    if(guess===null || (Array.isArray(guess) && guess.some(v=>v===null||isNaN(v)))){
+      setStatus('Enter a valid number for each coordinate.');
+      return;
+    }
+    prediction = guess;
+    revealed = true;
+
+    const actual = sd.coord;
+    let msg,cls;
+    const tol=0.05;
+
+    if(sd.dim===1){
+      const diff=Math.abs(guess-actual[0]);
+      if(diff<tol){
+        msg=`Correct! P = ${fmt(actual[0])} ∈ ℝ.`;
+        cls='feedback-good';
+      } else {
+        msg=`You guessed ${fmt(guess)}. The actual point is <strong>${fmt(actual[0])}</strong> (off by ${diff.toFixed(2)}).`;
+        cls='feedback-mid';
+      }
+    } else if(sd.dim===2){
+      const dx=Math.abs(guess[0]-actual[0]), dy=Math.abs(guess[1]-actual[1]);
+      if(dx<tol&&dy<tol){
+        msg=`Correct! P = (${fmt(actual[0])}, ${fmt(actual[1])}) ∈ ℝ².`;
+        cls='feedback-good';
+      } else {
+        msg=`You guessed (${fmt(guess[0])}, ${fmt(guess[1])}). Actual: <strong>(${fmt(actual[0])}, ${fmt(actual[1])})</strong>.`;
+        cls='feedback-mid';
+      }
+    } else {
+      const dx=Math.abs(guess[0]-actual[0]), dy=Math.abs(guess[1]-actual[1]), dz=Math.abs(guess[2]-actual[2]);
+      if(dx<tol&&dy<tol&&dz<tol){
+        msg=`Correct! P = (${fmt(actual[0])}, ${fmt(actual[1])}, ${fmt(actual[2])}) ∈ ℝ³.`;
+        cls='feedback-good';
+      } else {
+        msg=`You guessed (${fmt(guess[0])}, ${fmt(guess[1])}, ${fmt(guess[2])}). Actual: <strong>(${fmt(actual[0])}, ${fmt(actual[1])}, ${fmt(actual[2])})</strong>.`;
+        cls='feedback-mid';
+      }
+    }
+
+    if(step+1>=TOTAL){
+      msg += ' Every dimension explored!';
+      checkBtn.textContent = 'See all dimensions';
+    } else {
+      checkBtn.textContent = 'Next dimension';
+    }
+
+    setStatus(msg,cls);
+    markDots(); renderGraph();
+    updateUI();
+  }
+
+  checkBtn.addEventListener('click', checkGuess);
+  predictSingle.addEventListener('keydown', e=>{if(e.key==='Enter') checkGuess();});
+  predX.addEventListener('keydown', e=>{if(e.key==='Enter') checkGuess();});
+  predY.addEventListener('keydown', e=>{if(e.key==='Enter') checkGuess();});
+  predZ.addEventListener('keydown', e=>{if(e.key==='Enter') checkGuess();});
+
+  // ---- EXPLORE MODE ----
+  const expX=$('expX'), expY=$('expY'), expZ=$('expZ');
+  const expXVal=$('expXVal'), expYVal=$('expYVal'), expZVal=$('expZVal');
+  const exploreEq=$('exploreEq');
+  const explorePlot=$('explorePlot3d');
+
+  function rebuildExplore(){
+    const x=parseFloat(expX.value)||0, y=parseFloat(expY.value)||0, z=parseFloat(expZ.value)||0;
+    expXVal.textContent=x; expYVal.textContent=y; expZVal.textContent=z;
+    exploreEq.textContent=`P = (${x}, ${y}, ${z}) ∈ ℝ³`;
+    const trace = {
+      x:[x], y:[y], z:[z],
+      mode:'markers+text',
+      type:'scatter3d',
+      marker:{size:12, color:'#1F6F5C'},
+      text:[`(${x},${y},${z})`],
+      textposition:'top center'
+    };
+    // Add projections
+    const projXY = {x:[x,x], y:[y,y], z:[0,z], mode:'lines', type:'scatter3d', line:{color:'#B8860B', width:2,dash:'dot'}, name:'z-proj', hoverinfo:'none'};
+    const projXZ = {x:[x,x], y:[0,y], z:[z,z], mode:'lines', type:'scatter3d', line:{color:'#7B5EA7', width:2,dash:'dot'}, name:'y-proj', hoverinfo:'none'};
+    const projYZ = {x:[0,x], y:[y,y], z:[z,z], mode:'lines', type:'scatter3d', line:{color:'#B5502E', width:2,dash:'dot'}, name:'x-proj', hoverinfo:'none'};
+    const origin = {x:[0,x], y:[0,0], z:[0,0], mode:'lines', type:'scatter3d', line:{color:'#26332B', width:1.5}, name:'x-axis', hoverinfo:'none'};
+    const oriy = {x:[0,0], y:[0,y], z:[0,0], mode:'lines', type:'scatter3d', line:{color:'#26332B', width:1.5}, name:'y-axis', hoverinfo:'none'};
+    const oriz = {x:[0,0], y:[0,0], z:[0,z], mode:'lines', type:'scatter3d', line:{color:'#26332B', width:1.5}, name:'z-axis', hoverinfo:'none'};
+    const layout = {
+      margin:{l:0,r:0,t:0,b:0},
+      scene:{
+        xaxis:{title:'x', range:[-6,6]},
+        yaxis:{title:'y', range:[-6,6]},
+        zaxis:{title:'z', range:[-6,6]},
+        bgcolor:'#FFFDF7',
+        camera:{eye:{x:1.8,y:1.8,z:1.2}}
+      },
+      plot_bgcolor:'#FFFDF7', paper_bgcolor:'#FFFDF7',
+      showlegend:false
+    };
+    Plotly.react(explorePlot, [trace, projXY, projXZ, projYZ, origin, oriy, oriz], layout, {displayModeBar:false, responsive:true});
+  }
+
+  [expX, expY, expZ].forEach(el => el.addEventListener('input', rebuildExplore));
+
+  // ---- QUIZ ----
+  document.querySelectorAll('.q .options').forEach(group=>{
+    group.querySelectorAll('.opt').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        const correct = btn.dataset.correct === 'true';
+        group.querySelectorAll('.opt').forEach(b=>{
+          b.disabled = true;
+          if(b.dataset.correct==='true') b.classList.add('correct');
+        });
+        if(!correct) btn.classList.add('wrong');
+      });
+    });
+  });
+
+  // ---- INIT ----
+  resetGame();
+  rebuildExplore();
+})();
+</script>
+</body>
+</html>

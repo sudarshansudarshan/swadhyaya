@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Nullspace — Hidden Line of the Matrix</title>
+<script src="https://cdn.plot.ly/plotly-2.32.0.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=IBM+Plex+Mono:wght@500;600&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#FAF5E8; --paper-line:#D8CFB6; --ink:#26332B; --ink-soft:#5B6B60;
+    --fn:#1F6F5C; --fn-soft:#DCEDE7; --pt:#7B5EA7; --pt-soft:#EAE3F5;
+    --target:#B8860B; --target-soft:#F3E9CE; --d1:#B5502E; --d1-soft:#FBEFE8;
+    --card:#FFFDF7; --shadow:0 2px 10px rgba(38,51,43,0.08);
+  }
+  *{box-sizing:border-box;} html,body{margin:0;padding:0;}
+  body{
+    background:repeating-linear-gradient(#FAF5E8 0px,#FAF5E8 27px,var(--paper-line) 28px),var(--paper);
+    background-size:100% 28px; color:var(--ink); font-family:'Source Sans 3',sans-serif;
+    min-height:100vh; padding:28px 16px 60px;
+  }
+  .wrap{max-width:1100px;margin:0 auto;}
+  header.hero{background:var(--card);border:1px solid var(--paper-line);border-radius:14px;box-shadow:var(--shadow);padding:26px 28px 22px;margin-bottom:20px;}
+  .eyebrow{font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);margin:0 0 6px;}
+  h1{font-family:'Caveat',cursive;font-weight:700;font-size:38px;margin:0 0 10px;line-height:1.05;}
+  header.hero p{max-width:680px;line-height:1.55;font-size:15.5px;margin:0 0 8px;}
+  .dim-grid{display:flex;gap:14px;flex-wrap:wrap;margin-top:12px;}
+  .dim-grid span{font-family:'IBM Plex Mono',monospace;font-size:13px;padding:8px 14px;border-radius:8px;font-weight:600;border:1px solid var(--paper-line);background:var(--paper);}
+  .grid-layout{display:grid;grid-template-columns:300px 1fr;gap:20px;align-items:start;}
+  @media (max-width:800px){.grid-layout{grid-template-columns:1fr;}}
+  .card{background:var(--card);border:1px solid var(--paper-line);border-radius:14px;box-shadow:var(--shadow);padding:20px;}
+  .panel-title{font-family:'Caveat',cursive;font-weight:700;font-size:24px;margin:0 0 4px;}
+  .panel-sub{font-size:13px;color:var(--ink-soft);margin:0 0 14px;line-height:1.4;}
+  .field{margin-bottom:14px;}
+  .field label{display:flex;justify-content:space-between;font-size:13.5px;font-weight:600;margin-bottom:6px;}
+  .field label span.val{font-family:'IBM Plex Mono',monospace;font-weight:600;color:var(--pt);}
+  input[type=number]{width:100%;padding:9px 10px;border-radius:8px;border:1px solid var(--paper-line);font-family:'IBM Plex Mono',monospace;font-size:16px;background:var(--paper);color:var(--ink);}
+  input[type=number]:focus{outline:2px solid var(--pt);outline-offset:-1px;border-color:var(--pt);}
+  .helper{font-size:12px;color:var(--ink-soft);margin-top:4px;line-height:1.4;}
+  button{font-family:'Source Sans 3',sans-serif;font-weight:600;font-size:14.5px;border:none;border-radius:9px;padding:11px 16px;cursor:pointer;width:100%;transition:transform .08s ease,filter .15s ease;}
+  button:active{transform:translateY(1px);}button:disabled{opacity:.4;cursor:not-allowed;}
+  .btn-primary{background:var(--fn);color:#fff;}.btn-primary:hover:not(:disabled){filter:brightness(1.08);}
+  .btn-secondary{background:var(--paper);color:var(--ink);border:1px solid var(--paper-line);margin-top:8px;}
+  .btn-secondary:hover:not(:disabled){background:#F0E9D6;}
+  .status{font-size:13.5px;line-height:1.5;padding:12px;border-radius:9px;background:var(--paper);border:1px solid var(--paper-line);margin-bottom:14px;min-height:20px;}
+  .status.feedback-good{background:var(--fn-soft);border-color:var(--fn);color:var(--fn);font-weight:600;}
+  .status.feedback-target{background:var(--target-soft);border-color:var(--target);color:var(--target);font-weight:600;}
+  .steps{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap;}
+  .step-dot{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:600;border:1.5px solid var(--paper-line);color:var(--ink-soft);background:var(--paper);}
+  .step-dot.done{background:var(--fn);border-color:var(--fn);color:#fff;}
+  .step-dot.active{border-color:var(--pt);color:var(--pt);background:var(--pt-soft);}
+  .reflect,.explore{margin-top:20px;padding-top:16px;border-top:1px dashed var(--paper-line);}
+  .reflect.hidden,.explore.hidden{display:none;}
+  .q{margin-bottom:16px;}.q p.qtext{font-weight:600;margin:0 0 8px;font-size:14.5px;}
+  .options{display:flex;gap:8px;flex-wrap:wrap;}
+  .opt{padding:8px 14px;border-radius:8px;border:1px solid var(--paper-line);background:var(--paper);font-size:13.5px;cursor:pointer;font-weight:600;}
+  .opt.correct{background:var(--fn-soft);border-color:var(--fn);color:var(--fn);}
+  .opt.wrong{background:#F6DCD4;border-color:var(--d1);color:#8C3A1F;}
+  .opt:disabled{cursor:default;}
+  .explore .panel-title{font-size:22px;}
+  footer.note{text-align:center;font-size:12px;color:var(--ink-soft);margin-top:26px;font-family:'IBM Plex Mono',monospace;}
+
+  .matrix-display{text-align:center;font-family:'IBM Plex Mono',monospace;font-size:22px;padding:18px;border-radius:10px;background:var(--paper);border:1px solid var(--paper-line);margin-bottom:12px;line-height:2;}
+  .matrix-display .lparen{font-size:32px;color:var(--ink-soft);}
+  .matrix-display .rparen{font-size:32px;color:var(--ink-soft);}
+  .matrix-display .row{display:inline-block;margin:0 3px;}
+  .matrix-display .el{display:inline-block;width:28px;text-align:center;}
+  .matrix-display .highlight-row{color:var(--d1);}
+  .matrix-display .dep-row{opacity:0.4;text-decoration:line-through;}
+
+  .eq-system{font-family:'IBM Plex Mono',monospace;font-size:15px;line-height:2;padding:12px;border-radius:8px;background:var(--paper);border:1px solid var(--paper-line);margin:6px 0;}
+  .eq-system .eq{margin:2px 0;}
+
+  .calc-box{font-family:'IBM Plex Mono',monospace;font-size:13px;line-height:1.7;padding:12px;border-radius:8px;background:var(--paper);border:1px solid var(--paper-line);margin-top:10px;}
+  .calc-box .step-label{font-size:11px;color:var(--ink-soft);font-weight:600;margin-bottom:4px;}
+  .calc-box .result{font-size:15px;font-weight:700;color:var(--pt);margin:6px 0;}
+  .calc-box .eq{margin:3px 0;}
+
+  .sol-table{width:100%;border-collapse:collapse;font-family:'IBM Plex Mono',monospace;font-size:12px;margin:8px 0;}
+  .sol-table th{font-size:10px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.05em;padding:3px 5px;border-bottom:1px solid var(--paper-line);text-align:right;}
+  .sol-table th:first-child{text-align:center;}
+  .sol-table td{padding:3px 5px;text-align:right;border-bottom:1px solid var(--paper-line);}
+  .sol-table td:first-child{text-align:center;color:var(--ink-soft);}
+
+  .plot-wrap{width:100%;height:380px;border-radius:10px;overflow:hidden;border:1px solid var(--paper-line);background:#fff;}
+
+  .explore-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin:10px 0;}
+  .explore-grid .field{margin-bottom:0;}
+  .explore-grid .field label{font-size:11px;}
+  .explore-grid .field input{font-size:12px;padding:5px 6px;}
+
+  .module-map{font-size:13px;line-height:1.7;padding:12px;border-radius:8px;background:var(--pt-soft);border:1px solid var(--pt);margin-top:10px;}
+  .module-map strong{color:var(--pt);}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <p class="eyebrow">Linear Algebra · Nullspace</p>
+    <h1>The Nullspace — Hidden Line of the Matrix</h1>
+    <p>For matrix <strong>A</strong> = [[1,2,3],[4,5,6],[7,8,9]], find all <strong>(x,y,z)</strong> such that <strong>A·(x,y,z)ᵀ = 0</strong>. The set of all solutions is the <strong>nullspace</strong> — a hidden line through the origin in ℝ³.</p>
+    <div class="dim-grid">
+      <span style="background:var(--fn-soft);border-color:var(--fn);color:var(--fn);">A: 3×3</span>
+      <span style="background:var(--d1-soft);border-color:var(--d1);color:var(--d1);">rank = 2</span>
+      <span style="background:var(--pt-soft);border-color:var(--pt);color:var(--pt);">nullity = 1 → line</span>
+    </div>
+  </header>
+
+  <div class="grid-layout">
+    <div class="card">
+      <p class="panel-title" id="stepTitle">The Matrix</p>
+      <p class="panel-sub" id="stepSub">What does A look like?</p>
+
+      <div id="matrixDisplay" class="matrix-display"></div>
+
+      <div id="stepContent"></div>
+
+      <div class="steps" id="stepDots"></div>
+
+      <div class="status" id="statusBox">Step 1 of 5 — Examine the matrix A.</div>
+
+      <button class="btn-primary" id="checkBtn">Reveal</button>
+      <button class="btn-secondary" id="resetBtn">Start Over</button>
+    </div>
+
+    <div class="card">
+      <p class="panel-title" id="rightTitle">ℝ³: Row Space &amp; Nullspace</p>
+      <p class="panel-sub" id="rightSub">Two orthogonal subspaces.</p>
+      <div class="plot-wrap" id="plotlyDiv"></div>
+    </div>
+  </div>
+
+  <div class="card reflect hidden" id="reflectCard">
+    <p class="panel-title">Nullspace &amp; Orthogonal Complements</p>
+    <p class="panel-sub">Every nullspace vector is orthogonal to every row of A.</p>
+
+    <div class="q" id="q1">
+      <p class="qtext">1. What is the rank of A = [[1,2,3],[4,5,6],[7,8,9]]?</p>
+      <div class="options">
+        <button class="opt" data-correct="false">3 — all rows are independent</button>
+        <button class="opt" data-correct="true">2 — Row₃ = 2·Row₂ − Row₁, so one row is redundant</button>
+        <button class="opt" data-correct="false">1 — all rows are multiples</button>
+      </div>
+    </div>
+
+    <div class="q" id="q2">
+      <p class="qtext">2. What is the nullspace of A?</p>
+      <div class="options">
+        <button class="opt" data-correct="false">{(0,0,0)} only — A is invertible</button>
+        <button class="opt" data-correct="true">span{(1,−2,1)} — a line through the origin</button>
+        <button class="opt" data-correct="false">A plane — since rank is 2</button>
+      </div>
+    </div>
+
+    <div class="q" id="q3">
+      <p class="qtext">3. How does the nullspace relate to the row space?</p>
+      <div class="options">
+        <button class="opt" data-correct="true">They are orthogonal complements — every nullspace vector ⟂ every row.</button>
+        <button class="opt" data-correct="false">They are the same subspace.</button>
+        <button class="opt" data-correct="false">They are parallel.</button>
+      </div>
+    </div>
+
+    <div class="q" id="q4">
+      <p class="qtext">4. Which earlier activity found the nullspace of a single row vector [1,2,3]?</p>
+      <div class="options">
+        <button class="opt" data-correct="true">Brahmagupta's Balance — [1,2,3]·(x,y,z)=0 gave a 2D nullspace (plane).</button>
+        <button class="opt" data-correct="false">Spanning the Plane — that was about a spanning set.</button>
+        <button class="opt" data-correct="false">Chanakya's Audit — that was overdetermined.</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="card explore hidden" id="exploreCard">
+    <p class="panel-title">Explore: Change the Matrix</p>
+    <p class="panel-sub">Edit the entries of A and see how the nullspace changes.</p>
+
+    <div class="explore-grid">
+      <div class="field"><label>a₁₁</label><input type="number" id="e00" value="1"></div>
+      <div class="field"><label>a₁₂</label><input type="number" id="e01" value="2"></div>
+      <div class="field"><label>a₁₃</label><input type="number" id="e02" value="3"></div>
+      <div class="field"><label>a₂₁</label><input type="number" id="e10" value="4"></div>
+      <div class="field"><label>a₂₂</label><input type="number" id="e11" value="5"></div>
+      <div class="field"><label>a₂₃</label><input type="number" id="e12" value="6"></div>
+      <div class="field"><label>a₃₁</label><input type="number" id="e20" value="7"></div>
+      <div class="field"><label>a₃₂</label><input type="number" id="e21" value="8"></div>
+      <div class="field"><label>a₃₃</label><input type="number" id="e22" value="9"></div>
+    </div>
+
+    <div id="expResult" style="margin-top:10px;font-family:'IBM Plex Mono',monospace;font-size:13px;line-height:1.8;background:var(--paper);border:1px solid var(--paper-line);border-radius:10px;padding:14px;"></div>
+  </div>
+
+  <footer class="note">nullspace(A) = span{(1,−2,1)} · dim = 1 · row space ⟂ nullspace</footer>
+</div>
+
+<script>
+(function(){
+  const $ = id => document.getElementById(id);
+
+  // stored as numbers
+  let A = [[1,2,3],[4,5,6],[7,8,9]];
+
+  const STEPS = [
+    { label:'The Matrix', desc:'Examine A. What do you notice?', key:'intro' },
+    { label:'The System', desc:'Set up A·x = 0 as three equations.', key:'system' },
+    { label:'Solving', desc:'Solve the homogeneous system.', key:'solve' },
+    { label:'The Nullspace', desc:'All solutions form a line in ℝ³.', key:'nullspace' },
+    { label:'The Big Picture', desc:'Nullspace as orthogonal complement of row space.', key:'bigpicture' },
+  ];
+  const TOTAL = STEPS.length;
+  let step = 0;
+  let revealed = false;
+
+  const stepDots = $('stepDots');
+  const statusBox = $('statusBox');
+  const checkBtn = $('checkBtn');
+  const resetBtn = $('resetBtn');
+  const reflectCard = $('reflectCard');
+  const exploreCard = $('exploreCard');
+  const stepTitle = $('stepTitle');
+  const stepSub = $('stepSub');
+  const stepContent = $('stepContent');
+  const rightTitle = $('rightTitle');
+  const rightSub = $('rightSub');
+
+  for(let i=1;i<=TOTAL;i++){
+    const d = document.createElement('div');
+    d.className='step-dot'; d.textContent=i; d.id='step-'+i;
+    stepDots.appendChild(d);
+  }
+
+  function getSD(){ return STEPS[step]; }
+  function fmt(n){ return Number.isInteger(n) ? n : parseFloat(n.toFixed(4)); }
+
+  // ----- Linear algebra helpers -----
+  function cross(u,v){
+    return [u[1]*v[2]-u[2]*v[1], u[2]*v[0]-u[0]*v[2], u[0]*v[1]-u[1]*v[0]];
+  }
+  function dot(u,v){ return u[0]*v[0]+u[1]*v[1]+u[2]*v[2]; }
+  function vecScale(s,v){ return [s*v[0],s*v[1],s*v[2]]; }
+  function vecAdd(u,v){ return [u[0]+v[0], u[1]+v[1], u[2]+v[2]]; }
+  function vecSub(u,v){ return [u[0]-v[0], u[1]-v[1], u[2]-v[2]]; }
+  function vecLen(v){ return Math.sqrt(v[0]*v[0]+v[1]*v[1]+v[2]*v[2]); }
+
+  // Find nullspace basis of 3x3 matrix
+  function nullspaceBasis(m){
+    // Gaussian elimination to find nullspace
+    // Augmented: [A | 0], but we only need to solve A·x = 0
+    // Make a copy
+    const mat = m.map(row => [...row]);
+    const n = 3;
+    let rank = 0;
+    let col = 0;
+    const pivotCols = [];
+    const pivotRows = [];
+
+    for(let row=0; row<n && col<n; col++){
+      // find pivot
+      let sel = -1;
+      for(let i=row; i<n; i++){
+        if(Math.abs(mat[i][col]) > 1e-10){ sel = i; break; }
+      }
+      if(sel === -1) continue;
+      // swap
+      [mat[row], mat[sel]] = [mat[sel], mat[row]];
+      const piv = mat[row][col];
+      for(let j=col; j<n; j++) mat[row][j] /= piv;
+      for(let i=0; i<n; i++){
+        if(i !== row && Math.abs(mat[i][col]) > 1e-10){
+          const factor = mat[i][col];
+          for(let j=col; j<n; j++) mat[i][j] -= factor * mat[row][j];
+        }
+      }
+      pivotRows.push(row);
+      pivotCols.push(col);
+      rank++;
+      row++;
+    }
+
+    const freeCols = [];
+    for(let j=0; j<n; j++){
+      if(!pivotCols.includes(j)) freeCols.push(j);
+    }
+
+    const basis = [];
+    for(let f of freeCols){
+      const v = [0,0,0];
+      v[f] = 1;
+      for(let pi=0; pi<pivotRows.length; pi++){
+        const r = pivotRows[pi];
+        const c = pivotCols[pi];
+        v[c] = -mat[r][f];
+      }
+      basis.push(v);
+    }
+
+    return {basis, rank, nullity: n - rank};
+  }
+
+  // Get a basis for the row space
+  function rowSpaceBasis(m){
+    const mat = m.map(row => [...row]);
+    const n = 3;
+    let rank = 0;
+    let col = 0;
+    const pivotCols = [];
+
+    for(let row=0; row<n && col<n; col++){
+      let sel = -1;
+      for(let i=row; i<n; i++){
+        if(Math.abs(mat[i][col]) > 1e-10){ sel = i; break; }
+      }
+      if(sel === -1) continue;
+      [mat[row], mat[sel]] = [mat[sel], mat[row]];
+      const piv = mat[row][col];
+      for(let j=col; j<n; j++) mat[row][j] /= piv;
+      for(let i=0; i<n; i++){
+        if(i !== row && Math.abs(mat[i][col]) > 1e-10){
+          const factor = mat[i][col];
+          for(let j=col; j<n; j++) mat[i][j] -= factor * mat[row][j];
+        }
+      }
+      pivotCols.push(col);
+      rank++;
+      row++;
+    }
+
+    const basis = [];
+    for(let pi=0; pi<pivotCols.length; pi++){
+      const c = pivotCols[pi];
+      const v = [];
+      for(let j=0; j<n; j++){
+        v.push(mat[pi][j]);
+      }
+      basis.push(v);
+    }
+    return basis;
+  }
+
+  // ----- Plotly -----
+  let plotlyPlot = null;
+
+  function drawRowSpaceNullspace(m, extraPts, showNullVec, showRows){
+    const nb = nullspaceBasis(m);
+    const rowBasis = rowSpaceBasis(m);
+    const r = nb.rank;
+    const n = 3;
+    const nullVecs = nb.basis;
+    const nullDim = nb.nullity;
+
+    const size = 4;
+    const gridN = 24;
+
+    const data = [];
+
+    // Row space plane (if rank=2) or line (if rank=1)
+    if(r === 2 && rowBasis.length === 2){
+      const u = rowBasis[0], v = rowBasis[1];
+      const ox = [], oy = [], oz = [];
+      for(let i=0;i<gridN;i++){
+        ox[i]=[]; oy[i]=[]; oz[i]=[];
+        for(let j=0;j<gridN;j++){
+          const s = -size + 2*size*i/(gridN-1);
+          const t = -size + 2*size*j/(gridN-1);
+          const p = vecAdd(vecScale(s,u), vecScale(t,v));
+          ox[i][j]=p[0]; oy[i][j]=p[1]; oz[i][j]=p[2];
+        }
+      }
+      data.push({
+        type:'surface', x:ox, y:oy, z:oz,
+        colorscale:[[0,'#7B5EA7'],[1,'#7B5EA7']],
+        opacity:0.25, showscale:false,
+        contours:{z:{show:true,width:1,color:'rgba(123,94,167,0.15)'}}
+      });
+    } else if(r === 1 && rowBasis.length === 1){
+      const u = rowBasis[0];
+      const pts = [];
+      for(let t=-size; t<=size; t+=0.3){
+        pts.push(vecScale(t,u));
+      }
+      data.push({
+        type:'scatter3d', mode:'lines',
+        x:pts.map(p=>p[0]), y:pts.map(p=>p[1]), z:pts.map(p=>p[2]),
+        line:{width:3, color:'#7B5EA7'}, name:'Row space'
+      });
+    }
+
+    // Nullspace line(s)
+    for(let vi=0; vi<nullVecs.length; vi++){
+      const nv = nullVecs[vi];
+      const color = '#B5502E';
+      const pts = [];
+      for(let t=-size; t<=size; t+=0.3){
+        pts.push(vecScale(t,nv));
+      }
+      data.push({
+        type:'scatter3d', mode:'lines',
+        x:pts.map(p=>p[0]), y:pts.map(p=>p[1]), z:pts.map(p=>p[2]),
+        line:{width:4, color, dash:'solid'},
+        name: nullDim === 1 ? 'Nullspace' : 'Nullspace basis '+vi
+      });
+
+      // null vector arrow
+      if(nullVecs.length<=2 && showNullVec){
+        const tip = nv;
+        data.push({
+          type:'scatter3d', mode:'markers+text',
+          x:[tip[0]], y:[tip[1]], z:[tip[2]],
+          marker:{size:6, color, symbol:'diamond', line:{color:'#fff',width:1}},
+          text:[`n = (${fmt(tip[0])}, ${fmt(tip[1])}, ${fmt(tip[2])})`],
+          textposition:'top center',
+          textfont:{size:10, color, family:'IBM Plex Mono'}
+        });
+        // origin dot
+        data.push({
+          type:'scatter3d', mode:'markers',
+          x:[0], y:[0], z:[0],
+          marker:{size:5, color:'#26332B', symbol:'circle'}
+        });
+      }
+    }
+
+    // Row vectors as arrows
+    if(showRows && rowBasis.length > 0){
+      for(let ri=0; ri<rowBasis.length; ri++){
+        const rv = rowBasis[ri];
+        const cols = ['#1F6F5C','#B8860B','#7B5EA7'];
+        const c = cols[ri%3];
+        data.push({
+          type:'scatter3d', mode:'lines+text',
+          x:[0, rv[0], null], y:[0, rv[1], null], z:[0, rv[2], null],
+          line:{width:3, color:c},
+          text:[null, `r${ri+1}=(${fmt(rv[0])},${fmt(rv[1])},${fmt(rv[2])})`, null],
+          textposition:'top center',
+          textfont:{size:9, color:c, family:'IBM Plex Mono'}
+        });
+      }
+    }
+
+    // extra points
+    if(extraPts && extraPts.length > 0){
+      const px = extraPts.map(p=>p[0]);
+      const py = extraPts.map(p=>p[1]);
+      const pz = extraPts.map(p=>p[2]);
+      data.push({
+        type:'scatter3d', mode:'markers',
+        x:px, y:py, z:pz,
+        marker:{size:3, color:'#B5502E', opacity:0.6},
+        name:'Points'
+      });
+    }
+
+    const axisStyle = {
+      showgrid:true, gridcolor:'rgba(0,0,0,0.06)',
+      zeroline:true, zerolinecolor:'rgba(0,0,0,0.15)',
+      showspikes:false, title:{font:{size:11}},
+      tickfont:{size:9}
+    };
+
+    const layout = {
+      scene:{
+        xaxis:{...axisStyle, title:'x'},
+        yaxis:{...axisStyle, title:'y'},
+        zaxis:{...axisStyle, title:'z'},
+        camera:{eye:{x:1.8, y:1.8, z:1.2}},
+        aspectmode:'cube'
+      },
+      margin:{l:0, r:0, b:0, t:0, pad:0},
+      paper_bgcolor:'#FFFDF7',
+      font:{family:'Source Sans 3, sans-serif'},
+      showlegend: false
+    };
+
+    const div = $('plotlyDiv');
+    if(plotlyPlot){
+      Plotly.react(div, data, layout);
+    } else {
+      Plotly.newPlot(div, data, layout).then(p => plotlyPlot = p);
+    }
+  }
+
+  // ----- Render matrix HTML -----
+  function renderMatrix(m, highlightDep){
+    let html = `<span class="lparen">⎡</span>`;
+    for(let i=0;i<3;i++){
+      if(i>0) html += `<span class="lparen" style="visibility:hidden;">⎢</span>`;
+      html += `<span class="row${highlightDep && i===2 ? ' dep-row' : ''}">`;
+      for(let j=0;j<3;j++){
+        html += `<span class="el">${m[i][j]}</span>`;
+      }
+      html += `</span>`;
+      if(i===0) html += `<span class="rparen">⎤</span>`;
+      else if(i===1) html += `<span class="rparen" style="visibility:hidden;">⎥</span>`;
+      else html += `<span class="rparen">⎦</span>`;
+      if(i<2) html += `<br>`;
+    }
+    return html;
+  }
+
+  // ----- Step Content -----
+  function renderStep(){
+    const sd = getSD();
+    stepTitle.textContent = sd.label;
+    stepSub.textContent = sd.desc;
+
+    const nb = nullspaceBasis(A);
+    const rowBasis = rowSpaceBasis(A);
+
+    let html = '';
+
+    document.getElementById('matrixDisplay').innerHTML = renderMatrix(A, true);
+
+    if(sd.key === 'intro'){
+      html = `<div class="calc-box">`;
+      html += `<div class="step-label">Matrix A with row-dependency hinted</div><br>`;
+      html += `<strong>A</strong> = <span style="font-size:16px;">⎡1 2 3⎤<br>⎢4 5 6⎥<br>⎣7 8 9⎦</span><br><br>`;
+      html += `Look at the rows: 1→2→3, 4→5→6, 7→8→9.<br>`;
+      html += `Each row is an <strong>arithmetic progression</strong> with step 1.<br>`;
+      html += `The third row is suspicious — is it a combination of the first two?<br><br>`;
+      html += `<span style="color:var(--ink-soft);font-size:12px;">Hint: Row₂ − Row₁ = (3,3,3), Row₃ − Row₂ = (3,3,3)</span>`;
+      html += `</div>`;
+      rightTitle.textContent = 'Matrix A';
+      rightSub.textContent = '3×3 with dependent rows (rank 2)';
+      drawRowSpaceNullspace(A, [], false, false);
+    } else if(sd.key === 'system'){
+      html = `<div class="eq-system">`;
+      html += `<div class="eq"><strong>A·x = 0</strong> means three equations:</div><br>`;
+      html += `<div class="eq">(1)x + (2)y + (3)z = 0</div>`;
+      html += `<div class="eq">(4)x + (5)y + (6)z = 0</div>`;
+      html += `<div class="eq" style="opacity:0.4;">(7)x + (8)y + (9)z = 0  <span style="color:var(--ink-soft);font-size:11px;">(redundant)</span></div><br>`;
+      html += `<div class="eq"><span style="color:var(--pt);font-weight:700;">Only 2 independent equations → infinite solutions expected.</span></div>`;
+      html += `</div>`;
+      rightTitle.textContent = 'The System A·x = 0';
+      rightSub.textContent = '3 equations, but only 2 are independent';
+      drawRowSpaceNullspace(A, [], false, true);
+    } else if(sd.key === 'solve'){
+      html = `<div class="calc-box">`;
+      html += `<div class="step-label">Solving x + 2y + 3z = 0 and 4x + 5y + 6z = 0</div><br>`;
+      html += `<div class="eq">Eq(1): x + 2y + 3z = 0</div>`;
+      html += `<div class="eq">Eq(2): 4x + 5y + 6z = 0</div><br>`;
+      html += `<div class="eq">Subtract 4×Eq(1) from Eq(2):</div>`;
+      html += `<div class="eq">(4−4)x + (5−8)y + (6−12)z = 0</div>`;
+      html += `<div class="eq result">−3y − 6z = 0 → y = −2z</div><br>`;
+      html += `<div class="eq">Substitute into Eq(1):</div>`;
+      html += `<div class="eq">x + 2(−2z) + 3z = 0</div>`;
+      html += `<div class="eq result">x − 4z + 3z = 0 → x = z</div><br>`;
+      html += `<div class="eq" style="font-size:16px;font-weight:700;color:var(--pt);">∴ (x,y,z) = (t, −2t, t) = t·(1, −2, 1)</div>`;
+      html += `</div>`;
+      rightTitle.textContent = 'Solving A·x = 0';
+      rightSub.textContent = 'One free parameter → line through origin';
+      drawRowSpaceNullspace(A, [], true, true);
+    } else if(sd.key === 'nullspace'){
+      const nullVec = nb.basis[0] || [0,0,0];
+      const pts = [];
+      for(let t=-3; t<=3; t+=0.5){
+        pts.push(vecScale(t, nullVec));
+      }
+
+      html = `<div class="calc-box">`;
+      html += `<div class="step-label">The Nullspace of A</div><br>`;
+      html += `<div class="result">N(A) = span{(1, −2, 1)}</div><br>`;
+      html += `<div class="eq">dim(N(A)) = nullity = n − rank = 3 − 2 = <strong>1</strong></div><br>`;
+      html += `<div class="eq">All solutions lie on the line through (0,0,0) in direction (1,−2,1).</div><br>`;
+      html += `<table class="sol-table"><thead><tr><th>t</th><th>x</th><th>y</th><th>z</th></tr></thead><tbody>`;
+      for(let t=-3; t<=3; t++){
+        const p = vecScale(t, nullVec);
+        html += `<tr${t===0?' class="tr0" style="font-weight:700;color:var(--fn);"':''}>`;
+        html += `<td>${t}</td><td>${fmt(p[0])}</td><td>${fmt(p[1])}</td><td>${fmt(p[2])}</td></tr>`;
+      }
+      html += `</tbody></table>`;
+      html += `</div>`;
+      rightTitle.textContent = 'Nullspace = span{(1,−2,1)}';
+      rightSub.textContent = 'A line through the origin (1D subspace)';
+      drawRowSpaceNullspace(A, pts, true, true);
+    } else if(sd.key === 'bigpicture'){
+      const nullVec = nb.basis[0] || [0,0,0];
+
+      html = `<div class="calc-box">`;
+      html += `<div class="step-label">The Big Picture — Orthogonal Complements in ℝ³</div><br>`;
+      html += `<strong>Row space</strong> = span{${rowBasis.map(v => `(${v.map(fmt).join(',')})`).join(', ')}} is a <strong style="color:var(--pt);">plane</strong> (2D).<br><br>`;
+      html += `<strong>Nullspace</strong> = span{(${nullVec.map(fmt).join(',')})} is a <strong style="color:var(--d1);">line</strong> (1D).<br><br>`;
+      html += `<span style="font-size:15px;font-weight:700;color:var(--fn);">Every nullspace vector ⟂ every row vector.</span><br><br>`;
+      html += `Check: (1,−2,1)·(1,2,3) = 1−4+3 = 0<br>`;
+      html += `Check: (1,−2,1)·(4,5,6) = 4−10+6 = 0<br><br>`;
+      html += `dim(row space) + dim(nullspace) = 2 + 1 = 3 = ℝ³<br><br>`;
+      html += `The nullspace is the <strong>orthogonal complement</strong> of the row space.`;
+      html += `</div>`;
+
+      // Module connection
+      html += `<div class="module-map">`;
+      html += `<strong>Connection to all 5 activities in this module:</strong><br><br>`;
+      html += `1. <strong>Chanakya's Audit</strong> — 3 equations for 2 unknowns (overdetermined). Here we have 3 eqns for 3 unknowns, but they're dependent → underdetermined.<br><br>`;
+      html += `2. <strong>Mood Chain</strong> — solved for steady-state via equations πP = π. Same idea: solving homogeneous systems for invariant directions.<br><br>`;
+      html += `3. <strong>City Chain</strong> — 3-state Markov chain, solved 3 equations for steady state π (rank-2 system, unique solution with Σπᵢ=1).<br><br>`;
+      html += `4. <strong>Brahmagupta's Balance</strong> — [1,2,3]·(x,y,z)=0 gave <strong>nullity=2</strong> (a plane). Here A·x=0 gives <strong>nullity=1</strong> (a line). Same idea, different dimensions!<br><br>`;
+      html += `5. <strong>Spanning the Plane</strong> — span{(1,2,1),(2,7,3)} is a 2D subspace. The <strong>row space</strong> of A here is also a plane. The <strong>nullspace</strong> is the line orthogonal to it.<br><br>`;
+      html += `<strong>Thread:</strong> x+y+z=0 → A·x=0 · overdetermined → underdetermined → spanning sets → nullspaces. Every activity explores <strong>solving linear systems and the subspaces they define</strong>.`;
+      html += `</div>`;
+
+      rightTitle.textContent = 'The Big Picture';
+      rightSub.textContent = 'Row space (plane) ⟂ Nullspace (line)';
+      drawRowSpaceNullspace(A, [], true, true);
+    }
+
+    stepContent.innerHTML = html;
+
+    if(step >= TOTAL){
+      checkBtn.disabled = true; checkBtn.textContent = 'Complete';
+    } else if(revealed){
+      checkBtn.textContent = 'Next Step';
+    } else {
+      checkBtn.textContent = 'Reveal';
+    }
+  }
+
+  function markDots(){
+    document.querySelectorAll('.step-dot').forEach(d=>d.classList.remove('active'));
+    for(let i=0;i<step&&i<TOTAL;i++){
+      const d=$('step-'+(i+1)); if(d) d.classList.add('done');
+    }
+    if(step < TOTAL){ const d=$('step-'+(step+1)); if(d) d.classList.add('active'); }
+  }
+
+  function setStatus(html, cls){
+    statusBox.innerHTML = html;
+    statusBox.className = 'status' + (cls ? ' '+cls : '');
+  }
+
+  function advance(){
+    if(step>=TOTAL){
+      checkBtn.disabled=true;
+      setTimeout(()=>{reflectCard.classList.remove('hidden');exploreCard.classList.remove('hidden');reflectCard.scrollIntoView({behavior:'smooth',block:'nearest'});},500);
+      setStatus('Complete! Explore the nullspace of your own matrix below.','feedback-target');
+      return;
+    }
+    revealed = true;
+    const sd = getSD();
+    let msg;
+    if(sd.key === 'intro') msg = 'The rows are arithmetic progressions — Row₂−Row₁ = Row₃−Row₂ = (3,3,3).';
+    else if(sd.key === 'system') msg = 'Three equations but only two are independent → infinite solutions.';
+    else if(sd.key === 'solve') msg = 'x = z, y = −2z → all solutions are multiples of (1, −2, 1).';
+    else if(sd.key === 'nullspace') msg = 'Nullspace = span{(1,−2,1)} → a line in ℝ³.';
+    else msg = 'Nullspace ⟂ Row space. dim(R)+dim(N)=3.';
+    setStatus(msg,'feedback-good');
+    markDots(); renderStep();
+  }
+
+  function nextStep(){
+    if(!revealed){
+      advance();
+    } else {
+      step++; revealed = false;
+      if(step<TOTAL){
+        const sd = getSD();
+        setStatus(`Step ${step+1}: ${sd.desc}`);
+        renderStep(); markDots();
+      } else {
+        setStatus('All steps complete!','feedback-target');
+        checkBtn.disabled = true;
+        setTimeout(()=>{reflectCard.classList.remove('hidden');exploreCard.classList.remove('hidden');reflectCard.scrollIntoView({behavior:'smooth',block:'nearest'});},500);
+      }
+    }
+  }
+
+  checkBtn.addEventListener('click', nextStep);
+
+  resetBtn.addEventListener('click', ()=>{
+    step=0; revealed=false;
+    checkBtn.disabled=false;
+    reflectCard.classList.add('hidden');
+    exploreCard.classList.add('hidden');
+    document.querySelectorAll('.step-dot').forEach(d=>d.classList.remove('done','active'));
+    const f=$('step-1'); if(f) f.classList.add('active');
+    A = [[1,2,3],[4,5,6],[7,8,9]];
+    // Reset explore inputs
+    const vals = [1,2,3,4,5,6,7,8,9];
+    for(let i=0;i<9;i++){ const inp = $('e'+Math.floor(i/3)+(i%3)); if(inp) inp.value = vals[i]; }
+    renderStep(); markDots();
+    setStatus('Step 1 of 5 — Examine the matrix A.');
+  });
+
+  // ---- EXPLORE ----
+  function renderExplore(){
+    const m = [[0,0,0],[0,0,0],[0,0,0]];
+    for(let i=0;i<3;i++) for(let j=0;j<3;j++){
+      m[i][j] = parseFloat($('e'+i+j).value) || 0;
+    }
+    A = m;
+
+    const nb = nullspaceBasis(m);
+    const rowBasis = rowSpaceBasis(m);
+    const showNullVec = nb.nullity > 0;
+
+    document.getElementById('matrixDisplay').innerHTML = renderMatrix(m, nb.rank < 3);
+
+    let html = `<div class="step-label" style="margin-bottom:4px;">rank = ${nb.rank}, nullity = ${nb.nullity}</div>`;
+    html += `<div style="display:flex;gap:12px;font-size:13px;font-weight:600;margin-bottom:6px;">`;
+    html += `<span style="color:var(--pt);">dim(row space) = ${nb.rank}</span>`;
+    html += `<span style="color:var(--d1);">dim(nullspace) = ${nb.nullity}</span>`;
+    html += `<span style="color:var(--ink-soft);">sum = ${nb.rank + nb.nullity}</span>`;
+    html += `</div>`;
+
+    if(nb.nullity > 0){
+      html += `<div class="step-label">Nullspace basis:</div>`;
+      for(let vi=0; vi<nb.basis.length; vi++){
+        const v = nb.basis[vi];
+        html += `<div style="font-size:15px;font-weight:700;color:var(--d1);">span{(${v.map(fmt).join(', ')})}</div>`;
+      }
+    } else {
+      html += `<div style="font-size:15px;font-weight:700;color:var(--fn);">Nullspace = {(0,0,0)} only — A is invertible.</div>`;
+    }
+
+    if(nb.rank > 0){
+      html += `<div class="step-label" style="margin-top:8px;">Row space basis:</div>`;
+      for(let vi=0; vi<rowBasis.length; vi++){
+        const v = rowBasis[vi];
+        html += `<div style="font-size:13px;color:var(--pt);">(${v.map(fmt).join(', ')})</div>`;
+      }
+    }
+
+    $('expResult').innerHTML = html;
+
+    // update plot
+    const extraPts = [];
+    if(nb.nullity === 1){
+      const nv = nb.basis[0];
+      for(let t=-3; t<=3; t+=0.5) extraPts.push(vecScale(t,nv));
+    }
+    drawRowSpaceNullspace(m, extraPts, showNullVec, true);
+
+    // update right panel labels for explore mode
+    if(step >= TOTAL){
+      rightTitle.textContent = 'Explore: Custom Matrix';
+      if(nb.nullity === 1){
+        const nv = nb.basis[0];
+        rightSub.textContent = `N(A) = span{(${nv.map(fmt).join(', ')})}`;
+      } else if(nb.nullity > 1){
+        rightSub.textContent = `N(A) has dimension ${nb.nullity}`;
+      } else {
+        rightSub.textContent = 'A is invertible — N(A) = {(0,0,0)}';
+      }
+    }
+  }
+
+  for(let i=0;i<3;i++) for(let j=0;j<3;j++){
+    $('e'+i+j).addEventListener('input', renderExplore);
+  }
+
+  // ---- QUIZ ----
+  document.querySelectorAll('.q .options').forEach(group=>{
+    group.querySelectorAll('.opt').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        const correct = btn.dataset.correct === 'true';
+        group.querySelectorAll('.opt').forEach(b=>{
+          b.disabled = true;
+          if(b.dataset.correct==='true') b.classList.add('correct');
+        });
+        if(!correct) btn.classList.add('wrong');
+      });
+    });
+  });
+
+  // ---- INIT ----
+  (function init(){
+    const f=$('step-1'); if(f) f.classList.add('active');
+    renderStep(); markDots();
+    setStatus('Step 1 of 5 — Examine the matrix A.');
+    renderExplore();
+  })();
+})();
+</script>
+</body>
+</html>

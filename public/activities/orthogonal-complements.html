@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Right Angle — Row Space ⟂ Nullspace</title>
+<script src="https://cdn.plot.ly/plotly-2.32.0.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=IBM+Plex+Mono:wght@500;600&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#FAF5E8; --paper-line:#D8CFB6; --ink:#26332B; --ink-soft:#5B6B60;
+    --fn:#1F6F5C; --fn-soft:#DCEDE7; --pt:#7B5EA7; --pt-soft:#EAE3F5;
+    --target:#B8860B; --target-soft:#F3E9CE; --d1:#B5502E; --d1-soft:#FBEFE8;
+    --card:#FFFDF7; --shadow:0 2px 10px rgba(38,51,43,0.08);
+  }
+  *{box-sizing:border-box;} html,body{margin:0;padding:0;}
+  body{
+    background:repeating-linear-gradient(#FAF5E8 0px,#FAF5E8 27px,var(--paper-line) 28px),var(--paper);
+    background-size:100% 28px; color:var(--ink); font-family:'Source Sans 3',sans-serif;
+    min-height:100vh; padding:28px 16px 60px;
+  }
+  .wrap{max-width:1100px;margin:0 auto;}
+  header.hero{background:var(--card);border:1px solid var(--paper-line);border-radius:14px;box-shadow:var(--shadow);padding:26px 28px 22px;margin-bottom:20px;}
+  .eyebrow{font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);margin:0 0 6px;}
+  h1{font-family:'Caveat',cursive;font-weight:700;font-size:38px;margin:0 0 10px;line-height:1.05;}
+  header.hero p{max-width:680px;line-height:1.55;font-size:15.5px;margin:0 0 8px;}
+  .dim-grid{display:flex;gap:14px;flex-wrap:wrap;margin-top:12px;}
+  .dim-grid span{font-family:'IBM Plex Mono',monospace;font-size:13px;padding:8px 14px;border-radius:8px;font-weight:600;border:1px solid var(--paper-line);background:var(--paper);}
+  .grid-layout{display:grid;grid-template-columns:300px 1fr;gap:20px;align-items:start;}
+  @media (max-width:800px){.grid-layout{grid-template-columns:1fr;}}
+  .card{background:var(--card);border:1px solid var(--paper-line);border-radius:14px;box-shadow:var(--shadow);padding:20px;}
+  .panel-title{font-family:'Caveat',cursive;font-weight:700;font-size:24px;margin:0 0 4px;}
+  .panel-sub{font-size:13px;color:var(--ink-soft);margin:0 0 14px;line-height:1.4;}
+  .field{margin-bottom:14px;}
+  .field label{display:flex;justify-content:space-between;font-size:13.5px;font-weight:600;margin-bottom:6px;}
+  input[type=number]{width:100%;padding:9px 10px;border-radius:8px;border:1px solid var(--paper-line);font-family:'IBM Plex Mono',monospace;font-size:16px;background:var(--paper);color:var(--ink);}
+  input[type=number]:focus{outline:2px solid var(--pt);outline-offset:-1px;border-color:var(--pt);}
+  button{font-family:'Source Sans 3',sans-serif;font-weight:600;font-size:14.5px;border:none;border-radius:9px;padding:11px 16px;cursor:pointer;width:100%;transition:transform .08s ease,filter .15s ease;}
+  button:active{transform:translateY(1px);}button:disabled{opacity:.4;cursor:not-allowed;}
+  .btn-primary{background:var(--fn);color:#fff;}.btn-primary:hover:not(:disabled){filter:brightness(1.08);}
+  .btn-secondary{background:var(--paper);color:var(--ink);border:1px solid var(--paper-line);margin-top:8px;}
+  .btn-secondary:hover:not(:disabled){background:#F0E9D6;}
+  .status{font-size:13.5px;line-height:1.5;padding:12px;border-radius:9px;background:var(--paper);border:1px solid var(--paper-line);margin-bottom:14px;min-height:20px;}
+  .status.feedback-good{background:var(--fn-soft);border-color:var(--fn);color:var(--fn);font-weight:600;}
+  .status.feedback-target{background:var(--target-soft);border-color:var(--target);color:var(--target);font-weight:600;}
+  .steps{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap;}
+  .step-dot{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:600;border:1.5px solid var(--paper-line);color:var(--ink-soft);background:var(--paper);}
+  .step-dot.done{background:var(--fn);border-color:var(--fn);color:#fff;}
+  .step-dot.active{border-color:var(--pt);color:var(--pt);background:var(--pt-soft);}
+  .reflect,.explore{margin-top:20px;padding-top:16px;border-top:1px dashed var(--paper-line);}
+  .reflect.hidden,.explore.hidden{display:none;}
+  .q{margin-bottom:16px;}.q p.qtext{font-weight:600;margin:0 0 8px;font-size:14.5px;}
+  .options{display:flex;gap:8px;flex-wrap:wrap;}
+  .opt{padding:8px 14px;border-radius:8px;border:1px solid var(--paper-line);background:var(--paper);font-size:13.5px;cursor:pointer;font-weight:600;}
+  .opt.correct{background:var(--fn-soft);border-color:var(--fn);color:var(--fn);}
+  .opt.wrong{background:#F6DCD4;border-color:var(--d1);color:#8C3A1F;}
+  .opt:disabled{cursor:default;}
+  .explore .panel-title{font-size:22px;}
+  footer.note{text-align:center;font-size:12px;color:var(--ink-soft);margin-top:26px;font-family:'IBM Plex Mono',monospace;}
+
+  .calc-box{font-family:'IBM Plex Mono',monospace;font-size:13px;line-height:1.7;padding:12px;border-radius:8px;background:var(--paper);border:1px solid var(--paper-line);margin-top:10px;}
+  .calc-box .step-label{font-size:11px;color:var(--ink-soft);font-weight:600;margin-bottom:4px;}
+  .calc-box .result{font-size:15px;font-weight:700;color:var(--pt);margin:6px 0;}
+  .calc-box .eq{margin:3px 0;}
+
+  .dot-grid{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0;}
+  .dot-cell{flex:1;min-width:140px;padding:12px;border-radius:8px;background:var(--card);border:1px solid var(--paper-line);text-align:center;}
+  .dot-cell .vec-label{font-size:11px;color:var(--ink-soft);margin-bottom:4px;}
+  .dot-cell .vec{font-size:14px;font-weight:600;}
+  .dot-cell .dot-val{font-size:22px;font-weight:700;margin:6px 0;}
+  .dot-cell .dot-val.zero{color:var(--fn);}
+  .dot-cell .dot-val.nonzero{color:var(--d1);}
+
+  .vert-sep{width:100%;height:1px;background:var(--paper-line);margin:4px 0;}
+
+  .matrix-display{text-align:center;font-family:'IBM Plex Mono',monospace;font-size:20px;padding:14px;border-radius:10px;background:var(--paper);border:1px solid var(--paper-line);margin-bottom:12px;line-height:1.8;}
+  .matrix-display .row{display:inline-block;}
+  .matrix-display .el{display:inline-block;width:26px;text-align:center;}
+  .matrix-display .lparen{font-size:28px;color:var(--ink-soft);}
+  .matrix-display .rparen{font-size:28px;color:var(--ink-soft);}
+
+  .sol-table{width:100%;border-collapse:collapse;font-family:'IBM Plex Mono',monospace;font-size:12px;margin:8px 0;}
+  .sol-table th{font-size:10px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.05em;padding:3px 5px;border-bottom:1px solid var(--paper-line);text-align:right;}
+  .sol-table th:first-child{text-align:center;}
+  .sol-table td{padding:3px 5px;text-align:right;border-bottom:1px solid var(--paper-line);}
+  .sol-table td:first-child{text-align:center;color:var(--ink-soft);}
+
+  .plot-wrap{width:100%;height:380px;border-radius:10px;overflow:hidden;border:1px solid var(--paper-line);background:#fff;}
+
+  .explore-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin:10px 0;}
+  .explore-grid .field{margin-bottom:0;}
+  .explore-grid .field label{font-size:11px;}
+  .explore-grid .field input{font-size:12px;padding:5px 6px;}
+
+  .perp-symbol{display:inline-block;font-size:28px;color:var(--pt);font-weight:700;margin:0 8px;vertical-align:middle;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <p class="eyebrow">Linear Algebra · Fundamental Theorem</p>
+    <h1>The Right Angle — Row Space ⟂ Nullspace</h1>
+    <p>For <strong>A</strong> = [[1,2,3],[4,5,6],[7,8,9]], every vector in the <strong>row space</strong> ℛ(A) is perpendicular to every vector in the <strong>nullspace</strong> 𝒩(A). This is the <strong>Fundamental Theorem of Linear Algebra</strong>: the row space and nullspace are <strong>orthogonal complements</strong> in ℝ³.</p>
+    <div class="dim-grid">
+      <span style="background:var(--pt-soft);border-color:var(--pt);color:var(--pt);">ℛ(A): plane (2D)</span>
+      <span style="background:var(--fn-soft);border-color:var(--fn);color:var(--fn);">𝒩(A): line (1D)</span>
+      <span style="background:var(--target-soft);border-color:var(--target);color:var(--target);">ℛ ⟂ 𝒩 · dim = 3</span>
+    </div>
+  </header>
+
+  <div class="grid-layout">
+    <div class="card">
+      <p class="panel-title" id="stepTitle">The Row Space</p>
+      <p class="panel-sub" id="stepSub">What vectors live in ℛ(A)?</p>
+
+      <div id="matrixDisplay" class="matrix-display"></div>
+
+      <div id="stepContent"></div>
+
+      <div class="steps" id="stepDots"></div>
+
+      <div class="status" id="statusBox">Step 1 of 5 — Find a basis for the row space.</div>
+
+      <button class="btn-primary" id="checkBtn">Reveal</button>
+      <button class="btn-secondary" id="resetBtn">Start Over</button>
+    </div>
+
+    <div class="card">
+      <p class="panel-title" id="rightTitle">ℛ(A) ⟂ 𝒩(A)</p>
+      <p class="panel-sub" id="rightSub">The plane and line are perpendicular.</p>
+      <div class="plot-wrap" id="plotlyDiv"></div>
+    </div>
+  </div>
+
+  <div class="card reflect hidden" id="reflectCard">
+    <p class="panel-title">Orthogonal Complements</p>
+    <p class="panel-sub">The Fundamental Theorem of Linear Algebra, Part I.</p>
+
+    <div class="q" id="q1">
+      <p class="qtext">1. If r ∈ ℛ(A) and n ∈ 𝒩(A), what is r · n?</p>
+      <div class="options">
+        <button class="opt" data-correct="true">0 — every row space vector ⟂ every nullspace vector.</button>
+        <button class="opt" data-correct="false">1 — they are parallel.</button>
+        <button class="opt" data-correct="false">It depends on the specific vectors.</button>
+      </div>
+    </div>
+
+    <div class="q" id="q2">
+      <p class="qtext">2. Why is every row vector rᵢ orthogonal to every nullspace vector n?</p>
+      <div class="options">
+        <button class="opt" data-correct="true">Because A·n = 0 means the i-th row is rᵢ·n = 0.</button>
+        <button class="opt" data-correct="false">Because the row space is a plane.</button>
+        <button class="opt" data-correct="false">Because n is in the nullspace of Aᵀ.</button>
+      </div>
+    </div>
+
+    <div class="q" id="q3">
+      <p class="qtext">3. If a linear combination of rows gives r = 2r₁ − 3r₂, and n ∈ 𝒩(A), then r · n = ?</p>
+      <div class="options">
+        <button class="opt" data-correct="true">0 — r = 2r₁−3r₂ and r₁·n=0, r₂·n=0 → r·n=0.</button>
+        <button class="opt" data-correct="false">2·0 − 3·0 = 0 but that's a coincidence for this matrix.</button>
+        <button class="opt" data-correct="false">It depends on the coefficients.</button>
+      </div>
+    </div>
+
+    <div class="q" id="q4">
+      <p class="qtext">4. dim(ℛ(A)) + dim(𝒩(A)) = ?</p>
+      <div class="options">
+        <button class="opt" data-correct="true">n (= 3) — the number of columns of A.</button>
+        <button class="opt" data-correct="false">m (= 3) — the number of rows of A.</button>
+        <button class="opt" data-correct="false">rank(A) = 2.</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="card explore hidden" id="exploreCard">
+    <p class="panel-title">Explore: Change A</p>
+    <p class="panel-sub">Edit the matrix — the orthogonality always holds.</p>
+
+    <div class="explore-grid">
+      <div class="field"><label>a₁₁</label><input type="number" id="e00" value="1"></div>
+      <div class="field"><label>a₁₂</label><input type="number" id="e01" value="2"></div>
+      <div class="field"><label>a₁₃</label><input type="number" id="e02" value="3"></div>
+      <div class="field"><label>a₂₁</label><input type="number" id="e10" value="4"></div>
+      <div class="field"><label>a₂₂</label><input type="number" id="e11" value="5"></div>
+      <div class="field"><label>a₂₃</label><input type="number" id="e12" value="6"></div>
+      <div class="field"><label>a₃₁</label><input type="number" id="e20" value="7"></div>
+      <div class="field"><label>a₃₂</label><input type="number" id="e21" value="8"></div>
+      <div class="field"><label>a₃₃</label><input type="number" id="e22" value="9"></div>
+    </div>
+
+    <div id="expResult" style="margin-top:10px;font-family:'IBM Plex Mono',monospace;font-size:13px;line-height:1.8;background:var(--paper);border:1px solid var(--paper-line);border-radius:10px;padding:14px;"></div>
+  </div>
+
+  <footer class="note">ℛ(A) ⟂ 𝒩(A) · dim(ℛ) + dim(𝒩) = n · Fundamental Theorem of Linear Algebra</footer>
+</div>
+
+<script>
+(function(){
+  const $ = id => document.getElementById(id);
+
+  let A = [[1,2,3],[4,5,6],[7,8,9]];
+
+  const STEPS = [
+    { label:'The Row Space ℛ(A)', desc:'Find a basis for the row space.', key:'rowspace' },
+    { label:'The Nullspace 𝒩(A)', desc:'Find a basis for the nullspace.', key:'nullspace' },
+    { label:'Dot Products', desc:'Verify rᵢ · n = 0 for every row.', key:'dotprod' },
+    { label:'Why? A·n = 0', desc:'The reason behind the orthogonality.', key:'why' },
+    { label:'Orthogonal Complements', desc:'ℛ(A) ⟂ 𝒩(A) in ℝ³.', key:'orthcomp' },
+  ];
+  const TOTAL = STEPS.length;
+  let step = 0;
+  let revealed = false;
+
+  const stepDots = $('stepDots');
+  const statusBox = $('statusBox');
+  const checkBtn = $('checkBtn');
+  const resetBtn = $('resetBtn');
+  const reflectCard = $('reflectCard');
+  const exploreCard = $('exploreCard');
+  const stepTitle = $('stepTitle');
+  const stepSub = $('stepSub');
+  const stepContent = $('stepContent');
+  const rightTitle = $('rightTitle');
+  const rightSub = $('rightSub');
+
+  for(let i=1;i<=TOTAL;i++){
+    const d = document.createElement('div');
+    d.className='step-dot'; d.textContent=i; d.id='step-'+i;
+    stepDots.appendChild(d);
+  }
+
+  function getSD(){ return STEPS[step]; }
+  function fmt(n){ return Number.isInteger(n) ? n : parseFloat(n.toFixed(4)); }
+
+  // ----- Linear algebra helpers -----
+  function dot(u,v){ return u[0]*v[0]+u[1]*v[1]+u[2]*v[2]; }
+  function vecScale(s,v){ return [s*v[0],s*v[1],s*v[2]]; }
+  function vecAdd(u,v){ return [u[0]+v[0], u[1]+v[1], u[2]+v[2]]; }
+  function vecSub(u,v){ return [u[0]-v[0], u[1]-v[1], u[2]-v[2]]; }
+  function cross(u,v){ return [u[1]*v[2]-u[2]*v[1], u[2]*v[0]-u[0]*v[2], u[0]*v[1]-u[1]*v[0]]; }
+  function vecLen(v){ return Math.sqrt(v[0]*v[0]+v[1]*v[1]+v[2]*v[2]); }
+
+  function nullspaceBasis(m){
+    const mat = m.map(row => [...row]);
+    const n = 3;
+    let rank = 0;
+    let col = 0;
+    const pivotCols = [];
+    const pivotRows = [];
+    for(let row=0; row<n && col<n; col++){
+      let sel = -1;
+      for(let i=row; i<n; i++){ if(Math.abs(mat[i][col]) > 1e-10){ sel = i; break; } }
+      if(sel === -1) continue;
+      [mat[row], mat[sel]] = [mat[sel], mat[row]];
+      const piv = mat[row][col];
+      for(let j=col; j<n; j++) mat[row][j] /= piv;
+      for(let i=0; i<n; i++){
+        if(i !== row && Math.abs(mat[i][col]) > 1e-10){
+          const factor = mat[i][col];
+          for(let j=col; j<n; j++) mat[i][j] -= factor * mat[row][j];
+        }
+      }
+      pivotRows.push(row); pivotCols.push(col);
+      rank++; row++;
+    }
+    const freeCols = [];
+    for(let j=0; j<n; j++){ if(!pivotCols.includes(j)) freeCols.push(j); }
+    const basis = [];
+    for(let f of freeCols){
+      const v = [0,0,0]; v[f] = 1;
+      for(let pi=0; pi<pivotRows.length; pi++){
+        const r = pivotRows[pi]; const c = pivotCols[pi];
+        v[c] = -mat[r][f];
+      }
+      basis.push(v);
+    }
+    return {basis, rank, nullity: n - rank};
+  }
+
+  function rowSpaceBasis(m){
+    const mat = m.map(row => [...row]);
+    const n = 3;
+    let rank = 0;
+    let col = 0;
+    const pivotCols = [];
+    for(let row=0; row<n && col<n; col++){
+      let sel = -1;
+      for(let i=row; i<n; i++){ if(Math.abs(mat[i][col]) > 1e-10){ sel = i; break; } }
+      if(sel === -1) continue;
+      [mat[row], mat[sel]] = [mat[sel], mat[row]];
+      const piv = mat[row][col];
+      for(let j=col; j<n; j++) mat[row][j] /= piv;
+      for(let i=0; i<n; i++){
+        if(i !== row && Math.abs(mat[i][col]) > 1e-10){
+          const factor = mat[i][col];
+          for(let j=col; j<n; j++) mat[i][j] -= factor * mat[row][j];
+        }
+      }
+      pivotCols.push(col); rank++; row++;
+    }
+    const basis = [];
+    for(let pi=0; pi<pivotCols.length; pi++){
+      const v = [mat[pi][0], mat[pi][1], mat[pi][2]];
+      basis.push(v);
+    }
+    return basis;
+  }
+
+  // ----- Plotly -----
+  let plotlyPlot = null;
+
+  function drawPerpSubspaces(m, highlight){
+    const nb = nullspaceBasis(m);
+    const rowBasis = rowSpaceBasis(m);
+    const r = nb.rank;
+    const nullVecs = nb.basis;
+
+    const size = 4;
+    const gridN = 24;
+    const data = [];
+
+    // Row space as a plane (if rank=2)
+    if(r === 2 && rowBasis.length === 2){
+      const u = rowBasis[0], v = rowBasis[1];
+      const ox=[], oy=[], oz=[];
+      for(let i=0;i<gridN;i++){
+        ox[i]=[]; oy[i]=[]; oz[i]=[];
+        for(let j=0;j<gridN;j++){
+          const s = -size + 2*size*i/(gridN-1);
+          const t = -size + 2*size*j/(gridN-1);
+          const p = vecAdd(vecScale(s,u), vecScale(t,v));
+          ox[i][j]=p[0]; oy[i][j]=p[1]; oz[i][j]=p[2];
+        }
+      }
+      data.push({
+        type:'surface', x:ox, y:oy, z:oz,
+        colorscale:[[0,'#7B5EA7'],[1,'#7B5EA7']],
+        opacity:0.2, showscale:false,
+        contours:{z:{show:true,width:1,color:'rgba(123,94,167,0.12)'}},
+        name:'ℛ(A) — row space'
+      });
+
+      // Row basis vectors as arrows
+      const rcols = ['#1F6F5C','#B8860B'];
+      for(let ri=0; ri<rowBasis.length; ri++){
+        const rv = rowBasis[ri];
+        data.push({
+          type:'scatter3d', mode:'lines+text',
+          x:[0, rv[0], null], y:[0, rv[1], null], z:[0, rv[2], null],
+          line:{width:4, color:rcols[ri]},
+          text:[null, `r${ri+1}=(${fmt(rv[0])},${fmt(rv[1])},${fmt(rv[2])})`, null],
+          textposition:'top center',
+          textfont:{size:10, color:rcols[ri], family:'IBM Plex Mono'}
+        });
+        data.push({
+          type:'scatter3d', mode:'markers',
+          x:[rv[0]], y:[rv[1]], z:[rv[2]],
+          marker:{size:6, color:rcols[ri], symbol:'diamond'}
+        });
+      }
+    }
+
+    // Row space as a line if rank=1
+    if(r === 1 && rowBasis.length === 1){
+      const u = rowBasis[0];
+      const pts = [];
+      for(let t=-size; t<=size; t+=0.3) pts.push(vecScale(t,u));
+      data.push({
+        type:'scatter3d', mode:'lines',
+        x:pts.map(p=>p[0]), y:pts.map(p=>p[1]), z:pts.map(p=>p[2]),
+        line:{width:3, color:'#7B5EA7'}, name:'ℛ(A)'
+      });
+    }
+
+    // Nullspace line(s)
+    for(let vi=0; vi<nullVecs.length; vi++){
+      const nv = nullVecs[vi];
+      const pts = [];
+      for(let t=-size; t<=size; t+=0.3) pts.push(vecScale(t,nv));
+      data.push({
+        type:'scatter3d', mode:'lines',
+        x:pts.map(p=>p[0]), y:pts.map(p=>p[1]), z:pts.map(p=>p[2]),
+        line:{width:4, color:'#B5502E', dash:'solid'},
+        name:'𝒩(A) — nullspace'
+      });
+      data.push({
+        type:'scatter3d', mode:'markers+text',
+        x:[nv[0]], y:[nv[1]], z:[nv[2]],
+        marker:{size:7, color:'#B5502E', symbol:'diamond', line:{color:'#fff',width:1}},
+        text:[`n = (${fmt(nv[0])}, ${fmt(nv[1])}, ${fmt(nv[2])})`],
+        textposition:'top center',
+        textfont:{size:10, color:'#B5502E', family:'IBM Plex Mono', weight:'bold'}
+      });
+    }
+
+    // Origin
+    data.push({
+      type:'scatter3d', mode:'markers',
+      x:[0], y:[0], z:[0],
+      marker:{size:5, color:'#26332B', symbol:'circle'}
+    });
+
+    // Highlighted vectors for demonstration
+    if(highlight && highlight.length > 0){
+      for(let h of highlight){
+        data.push({
+          type:'scatter3d', mode:'lines+text',
+          x:[0, h.vec[0], null], y:[0, h.vec[1], null], z:[0, h.vec[2], null],
+          line:{width:5, color:h.color, dash:'dash'},
+          text:[null, h.label, null], textposition:'top center',
+          textfont:{size:11, color:h.color, family:'IBM Plex Mono'}
+        });
+      }
+    }
+
+    const axisStyle = {
+      showgrid:true, gridcolor:'rgba(0,0,0,0.06)',
+      zeroline:true, zerolinecolor:'rgba(0,0,0,0.15)',
+      showspikes:false, title:{font:{size:11}},
+      tickfont:{size:9}
+    };
+
+    const layout = {
+      scene:{
+        xaxis:{...axisStyle, title:'x'},
+        yaxis:{...axisStyle, title:'y'},
+        zaxis:{...axisStyle, title:'z'},
+        camera:{eye:{x:1.8, y:1.8, z:1.2}},
+        aspectmode:'cube'
+      },
+      margin:{l:0, r:0, b:0, t:0, pad:0},
+      paper_bgcolor:'#FFFDF7',
+      font:{family:'Source Sans 3, sans-serif'},
+      showlegend: false
+    };
+
+    const div = $('plotlyDiv');
+    if(plotlyPlot){
+      Plotly.react(div, data, layout);
+    } else {
+      Plotly.newPlot(div, data, layout).then(p => plotlyPlot = p);
+    }
+  }
+
+  // ----- Render Matrix -----
+  function renderMatrix(m){
+    let html = `<span class="lparen">⎡</span>`;
+    for(let i=0;i<3;i++){
+      if(i>0) html += `<span class="lparen" style="visibility:hidden;">⎢</span>`;
+      html += `<span class="row">`;
+      for(let j=0;j<3;j++) html += `<span class="el">${m[i][j]}</span>`;
+      html += `</span>`;
+      if(i===0) html += `<span class="rparen">⎤</span>`;
+      else if(i===1) html += `<span class="rparen" style="visibility:hidden;">⎥</span>`;
+      else html += `<span class="rparen">⎦</span>`;
+      if(i<2) html += `<br>`;
+    }
+    return html;
+  }
+
+  // ----- Step Content -----
+  function renderStep(){
+    const sd = getSD();
+    stepTitle.textContent = sd.label;
+    stepSub.textContent = sd.desc;
+
+    const nb = nullspaceBasis(A);
+    const rowBasis = rowSpaceBasis(A);
+    const nullVec = nb.basis[0] || [0,0,0];
+
+    document.getElementById('matrixDisplay').innerHTML = renderMatrix(A);
+
+    let html = '';
+
+    if(sd.key === 'rowspace'){
+      html = `<div class="calc-box">`;
+      html += `<div class="step-label">Row space: all linear combinations of the rows of A</div><br>`;
+      html += `Row-reduced basis for ℛ(A):<br>`;
+      for(let ri=0; ri<rowBasis.length; ri++){
+        const rv = rowBasis[ri];
+        const c = ['#1F6F5C','#B8860B'][ri];
+        html += `<div class="eq" style="color:${c};font-size:15px;font-weight:700;">r${ri+1} = (${rv.map(fmt).join(', ')})</div>`;
+      }
+      html += `<br>`;
+      if(rowBasis.length === 2){
+        html += `Two independent vectors → ℛ(A) is a <strong>2D plane</strong> through the origin.<br>`;
+        html += `dim(ℛ(A)) = rank(A) = <strong>2</strong>.`;
+      } else if(rowBasis.length === 1){
+        html += `One vector → ℛ(A) is a <strong>1D line</strong>.<br>`;
+      } else {
+        html += `ℛ(A) = {(0,0,0)}.`;
+      }
+      html += `</div>`;
+      rightTitle.textContent = 'ℛ(A) — The Row Space';
+      rightSub.textContent = `Basis: ${rowBasis.map(v => `(${v.map(fmt).join(',')})`).join(', ')}`;
+      drawPerpSubspaces(A);
+    } else if(sd.key === 'nullspace'){
+      html = `<div class="calc-box">`;
+      html += `<div class="step-label">Nullspace: all solutions to A·x = 0</div><br>`;
+      html += `Solving A·x = 0 gives:<br>`;
+      html += `<div class="result" style="font-size:18px;">𝒩(A) = span{(1, −2, 1)}</div><br>`;
+      html += `Nullspace basis vector:<br>`;
+      html += `<div class="eq" style="color:var(--d1);font-size:15px;font-weight:700;">n = (${nullVec.map(fmt).join(', ')})</div><br>`;
+      html += `dim(𝒩(A)) = nullity = n − rank = 3 − 2 = <strong>1</strong>.<br>`;
+      html += `𝒩(A) is a <strong>line</strong> through the origin in ℝ³.`;
+      html += `</div>`;
+      rightTitle.textContent = '𝒩(A) — The Nullspace';
+      rightSub.textContent = `span{(${nullVec.map(fmt).join(',')})}`;
+      drawPerpSubspaces(A);
+    } else if(sd.key === 'dotprod'){
+      const rows = A;
+      const n = nullVec;
+
+      html = `<div class="calc-box">`;
+      html += `<div class="step-label">Compute rᵢ · n for each row</div><br>`;
+
+      for(let i=0; i<3; i++){
+        const dp = dot(rows[i], n);
+        const isZero = Math.abs(dp) < 1e-10;
+        html += `<div class="eq">r${i+1} · n = (${rows[i].map(fmt).join(',')}) · (${n.map(fmt).join(',')}) = ${fmt(dp)} ${isZero ? '✓' : '✗'}</div>`;
+      }
+      html += `<br>`;
+      html += `<div class="result" style="font-size:16px;">Every row ⟂ nullspace vector.</div><br>`;
+
+      html += `<div class="dot-grid">`;
+      for(let i=0; i<3; i++){
+        const dp = dot(rows[i], n);
+        html += `<div class="dot-cell"><div class="vec-label">r${i+1} · n</div>`;
+        html += `<div class="dot-val zero">${fmt(dp)}</div>`;
+        html += `<div class="vec" style="color:${['#1F6F5C','#B8860B','#7B5EA7'][i]};">(${rows[i].map(fmt).join(',')})</div>`;
+        html += `<div class="vec-label" style="margin-top:4px;">⟂ (${n.map(fmt).join(',')})</div></div>`;
+      }
+      html += `</div>`;
+
+      html += `</div>`;
+
+      rightTitle.textContent = 'Dot Products = 0';
+      rightSub.textContent = 'rᵢ · n = 0 for every row i';
+      const hl = [
+        {vec: rows[0], color:'#1F6F5C', label:'r₁'},
+        {vec: rows[1], color:'#B8860B', label:'r₂'},
+        {vec: rows[2], color:'#7B5EA7', label:'r₃'},
+        {vec: n, color:'#B5502E', label:'n'}
+      ];
+      drawPerpSubspaces(A, hl);
+    } else if(sd.key === 'why'){
+      const n = nullVec;
+      html = `<div class="calc-box">`;
+      html += `<div class="step-label">Why does A·n = 0 imply rᵢ · n = 0?</div><br>`;
+      html += `A·n = 0 means:<br><br>`;
+      html += `<div class="eq" style="font-size:16px;">⎡1 2 3⎤ ⎡${n[0]}⎤ &nbsp; ⎡1·${n[0]} + 2·${n[1]} + 3·${n[2]}⎤ &nbsp; ⎡r₁·n⎤ &nbsp; ⎡0⎤<br>`;
+      html += `⎢4 5 6⎥ ⎢${n[1]}⎥ = ⎢4·${n[0]} + 5·${n[1]} + 6·${n[2]}⎥ = ⎢r₂·n⎥ = ⎢0⎥<br>`;
+      html += `⎣7 8 9⎦ ⎣${n[2]}⎦ &nbsp; ⎣7·${n[0]} + 8·${n[1]} + 9·${n[2]}⎦ &nbsp; ⎣r₃·n⎦ &nbsp; ⎣0⎦</div><br><br>`;
+      html += `The i-th entry of A·n is exactly <strong>rᵢ · n</strong>.<br><br>`;
+      html += `Since A·n = 0, each entry is 0 → <strong>rᵢ · n = 0</strong>.<br><br>`;
+      html += `Now for <strong>any</strong> combination of rows:<br>`;
+      html += `<div class="result">r = α·r₁ + β·r₂ ⇒ r·n = α·(r₁·n) + β·(r₂·n) = 0</div><br>`;
+      html += `So <strong>every</strong> vector in the row space is ⟂ to <strong>every</strong> vector in the nullspace.`;
+      html += `</div>`;
+      rightTitle.textContent = 'Why ℛ ⟂ 𝒩';
+      rightSub.textContent = 'A·n = 0 defines the orthogonality';
+      drawPerpSubspaces(A);
+    } else if(sd.key === 'orthcomp'){
+      const n = nullVec;
+      const rsBasis = rowBasis;
+      const v1 = rsBasis[0] || [0,0,0];
+      const v2 = rsBasis.length > 1 ? rsBasis[1] : null;
+
+      // Test a random combination
+      const alpha = 3, beta = -1;
+      const rComb = v2 ? vecAdd(vecScale(alpha, v1), vecScale(beta, v2)) : vecScale(alpha, v1);
+      const dpComb = dot(rComb, n);
+
+      html = `<div class="calc-box">`;
+      html += `<div class="step-label">Orthogonal Complements in ℝ³</div><br>`;
+      html += `<strong>ℛ(A)</strong> = span{${rsBasis.map(v => `(${v.map(fmt).join(',')})`).join(', ')}} <span style="color:var(--pt);font-weight:700;">(plane, dim=2)</span><br><br>`;
+      html += `<strong>𝒩(A)</strong> = span{(${n.map(fmt).join(',')})} <span style="color:var(--d1);font-weight:700;">(line, dim=1)</span><br><br>`;
+      html += `Check a combination: ${alpha}·r₁ ${beta >= 0 ? '+' : '−'} ${Math.abs(beta)}·r₂ = (${rComb.map(fmt).join(',')})<br>`;
+      html += `<div class="eq" style="font-size:16px;">r · n = ${fmt(dpComb)} ${Math.abs(dpComb) < 1e-10 ? '✓' : '✗'}</div><br>`;
+      html += `<div class="result" style="font-size:20px;">ℛ(A) ⟂ 𝒩(A)</div><br>`;
+      html += `dim(ℛ) + dim(𝒩) = 2 + 1 = <strong>3 = n</strong><br><br>`;
+      html += `The row space and nullspace are <strong>orthogonal complements</strong>:<br>`;
+      html += `• They are perpendicular (orthogonal)<br>`;
+      html += `• Their dimensions sum to n (complements)<br>`;
+      html += `• Together they span ℝ³`;
+      html += `</div>`;
+
+      rightTitle.textContent = 'ℛ(A) ⟂ 𝒩(A)';
+      rightSub.textContent = 'Orthogonal complements in ℝ³';
+      const hl = [
+        {vec: rComb, color:'var(--fn)', label:'r = 3r₁−r₂'},
+        {vec: n, color:'#B5502E', label:'n'}
+      ];
+      drawPerpSubspaces(A, hl);
+    }
+
+    stepContent.innerHTML = html;
+
+    if(step >= TOTAL){
+      checkBtn.disabled = true; checkBtn.textContent = 'Complete';
+    } else if(revealed){
+      checkBtn.textContent = 'Next Step';
+    } else {
+      checkBtn.textContent = 'Reveal';
+    }
+  }
+
+  function markDots(){
+    document.querySelectorAll('.step-dot').forEach(d=>d.classList.remove('active'));
+    for(let i=0;i<step&&i<TOTAL;i++){
+      const d=$('step-'+(i+1)); if(d) d.classList.add('done');
+    }
+    if(step < TOTAL){ const d=$('step-'+(step+1)); if(d) d.classList.add('active'); }
+  }
+
+  function setStatus(html, cls){
+    statusBox.innerHTML = html;
+    statusBox.className = 'status' + (cls ? ' '+cls : '');
+  }
+
+  function advance(){
+    if(step>=TOTAL){
+      checkBtn.disabled=true;
+      setTimeout(()=>{reflectCard.classList.remove('hidden');exploreCard.classList.remove('hidden');reflectCard.scrollIntoView({behavior:'smooth',block:'nearest'});},500);
+      setStatus('Complete! Apply the Fundamental Theorem below.','feedback-target');
+      return;
+    }
+    revealed = true;
+    const sd = getSD();
+    let msg;
+    if(sd.key === 'rowspace') msg = 'ℛ(A) is spanned by the independent rows → a plane in ℝ³.';
+    else if(sd.key === 'nullspace') msg = '𝒩(A) = span{(1,−2,1)} → a line through the origin.';
+    else if(sd.key === 'dotprod') msg = 'Every row dot nullspace = 0. Every row ⟂ nullspace.';
+    else if(sd.key === 'why') msg = 'A·n = 0 ⇒ rᵢ·n = 0. So any combination of rows is also ⟂ n.';
+    else msg = 'ℛ(A) ⟂ 𝒩(A). dim(ℛ)+dim(𝒩)=3. They are orthogonal complements.';
+    setStatus(msg,'feedback-good');
+    markDots(); renderStep();
+  }
+
+  function nextStep(){
+    if(!revealed){
+      advance();
+    } else {
+      step++; revealed = false;
+      if(step<TOTAL){
+        const sd = getSD();
+        setStatus(`Step ${step+1}: ${sd.desc}`);
+        renderStep(); markDots();
+      } else {
+        setStatus('All steps complete!','feedback-target');
+        checkBtn.disabled = true;
+        setTimeout(()=>{reflectCard.classList.remove('hidden');exploreCard.classList.remove('hidden');reflectCard.scrollIntoView({behavior:'smooth',block:'nearest'});},500);
+      }
+    }
+  }
+
+  checkBtn.addEventListener('click', nextStep);
+
+  resetBtn.addEventListener('click', ()=>{
+    step=0; revealed=false;
+    checkBtn.disabled=false;
+    reflectCard.classList.add('hidden');
+    exploreCard.classList.add('hidden');
+    document.querySelectorAll('.step-dot').forEach(d=>d.classList.remove('done','active'));
+    const f=$('step-1'); if(f) f.classList.add('active');
+    A = [[1,2,3],[4,5,6],[7,8,9]];
+    const vals = [1,2,3,4,5,6,7,8,9];
+    for(let i=0;i<9;i++){ const inp = $('e'+Math.floor(i/3)+(i%3)); if(inp) inp.value = vals[i]; }
+    renderStep(); markDots();
+    setStatus('Step 1 of 5 — Find a basis for the row space.');
+  });
+
+  // ---- EXPLORE ----
+  function renderExplore(){
+    const m = [[0,0,0],[0,0,0],[0,0,0]];
+    for(let i=0;i<3;i++) for(let j=0;j<3;j++){
+      m[i][j] = parseFloat($('e'+i+j).value) || 0;
+    }
+    A = m;
+
+    const nb = nullspaceBasis(m);
+    const rowBasis = rowSpaceBasis(m);
+    const nullVecs = nb.basis;
+    const isNonTrivial = nb.nullity > 0;
+
+    document.getElementById('matrixDisplay').innerHTML = renderMatrix(m);
+
+    let html = `<div class="step-label" style="margin-bottom:4px;">rank = ${nb.rank}, nullity = ${nb.nullity}</div>`;
+    html += `<div style="display:flex;gap:12px;font-size:13px;font-weight:600;margin-bottom:6px;">`;
+    html += `<span style="color:var(--pt);">dim(ℛ) = ${nb.rank}</span>`;
+    html += `<span style="color:var(--d1);">dim(𝒩) = ${nb.nullity}</span>`;
+    html += `<span style="color:var(--fn);">sum = ${nb.rank + nb.nullity} ${nb.rank + nb.nullity === 3 ? '= n ✓' : ''}</span>`;
+    html += `</div>`;
+
+    // Row space basis
+    if(rowBasis.length > 0){
+      html += `<div class="step-label">ℛ(A) basis:</div>`;
+      for(let vi=0; vi<rowBasis.length; vi++){
+        const v = rowBasis[vi];
+        html += `<div style="font-size:14px;font-weight:600;color:var(--pt);">(${v.map(fmt).join(', ')})</div>`;
+      }
+    }
+
+    // Nullspace basis and dot products
+    if(isNonTrivial){
+      for(let vi=0; vi<nullVecs.length; vi++){
+        const nv = nullVecs[vi];
+        html += `<div class="vert-sep"></div>`;
+        html += `<div class="step-label">𝒩(A) basis ${vi+1}:</div>`;
+        html += `<div style="font-size:14px;font-weight:600;color:var(--d1);">(${nv.map(fmt).join(', ')})</div>`;
+
+        // Dot products with rows
+        html += `<div class="step-label" style="margin-top:6px;">Dot products with rows:</div>`;
+        for(let ri=0; ri<3; ri++){
+          const dp = dot(m[ri], nv);
+          const isZero = Math.abs(dp) < 1e-10;
+          html += `<div style="font-size:12px;color:${isZero ? 'var(--fn)' : 'var(--d1)'};">r${ri+1}·n = ${fmt(dp)} ${isZero ? '✓' : '✗'}</div>`;
+        }
+      }
+
+      // Test combination
+      if(rowBasis.length >= 2){
+        const a=2, b=-1;
+        const rComb = vecAdd(vecScale(a, rowBasis[0]), vecScale(b, rowBasis[1]));
+        const dpComb = dot(rComb, nullVecs[0]);
+        html += `<div class="vert-sep"></div>`;
+        html += `<div style="font-size:12px;">Test: (2r₁ − r₂) · n = (${rComb.map(fmt).join(',')}) · (${nullVecs[0].map(fmt).join(',')}) = ${fmt(dpComb)} ${Math.abs(dpComb) < 1e-10 ? '✓' : '✗'}</div>`;
+      }
+    } else {
+      html += `<div class="vert-sep"></div>`;
+      html += `<div style="font-size:15px;font-weight:700;color:var(--fn);">𝒩(A) = {(0,0,0)} — A is invertible (full rank).</div>`;
+      html += `<div style="font-size:12px;margin-top:4px;">The only nullspace vector is 0, which is trivially ⟂ every row.</div>`;
+    }
+
+    $('expResult').innerHTML = html;
+
+    // update plot
+    drawPerpSubspaces(m);
+
+    if(step >= TOTAL){
+      rightTitle.textContent = 'Explore: ℛ ⟂ 𝒩';
+      if(isNonTrivial && nullVecs.length > 0){
+        rightSub.textContent = `ℛ = ${nb.rank}D, 𝒩 = ${nb.nullity}D, sum = ${nb.rank + nb.nullity}`;
+      } else {
+        rightSub.textContent = 'A invertible — only trivial nullspace';
+      }
+    }
+  }
+
+  for(let i=0;i<3;i++) for(let j=0;j<3;j++){
+    $('e'+i+j).addEventListener('input', renderExplore);
+  }
+
+  // ---- QUIZ ----
+  document.querySelectorAll('.q .options').forEach(group=>{
+    group.querySelectorAll('.opt').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        const correct = btn.dataset.correct === 'true';
+        group.querySelectorAll('.opt').forEach(b=>{
+          b.disabled = true;
+          if(b.dataset.correct==='true') b.classList.add('correct');
+        });
+        if(!correct) btn.classList.add('wrong');
+      });
+    });
+  });
+
+  // ---- INIT ----
+  (function init(){
+    const f=$('step-1'); if(f) f.classList.add('active');
+    renderStep(); markDots();
+    setStatus('Step 1 of 5 — Find a basis for the row space.');
+    renderExplore();
+  })();
+})();
+</script>
+</body>
+</html>
