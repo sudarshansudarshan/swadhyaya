@@ -16,6 +16,7 @@ export async function POST(req: NextRequest) {
     include: { instructor: true, module: true },
   });
   if (!slot) return Response.json({ error: 'slot_not_found' }, { status: 404 });
+  if (!slot.module) return Response.json({ error: 'slot_module_missing' }, { status: 500 });
   if (slot.capacity <= 0) return Response.json({ error: 'slot_full' }, { status: 400 });
 
   // Check the user has completed all items in this module
