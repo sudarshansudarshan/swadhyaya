@@ -17,7 +17,7 @@ datasource db {
 
 model User {
   id            String   @id @default(cuid()) @map("_id")
-  samagamaSub   String?  @unique
+  samagamaSub   String?
   email         String   @unique
   name          String?
   image         String?
@@ -228,7 +228,7 @@ model ModuleProgress {
   moduleId      String
   module        Module   @relation(fields: [moduleId], references: [id])
   allItemsDone  Boolean  @default(false)
-  vivaBookingId String?  @unique
+  vivaBookingId String?
   vivaCompleted Boolean  @default(false)
   completedAt   DateTime?
 
@@ -340,7 +340,7 @@ model QuizAttempt {
 
 model Instructor {
   id              String   @id @default(cuid()) @map("_id")
-  userId          String?  @unique
+  userId          String   @unique
   user            User?    @relation(fields: [userId], references: [id])
   name            String
   email           String   @unique
