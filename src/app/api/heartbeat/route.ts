@@ -10,7 +10,7 @@ import { publishHeartbeat, broadcast } from '@/lib/realtime';
 import { logActivity } from '@/lib/activity-log';
 import { prisma } from '@/lib/prisma';
 
-export const runtime = 'edge';
+export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
 export async function POST(req: NextRequest) {
