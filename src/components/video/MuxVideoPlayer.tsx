@@ -28,7 +28,7 @@ export function MuxVideoPlayer({
 }) {
   const [ready, setReady] = useState(false);
 
-  useLiveChannel(`mux-${muxPlaybackId}`);
+  useLiveChannel(muxPlaybackId ? `mux-${muxPlaybackId}` : null);
 
   function parseTime(s: string): number {
     const parts = s.split(':').map(Number);
