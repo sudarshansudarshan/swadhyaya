@@ -1,0 +1,549 @@
+{
+  "id": "2.4",
+  "moduleId": 2,
+  "number": 4,
+  "title": "Matrix Form of the Overdetermined System",
+  "vocabulary": {
+    "allowed": [
+      "3×2",
+      "matrix",
+      "non-square",
+      "rows",
+      "columns",
+      "equation",
+      "count.",
+      "Vocabulary",
+      "forbidden:",
+      "rank",
+      "computation",
+      "(Q2.5)."
+    ],
+    "forbidden": [
+      "rank",
+      "computation",
+      "(Q2.5)."
+    ]
+  },
+  "questions": [
+    {
+      "id": "2.4.q1",
+      "topicId": "2.4",
+      "prompt": "What is a *3×2 matrix*?",
+      "options": [
+        {
+          "text": "3 rows 2 cols",
+          "correct": true
+        },
+        {
+          "text": "2 rows 3 cols",
+          "correct": false
+        },
+        {
+          "text": "Square 3×3",
+          "correct": false
+        },
+        {
+          "text": "Square 2×2",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: A 3×2 matrix has 3 rows and 2 columns. Step 2: Rows correspond to equations (3 here). Step 3: Columns correspond to unknowns (2 here). Step 4: The trap \"2 rows 3 cols\" would describe 2×3. Step 5: This \"non-square matrix\" is *rectangular*, used in *overdetermined systems*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "2.4.q2",
+      "topicId": "2.4",
+      "prompt": "Why does a 3×2 matrix fit a 3",
+      "options": [
+        {
+          "text": "Rows = eqs",
+          "correct": true
+        },
+        {
+          "text": "Cols = eqs",
+          "correct": false
+        },
+        {
+          "text": "Rows = unks",
+          "correct": false
+        },
+        {
+          "text": "Random fit",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Each row of the matrix holds coefficients of one equation. Step 2: 3 equations → 3 rows. Step 3: 2 unknowns → 2 columns. Step 4: So 3×2 fits naturally. Step 5: This \"rows = equations, columns = unknowns\" is the standard convention (Q1.7).",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "2.4.q3",
+      "topicId": "2.4",
+      "prompt": "What does the *column vector* x in A · x = b look like for 2 unknowns?",
+      "options": [
+        {
+          "text": "2-component vec",
+          "correct": true
+        },
+        {
+          "text": "3-component vec",
+          "correct": false
+        },
+        {
+          "text": "1-component vec",
+          "correct": false
+        },
+        {
+          "text": "Matrix x",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: For 2 unknowns, x has 2 components: [x₁, x₂]. Step 2: This is a 2×1 column vector. Step 3: A (3×2) times x (2×1) gives b (3×1). Step 4: Dimensions: (3×2) · (2×1) = (3×1). Step 5: This \"dimension matching\" rule is universal.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "2.4.q4",
+      "topicId": "2.4",
+      "prompt": "What does the *right",
+      "options": [
+        {
+          "text": "3-component vec",
+          "correct": true
+        },
+        {
+          "text": "2-component vec",
+          "correct": false
+        },
+        {
+          "text": "1-component vec",
+          "correct": false
+        },
+        {
+          "text": "Random vec",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: For 3 equations, b has 3 components. Step 2: This is the 3×1 vector of right-hand sides. Step 3: The trap \"2\" describes 2 equations. Step 4: This \"b has as many entries as equations\" is standard.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "2.4.q5",
+      "topicId": "2.4",
+      "prompt": "Why is A *non",
+      "options": [
+        {
+          "text": "Rectangular",
+          "correct": true
+        },
+        {
+          "text": "Square here",
+          "correct": false
+        },
+        {
+          "text": "Always square",
+          "correct": false
+        },
+        {
+          "text": "Random shape",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: 3×2 has different row and column counts. Step 2: So it's *rectangular*, not square. Step 3: Non-square matrices aren't invertible (no A⁻¹ in usual sense). Step 4: This \"non-square = non-invertible\" is the central fact. Step 5: Used in *least squares* (Q2.5) — we use *pseudoinverse* instead.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "2.4.q6",
+      "topicId": "2.4",
+      "prompt": "Can a *non",
+      "options": [
+        {
+          "text": "No, only square",
+          "correct": true
+        },
+        {
+          "text": "Yes, always",
+          "correct": false
+        },
+        {
+          "text": "Sometimes yes",
+          "correct": false
+        },
+        {
+          "text": "Random",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Inverse defined only for square matrices. Step 2: A · A⁻¹ = I requires square. Step 3: Rectangular matrices have no inverse (in the usual sense). Step 4: This \"square ↔ invertible\" rule is fundamental. Step 5: Used in *pseudoinverse* for rectangular (Moore-Penrose).",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "2.4.q7",
+      "topicId": "2.4",
+      "prompt": "What is the *column space* of a 3×2 matrix?",
+      "options": [
+        {
+          "text": "Plane in ℝ³",
+          "correct": true
+        },
+        {
+          "text": "Line in ℝ²",
+          "correct": false
+        },
+        {
+          "text": "Point at origin",
+          "correct": false
+        },
+        {
+          "text": "Random subspace",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: A 3×2 matrix has 2 columns in ℝ³. Step 2: The column space is spanned by these columns — at most 2-dimensional. Step 3: 2-dimensional subspace of ℝ³ = plane through origin. Step 4: This \"2 columns → at most 2D\" is the geometry. Step 5: Used in Q2.5 for *least squares projection*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "2.4.q8",
+      "topicId": "2.4",
+      "prompt": "Why does *A · x* give a 3",
+      "options": [
+        {
+          "text": "Three rows",
+          "correct": true
+        },
+        {
+          "text": "Two rows only",
+          "correct": false
+        },
+        {
+          "text": "Random rows",
+          "correct": false
+        },
+        {
+          "text": "Skip rows",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: (3×2) · (2×1) = (3×1) — 3-component output. Step 2: One output per row of A (per equation). Step 3: The trap \"two\" describes 2 rows. Step 4: This \"rows of A = output components\" is the dimension rule.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "2.4.q9",
+      "topicId": "2.4",
+      "prompt": "What does the *third* equation of an overdetermined system add?",
+      "options": [
+        {
+          "text": "Extra constraint",
+          "correct": true
+        },
+        {
+          "text": "Less constraint",
+          "correct": false
+        },
+        {
+          "text": "Same constraint",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Each equation adds one constraint. Step 2: The third equation (in a 3-equation system) adds an extra one. Step 3: This is the \"overdetermined\" nature — extra constraints. Step 4: The trap \"less\" is the opposite. Step 5: This \"more equations = more constraints\" is the foundation of *overdetermined systems*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "2.4.q10",
+      "topicId": "2.4",
+      "prompt": "Why might A · x = b have *no* solution for rectangular A?",
+      "options": [
+        {
+          "text": "b outside image",
+          "correct": true
+        },
+        {
+          "text": "b in image",
+          "correct": false
+        },
+        {
+          "text": "Random b",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: A · x always lies in the *column space* (image) of A. Step 2: If b is not in the column space, no x exists. Step 3: This is *inconsistency*. Step 4: The trap \"in image\" describes solvability. Step 5: Used in Q2.5 for *least squares approximation*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "2.4.q11",
+      "topicId": "2.4",
+      "prompt": "What does *column rank* mean for A?",
+      "options": [
+        {
+          "text": "Number indep cols",
+          "correct": true
+        },
+        {
+          "text": "Total columns",
+          "correct": false
+        },
+        {
+          "text": "Total rows",
+          "correct": false
+        },
+        {
+          "text": "Random number",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Column rank = number of linearly independent columns. Step 2: For 3×2 A, column rank ≤ 2. Step 3: If columns are independent, rank = 2. Step 4: This \"rank = independent columns\" is the column-rank definition. Step 5: Used in Mission 14 for *SVD*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "2.4.q12",
+      "topicId": "2.4",
+      "prompt": "Why does *column rank* = *row rank*?",
+      "options": [
+        {
+          "text": "Theorem of ranks",
+          "correct": true
+        },
+        {
+          "text": "Random equality",
+          "correct": false
+        },
+        {
+          "text": "Skip theorem",
+          "correct": false
+        },
+        {
+          "text": "Coincidence only",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: For any matrix, column rank = row rank (always). Step 2: This is the *rank theorem*. Step 3: Reason: both count the dimension of the row/column space. Step 4: The trap \"random\" misses the theorem. Step 5: This is a deep result, often surprising — used in *matrix analysis*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "2.4.q13",
+      "topicId": "2.4",
+      "prompt": "What if A has rank 2 (out of max 3 for 3×2)? What does that mean?",
+      "options": [
+        {
+          "text": "Independent cols",
+          "correct": true
+        },
+        {
+          "text": "Dependent cols",
+          "correct": false
+        },
+        {
+          "text": "Random rank",
+          "correct": false
+        },
+        {
+          "text": "Skip rank",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: For 3×2, max rank = 2 (since only 2 columns). Step 2: Rank 2 means both columns are independent. Step 3: They span a 2D plane. Step 4: This \"rank 2 for 3×2\" is the *full column rank* case. Step 5: Used in *regression* — full rank means unique least squares solution.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "2.4.q14",
+      "topicId": "2.4",
+      "prompt": "Why does *A · x = b* have a unique solution when A has full column rank?",
+      "options": [
+        {
+          "text": "Columns indep",
+          "correct": true
+        },
+        {
+          "text": "Columns dependent",
+          "correct": false
+        },
+        {
+          "text": "Random rank",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: If columns are independent, A · x₁ = A · x₂ implies x₁ = x₂. Step 2: So A is *injective* (one-to-one). Step 3: For rectangular A, injectivity ↔ full column rank. Step 4: This is the link between rank and injectivity. Step 5: Used in *least squares* uniqueness.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "2.4.q15",
+      "topicId": "2.4",
+      "prompt": "What does the *image* of A look like?",
+      "options": [
+        {
+          "text": "Subspace ℝ³",
+          "correct": true
+        },
+        {
+          "text": "All of ℝ³",
+          "correct": false
+        },
+        {
+          "text": "Empty set",
+          "correct": false
+        },
+        {
+          "text": "Random set",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: The image of A is the span of its columns. Step 2: For 3×2 A, image is at most 2D in ℝ³. Step 3: So image ⊂ ℝ³. Step 4: The trap \"all of ℝ³\" would require rank 3. Step 5: This \"image = column span\" is the standard definition.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "2.4.q16",
+      "topicId": "2.4",
+      "prompt": "Why is *A · x = b* sometimes *unsolvable*?",
+      "options": [
+        {
+          "text": "b not in image",
+          "correct": true
+        },
+        {
+          "text": "b in image",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: A · x always lies in image(A). Step 2: If b ∉ image(A), no x works. Step 3: This is *inconsistent*. Step 4: The trap \"in image\" describes consistent. Step 5: Used in Q2.5 for *projecting onto image*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "2.4.q17",
+      "topicId": "2.4",
+      "prompt": "What is the *transpose* A^T of a 3×2 matrix?",
+      "options": [
+        {
+          "text": "2×3 matrix",
+          "correct": true
+        },
+        {
+          "text": "3×2 matrix",
+          "correct": false
+        },
+        {
+          "text": "3×3 matrix",
+          "correct": false
+        },
+        {
+          "text": "Random shape",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Transpose swaps rows and columns. Step 2: 3×2 becomes 2×3. Step 3: A^T_{ij} = A_{ji}. Step 4: The trap \"same shape\" describes square. Step 5: This \"transpose = swap dims\" is the standard definition. Step 6: Used in Q2.5 for *normal equations*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "2.4.q18",
+      "topicId": "2.4",
+      "prompt": "What if A were 2×3 instead of 3×2 — what would the system describe?",
+      "options": [
+        {
+          "text": "Underdetermined",
+          "correct": true
+        },
+        {
+          "text": "Overdetermined",
+          "correct": false
+        },
+        {
+          "text": "Square system",
+          "correct": false
+        },
+        {
+          "text": "No system",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: 2×3 A has 2 rows (equations) and 3 columns (unknowns). Step 2: Fewer equations than unknowns → underdetermined. Step 3: Infinitely many solutions (line or plane). Step 4: This \"2 rows, 3 cols → underdetermined\" is the opposite case. Step 5: Used in *regression* with more variables than samples.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "2.4.q19",
+      "topicId": "2.4",
+      "prompt": "Why is the *row space* important?",
+      "options": [
+        {
+          "text": "Spans equations",
+          "correct": true
+        },
+        {
+          "text": "Spans unknowns",
+          "correct": false
+        },
+        {
+          "text": "Random span",
+          "correct": false
+        },
+        {
+          "text": "Skip space",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: The row space is the span of the rows of A. Step 2: Each row is an equation's coefficients. Step 3: So row space = the \"constraint space\". Step 4: Used in Q2.5 for *least squares normal equations*. Step 5: The fundamental theorem: row space ⊥ null space.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "2.4.q20",
+      "topicId": "2.4",
+      "prompt": "What if A had *zero* rows — what would A · x = b mean?",
+      "options": [
+        {
+          "text": "Empty system",
+          "correct": true
+        },
+        {
+          "text": "Trivial system",
+          "correct": false
+        },
+        {
+          "text": "Random system",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: 0×2 A has no rows → no equations. Step 2: Any x \"satisfies\" A · x = b (where b is empty vector). Step 3: So vacuously consistent. Step 4: This \"zero equations = no constraints\" is the trivial case. Step 5: Used in *empty constraint problems* in optimisation.\n\n---",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    }
+  ]
+}

@@ -1,0 +1,547 @@
+{
+  "id": "2.5",
+  "moduleId": 2,
+  "number": 5,
+  "title": "Guessing and Reducing Error",
+  "vocabulary": {
+    "allowed": [
+      "guess",
+      "iterate",
+      "error",
+      "reduce",
+      "approximate",
+      "refine",
+      "gradient.",
+      "Vocabulary",
+      "forbidden:",
+      "Markov",
+      "(Q2.6)."
+    ],
+    "forbidden": [
+      "Markov",
+      "(Q2.6)."
+    ]
+  },
+  "questions": [
+    {
+      "id": "2.5.q1",
+      "topicId": "2.5",
+      "prompt": "Why might we *guess* a solution instead of solving exactly?",
+      "options": [
+        {
+          "text": "Exact too hard",
+          "correct": true
+        },
+        {
+          "text": "Always exact",
+          "correct": false
+        },
+        {
+          "text": "Random guess",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: For some systems, exact solution is too complex (nonlinear, etc.). Step 2: We use *approximate* methods — guessing and refining. Step 3: This is the basis of *numerical methods*. Step 4: The trap \"always exact\" misses complexity. Step 5: Used in *machine learning* (gradient descent, etc.).",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "2.5.q2",
+      "topicId": "2.5",
+      "prompt": "What is the *error* of a guess x?",
+      "options": [
+        {
+          "text": "Distance from true",
+          "correct": true
+        },
+        {
+          "text": "Random number",
+          "correct": false
+        },
+        {
+          "text": "Always zero",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Error = how far the guess is from the true solution. Step 2: Often measured as |Ax − b| or similar. Step 3: Goal: reduce error to zero. Step 4: The trap \"always zero\" misses errors. Step 5: This \"error = distance from truth\" is the foundation of *optimisation theory*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "2.5.q3",
+      "topicId": "2.5",
+      "prompt": "Why does *reducing* error matter?",
+      "options": [
+        {
+          "text": "Better answers",
+          "correct": true
+        },
+        {
+          "text": "Worse answers",
+          "correct": false
+        },
+        {
+          "text": "Random answers",
+          "correct": false
+        },
+        {
+          "text": "Skip answers",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Smaller error → closer to true solution. Step 2: Better guesses give better predictions. Step 3: Used in *machine learning* (loss functions). Step 4: This \"minimise error\" is the goal of *optimisation*. Step 5: Used in *training neural networks*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "2.5.q4",
+      "topicId": "2.5",
+      "prompt": "What is an *iterative* method?",
+      "options": [
+        {
+          "text": "Refine repeatedly",
+          "correct": true
+        },
+        {
+          "text": "Solve once only",
+          "correct": false
+        },
+        {
+          "text": "Random guesses",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Iterative = repeated refinement. Step 2: Each iteration improves the guess. Step 3: Continue until error is small. Step 4: The trap \"solve once\" describes direct methods. Step 5: This \"iterative refinement\" is the basis of *gradient descent* and *Newton's method*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "2.5.q5",
+      "topicId": "2.5",
+      "prompt": "Why do we *iterate* instead of solving directly?",
+      "options": [
+        {
+          "text": "Easier iteratively",
+          "correct": true
+        },
+        {
+          "text": "Always direct only",
+          "correct": false
+        },
+        {
+          "text": "Random choice",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: For large or complex systems, direct methods are too expensive. Step 2: Iterative methods are usually faster. Step 3: Modern ML uses *stochastic gradient descent* — iterative. Step 4: This \"iterative = efficient\" is the practical motivation. Step 5: Used in *deep learning* (training large models).",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "2.5.q6",
+      "topicId": "2.5",
+      "prompt": "What is the *gradient* of an error function?",
+      "options": [
+        {
+          "text": "Direction of steepest",
+          "correct": true
+        },
+        {
+          "text": "Random direction",
+          "correct": false
+        },
+        {
+          "text": "Always zero",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Gradient points in the direction of steepest *increase*. Step 2: To *decrease* error, move opposite to gradient. Step 3: This is *gradient descent*. Step 4: The trap \"always zero\" describes minima. Step 5: This \"gradient = direction\" is the foundation of *optimisation*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "2.5.q7",
+      "topicId": "2.5",
+      "prompt": "Why does *gradient descent* work?",
+      "options": [
+        {
+          "text": "Moves toward min",
+          "correct": true
+        },
+        {
+          "text": "Moves away from min",
+          "correct": false
+        },
+        {
+          "text": "Random motion",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Moving opposite to gradient decreases error. Step 2: Iterating gets closer to minimum. Step 3: Eventually converges (or near) to minimum. Step 4: This \"downhill walk\" is the foundation of *optimisation*. Step 5: Used in *training all neural networks*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "2.5.q8",
+      "topicId": "2.5",
+      "prompt": "What is *learning rate* in gradient descent?",
+      "options": [
+        {
+          "text": "Step size",
+          "correct": true
+        },
+        {
+          "text": "Random size",
+          "correct": false
+        },
+        {
+          "text": "Always zero",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Learning rate = how big a step we take. Step 2: Too big → overshoot minimum. Step 3: Too small → too slow. Step 4: Choose carefully for convergence. Step 5: This \"step size\" is the key hyperparameter. Step 6: Used in *all gradient-based ML*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "2.5.q9",
+      "topicId": "2.5",
+      "prompt": "Why might exact *minimisation* be impossible?",
+      "options": [
+        {
+          "text": "No closed form",
+          "correct": true
+        },
+        {
+          "text": "Always closed form",
+          "correct": false
+        },
+        {
+          "text": "Random form",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Many error functions have no closed-form minimum. Step 2: We must iterate. Step 3: Examples: neural network loss, large systems. Step 4: This \"no closed form ↔ iterate\" is the practical reason. Step 5: Used in *deep learning* (impossible to solve analytically).",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "2.5.q10",
+      "topicId": "2.5",
+      "prompt": "What does *convergence* mean for an iterative method?",
+      "options": [
+        {
+          "text": "Gets close to ans",
+          "correct": true
+        },
+        {
+          "text": "Gets far from ans",
+          "correct": false
+        },
+        {
+          "text": "Random motion",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Convergence = sequence of guesses approaches the true answer. Step 2: Error shrinks over iterations. Step 3: Eventually we stop when error is small. Step 4: The trap \"far\" is the opposite. Step 5: This \"convergence ↔ success\" is the foundation of *numerical methods*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "2.5.q11",
+      "topicId": "2.5",
+      "prompt": "What is a *local minimum*?",
+      "options": [
+        {
+          "text": "Best nearby only",
+          "correct": true
+        },
+        {
+          "text": "Global best",
+          "correct": false
+        },
+        {
+          "text": "Random point",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Local minimum = lowest point in a neighbourhood. Step 2: Not necessarily the global minimum. Step 3: Gradient descent may get stuck in local minima. Step 4: This \"local vs global\" is the seed of *non-convex optimisation*. Step 5: Used in *neural network training* (local minima are common).",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "2.5.q12",
+      "topicId": "2.5",
+      "prompt": "Why are *local* minima a problem?",
+      "options": [
+        {
+          "text": "Not global best",
+          "correct": true
+        },
+        {
+          "text": "Always global",
+          "correct": false
+        },
+        {
+          "text": "Random",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Local minima are *not* the global minimum. Step 2: Gradient descent can get stuck there. Step 3: Result: suboptimal solution. Step 4: This \"stuck locally\" is a major challenge. Step 5: Used in *deep learning* (escape local minima via random restarts, momentum).",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "2.5.q13",
+      "topicId": "2.5",
+      "prompt": "What is *momentum* in gradient descent?",
+      "options": [
+        {
+          "text": "Carry forward speed",
+          "correct": true
+        },
+        {
+          "text": "Stop motion",
+          "correct": false
+        },
+        {
+          "text": "Random motion",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Momentum adds some of the previous step's direction. Step 2: Helps escape local minima and flat regions. Step 3: Used in *deep learning* optimisers (Adam, SGD with momentum). Step 4: This \"carry forward\" is like physics momentum. Step 5: Used in *all modern deep learning*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "2.5.q14",
+      "topicId": "2.5",
+      "prompt": "Why does *noise* in gradient help?",
+      "options": [
+        {
+          "text": "Escape minima",
+          "correct": true
+        },
+        {
+          "text": "Stay stuck",
+          "correct": false
+        },
+        {
+          "text": "Random effect",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Stochastic gradient descent adds noise. Step 2: Noise can push out of local minima. Step 3: Helps find better solutions. Step 4: This \"noisy = escaping\" is the seed of *stochastic optimisation*. Step 5: Used in *SGD* for neural networks.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "2.5.q15",
+      "topicId": "2.5",
+      "prompt": "What is the *loss function* in machine learning?",
+      "options": [
+        {
+          "text": "Error measure",
+          "correct": true
+        },
+        {
+          "text": "Random measure",
+          "correct": false
+        },
+        {
+          "text": "Always zero",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Loss function = how wrong the prediction is. Step 2: Goal: minimise loss. Step 3: Examples: MSE, cross-entropy. Step 4: The trap \"always zero\" misses errors. Step 5: This \"loss = error\" is the foundation of *supervised learning*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "2.5.q16",
+      "topicId": "2.5",
+      "prompt": "Why is *convexity* helpful in optimisation?",
+      "options": [
+        {
+          "text": "One minimum",
+          "correct": true
+        },
+        {
+          "text": "Many minima",
+          "correct": false
+        },
+        {
+          "text": "Random shape",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Convex functions have *one* minimum (global = local). Step 2: Gradient descent finds it reliably. Step 3: Linear regression loss is convex. Step 4: This \"one minimum = reliable\" is the seed of *convex optimisation*. Step 5: Used in *SVM*, *linear regression*, *logistic regression*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "2.5.q17",
+      "topicId": "2.5",
+      "prompt": "What is the *limit* of gradient descent?",
+      "options": [
+        {
+          "text": "Convergence rate",
+          "correct": true
+        },
+        {
+          "text": "Random rate",
+          "correct": false
+        },
+        {
+          "text": "Zero rate",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Convergence rate = how fast the method approaches the answer. Step 2: Gradient descent: linear convergence for convex, slower for non-convex. Step 3: Newton's method: quadratic (faster). Step 4: This \"rate = speed\" is the central metric. Step 5: Used in *optimisation theory* (compare methods).",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "2.5.q18",
+      "topicId": "2.5",
+      "prompt": "What if the gradient were *zero* at a non",
+      "options": [
+        {
+          "text": "Stuck here",
+          "correct": true
+        },
+        {
+          "text": "Always escapes",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Saddle points have zero gradient but are not minima. Step 2: Gradient descent gets stuck. Step 3: Common in high-dimensional non-convex problems. Step 4: This \"saddle = stuck\" is a real challenge. Step 5: Used in *deep learning* (saddle points are more common than local minima in high-D).",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "2.5.q19",
+      "topicId": "2.5",
+      "prompt": "What does *backpropagation* compute in neural networks?",
+      "options": [
+        {
+          "text": "Gradients of loss",
+          "correct": true
+        },
+        {
+          "text": "Random values",
+          "correct": false
+        },
+        {
+          "text": "Always zero",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Backpropagation efficiently computes gradients of the loss. Step 2: With respect to all weights. Step 3: This enables gradient descent on neural networks. Step 4: The trap \"random\" misses the algorithmic computation. Step 5: This \"backprop = gradient\" is the *training algorithm* for deep learning.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "2.5.q20",
+      "topicId": "2.5",
+      "prompt": "What if the loss were *constant* — what would gradient descent do?",
+      "options": [
+        {
+          "text": "No motion at all",
+          "correct": true
+        },
+        {
+          "text": "Always converge",
+          "correct": false
+        },
+        {
+          "text": "Random motion",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Constant loss → gradient is zero everywhere. Step 2: So gradient descent doesn't move. Step 3: The weights don't update. Step 4: This \"no gradient = no learning\" is the failure case. Step 5: Used in *vanishing gradient* problems in deep networks.\n\n---",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    }
+  ]
+}

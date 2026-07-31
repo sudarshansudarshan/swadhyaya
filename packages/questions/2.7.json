@@ -1,0 +1,546 @@
+{
+  "id": "2.7",
+  "moduleId": 2,
+  "number": 7,
+  "title": "Markov Chain Figure 2",
+  "vocabulary": {
+    "allowed": [
+      "state",
+      "diagram",
+      "transition",
+      "probability",
+      "steady",
+      "state.",
+      "Vocabulary",
+      "forbidden:",
+      "overdetermined",
+      "(Q2.3)."
+    ],
+    "forbidden": [
+      "overdetermined",
+      "(Q2.3)."
+    ]
+  },
+  "questions": [
+    {
+      "id": "2.7.q1",
+      "topicId": "2.7",
+      "prompt": "How is Figure 2's chain *different* from Figure 1's?",
+      "options": [
+        {
+          "text": "Different probs",
+          "correct": true
+        },
+        {
+          "text": "Same chain only",
+          "correct": false
+        },
+        {
+          "text": "Random chain",
+          "correct": false
+        },
+        {
+          "text": "Skip chain",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Figure 2 has different transition probabilities (or different states). Step 2: But same Markov chain *theory* applies. Step 3: The trap \"same\" misses the figure difference. Step 4: This \"different chain, same theory\" is the foundation of *applied Markov chains*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "2.7.q2",
+      "topicId": "2.7",
+      "prompt": "What does the *transition diagram* show?",
+      "options": [
+        {
+          "text": "Arrows + probs",
+          "correct": true
+        },
+        {
+          "text": "Just dots",
+          "correct": false
+        },
+        {
+          "text": "Just arrows",
+          "correct": false
+        },
+        {
+          "text": "Just probs",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Diagram = nodes (states) + arrows (transitions) + labels (probabilities). Step 2: Visual representation of the matrix. Step 3: The trap \"just dots\" misses the arrows. Step 4: This \"diagram = visual matrix\" is the standard *Markov chain visualisation*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "2.7.q3",
+      "topicId": "2.7",
+      "prompt": "Why do arrows form a *complete* description?",
+      "options": [
+        {
+          "text": "All transitions",
+          "correct": true
+        },
+        {
+          "text": "Some only",
+          "correct": false
+        },
+        {
+          "text": "Random ones",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Every transition (with its probability) is shown by an arrow. Step 2: So the diagram fully specifies the chain. Step 3: The trap \"some only\" misses completeness. Step 4: This \"complete diagram\" is the *graphical specification* of the Markov chain.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "2.7.q4",
+      "topicId": "2.7",
+      "prompt": "What if a transition is *missing* from the diagram?",
+      "options": [
+        {
+          "text": "Zero probability",
+          "correct": true
+        },
+        {
+          "text": "Random prob",
+          "correct": false
+        },
+        {
+          "text": "Some prob",
+          "correct": false
+        },
+        {
+          "text": "Skip prob",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Missing arrow = no transition = probability 0. Step 2: Implicit zeros are part of the matrix. Step 3: The trap \"random\" misses the structure. Step 4: This \"absence = zero\" is the convention. Step 5: Used in *sparse transition matrices*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "2.7.q5",
+      "topicId": "2.7",
+      "prompt": "Why does a *self",
+      "options": [
+        {
+          "text": "Stay prob",
+          "correct": true
+        },
+        {
+          "text": "Random stay",
+          "correct": false
+        },
+        {
+          "text": "Skip stay",
+          "correct": false
+        },
+        {
+          "text": "Always zero",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Self-loop = arrow from state to itself. Step 2: Probability of staying in that state. Step 3: Important for *persistence* in chains. Step 4: The trap \"random\" misses the definition. Step 5: This \"self-loop = stay probability\" is the seed of *recurrent vs transient* states.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "2.7.q6",
+      "topicId": "2.7",
+      "prompt": "What is the *steady state* for Figure 2's chain?",
+      "options": [
+        {
+          "text": "Compute it",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Always zero",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Solve π · P = π with Σπ_i = 1. Step 2: This is the same method as Figure 1. Step 3: Just with different numbers. Step 4: The trap \"random\" misses the computation. Step 5: This \"compute steady state\" is the standard procedure. Step 6: Used in *PageRank computation*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "2.7.q7",
+      "topicId": "2.7",
+      "prompt": "Why might Figure 2's chain have *different* steady state than Figure 1?",
+      "options": [
+        {
+          "text": "Different trans",
+          "correct": true
+        },
+        {
+          "text": "Same trans here",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Different transition probabilities → different steady state. Step 2: The fixed point depends on the chain. Step 3: The trap \"same\" misses the difference. Step 4: This \"different chains, different steady states\" is the obvious observation.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "2.7.q8",
+      "topicId": "2.7",
+      "prompt": "How is the *ergodicity* of Figure 2 determined?",
+      "options": [
+        {
+          "text": "From diagram",
+          "correct": true
+        },
+        {
+          "text": "Random check",
+          "correct": false
+        },
+        {
+          "text": "Skip check",
+          "correct": false
+        },
+        {
+          "text": "Always ergodic",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Look at the diagram. Step 2: Can every state reach every other? Step 3: If yes, ergodic. Step 4: If not (some isolated states), not ergodic. Step 5: The trap \"random\" misses the structural check. Step 6: Used in *MCMC* for convergence guarantees.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "2.7.q9",
+      "topicId": "2.7",
+      "prompt": "What if Figure 2 has a *sink state* (one",
+      "options": [
+        {
+          "text": "Not ergodic",
+          "correct": true
+        },
+        {
+          "text": "Ergodic",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Sink state = no way out. Step 2: Once entered, never leave. Step 3: So not all states reachable from sink. Step 4: Not ergodic. Step 5: This \"sink = trapped\" violates ergodicity. Step 6: Used in *absorbing Markov chains*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "2.7.q10",
+      "topicId": "2.7",
+      "prompt": "Why is Figure 2 useful for *learning* Markov chains?",
+      "options": [
+        {
+          "text": "Visual helps",
+          "correct": true
+        },
+        {
+          "text": "Random visual",
+          "correct": false
+        },
+        {
+          "text": "Skip visual",
+          "correct": false
+        },
+        {
+          "text": "Always text",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: A diagram is easier to grasp than a matrix. Step 2: Visual learners benefit. Step 3: Same theory applies. Step 4: The trap \"random\" misses the pedagogical value. Step 5: Used in *textbook introductions* and *teaching materials*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "2.7.q11",
+      "topicId": "2.7",
+      "prompt": "What does the *steady state vector* tell us about Figure 2?",
+      "options": [
+        {
+          "text": "Long-run time",
+          "correct": true
+        },
+        {
+          "text": "Random time",
+          "correct": false
+        },
+        {
+          "text": "Zero time",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: π_j = fraction of time spent in state j (long run). Step 2: This is the *ergodic theorem*. Step 3: Average behaviour = steady state. Step 4: Used in *physics* (statistical mechanics). Step 5: Used in *Monte Carlo estimation*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "2.7.q12",
+      "topicId": "2.7",
+      "prompt": "How does the *period* of Figure 2 affect convergence?",
+      "options": [
+        {
+          "text": "Slows or stops",
+          "correct": true
+        },
+        {
+          "text": "Speeds up",
+          "correct": false
+        },
+        {
+          "text": "Random effect",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Periodic chains (like A-B-A-B) oscillate. Step 2: Don't converge to a fixed distribution. Step 3: Need *aperiodicity* for convergence. Step 4: This \"period blocks convergence\" is the issue. Step 5: Used in *MCMC* — must ensure aperiodicity.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "2.7.q13",
+      "topicId": "2.7",
+      "prompt": "What if Figure 2's chain has *more* states than Figure 1?",
+      "options": [
+        {
+          "text": "Larger matrix",
+          "correct": true
+        },
+        {
+          "text": "Same matrix",
+          "correct": false
+        },
+        {
+          "text": "Random matrix",
+          "correct": false
+        },
+        {
+          "text": "Skip matrix",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: More states → larger transition matrix. Step 2: E.g., 5 states → 5×5 matrix. Step 3: Same theory applies. Step 4: The trap \"same\" misses the size. Step 5: This \"larger state space = larger matrix\" is the standard scaling.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "2.7.q14",
+      "topicId": "2.7",
+      "prompt": "Why might Figure 2 *not converge* to a steady state?",
+      "options": [
+        {
+          "text": "Periodic chain",
+          "correct": true
+        },
+        {
+          "text": "Always converges",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Periodic or non-ergodic chains may not converge. Step 2: They oscillate or stay in subsets. Step 3: For convergence, need ergodicity + aperiodicity. Step 4: Used in *MCMC* convergence checks. Step 5: This \"convergence ↔ aperiodic + ergodic\" is the central theorem.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "2.7.q15",
+      "topicId": "2.7",
+      "prompt": "What is the *initial state* influence on Figure 2's chain?",
+      "options": [
+        {
+          "text": "Forgotten eventually",
+          "correct": true
+        },
+        {
+          "text": "Always matters",
+          "correct": false
+        },
+        {
+          "text": "Random effect",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Initial state determines first few steps only. Step 2: Long-run behaviour = steady state (independent of start). Step 3: For ergodic chains. Step 4: The trap \"always matters\" misses the convergence. Step 5: Used in *MCMC* to estimate steady state.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "2.7.q16",
+      "topicId": "2.7",
+      "prompt": "Why does *stationary distribution* depend only on P (not start)?",
+      "options": [
+        {
+          "text": "Forgetting start",
+          "correct": true
+        },
+        {
+          "text": "Always start",
+          "correct": false
+        },
+        {
+          "text": "Random start",
+          "correct": false
+        },
+        {
+          "text": "Skip start",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Stationary distribution π satisfies π = π · P. Step 2: This is an eigenvalue equation (eigenvalue 1). Step 3: Independent of start. Step 4: The trap \"always start\" misses the eigenspace. Step 5: Used in *Perron-Frobenius theorem* (Mission 14).",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "2.7.q17",
+      "topicId": "2.7",
+      "prompt": "How is Figure 2's *mixing time* computed?",
+      "options": [
+        {
+          "text": "Spectral gap",
+          "correct": true
+        },
+        {
+          "text": "Random gap",
+          "correct": false
+        },
+        {
+          "text": "Zero gap",
+          "correct": false
+        },
+        {
+          "text": "Skip gap",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Mixing time depends on the *spectral gap* (1 − |second eigenvalue|). Step 2: Larger gap → faster mixing. Step 3: Smaller gap → slower mixing. Step 4: Used in *MCMC efficiency analysis*. Step 5: This \"spectral gap = mixing speed\" is the central *Markov chain theory*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "2.7.q18",
+      "topicId": "2.7",
+      "prompt": "What if Figure 2 had *negative* transition probabilities — what would happen?",
+      "options": [
+        {
+          "text": "Invalid model",
+          "correct": true
+        },
+        {
+          "text": "Always valid",
+          "correct": false
+        },
+        {
+          "text": "Random valid",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Probabilities must be ≥ 0. Step 2: Negative probabilities are unphysical. Step 3: So invalid model. Step 4: Real Markov chains have non-negative probabilities. Step 5: Used in *validity checks* in modelling.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "2.7.q19",
+      "topicId": "2.7",
+      "prompt": "What is *detailed balance* in a Markov chain?",
+      "options": [
+        {
+          "text": "π_i P_{ij} = π_j P_{ji}",
+          "correct": true
+        },
+        {
+          "text": "Random balance",
+          "correct": false
+        },
+        {
+          "text": "Skip balance",
+          "correct": false
+        },
+        {
+          "text": "Zero balance",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Detailed balance: probability of i → j (weighted by π_i) equals j → i (weighted by π_j). Step 2: This is a sufficient condition for π being steady state. Step 3: Used in *MCMC* (Metropolis-Hastings). Step 4: This \"reversible chains\" simplify analysis. Step 5: Used in *statistical physics*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "2.7.q20",
+      "topicId": "2.7",
+      "prompt": "What if Figure 2's chain were *reversible* — what would that simplify?",
+      "options": [
+        {
+          "text": "Many calcs",
+          "correct": true
+        },
+        {
+          "text": "Nothing simplifies",
+          "correct": false
+        },
+        {
+          "text": "Random simplifies",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Reversible chains satisfy detailed balance. Step 2: This simplifies steady state computation. Step 3: Also simplifies mixing analysis. Step 4: Used in *Hamiltonian Monte Carlo* and *MCMC design*. Step 5: This \"reversibility = simplification\" is a key technique.\n\n---\n\n# End of Mission 2\n\n> 7 topics × 20 questions = **140 questions** complete.\n> Total so far: 320 (M1) + 140 (M2) = **460 questions**.\n> Continue with Mission 3 (15 topics × 20 = 300 questions).",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    }
+  ]
+}

@@ -1,0 +1,546 @@
+{
+  "id": "2.6",
+  "moduleId": 2,
+  "number": 6,
+  "title": "Markov Chain Figure 1",
+  "vocabulary": {
+    "allowed": [
+      "state",
+      "transition",
+      "probability",
+      "steady",
+      "state",
+      "long-run.",
+      "Vocabulary",
+      "forbidden:",
+      "overdetermined",
+      "(Q2.3)."
+    ],
+    "forbidden": [
+      "overdetermined",
+      "(Q2.3)."
+    ]
+  },
+  "questions": [
+    {
+      "id": "2.6.q1",
+      "topicId": "2.6",
+      "prompt": "What is a *state* in a Markov chain?",
+      "options": [
+        {
+          "text": "A situation",
+          "correct": true
+        },
+        {
+          "text": "A random pick",
+          "correct": false
+        },
+        {
+          "text": "Always zero",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: A state is a particular configuration or situation. Step 2: E.g., \"sunny\", \"rainy\" for weather. Step 3: The system moves between states. Step 4: The trap \"random\" misses the defined states. Step 5: This \"state = situation\" is the foundation of *Markov chain theory*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "2.6.q2",
+      "topicId": "2.6",
+      "prompt": "What is a *transition* in a Markov chain?",
+      "options": [
+        {
+          "text": "Move between states",
+          "correct": true
+        },
+        {
+          "text": "Skip state",
+          "correct": false
+        },
+        {
+          "text": "Random jump",
+          "correct": false
+        },
+        {
+          "text": "Always stay",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Transition = moving from one state to another. Step 2: Probability of transition is given. Step 3: The trap \"stay\" describes no transition. Step 4: This \"transition = move\" is the foundation of *Markov dynamics*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "2.6.q3",
+      "topicId": "2.6",
+      "prompt": "What does a *transition matrix* encode?",
+      "options": [
+        {
+          "text": "All probabilities",
+          "correct": true
+        },
+        {
+          "text": "One probability",
+          "correct": false
+        },
+        {
+          "text": "Random values",
+          "correct": false
+        },
+        {
+          "text": "Zero values",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Transition matrix P has P_{ij} = probability of moving from state i to state j. Step 2: Each row sums to 1 (probability distribution). Step 3: The trap \"one probability\" misses the matrix structure. Step 4: This \"P = all probabilities\" is the standard *transition matrix*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "2.6.q4",
+      "topicId": "2.6",
+      "prompt": "Why do *rows* of P sum to 1?",
+      "options": [
+        {
+          "text": "Probabilities",
+          "correct": true
+        },
+        {
+          "text": "Random sums",
+          "correct": false
+        },
+        {
+          "text": "Zero sums",
+          "correct": false
+        },
+        {
+          "text": "Skip sums",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Each row gives the distribution of \"next state given current state\". Step 2: Probabilities sum to 1. Step 3: So each row of P sums to 1. Step 4: This \"row sum = 1\" property is *stochastic matrices*. Step 5: Used in *Markov chain theory*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "2.6.q5",
+      "topicId": "2.6",
+      "prompt": "What is *steady state* in a Markov chain?",
+      "options": [
+        {
+          "text": "Unchanging distribution",
+          "correct": true
+        },
+        {
+          "text": "Random distribution",
+          "correct": false
+        },
+        {
+          "text": "Always zero",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Steady state = distribution that doesn't change under transitions. Step 2: Mathematically: π · P = π. Step 3: So π is a fixed point of P (acting on left). Step 4: This \"fixed distribution\" is the long-run behaviour. Step 5: Used in *PageRank*, *weather patterns*, *population genetics*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "2.6.q6",
+      "topicId": "2.6",
+      "prompt": "Why does a Markov chain *converge* to steady state?",
+      "options": [
+        {
+          "text": "Repeated trans",
+          "correct": true
+        },
+        {
+          "text": "Random jumps",
+          "correct": false
+        },
+        {
+          "text": "Skip motion",
+          "correct": false
+        },
+        {
+          "text": "Always zero",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Repeatedly applying P moves the distribution toward the steady state. Step 2: After many steps, distribution ≈ steady state. Step 3: This is *Markov chain convergence*. Step 4: The trap \"random\" misses the deterministic convergence. Step 5: Used in *Monte Carlo methods*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "2.6.q7",
+      "topicId": "2.6",
+      "prompt": "What is the *eigenvalue* connection to steady state?",
+      "options": [
+        {
+          "text": "Eigenvalue one",
+          "correct": true
+        },
+        {
+          "text": "Eigenvalue zero",
+          "correct": false
+        },
+        {
+          "text": "Random eigen",
+          "correct": false
+        },
+        {
+          "text": "Skip eigen",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Steady state π satisfies π · P = π. Step 2: So 1 is an eigenvalue of P (acting on left). Step 3: π is the corresponding eigenvector. Step 4: This \"eigenvalue 1 ↔ steady state\" is the link. Step 5: Used in *Spectral theory of Markov chains* (Mission 14).",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "2.6.q8",
+      "topicId": "2.6",
+      "prompt": "What does P^n represent?",
+      "options": [
+        {
+          "text": "n-step trans",
+          "correct": true
+        },
+        {
+          "text": "Random trans",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Zero trans",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: P^n is the matrix of n-step transition probabilities. Step 2: (P^n)_{ij} = probability of i → j in n steps. Step 3: This \"P^n = n steps\" is matrix power. Step 4: Used in *compound events* (Q1.15 last question). Step 5: P^n converges to a rank-1 matrix as n → ∞ (steady state emerges).",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "2.6.q9",
+      "topicId": "2.6",
+      "prompt": "Why is the *initial* distribution irrelevant (eventually)?",
+      "options": [
+        {
+          "text": "Forgetting starts",
+          "correct": true
+        },
+        {
+          "text": "Always matters",
+          "correct": false
+        },
+        {
+          "text": "Random effect",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: After many transitions, the initial distribution is \"forgotten\". Step 2: The system converges to steady state regardless of start. Step 3: This is *mixing time*. Step 4: Used in *MCMC* (Markov Chain Monte Carlo). Step 5: Allows us to estimate steady state without knowing start.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "2.6.q10",
+      "topicId": "2.6",
+      "prompt": "What is *ergodicity* for a Markov chain?",
+      "options": [
+        {
+          "text": "Reaches all states",
+          "correct": true
+        },
+        {
+          "text": "Stays in some states",
+          "correct": false
+        },
+        {
+          "text": "Random states",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Ergodic = every state can be reached from every other (eventually). Step 2: Non-zero probability along some path. Step 3: Implies convergence to unique steady state. Step 4: This \"ergodic ↔ unique steady state\" is the central theorem. Step 5: Used in *MCMC convergence guarantees*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "2.6.q11",
+      "topicId": "2.6",
+      "prompt": "What is *mixing time* for a Markov chain?",
+      "options": [
+        {
+          "text": "Time to forget",
+          "correct": true
+        },
+        {
+          "text": "Random time",
+          "correct": false
+        },
+        {
+          "text": "Zero time",
+          "correct": false
+        },
+        {
+          "text": "Skip time",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Mixing time = steps needed to approximately reach steady state. Step 2: Depends on chain structure. Step 3: Fast mixing → quick convergence. Step 4: This \"mixing time\" is the practical speed limit. Step 5: Used in *MCMC algorithm design*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "2.6.q12",
+      "topicId": "2.6",
+      "prompt": "Why does *P^n* converge to a *rank",
+      "options": [
+        {
+          "text": "Steady state",
+          "correct": true
+        },
+        {
+          "text": "Random rank",
+          "correct": false
+        },
+        {
+          "text": "Skip rank",
+          "correct": false
+        },
+        {
+          "text": "Always zero",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: As n → ∞, P^n_{ij} → π_j (steady state for any start i). Step 2: So each row of P^n approaches π (the same vector). Step 3: All rows equal → rank 1. Step 4: This \"rank 1 = steady state\" is the geometric meaning. Step 5: Used in *SVD interpretation* (Mission 14).",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "2.6.q13",
+      "topicId": "2.6",
+      "prompt": "What does a *random walk* look like on a graph?",
+      "options": [
+        {
+          "text": "Hop to neighbor",
+          "correct": true
+        },
+        {
+          "text": "Skip graph",
+          "correct": false
+        },
+        {
+          "text": "Always stay",
+          "correct": false
+        },
+        {
+          "text": "Random jump",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Random walk on a graph: from each node, hop to a neighbor (randomly or weighted). Step 2: This is a Markov chain. Step 3: Used in *PageRank* (random walk on web graph). Step 4: This \"random walk = Markov chain\" is a key connection. Step 5: Used in *graph neural networks*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "2.6.q14",
+      "topicId": "2.6",
+      "prompt": "Why is *PageRank* a Markov chain?",
+      "options": [
+        {
+          "text": "Random walk web",
+          "correct": true
+        },
+        {
+          "text": "Random jump here",
+          "correct": false
+        },
+        {
+          "text": "Skip walk",
+          "correct": false
+        },
+        {
+          "text": "Always stay",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: PageRank models a web surfer randomly clicking links. Step 2: Each page is a state. Step 3: Links are transitions. Step 4: Steady state = page importance. Step 5: This \"PageRank = Markov chain\" is the founding idea of *Google's search*. Step 6: Used in *recommendation systems*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "2.6.q15",
+      "topicId": "2.6",
+      "prompt": "What is *absorption* in a Markov chain?",
+      "options": [
+        {
+          "text": "Trap state",
+          "correct": true
+        },
+        {
+          "text": "Random trap",
+          "correct": false
+        },
+        {
+          "text": "Skip trap",
+          "correct": false
+        },
+        {
+          "text": "Always escape",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: An absorbing state has probability 1 of staying in itself. Step 2: Once entered, never leave. Step 3: Examples: \"game over\", \"absorbing boundary\". Step 4: This \"absorbing state\" is the seed of *random walks with barriers*. Step 5: Used in *gambling ruin problems*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "2.6.q16",
+      "topicId": "2.6",
+      "prompt": "Why does steady state *exist* for many chains?",
+      "options": [
+        {
+          "text": "Spectral theorem",
+          "correct": true
+        },
+        {
+          "text": "Random exists",
+          "correct": false
+        },
+        {
+          "text": "Skip exists",
+          "correct": false
+        },
+        {
+          "text": "Never exists",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: For a stochastic matrix P, 1 is always an eigenvalue. Step 2: So steady state exists (left eigenvector of eigenvalue 1). Step 3: This is the *Perron-Frobenius theorem* for positive matrices. Step 4: Used in *Markov chain theory*. Step 5: Guarantees steady state exists.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "2.6.q17",
+      "topicId": "2.6",
+      "prompt": "What is *uniqueness* of steady state?",
+      "options": [
+        {
+          "text": "One distribution",
+          "correct": true
+        },
+        {
+          "text": "Many distributions",
+          "correct": false
+        },
+        {
+          "text": "Random number",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: For ergodic chains, steady state is unique. Step 2: Reason: eigenvalue 1 has multiplicity 1. Step 3: So π is the *only* fixed distribution. Step 4: This \"uniqueness\" is essential for PageRank etc. Step 5: Used in *convergence theorems*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "2.6.q18",
+      "topicId": "2.6",
+      "prompt": "What if P had *two* states with probability 1 each (P = [[1, 0], [0, 1]]) — what steady state?",
+      "options": [
+        {
+          "text": "Any distribution",
+          "correct": true
+        },
+        {
+          "text": "Uniform only",
+          "correct": false
+        },
+        {
+          "text": "Random distrib",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: P = identity matrix means no transitions (each state stays). Step 2: Every distribution is a steady state (since P · π = π). Step 3: So infinitely many \"steady states\" — not ergodic. Step 4: This \"identity matrix\" is the degenerate case. Step 5: Used in *non-mixing chains*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "2.6.q19",
+      "topicId": "2.6",
+      "prompt": "How does the *stationary distribution* differ from a transient one?",
+      "options": [
+        {
+          "text": "Steady stays",
+          "correct": true
+        },
+        {
+          "text": "Random stays",
+          "correct": false
+        },
+        {
+          "text": "Skip stays",
+          "correct": false
+        },
+        {
+          "text": "Always zero",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Stationary distribution = steady state (doesn't change). Step 2: Transient distribution = current (changes over time). Step 3: Eventually transient → stationary. Step 4: This \"stationary = unchanging\" is the key. Step 5: Used in *Markov chain mixing*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "2.6.q20",
+      "topicId": "2.6",
+      "prompt": "What if the chain had a *periodic* structure (like alternating A, B, A, B)?",
+      "options": [
+        {
+          "text": "No convergence",
+          "correct": true
+        },
+        {
+          "text": "Always converges",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Periodic chains oscillate between states. Step 2: Don't converge to a single distribution. Step 3: This violates *aperiodicity*. Step 4: Required for convergence. Step 5: Used in *Markov chain Monte Carlo* — must check aperiodicity.\n\n---",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    }
+  ]
+}

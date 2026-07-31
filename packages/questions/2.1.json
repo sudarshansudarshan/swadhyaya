@@ -1,0 +1,555 @@
+{
+  "id": "2.1",
+  "moduleId": 2,
+  "number": 1,
+  "title": "Hill Cipher",
+  "vocabulary": {
+    "allowed": [
+      "letter",
+      "alphabet",
+      "encoding",
+      "decoding",
+      "encryption",
+      "decryption",
+      "matrix",
+      "block",
+      "pair.",
+      "Vocabulary",
+      "forbidden:",
+      "key",
+      "generation",
+      "(Q2.2)",
+      "Markov",
+      "(Q2.6)."
+    ],
+    "forbidden": [
+      "key",
+      "generation",
+      "(Q2.2)",
+      "Markov",
+      "(Q2.6)."
+    ]
+  },
+  "questions": [
+    {
+      "id": "2.1.q1",
+      "topicId": "2.1",
+      "prompt": "Why does the Hill Cipher encode *two* letters at a time (not one)?",
+      "options": [
+        {
+          "text": "Matrix needs pair",
+          "correct": true
+        },
+        {
+          "text": "Matrix needs one",
+          "correct": false
+        },
+        {
+          "text": "No reason at all",
+          "correct": false
+        },
+        {
+          "text": "Random choice only",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: The Hill Cipher uses a 2×2 matrix. Step 2: A 2×2 matrix acts on a 2-component vector. Step 3: So the cipher works on pairs of letters — 2 letters = 2 components. Step 4: The trap \"one letter\" would need a 1×1 matrix, less powerful. Step 5: This \"matrix dimension = block size\" rule is the foundation of *block ciphers* in cryptography.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "2.1.q2",
+      "topicId": "2.1",
+      "prompt": "How are letters turned into *numbers* before encryption?",
+      "options": [
+        {
+          "text": "Letter position",
+          "correct": true
+        },
+        {
+          "text": "Random numbers",
+          "correct": false
+        },
+        {
+          "text": "Sum of letters",
+          "correct": false
+        },
+        {
+          "text": "No conversion",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: A = 1, B = 2, ..., Z = 26. Step 2: Letters map to numbers by position in alphabet. Step 3: Then matrix multiplication operates on these numbers. Step 4: The trap \"random\" misses the systematic encoding. Step 5: This \"position-based encoding\" is the basis of all classical ciphers. Step 6: Modern ciphers use *binary* (0/1) instead.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "2.1.q3",
+      "topicId": "2.1",
+      "prompt": "What does the *encryption matrix* do to a pair of letters?",
+      "options": [
+        {
+          "text": "Multiplies them",
+          "correct": true
+        },
+        {
+          "text": "Skips them only",
+          "correct": false
+        },
+        {
+          "text": "Removes them only",
+          "correct": false
+        },
+        {
+          "text": "Adds random only",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: The encryption matrix A multiplies the letter-pair vector. Step 2: A · [p₁, p₂] gives encrypted values. Step 3: The trap \"skips\" describes identity, not encryption. Step 4: This \"matrix multiplication = encryption\" is the core of the Hill Cipher. Step 5: We will see the same idea in *RSA encryption* in Mission 14.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "2.1.q4",
+      "topicId": "2.1",
+      "prompt": "Why does decryption need an *inverse matrix*?",
+      "options": [
+        {
+          "text": "To undo encryption",
+          "correct": true
+        },
+        {
+          "text": "To skip encryption",
+          "correct": false
+        },
+        {
+          "text": "To repeat encryption",
+          "correct": false
+        },
+        {
+          "text": "To make new cipher",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Encryption: c = A · p (ciphertext c from plaintext p). Step 2: Decryption: p = A⁻¹ · c (inverse undoes the multiplication). Step 3: A⁻¹ · (A · p) = p. Step 4: The trap \"skip\" describes no encryption at all. Step 5: This \"inverse undoes operation\" is the foundation of all encryption — *public-key* and *private-key* both rely on hard-to-invert operations.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "2.1.q5",
+      "topicId": "2.1",
+      "prompt": "What does it *mean* if the encryption matrix has det = 0?",
+      "options": [
+        {
+          "text": "Not invertible",
+          "correct": true
+        },
+        {
+          "text": "Always invertible",
+          "correct": false
+        },
+        {
+          "text": "Trivially invertible",
+          "correct": false
+        },
+        {
+          "text": "No decryption needed",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: det = 0 means matrix is singular. Step 2: Singular matrices have no inverse. Step 3: Without inverse, decryption is impossible. Step 4: So a Hill Cipher matrix must have det ≠ 0. Step 5: This \"det ≠ 0 for invertibility\" rule is the foundation of *cryptographic security* — bad keys give useless ciphers.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "2.1.q6",
+      "topicId": "2.1",
+      "prompt": "Why are *pairs* of letters encoded together rather than *each* letter separately?",
+      "options": [
+        {
+          "text": "Adds complexity",
+          "correct": true
+        },
+        {
+          "text": "Adds simplicity",
+          "correct": false
+        },
+        {
+          "text": "Adds nothing",
+          "correct": false
+        },
+        {
+          "text": "Removes letters",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Encoding pairs together mixes the letters — each output depends on *both* inputs. Step 2: This makes the cipher harder to break (frequency analysis fails). Step 3: Encoding each separately would be vulnerable to per-letter patterns. Step 4: This \"mixing for security\" is the principle behind *block ciphers* — used in AES.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "2.1.q7",
+      "topicId": "2.1",
+      "prompt": "What does *mod 26* do in the Hill Cipher?",
+      "options": [
+        {
+          "text": "Wrap to letters",
+          "correct": true
+        },
+        {
+          "text": "Skip numbers",
+          "correct": false
+        },
+        {
+          "text": "Double numbers",
+          "correct": false
+        },
+        {
+          "text": "Remove numbers",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: After matrix multiplication, results may be > 26. Step 2: Mod 26 wraps them back to 1–26 (alphabet range). Step 3: So the cipher stays within letter codes. Step 4: The trap \"skip\" misses the wrap-around. Step 5: This \"modular arithmetic\" is essential in cryptography — used in *RSA*, *Diffie-Hellman*, and *elliptic curve* cryptography.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "2.1.q8",
+      "topicId": "2.1",
+      "prompt": "Why does the same encryption matrix produce the *same* output for the same input?",
+      "options": [
+        {
+          "text": "Deterministic here",
+          "correct": true
+        },
+        {
+          "text": "Random outputs",
+          "correct": false
+        },
+        {
+          "text": "Different always",
+          "correct": false
+        },
+        {
+          "text": "Skips outputs",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Matrix multiplication is deterministic — same input always gives same output. Step 2: So encrypting \"HELLO\" twice gives the same ciphertext. Step 3: This is necessary for the receiver to decrypt. Step 4: The trap \"random\" describes non-deterministic ciphers (like *one-time pads*). Step 5: Determinism is essential for *reversible* encryption.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "2.1.q9",
+      "topicId": "2.1",
+      "prompt": "What happens if you encrypt the *same* pair with two different matrices?",
+      "options": [
+        {
+          "text": "Two ciphertexts",
+          "correct": true
+        },
+        {
+          "text": "Same ciphertext only",
+          "correct": false
+        },
+        {
+          "text": "Random ciphertext",
+          "correct": false
+        },
+        {
+          "text": "No ciphertext",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Different matrices give different multiplications. Step 2: A · p and B · p (with A ≠ B) are generally different. Step 3: So same plaintext can give different ciphertexts. Step 4: The trap \"same\" misses the matrix difference. Step 5: This \"different keys → different ciphertexts\" is the principle of *key-based encryption*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "2.1.q10",
+      "topicId": "2.1",
+      "prompt": "Why is the *inverse matrix* needed for decryption?",
+      "options": [
+        {
+          "text": "Undoes encryption",
+          "correct": true
+        },
+        {
+          "text": "Encrypts again",
+          "correct": false
+        },
+        {
+          "text": "Skips decryption",
+          "correct": false
+        },
+        {
+          "text": "Random operation",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Decryption reverses encryption. Step 2: Since encryption is A · p, decryption must be A⁻¹ · c. Step 3: A⁻¹ · (A · p) = p. Step 4: The trap \"encrypts again\" reverses the direction. Step 5: This \"inverse = undo\" is the foundation of *invertible transformations*, used throughout cryptography.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "2.1.q11",
+      "topicId": "2.1",
+      "prompt": "Why must the encryption matrix be *square* (like 2×2 or 3×3)?",
+      "options": [
+        {
+          "text": "Same size in-out",
+          "correct": true
+        },
+        {
+          "text": "Different sizes",
+          "correct": false
+        },
+        {
+          "text": "Random sizes",
+          "correct": false
+        },
+        {
+          "text": "One-by-one only",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: A square matrix has equal input and output dimensions. Step 2: For Hill Cipher, pair of letters (2 components) in, pair (2 components) out. Step 3: So 2×2 matrix fits. Step 4: This \"square matrix = same dim\" is needed for *invertibility*. Step 5: Used in Mission 7 for *square matrices* and *linear operators*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "2.1.q12",
+      "topicId": "2.1",
+      "prompt": "What happens if the encryption matrix is *not* invertible?",
+      "options": [
+        {
+          "text": "Cannot decrypt",
+          "correct": true
+        },
+        {
+          "text": "Easy decryption",
+          "correct": false
+        },
+        {
+          "text": "Random decrypt",
+          "correct": false
+        },
+        {
+          "text": "Trivial decrypt",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Without inverse, you cannot reverse the encryption. Step 2: So encrypted messages become unreadable (even to the intended receiver). Step 3: This is why invertibility is essential. Step 4: The trap \"easy\" misses the inverse. Step 5: This \"invertibility ↔ decryptable\" is the core requirement of *classical ciphers*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "2.1.q13",
+      "topicId": "2.1",
+      "prompt": "Why is a *2×2* matrix common in Hill Cipher?",
+      "options": [
+        {
+          "text": "Pair of letters",
+          "correct": true
+        },
+        {
+          "text": "Triple of letters",
+          "correct": false
+        },
+        {
+          "text": "Single letter only",
+          "correct": false
+        },
+        {
+          "text": "Random size",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Hill Cipher encodes 2 letters at a time. Step 2: 2 letters = 2-vector input. Step 3: So 2×2 matrix acts on 2-vector to give 2-vector output. Step 4: The trap \"triple\" would need 3×3. Step 5: This \"block size = matrix dim\" is the standard *Hill cipher* design.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "2.1.q14",
+      "topicId": "2.1",
+      "prompt": "Why is the Hill Cipher *linear* (uses matrix multiplication)?",
+      "options": [
+        {
+          "text": "Algebraic structure",
+          "correct": true
+        },
+        {
+          "text": "Random choice",
+          "correct": false
+        },
+        {
+          "text": "Quadratic here",
+          "correct": false
+        },
+        {
+          "text": "No reason here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Linear operations (matrix multiplication) preserve algebraic structure. Step 2: This makes inversion possible (linear maps have well-defined inverses if invertible). Step 3: Nonlinear ciphers are harder to invert. Step 4: This \"linear = invertible\" idea is the foundation of *linear algebra-based cryptography*. Step 5: Modern *post-quantum cryptography* uses nonlinear structures for security.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "2.1.q15",
+      "topicId": "2.1",
+      "prompt": "How does the receiver know the *encryption matrix* A?",
+      "options": [
+        {
+          "text": "Shared key",
+          "correct": true
+        },
+        {
+          "text": "Random guess",
+          "correct": false
+        },
+        {
+          "text": "Skip the key",
+          "correct": false
+        },
+        {
+          "text": "Cipher text only",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Both sender and receiver know A (the *key*). Step 2: Sender uses A to encrypt; receiver uses A⁻¹ to decrypt. Step 3: Without sharing A, decryption fails. Step 4: This \"shared key\" is the basis of *symmetric encryption*. Step 5: Modern *asymmetric encryption* uses different keys for encrypt and decrypt.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "2.1.q16",
+      "topicId": "2.1",
+      "prompt": "What is a *key* in the Hill Cipher?",
+      "options": [
+        {
+          "text": "The matrix A",
+          "correct": true
+        },
+        {
+          "text": "A letter only",
+          "correct": false
+        },
+        {
+          "text": "A number only",
+          "correct": false
+        },
+        {
+          "text": "A random pick",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: The encryption matrix A is the *key*. Step 2: Knowing A (and A⁻¹) lets you encrypt and decrypt. Step 3: Not knowing A means you can't read messages. Step 4: This \"key = matrix\" is the standard for *matrix-based ciphers*. Step 5: Key size affects security — larger matrices give stronger ciphers.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "2.1.q17",
+      "topicId": "2.1",
+      "prompt": "Why is the *ciphertext* different from the *plaintext*?",
+      "options": [
+        {
+          "text": "Matrix multiplied",
+          "correct": true
+        },
+        {
+          "text": "Same text here",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Encryption multiplies by A, changing the values. Step 2: So plaintext (original) ≠ ciphertext (encrypted). Step 3: The trap \"same\" misses the encryption. Step 4: This \"transform changes values\" is the goal of encryption. Step 5: Used in *signal processing* and *data compression* — transforms change the representation.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "2.1.q18",
+      "topicId": "2.1",
+      "prompt": "What if you used a *3×3* encryption matrix — what would change?",
+      "options": [
+        {
+          "text": "Three letters at once",
+          "correct": true
+        },
+        {
+          "text": "One letter at once",
+          "correct": false
+        },
+        {
+          "text": "Two letters only",
+          "correct": false
+        },
+        {
+          "text": "No change here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: A 3×3 matrix acts on 3-component vectors. Step 2: So 3 letters would be encoded together. Step 3: This is a *3-letter Hill Cipher*. Step 4: More mixing → stronger cipher (but harder computation). Step 5: Used in *AES* which uses larger blocks for security.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "2.1.q19",
+      "topicId": "2.1",
+      "prompt": "Why does *det = 1 or −1* make a \"good\" Hill Cipher key?",
+      "options": [
+        {
+          "text": "Inverse is small",
+          "correct": true
+        },
+        {
+          "text": "Inverse is huge",
+          "correct": false
+        },
+        {
+          "text": "Random inverse",
+          "correct": false
+        },
+        {
+          "text": "No inverse here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: For det = 1 or −1, the inverse has small entries (just integer swaps/negations). Step 2: Small entries → easy decryption. Step 3: For det = ±k with large k, inverse has fractions. Step 4: This \"det = ±1 ↔ clean inverse\" is the seed of *unimodular matrices*. Step 5: Used in *number theory* and *coding theory*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "2.1.q20",
+      "topicId": "2.1",
+      "prompt": "What if A · p = c and you encrypt the *ciphertext* c with the same A — what do you get?",
+      "options": [
+        {
+          "text": "A² · p",
+          "correct": true
+        },
+        {
+          "text": "Same ciphertext",
+          "correct": false
+        },
+        {
+          "text": "Random output",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: A · c = A · (A · p) = (A · A) · p = A² · p. Step 2: So encrypting twice gives A² applied to plaintext. Step 3: This is \"double encryption\" — applying A twice. Step 4: Modern *meet-in-the-middle* attacks exploit this. Step 5: Used in *Markov chains* (Q2.6) for repeated transitions.\n\n---",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    }
+  ]
+}

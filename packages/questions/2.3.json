@@ -1,0 +1,548 @@
+{
+  "id": "2.3",
+  "moduleId": 2,
+  "number": 3,
+  "title": "More Equations Than Unknowns",
+  "vocabulary": {
+    "allowed": [
+      "overdetermined",
+      "more",
+      "equations",
+      "than",
+      "unknowns",
+      "redundant",
+      "consistent",
+      "inconsistent.",
+      "Vocabulary",
+      "forbidden:",
+      "Markov",
+      "(Q2.6)."
+    ],
+    "forbidden": [
+      "Markov",
+      "(Q2.6)."
+    ]
+  },
+  "questions": [
+    {
+      "id": "2.3.q1",
+      "topicId": "2.3",
+      "prompt": "What is an *overdetermined* system?",
+      "options": [
+        {
+          "text": "More eqs than unks",
+          "correct": true
+        },
+        {
+          "text": "Fewer eqs than unks",
+          "correct": false
+        },
+        {
+          "text": "Equal eqs and unks",
+          "correct": false
+        },
+        {
+          "text": "No equations at all",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: \"Overdetermined\" means more equations than unknowns. Step 2: E.g., 3 equations, 2 unknowns. Step 3: This is typical in real life (more measurements than variables). Step 4: The trap \"fewer\" describes *underdetermined*. Step 5: This \"more equations than unknowns\" is the foundation of *least squares* (Q2.5).",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "2.3.q2",
+      "topicId": "2.3",
+      "prompt": "Why might an overdetermined system have *no* solution?",
+      "options": [
+        {
+          "text": "Equations conflict",
+          "correct": true
+        },
+        {
+          "text": "Equations agree",
+          "correct": false
+        },
+        {
+          "text": "Random conflict",
+          "correct": false
+        },
+        {
+          "text": "Skip conflict",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Three equations in two unknowns typically over-constrain. Step 2: If they conflict (give contradictory info), no single (x, y) satisfies all. Step 3: This is *inconsistent*. Step 4: The trap \"agree\" describes *consistent* (but redundant). Step 5: This \"over-constraint ↔ possible inconsistency\" is the seed of *measurement error* (Q2.5).",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "2.3.q3",
+      "topicId": "2.3",
+      "prompt": "What does *consistent* mean for a system?",
+      "options": [
+        {
+          "text": "Has a solution",
+          "correct": true
+        },
+        {
+          "text": "Has no solution",
+          "correct": false
+        },
+        {
+          "text": "Random solution",
+          "correct": false
+        },
+        {
+          "text": "Skip solution",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Consistent = at least one solution exists. Step 2: Inconsistent = no solution. Step 3: For overdetermined systems, consistent means the extra equations are *redundant*. Step 4: This \"consistent vs inconsistent\" is the basic classification. Step 5: Used in *optimisation* (feasibility of constraints).",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "2.3.q4",
+      "topicId": "2.3",
+      "prompt": "Why is a *redundant* equation harmless?",
+      "options": [
+        {
+          "text": "Adds no info",
+          "correct": true
+        },
+        {
+          "text": "Adds conflict",
+          "correct": false
+        },
+        {
+          "text": "Adds nothing",
+          "correct": false
+        },
+        {
+          "text": "Adds random",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: A redundant equation is implied by the others. Step 2: So it adds no new constraint. Step 3: The system remains solvable with the same solution. Step 4: The trap \"adds conflict\" describes inconsistent equations. Step 5: This \"redundancy is harmless\" is the seed of *error-correcting codes* (Q2.7 for stochastic).",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "2.3.q5",
+      "topicId": "2.3",
+      "prompt": "When does an overdetermined system have a *unique* solution?",
+      "options": [
+        {
+          "text": "Eqs consistent",
+          "correct": true
+        },
+        {
+          "text": "Eqs random",
+          "correct": false
+        },
+        {
+          "text": "No eqs fit",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: If all equations are consistent, the (overdetermined) system has at least one solution. Step 2: With more equations than unknowns, the unique solution is forced. Step 3: \"Forced\" means only one (x, y) fits all equations. Step 4: This \"consistency ↔ solvable\" is the basic property. Step 5: Used in *calibration* (over-determined measurements).",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "2.3.q6",
+      "topicId": "2.3",
+      "prompt": "What is the *role* of having more equations?",
+      "options": [
+        {
+          "text": "Verifies solution",
+          "correct": true
+        },
+        {
+          "text": "Hides solution",
+          "correct": false
+        },
+        {
+          "text": "Removes solution",
+          "correct": false
+        },
+        {
+          "text": "Random role",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Extra equations can *verify* that the solution is correct. Step 2: If all equations are satisfied, the solution is trustworthy. Step 3: If not, there's an error or inconsistency. Step 4: This \"redundancy for verification\" is the basis of *checksums*, *error correction*, and *cross-validation* in *machine learning*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "2.3.q7",
+      "topicId": "2.3",
+      "prompt": "Why might *real",
+      "options": [
+        {
+          "text": "Multiple measurements",
+          "correct": true
+        },
+        {
+          "text": "Single measurement",
+          "correct": false
+        },
+        {
+          "text": "Random measurements",
+          "correct": false
+        },
+        {
+          "text": "No measurements",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Real life often involves multiple measurements of the same quantity. Step 2: E.g., 5 temperature readings → 1 true temperature. Step 3: This is overdetermined. Step 4: The trap \"single\" describes determined. Step 5: This \"many measurements, few unknowns\" is the foundation of *statistics* and *sensor fusion*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "2.3.q8",
+      "topicId": "2.3",
+      "prompt": "What does *inconsistent* mean for a system?",
+      "options": [
+        {
+          "text": "Has no solution",
+          "correct": true
+        },
+        {
+          "text": "Has a solution",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Inconsistent = no solution exists. Step 2: Equations contradict each other. Step 3: For example, x + y = 5 and x + y = 7. Step 4: This \"no common answer\" is *inconsistency*. Step 5: Used in *constraint satisfaction* problems.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "2.3.q9",
+      "topicId": "2.3",
+      "prompt": "How do you *detect* inconsistency?",
+      "options": [
+        {
+          "text": "Try to solve",
+          "correct": true
+        },
+        {
+          "text": "Random check",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Add more eqs",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Attempt to solve the system. Step 2: If the process leads to contradiction (e.g., 0 = 5), it's inconsistent. Step 3: If you find a solution, it's consistent. Step 4: This \"solve to detect\" is the algorithmic test. Step 5: Used in *Gaussian elimination* with *inconsistency detection* in Mission 7.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "2.3.q10",
+      "topicId": "2.3",
+      "prompt": "What is the *rank* of an overdetermined system?",
+      "options": [
+        {
+          "text": "Number indep eqs",
+          "correct": true
+        },
+        {
+          "text": "Number all eqs",
+          "correct": false
+        },
+        {
+          "text": "Number unknowns",
+          "correct": false
+        },
+        {
+          "text": "Random number",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Rank = number of *independent* equations. Step 2: Redundant equations don't add to rank. Step 3: For 3 equations in 2 unknowns with rank 2, only 2 are independent. Step 4: This \"rank = independent count\" is the central definition. Step 5: Used in Mission 16 for *rank-nullity theorem*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "2.3.q11",
+      "topicId": "2.3",
+      "prompt": "Why is *rank* important for overdetermined systems?",
+      "options": [
+        {
+          "text": "Determines solv",
+          "correct": true
+        },
+        {
+          "text": "Hides solution",
+          "correct": false
+        },
+        {
+          "text": "Removes solution",
+          "correct": false
+        },
+        {
+          "text": "Random number",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Rank tells us how many equations are independent. Step 2: For consistency, rank must equal number of unknowns. Step 3: Otherwise, the system is inconsistent. Step 4: This \"rank ↔ solvability\" is the central theorem. Step 5: Used in Mission 14 for *linear regression* conditions.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "2.3.q12",
+      "topicId": "2.3",
+      "prompt": "What does *redundancy* protect against?",
+      "options": [
+        {
+          "text": "Measurement error",
+          "correct": true
+        },
+        {
+          "text": "Perfect data only",
+          "correct": false
+        },
+        {
+          "text": "Random errors",
+          "correct": false
+        },
+        {
+          "text": "No error here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Real measurements have errors. Step 2: With more equations than unknowns, errors can be detected and corrected. Step 3: If one equation is \"off\" due to error, the redundancy catches it. Step 4: This \"redundancy for error detection\" is the foundation of *error-correcting codes* (Hamming, Reed-Solomon).",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "2.3.q13",
+      "topicId": "2.3",
+      "prompt": "When are *overdetermined* systems used in practice?",
+      "options": [
+        {
+          "text": "Calibration",
+          "correct": true
+        },
+        {
+          "text": "Single measurement",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "No practical use",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Calibration often involves more measurements than parameters. Step 2: E.g., 10 measurements to find 2 calibration constants. Step 3: This overdetermination lets us estimate errors. Step 4: This \"overdetermined calibration\" is used in *engineering*, *surveying*, *computer vision*. Step 5: *Bundle adjustment* in computer vision uses least squares.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "2.3.q14",
+      "topicId": "2.3",
+      "prompt": "What is the *minimum* number of equations needed for a unique solution in 2 unknowns?",
+      "options": [
+        {
+          "text": "Two equations",
+          "correct": true
+        },
+        {
+          "text": "One equation only",
+          "correct": false
+        },
+        {
+          "text": "Three equations",
+          "correct": false
+        },
+        {
+          "text": "Zero equations",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: For 2 unknowns, you need at least 2 independent equations. Step 2: Less than 2 → infinite solutions or none. Step 3: More than 2 → overdetermined (potentially inconsistent). Step 4: This \"n unknowns → n equations\" is the minimum for uniqueness. Step 5: Used in Mission 7 for *square systems*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "2.3.q15",
+      "topicId": "2.3",
+      "prompt": "What does a *third* equation do to a 2",
+      "options": [
+        {
+          "text": "Adds info or conflict",
+          "correct": true
+        },
+        {
+          "text": "Removes info",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Random info",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: If third equation is independent and consistent → still unique solution, but now verified. Step 2: If independent and inconsistent → no solution. Step 3: If dependent (redundant) → no new info. Step 4: This \"third equation = test\" is the basis of *consistency checking*. Step 5: Used in *least squares* (Q2.5).",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "2.3.q16",
+      "topicId": "2.3",
+      "prompt": "How is the *overdetermined* system related to *underdetermined*?",
+      "options": [
+        {
+          "text": "Opposite cases",
+          "correct": true
+        },
+        {
+          "text": "Same cases",
+          "correct": false
+        },
+        {
+          "text": "Random relation",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Overdetermined: more eqs than unks (often inconsistent). Step 2: Underdetermined: fewer eqs than unks (infinitely many solutions). Step 3: Determined: equal eqs and unks (unique solution typically). Step 4: This \"determined/over/under\" trichotomy is the basic classification. Step 5: Used in *statistics* (overdetermined for regression).",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "2.3.q17",
+      "topicId": "2.3",
+      "prompt": "Why does *adding* equations *not* always improve a system?",
+      "options": [
+        {
+          "text": "Can conflict",
+          "correct": true
+        },
+        {
+          "text": "Always improves",
+          "correct": false
+        },
+        {
+          "text": "Random effect",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Adding a *wrong* equation (inconsistent) makes the system unsolvable. Step 2: So more equations can hurt. Step 3: This \"garbage in, garbage out\" is real. Step 4: The trap \"always improves\" misses the inconsistency case. Step 5: Used in *data quality* — bad measurements degrade results.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "2.3.q18",
+      "topicId": "2.3",
+      "prompt": "What if all *extra* equations were *multiples* of the first — what would happen?",
+      "options": [
+        {
+          "text": "No new info",
+          "correct": true
+        },
+        {
+          "text": "New info gained",
+          "correct": false
+        },
+        {
+          "text": "Conflict created",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Multiples carry the same information as the original. Step 2: So they add no new constraint. Step 3: System still has the original unique solution. Step 4: This \"redundancy\" is harmless. Step 5: Used in *signal processing* (oversampling for noise reduction).",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "2.3.q19",
+      "topicId": "2.3",
+      "prompt": "What does *rank",
+      "options": [
+        {
+          "text": "Dependent eqs",
+          "correct": true
+        },
+        {
+          "text": "Independent eqs",
+          "correct": false
+        },
+        {
+          "text": "Random eqs",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Rank-deficient means equations are dependent (redundant). Step 2: E.g., 3 equations but only rank 2. Step 3: Effectively 2 independent constraints. Step 4: This \"rank < number of eqs\" is *deficient*. Step 5: Used in *collinearity* in regression (independent variables linearly dependent).",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "2.3.q20",
+      "topicId": "2.3",
+      "prompt": "What if the overdetermined system were *all consistent* — what's the practical benefit?",
+      "options": [
+        {
+          "text": "Verifies answer",
+          "correct": true
+        },
+        {
+          "text": "No benefit",
+          "correct": false
+        },
+        {
+          "text": "Hides answer",
+          "correct": false
+        },
+        {
+          "text": "Random benefit",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: If all equations give the same answer, that answer is robust. Step 2: Multiple measurements agreeing → trustworthy result. Step 3: This is *cross-validation* in statistics. Step 4: This \"redundancy for verification\" is the foundation of *scientific reproducibility*. Step 5: Used in *survey methodology* (multiple sources, check consistency).\n\n---",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    }
+  ]
+}
