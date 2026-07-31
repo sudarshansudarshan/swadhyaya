@@ -21,8 +21,19 @@ export async function POST(req: NextRequest) {
 
   const perms = preset && PRESETS[preset] ? PRESETS[preset] : (customPerms ?? []);
 
+  const user = await prisma.user.upsert({
+    where: { email },
+    create: {
+      email,
+      name,
+      role: 'INSTRUCTOR',
+    },
+    update: { role: 'INSTRUCTOR' },
+  });
+
   const instructor = await prisma.instructor.create({
     data: {
+      userId: user.id,
       name,
       email,
       preset: preset ?? 'custom',
