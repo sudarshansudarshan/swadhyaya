@@ -1,0 +1,536 @@
+// Swadhyaya — Prisma schema
+// Models: User, Course, Module, Section, Item, Question, Enrollment, Cohort,
+// Progress, VideoWatch, EthicsConsent, ProctorSession, ProctorEvent,
+// EmotionResponse, QuizAttempt, Instructor, VivaSlot, VivaBooking,
+// ScoreReset, QuestionInvalidation, AdminNote, ActivityLog, LiveSession
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+// ─── Auth & Identity ───────────────────────────────────────────────
+
+model User {
+  id            String   @id @default(cuid())
+  samagamaSub   String?  @unique
+  email         String   @unique
+  name          String?
+  image         String?
+  role          Role     @default(STUDENT)
+  cohortId      String?
+  cohort        Cohort?  @relation(fields: [cohortId], references: [id])
+
+  liveSession      LiveSession?
+  adminNotes       AdminNote[]
+  activityLogs     ActivityLog[]
+  enrollments      CourseEnrollment[]
+  progress         TopicProgress[]
+  moduleProgress   ModuleProgress[]
+  videoWatches     VideoWatch[]
+  quizAttempts     QuizAttempt[]
+  proctorSessions  ProctorSession[]
+  vivaBookings     VivaBooking[]
+  ethicsConsents   EthicsConsent[]
+  emotions         EmotionResponse[]
+  scoreResets      ScoreReset[]      @relation("ScoreResetUser")
+  scoreResetActions ScoreReset[]     @relation("ScoreResetActor")
+  questionInvalidations QuestionInvalidation[] @relation("QIUser")
+  questionInvalidationsMade QuestionInvalidation[] @relation("QIActor")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum Role {
+  STUDENT
+  INSTRUCTOR
+  ADMIN
+}
+
+// ─── Course hierarchy ───────────────────────────────────────────────
+
+model Course {
+  id          String   @id @default(cuid())
+  title       String
+  description String?
+  thumbnailUrl String?
+  isPublished Boolean  @default(false)
+  modules     Module[]
+  enrollments CourseEnrollment[]
+  createdAt   DateTime @default(now())
+}
+
+model Module {
+  id           String   @id @default(cuid())
+  courseId     String
+  course       Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  number       Int
+  title        String?
+  subtitle     String?
+  sections     Section[]
+  instructorIds String[]
+  instructors   Instructor[] @relation(fields: [instructorIds], references: [id])
+  vivaBookings  VivaBooking[]
+  moduleProgress ModuleProgress[]
+
+  @@unique([courseId, number])
+}
+
+model Section {
+  id              String   @id @default(cuid())
+  moduleId        String
+  module          Module   @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+  number          Int
+  title           String
+  prompt          String?
+  activityHtmlSlug String?
+  questionBankId  String?
+  items           Item[]
+
+  @@unique([moduleId, number])
+  @@index([questionBankId])
+}
+
+model Item {
+  id          String  @id @default(cuid())
+  sectionId   String
+  section     Section @relation(fields: [sectionId], references: [id], onDelete: Cascade)
+  order       Int
+  type        ItemType
+  title       String
+  description String?
+
+  muxPlaybackId    String?
+  videoStartTime   String?
+  videoEndTime     String?
+  videoPosterUrl   String?
+  videoCaptionsUrl String?
+  videoMinWatchSeconds Int  @default(30)
+  videoRequired    Boolean @default(true)
+
+  activityHtmlSlug   String?
+  activityMinSeconds Int     @default(60)
+  activityRequired   Boolean @default(true)
+
+  quizQuestionSource QuestionSource @default(CONCEPTUAL_BANK)
+  quizQuestionCount  Int           @default(20)
+  quizPassThreshold  Int           @default(14)
+  quizShuffle        Boolean       @default(true)
+  quizTimeLimit      Int           @default(0)
+  quizParentalHelp   Boolean       @default(false)
+
+  progress     TopicProgress[]
+  videoWatches VideoWatch[]
+  quizAttempts QuizAttempt[]
+  proctorSessions ProctorSession[]
+  scoreResets  ScoreReset[]
+  questionInvalidations QuestionInvalidation[]
+
+  @@unique([sectionId, order])
+}
+
+enum ItemType {
+  VIDEO
+  ACTIVITY
+  QUIZ
+}
+
+enum QuestionSource {
+  CONCEPTUAL_BANK
+  CUSTOM
+  MIXED
+}
+
+// ─── Question bank ──────────────────────────────────────────────────
+
+model Question {
+  id           String        @id @default(cuid())
+  topicId      String
+  prompt       String
+  options      Json
+  explanation  String?
+  tags         String[]
+  difficulty   Difficulty    @default(EASY)
+  source       QuestionSource @default(CONCEPTUAL_BANK)
+  versionNotes String?
+  promptHtml   String?
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+
+  answerWrongOn QuestionInvalidation[]
+  attempts      QuizAttempt[]
+
+  @@index([topicId, difficulty])
+}
+
+enum Difficulty {
+  EASY
+  MEDIUM
+  HARD
+}
+
+// ─── Enrollment & Cohorts ───────────────────────────────────────────
+
+model Cohort {
+  id          String   @id @default(cuid())
+  name        String   @unique
+  description String?
+  courseIds   String[]
+  users       User[]
+  createdAt   DateTime @default(now())
+}
+
+model CourseEnrollment {
+  id         String   @id @default(cuid())
+  userId     String
+  user       User     @relation(fields: [userId], references: [id])
+  courseId   String
+  course     Course   @relation(fields: [courseId], references: [id])
+  cohortId   String?
+  enrolledAt DateTime @default(now())
+
+  @@unique([userId, courseId])
+}
+
+// ─── Per-user progress ──────────────────────────────────────────────
+
+model TopicProgress {
+  id                String   @id @default(cuid())
+  userId            String
+  user              User     @relation(fields: [userId], references: [id])
+  itemId            String
+  item              Item     @relation(fields: [itemId], references: [id])
+  startedAt         DateTime @default(now())
+  videoCompleted    Boolean  @default(false)
+  videoWatchedSeconds Int    @default(0)
+  videoRewinds      Int      @default(0)
+  videoFastForwards Int      @default(0)
+  videoWatchTrack   Json?
+  activityCompleted Boolean  @default(false)
+  quizScore         Int?
+  quizTotal         Int?
+  quizCompleted     Boolean  @default(false)
+  completedAt       DateTime?
+  updatedAt         DateTime @updatedAt
+
+  @@unique([userId, itemId])
+}
+
+model ModuleProgress {
+  id            String   @id @default(cuid())
+  userId        String
+  user          User     @relation(fields: [userId], references: [id])
+  moduleId      String
+  module        Module   @relation(fields: [moduleId], references: [id])
+  allItemsDone  Boolean  @default(false)
+  vivaBookingId String?  @unique
+  vivaCompleted Boolean  @default(false)
+  completedAt   DateTime?
+
+  @@unique([userId, moduleId])
+}
+
+// ─── Video forensics ────────────────────────────────────────────────
+
+model VideoWatch {
+  id              String   @id @default(cuid())
+  userId          String
+  user            User     @relation(fields: [userId], references: [id])
+  itemId          String
+  item            Item     @relation(fields: [itemId], references: [id])
+  startedAt       DateTime @default(now())
+  endedAt         DateTime?
+  durationSeconds Int      @default(0)
+  watchedSeconds  Int      @default(0)
+  playbackRate    Float    @default(1.0)
+  rewinds         Int      @default(0)
+  fastForwards    Int      @default(0)
+  rewindData      Json?
+  fastForwardData Json?
+  completed       Boolean  @default(false)
+  ejectionFlags   Int      @default(0)
+  wasEjected      Boolean  @default(false)
+  watchItemId     String?
+
+  @@index([userId, itemId])
+}
+
+// ─── Proctoring ─────────────────────────────────────────────────────
+
+model EthicsConsent {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id])
+  courseId    String
+  versionId   String
+  consentedAt DateTime @default(now())
+  ipAddress   String?
+  userAgent   String?
+
+  @@unique([userId, courseId, versionId])
+}
+
+model ProctorSession {
+  id              String   @id @default(cuid())
+  userId          String
+  user            User     @relation(fields: [userId], references: [id])
+  itemId          String
+  item            Item     @relation(fields: [itemId], references: [id])
+  quizType        String
+  startedAt       DateTime @default(now())
+  endedAt         DateTime?
+  penaltyScore    Int      @default(0)
+  ejected         Boolean  @default(false)
+  emotionTimeline Json?
+  events          ProctorEvent[]
+}
+
+model ProctorEvent {
+  id           String   @id @default(cuid())
+  sessionId    String
+  session      ProctorSession @relation(fields: [sessionId], references: [id])
+  type         String
+  severity     Int
+  screenshotUrl String?
+  audioClipUrl String?
+  metadata     Json?
+  createdAt    DateTime @default(now())
+
+  @@index([sessionId, createdAt])
+}
+
+model EmotionResponse {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id])
+  itemId      String
+  emotion     String
+  feedbackText String?
+  createdAt   DateTime @default(now())
+}
+
+// ─── Quizzes ────────────────────────────────────────────────────────
+
+model QuizAttempt {
+  id                String   @id @default(cuid())
+  userId            String
+  user              User     @relation(fields: [userId], references: [id])
+  itemId            String
+  item              Item     @relation(fields: [itemId], references: [id])
+  proctorSessionId  String?
+  answers           Json
+  invalidations     Json?
+  score             Int
+  total             Int      @default(20)
+  passed            Boolean
+  cancelledAt       DateTime?
+  cancelledById     String?
+  carryOverFromAttemptId String?
+  submittedAt       DateTime @default(now())
+
+  @@index([userId, itemId, submittedAt])
+}
+
+// ─── Viva ───────────────────────────────────────────────────────────
+
+model Instructor {
+  id              String   @id @default(cuid())
+  userId          String?  @unique
+  user            User?    @relation(fields: [userId], references: [id])
+  name            String
+  email           String   @unique
+  timezone        String   @default("Asia/Kolkata")
+  bio             String?
+  active          Boolean  @default(true)
+  staffRole       StaffRole @default(TEACHING_ASSISTANT)
+  permissions     Json
+  preset          String?
+  permissionScopes Json?
+  validFrom       DateTime?
+  validUntil      DateTime?
+  autoRevokeOnExpiry Boolean @default(true)
+  modules         Module[]    @relation(fields: [instructorIds], references: [id])
+  slots           VivaSlot[]
+  bookings        VivaBooking[]
+  activityLogs    InstructorActivityLog[]
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+enum StaffRole {
+  LEAD_INSTRUCTOR
+  TEACHING_ASSISTANT
+  ADMIN
+}
+
+model InstructorActivityLog {
+  id           String   @id @default(cuid())
+  instructorId String
+  instructor   Instructor @relation(fields: [instructorId], references: [id])
+  action       String
+  targetType   String?
+  targetId     String?
+  metadata     Json?
+  ipAddress    String?
+  createdAt    DateTime @default(now())
+
+  @@index([instructorId, createdAt])
+}
+
+model VivaSlot {
+  id           String   @id @default(cuid())
+  instructorId String
+  instructor   Instructor @relation(fields: [instructorId], references: [id])
+  moduleId     String
+  startUtc     DateTime
+  endUtc       DateTime
+  capacity     Int      @default(1)
+  meetingsUrl  String?
+  bookings     VivaBooking[]
+
+  @@unique([instructorId, startUtc])
+  @@index([moduleId, startUtc])
+}
+
+model VivaBooking {
+  id             String   @id @default(cuid())
+  slotId         String
+  slot           VivaSlot @relation(fields: [slotId], references: [id])
+  userId         String
+  user           User     @relation(fields: [userId], references: [id])
+  moduleId       String
+  module         Module   @relation(fields: [moduleId], references: [id])
+  status         BookingStatus @default(PENDING)
+  meetingUrl     String?
+  rejectionReason String?
+  quizScoreSummary Json?
+  bookedAt       DateTime @default(now())
+
+  moduleProgress ModuleProgress?
+  scoreResets    ScoreReset[]
+  invalidations  QuestionInvalidation[]
+
+  @@unique([userId, moduleId])
+}
+
+enum BookingStatus {
+  PENDING
+  CONFIRMED
+  RESCHEDULED
+  COMPLETED
+  CANCELLED
+}
+
+// ─── Admin actions ──────────────────────────────────────────────────
+
+model ScoreReset {
+  id           String   @id @default(cuid())
+  userId       String
+  user         User     @relation("ScoreResetUser", fields: [userId], references: [id])
+  scope        ResetScope
+  itemId       String?
+  item         Item?    @relation(fields: [itemId], references: [id])
+  moduleId     String?
+  vivaBookingId String?
+  vivaBooking   VivaBooking? @relation(fields: [vivaBookingId], references: [id])
+  resetStages  String[]
+  resetById    String
+  resetBy      User     @relation("ScoreResetActor", fields: [resetById], references: [id])
+  resetByType  String
+  reason       String?
+  notes        String?
+  createdAt    DateTime @default(now())
+
+  @@index([userId, createdAt])
+}
+
+enum ResetScope {
+  QUESTION
+  QUIZ
+  ITEM
+  MODULE
+  COURSE
+  GLOBAL
+}
+
+model QuestionInvalidation {
+  id               String   @id @default(cuid())
+  userId           String
+  user             User     @relation("QIUser", fields: [userId], references: [id])
+  questionId       String
+  question         Question @relation(fields: [questionId], references: [id])
+  itemId           String
+  item             Item     @relation(fields: [itemId], references: [id])
+  invalidatedById  String
+  invalidatedBy    User     @relation("QIActor", fields: [invalidatedById], references: [id])
+  invalidatedByType String
+  vivaBookingId    String?
+  vivaBooking      VivaBooking? @relation(fields: [vivaBookingId], references: [id])
+  reason           String?
+  createdAt        DateTime @default(now())
+
+  @@unique([userId, questionId, itemId])
+  @@index([userId, itemId])
+}
+
+model AdminNote {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  authorId  String
+  body      String
+  createdAt DateTime @default(now())
+
+  @@index([userId, createdAt])
+}
+
+// ─── Activity & Live presence ───────────────────────────────────────
+
+model ActivityLog {
+  id           String   @id @default(cuid())
+  type         String
+  severity     String   @default("info")
+  actorId      String?
+  actorRole    String?
+  userId       String?
+  user         User?    @relation(fields: [userId], references: [id])
+  instructorId String?
+  targetType   String?
+  targetId     String?
+  metadata     Json?
+  ipAddress    String?
+  userAgent    String?
+  createdAt    DateTime @default(now())
+
+  @@index([type, createdAt])
+  @@index([userId, createdAt])
+  @@index([createdAt])
+}
+
+model LiveSession {
+  id               String   @id @default(cuid())
+  userId           String
+  user             User     @relation(fields: [userId], references: [id])
+  page             String
+  itemId           String?
+  itemType         String?
+  sectionId        String?
+  moduleId         String?
+  courseId         String?
+  videoTimestamp   Int?
+  quizQuestion     Int?
+  quizScore        Int?
+  proctorSessionId String?
+  isFullscreen     Boolean  @default(false)
+  readyToDetect    Boolean  @default(false)
+  startedAt        DateTime @default(now())
+  lastHeartbeat    DateTime @default(now())
+
+  @@index([userId, lastHeartbeat])
+  @@index([lastHeartbeat])
+}
