@@ -1,0 +1,545 @@
+{
+  "id": "5.3",
+  "moduleId": 5,
+  "number": 3,
+  "title": "Find M with N(M) = S₃, C(M) = S₂",
+  "vocabulary": {
+    "allowed": [
+      "prescribed",
+      "construct",
+      "basis",
+      "put",
+      "columns.",
+      "Vocabulary",
+      "forbidden:",
+      "SVD",
+      "(later)."
+    ],
+    "forbidden": [
+      "SVD",
+      "(later)."
+    ]
+  },
+  "questions": [
+    {
+      "id": "5.3.q1",
+      "topicId": "5.3",
+      "prompt": "What does it *mean* to find M with N(M) = S₃, C(M) = S₂?",
+      "options": [
+        {
+          "text": "Construct M",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "No M exists",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Find a matrix M whose null space is exactly S₃ and column space is exactly S₂. Step 2: This is a *construction* problem. Step 3: Used in *matrix design*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "5.3.q2",
+      "topicId": "5.3",
+      "prompt": "Is such an M *always possible*?",
+      "options": [
+        {
+          "text": "Yes, with care",
+          "correct": true
+        },
+        {
+          "text": "No, impossible",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Yes, can construct M with given N and C. Step 2: But must respect dimensions: dim(N) = m − rank, dim(C) = rank. Step 3: Used in *matrix construction*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "5.3.q3",
+      "topicId": "5.3",
+      "prompt": "How do we *start* constructing M?",
+      "options": [
+        {
+          "text": "Pick basis",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Use identity",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Pick basis for S₂ (column space). Step 2: Pick basis for S₃ (null space). Step 3: Set up matrix from these. Step 4: Used in *basis-driven construction*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "5.3.q4",
+      "topicId": "5.3",
+      "prompt": "How many *basis vectors* do we need for column space?",
+      "options": [
+        {
+          "text": "dim(S₂)",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Always two",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Number of independent columns = dim(C(M)) = dim(S₂). Step 2: This sets the rank. Step 3: Used in *dimension counting*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "5.3.q5",
+      "topicId": "5.3",
+      "prompt": "Why must *dim(S₃) + dim(S₂) = n* (column count)?",
+      "options": [
+        {
+          "text": "Rank-nullity",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: nullity = dim(N) = dim(S₃). Step 2: rank = dim(C) = dim(S₂). Step 3: rank + nullity = n. Step 4: Used in *constraint*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "5.3.q6",
+      "topicId": "5.3",
+      "prompt": "What if dim(S₃) + dim(S₂) ≠ n?",
+      "options": [
+        {
+          "text": "Impossible",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Always possible",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: If dim(S₃) + dim(S₂) ≠ n, no such M exists. Step 2: Rank-nullity violated. Step 3: Used in *existence test*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "5.3.q7",
+      "topicId": "5.3",
+      "prompt": "Can the *columns* of M be basis vectors of S₂?",
+      "options": [
+        {
+          "text": "Yes",
+          "correct": true
+        },
+        {
+          "text": "No, never",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Set columns of M to basis vectors of S₂. Step 2: Then C(M) = S₂. Step 3: This is the standard construction. Step 4: Used in *column space construction*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "5.3.q8",
+      "topicId": "5.3",
+      "prompt": "How do we *enforce* N(M) = S₃?",
+      "options": [
+        {
+          "text": "M · S₃ = 0",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Set M = 0",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Every basis vector of S₃ must be in N(M), so M · v = 0 for each such v. Step 2: This enforces N(M) ⊇ S₃. Step 3: With correct dimensions, N(M) = S₃. Step 4: Used in *constraint enforcement*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "5.3.q9",
+      "topicId": "5.3",
+      "prompt": "Is there a *canonical* way to construct such M?",
+      "options": [
+        {
+          "text": "Yes, method",
+          "correct": true
+        },
+        {
+          "text": "No, random",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Pick basis for S₂ (columns). Step 2: Pick basis for S₃ (rows in left null space). Step 3: Construct M with these. Step 4: Used in *systematic construction*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "5.3.q10",
+      "topicId": "5.3",
+      "prompt": "What is the *simplest* M satisfying N(M) = S₃?",
+      "options": [
+        {
+          "text": "Rows zero",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Always big",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: M with rows from S₃⊥ makes M · v = 0 for v ∈ S₃. Step 2: This is the simplest. Step 3: Used in *minimal construction*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "5.3.q11",
+      "topicId": "5.3",
+      "prompt": "Why is the *basis* of S₃ the *null space* of M?",
+      "options": [
+        {
+          "text": "Definition",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "No reason",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: N(M) = S₃ by requirement. Step 2: Basis of S₃ is basis of N(M). Step 3: Used in *kernel basis*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "5.3.q12",
+      "topicId": "5.3",
+      "prompt": "Can two *different* matrices have the same N and C?",
+      "options": [
+        {
+          "text": "Yes, many",
+          "correct": true
+        },
+        {
+          "text": "No, unique",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Many matrices can have same N and C (different scaling, basis). Step 2: Not unique. Step 3: Used in *matrix non-uniqueness*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "5.3.q13",
+      "topicId": "5.3",
+      "prompt": "Does the *transpose* of M have the same N and C?",
+      "options": [
+        {
+          "text": "Swapped",
+          "correct": true
+        },
+        {
+          "text": "Same",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: For Mᵀ: N(Mᵀ) = left null space = S₃⊥ = (column space direction). Step 2: C(Mᵀ) = R(M) = ... Step 3: Generally different. Step 4: Used in *transpose subspaces*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "5.3.q14",
+      "topicId": "5.3",
+      "prompt": "Why is the *rank* of M *determined* by dim(C(M))?",
+      "options": [
+        {
+          "text": "Rank = dim C",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Random",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: rank(M) = dim(C(M)). Step 2: By definition. Step 3: Used in *rank*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "5.3.q15",
+      "topicId": "5.3",
+      "prompt": "What if we wanted M with rank = 2, nullity = 1 in ℝ³?",
+      "options": [
+        {
+          "text": "Possible 3x3",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Impossible",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: rank 2 + nullity 1 = 3 ✓. Step 2: 3×3 matrix can have this. Step 3: Used in *dimension check*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "5.3.q16",
+      "topicId": "5.3",
+      "prompt": "What is the *row rank* of constructed M?",
+      "options": [
+        {
+          "text": "Same as col",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Different",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: rank(M) = column rank = row rank. Step 2: Same value. Step 3: Used in *rank invariance*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "5.3.q17",
+      "topicId": "5.3",
+      "prompt": "Why is this *construction* useful?",
+      "options": [
+        {
+          "text": "Examples",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "No use",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Constructing specific M helps understand theory. Step 2: Used in *examples* and *applications*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "5.3.q18",
+      "topicId": "5.3",
+      "prompt": "What if S₂ and S₃ are *not complementary* (sum dim ≠ n)?",
+      "options": [
+        {
+          "text": "Impossible",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Always works",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: If dim(S₂) + dim(S₃) ≠ n, no such M. Step 2: Rank-nullity violated. Step 3: Used in *constraint*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "5.3.q19",
+      "topicId": "5.3",
+      "prompt": "Can you have N(M) ⊊ S₃ (proper subset)?",
+      "options": [
+        {
+          "text": "Yes, smaller",
+          "correct": true
+        },
+        {
+          "text": "No, always equal",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Can construct M with N(M) smaller than S₃. Step 2: N(M) ⊆ S₃, possibly strict. Step 3: Used in *kernel subset*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "5.3.q20",
+      "topicId": "5.3",
+      "prompt": "What if you want N(M) = S₃ and C(M) = S₄ (perpendicular complements)?",
+      "options": [
+        {
+          "text": "Possible",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Impossible",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: If dim(S₃) + dim(S₄) = n, possible. Step 2: For 2D + 1D in ℝ³, works. Step 3: Used in *perpendicular complements*.\n\n---",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    }
+  ]
+}

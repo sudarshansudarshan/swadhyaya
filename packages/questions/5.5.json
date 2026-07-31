@@ -1,0 +1,548 @@
+{
+  "id": "5.5",
+  "moduleId": 5,
+  "number": 5,
+  "title": "Bijection from S₁ to S₂",
+  "vocabulary": {
+    "allowed": [
+      "bijection",
+      "isomorphism",
+      "dimension",
+      "correspond.",
+      "Vocabulary",
+      "forbidden:",
+      "explicit",
+      "computation",
+      "(used",
+      "foundation)."
+    ],
+    "forbidden": [
+      "explicit",
+      "computation",
+      "(used",
+      "foundation)."
+    ]
+  },
+  "questions": [
+    {
+      "id": "5.5.q1",
+      "topicId": "5.5",
+      "prompt": "What is a *bijection* between two sets?",
+      "options": [
+        {
+          "text": "One-to-one both ways",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Always many",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Bijection = injective + surjective. Step 2: Every element maps to unique element, and vice versa. Step 3: Used in *set theory*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "5.5.q2",
+      "topicId": "5.5",
+      "prompt": "Why are two 2D subspaces of ℝ³ *isomorphic*?",
+      "options": [
+        {
+          "text": "Same dimension",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Always same",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Both are 2D vector spaces. Step 2: Any two vector spaces of same dimension over same field are isomorphic. Step 3: Used in *linear algebra*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "5.5.q3",
+      "topicId": "5.5",
+      "prompt": "What does *isomorphic* mean?",
+      "options": [
+        {
+          "text": "Structurally same",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Equal here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Two structures are isomorphic if there's a bijective structure-preserving map. Step 2: For vector spaces, a linear bijection. Step 3: Used in *algebra*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "5.5.q4",
+      "topicId": "5.5",
+      "prompt": "Can you find a *bijection* between S₁ and S₂ (both 2D subspaces)?",
+      "options": [
+        {
+          "text": "Yes, exists",
+          "correct": true
+        },
+        {
+          "text": "No, never",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Both are 2D vector spaces. Step 2: Linear bijection exists (e.g., map basis to basis). Step 3: Used in *isomorphism*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "5.5.q5",
+      "topicId": "5.5",
+      "prompt": "Why does *dim(S₁) = dim(S₂) = 2* allow a bijection?",
+      "options": [
+        {
+          "text": "Same dim",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Always dim",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Same dimension → same vector space structure (up to isomorphism). Step 2: So bijection exists. Step 3: Used in *dimension theory*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "5.5.q6",
+      "topicId": "5.5",
+      "prompt": "Is the bijection *linear*?",
+      "options": [
+        {
+          "text": "Yes, can be",
+          "correct": true
+        },
+        {
+          "text": "No, only weird",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Can construct a *linear* bijection between same-dim spaces. Step 2: Map basis to basis. Step 3: Used in *linear maps*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "5.5.q7",
+      "topicId": "5.5",
+      "prompt": "How do you *construct* a bijection?",
+      "options": [
+        {
+          "text": "Map basis",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Always identity",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Take basis of S₁, basis of S₂. Map each basis vector to corresponding one. Step 2: Extend linearly. Step 3: This gives a linear bijection. Step 4: Used in *basis mapping*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "5.5.q8",
+      "topicId": "5.5",
+      "prompt": "Are all 2D subspaces of ℝ³ *isomorphic* to each other?",
+      "options": [
+        {
+          "text": "Yes, all same",
+          "correct": true
+        },
+        {
+          "text": "No, some different",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: All 2D subspaces have same structure (2D vector space). Step 2: All isomorphic to ℝ² and to each other. Step 3: Used in *classification*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "5.5.q9",
+      "topicId": "5.5",
+      "prompt": "Why is the *bijection* useful?",
+      "options": [
+        {
+          "text": "Transfer info",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "No use",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Bijection lets us transfer info between S₁ and S₂. Step 2: Solve problem in one, transfer to other. Step 3: Used in *applied math*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "5.5.q10",
+      "topicId": "5.5",
+      "prompt": "Is the bijection *unique*?",
+      "options": [
+        {
+          "text": "No, many",
+          "correct": true
+        },
+        {
+          "text": "Yes, unique",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Many bijections between S₁ and S₂. Step 2: Not unique. Step 3: Used in *non-uniqueness*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "5.5.q11",
+      "topicId": "5.5",
+      "prompt": "What is the *simplest* bijection?",
+      "options": [
+        {
+          "text": "Map basis",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Identity",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Map each basis vector of S₁ to a basis vector of S₂. Step 2: Extend linearly. Step 3: This is the simplest construction. Step 4: Used in *basis mapping*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "5.5.q12",
+      "topicId": "5.5",
+      "prompt": "Can a bijection between S₁ and S₂ be *nonlinear*?",
+      "options": [
+        {
+          "text": "Yes, possible",
+          "correct": true
+        },
+        {
+          "text": "No, only linear",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Many nonlinear bijections exist between same-dim sets. Step 2: Linear bijections are a subset. Step 3: Used in *nonlinear maps*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "5.5.q13",
+      "topicId": "5.5",
+      "prompt": "Does *bijection* preserve *dimension*?",
+      "options": [
+        {
+          "text": "Yes, equal",
+          "correct": true
+        },
+        {
+          "text": "No, change",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Bijection between vector spaces implies equal dimension. Step 2: Used in *dimension counting*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "5.5.q14",
+      "topicId": "5.5",
+      "prompt": "Why is *bijection* different from *isomorphism*?",
+      "options": [
+        {
+          "text": "Structure too",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Same thing",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Bijection = just one-to-one correspondence. Step 2: Isomorphism = bijection preserving structure. Step 3: Isomorphism is stronger. Step 4: Used in *algebra*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "5.5.q15",
+      "topicId": "5.5",
+      "prompt": "Can you have a bijection between a 1D and 2D subspace?",
+      "options": [
+        {
+          "text": "No, different dims",
+          "correct": true
+        },
+        {
+          "text": "Yes, possible",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Different dimensions → no bijection (between finite sets of different sizes). Step 2: Used in *bijection requires same cardinality*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "5.5.q16",
+      "topicId": "5.5",
+      "prompt": "What is *cardinality* for vector spaces?",
+      "options": [
+        {
+          "text": "Same as dim",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Random",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: For finite-dim vector spaces, cardinality depends on field. Step 2: But dimension captures linear structure. Step 3: Used in *dimension vs cardinality*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "5.5.q17",
+      "topicId": "5.5",
+      "prompt": "Is a *linear bijection* an isomorphism?",
+      "options": [
+        {
+          "text": "Yes, exactly",
+          "correct": true
+        },
+        {
+          "text": "No, different",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Linear bijection = vector space isomorphism. Step 2: Same thing. Step 3: Used in *isomorphism = linear bijection*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "5.5.q18",
+      "topicId": "5.5",
+      "prompt": "What if S₁ and S₂ had *different* dimensions — could a bijection exist?",
+      "options": [
+        {
+          "text": "No, impossible",
+          "correct": true
+        },
+        {
+          "text": "Yes, possible",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Bijection between finite sets requires same cardinality. Step 2: Different dims → different \"sizes\". Step 3: No bijection. Step 4: Used in *bijection existence*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "5.5.q19",
+      "topicId": "5.5",
+      "prompt": "How does a *bijection* help in *geometry*?",
+      "options": [
+        {
+          "text": "Coordinate",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "No use",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Bijection between S₁ and ℝ² lets us coordinate S₁. Step 2: Each point in S₁ ↔ point in ℝ². Step 3: Used in *parametrisation*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "5.5.q20",
+      "topicId": "5.5",
+      "prompt": "What if we wanted a bijection from S₁ (2D) to *itself* — how many such linear bijections exist?",
+      "options": [
+        {
+          "text": "Infinitely many",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Just one",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Linear bijections S₁ → S₁ are 2×2 invertible matrices. Step 2: Infinitely many (continuous family). Step 3: Used in *GL(2)*.\n\n---\n\n# End of Mission 5\n\n> 5 topics × 20 questions = **100 questions** complete.\n> Continue with Mission 6 (3 topics × 20 = 60 questions).",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    }
+  ]
+}

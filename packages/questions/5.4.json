@@ -1,0 +1,544 @@
+{
+  "id": "5.4",
+  "moduleId": 5,
+  "number": 4,
+  "title": "What does S₁ and S₄ represent?",
+  "vocabulary": {
+    "allowed": [
+      "connect",
+      "relationship",
+      "four",
+      "subspaces.",
+      "Vocabulary",
+      "forbidden:",
+      "bijection",
+      "(Q5.5)."
+    ],
+    "forbidden": [
+      "bijection",
+      "(Q5.5)."
+    ]
+  },
+  "questions": [
+    {
+      "id": "5.4.q1",
+      "topicId": "5.4",
+      "prompt": "What do *S₁ and S₄* represent together?",
+      "options": [
+        {
+          "text": "Two subspaces",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Always same",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: S₁ and S₄ are two distinct subspaces (with different dimensions typically). Step 2: They relate via the four fundamental subspaces. Step 3: Used in *subspace relations*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "5.4.q2",
+      "topicId": "5.4",
+      "prompt": "Why are S₁ and S₄ *fundamentally different*?",
+      "options": [
+        {
+          "text": "Different roles",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Same role",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: S₁ might be column space, S₄ might be left null space (or similar). Step 2: Different roles in the four-subspace picture. Step 3: Used in *subspace roles*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "5.4.q3",
+      "topicId": "5.4",
+      "prompt": "What is the *sum* of dimensions of S₁ and S₄?",
+      "options": [
+        {
+          "text": "m or n",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Always n",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: For S₁ and S₄ corresponding to column space and left null space: dim(S₁) + dim(S₄) = m. Step 2: For other pairs, n. Step 3: Used in *sum formula*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "5.4.q4",
+      "topicId": "5.4",
+      "prompt": "Why is S₁ ⊥ S₄?",
+      "options": [
+        {
+          "text": "FTLA pair 2",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Same space",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Column space ⊥ left null space (FTLA part 2). Step 2: So S₁ ⊥ S₄ if they are column and left null. Step 3: Used in *perpendicular subspaces*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "5.4.q5",
+      "topicId": "5.4",
+      "prompt": "Does S₁ ⊕ S₄ = ℝᵐ?",
+      "options": [
+        {
+          "text": "Yes, direct sum",
+          "correct": true
+        },
+        {
+          "text": "No, smaller",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: If S₁ = column space and S₄ = left null space, they decompose ℝᵐ. Step 2: Used in *orthogonal decomposition*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "5.4.q6",
+      "topicId": "5.4",
+      "prompt": "What is the *intersection* S₁ ∩ S₄?",
+      "options": [
+        {
+          "text": "Just origin",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Whole S₁",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Perpendicular subspaces intersect at origin. Step 2: So S₁ ∩ S₄ = {0}. Step 3: Used in *perpendicular intersection*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "5.4.q7",
+      "topicId": "5.4",
+      "prompt": "How does S₁ *relate* to A · x?",
+      "options": [
+        {
+          "text": "Image of A",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Always zero",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: If S₁ = column space of A, then S₁ = {A · x : x ∈ ℝⁿ}. Step 2: S₁ is the image of A. Step 3: Used in *image*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "5.4.q8",
+      "topicId": "5.4",
+      "prompt": "How does S₄ *relate* to Aᵀ?",
+      "options": [
+        {
+          "text": "Null of Aᵀ",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Random",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: If S₄ = left null space = N(Aᵀ). Step 2: S₄ is the null space of Aᵀ. Step 3: Used in *left null space*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "5.4.q9",
+      "topicId": "5.4",
+      "prompt": "What is the *relationship* between S₁ and S₂?",
+      "options": [
+        {
+          "text": "Both imgs",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Same dir",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: S₁ = R(M) and S₂ = C(M) might be related (different roles). Step 2: Both are \"image-like\". Step 3: Used in *image subspaces*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "5.4.q10",
+      "topicId": "5.4",
+      "prompt": "What does *S₃* represent typically?",
+      "options": [
+        {
+          "text": "Null of M",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Random",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: S₃ = N(M) (null space of M). Step 2: This is one of the four. Step 3: Used in *kernel*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "5.4.q11",
+      "topicId": "5.4",
+      "prompt": "Why are *four* subspaces *enough* to describe M?",
+      "options": [
+        {
+          "text": "Complete info",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Not enough",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: The four subspaces capture all key info: rank, nullity, structure. Step 2: Used in *complete description*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "5.4.q12",
+      "topicId": "5.4",
+      "prompt": "What is *dim(S₃) + dim(S₂)* if S₃ = N(M) and S₂ = C(M)?",
+      "options": [
+        {
+          "text": "n",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "m",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: rank + nullity = n. Step 2: dim(S₂) + dim(S₃) = n. Step 3: Used in *rank-nullity*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "5.4.q13",
+      "topicId": "5.4",
+      "prompt": "Can *S₁ = S₃* (column = null)?",
+      "options": [
+        {
+          "text": "Sometimes",
+          "correct": true
+        },
+        {
+          "text": "Never",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: For some matrices (very special), column space and null space could be the same. Step 2: But typically different (different dimensions usually). Step 3: Used in *special cases*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "5.4.q14",
+      "topicId": "5.4",
+      "prompt": "What is *S₁ ∩ S₂*?",
+      "options": [
+        {
+          "text": "Just origin",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Random",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: If S₁ and S₂ are both subspaces through origin, they typically intersect at origin (if different). Step 2: Used in *intersection*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "5.4.q15",
+      "topicId": "5.4",
+      "prompt": "Why does *S₁ ⊕ S₂* not equal ℝⁿ (or ℝᵐ)?",
+      "options": [
+        {
+          "text": "Not full",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Always full",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: S₁ and S₂ (typically) don't span the whole space. Step 2: Their sum is smaller. Step 3: Used in *sum vs full space*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "5.4.q16",
+      "topicId": "5.4",
+      "prompt": "Does *S₁ + S₂ + S₃ + S₄ = ℝⁿ or ℝᵐ*?",
+      "options": [
+        {
+          "text": "Both in pieces",
+          "correct": true
+        },
+        {
+          "text": "Always full",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: S₁ + S₃ = ℝⁿ (row space + null space in ℝⁿ). Step 2: S₂ + S₄ = ℝᵐ (column space + left null space in ℝᵐ). Step 3: Each pair decomposes its space. Step 4: Used in *decomposition*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "5.4.q17",
+      "topicId": "5.4",
+      "prompt": "Is *S₁ ⊥ S₃*?",
+      "options": [
+        {
+          "text": "Yes, by FTLA",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Always perp",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: If S₁ = R(M) and S₃ = N(M), then S₁ ⊥ S₃. Step 2: This is FTLA. Step 3: Used in *perpendicular subspaces*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "5.4.q18",
+      "topicId": "5.4",
+      "prompt": "What if S₁ and S₃ are *the same* — what would M look like?",
+      "options": [
+        {
+          "text": "Special case",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Impossible",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: S₁ = S₃ would mean R(M) = N(M). Step 2: A rare situation (not usually possible with FTLA constraints). Step 3: Used in *degenerate case*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "5.4.q19",
+      "topicId": "5.4",
+      "prompt": "What does *S₄ ⊥ S₂* tell us?",
+      "options": [
+        {
+          "text": "FTLA part 2",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "No info",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: S₄ = N(Mᵀ) and S₂ = C(M). Step 2: S₄ ⊥ S₂ is FTLA. Step 3: Used in *orthogonal subspaces*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "5.4.q20",
+      "topicId": "5.4",
+      "prompt": "What if all four subspaces were *lines* (1D)?",
+      "options": [
+        {
+          "text": "Rank one case",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Impossible",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: All four 1D means rank = 1 and nullities = 1. Step 2: For 2×2 matrix, this is possible. Step 3: Used in *rank-1 matrices*.\n\n---",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    }
+  ]
+}

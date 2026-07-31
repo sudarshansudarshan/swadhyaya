@@ -1,0 +1,548 @@
+{
+  "id": "5.2",
+  "moduleId": 5,
+  "number": 2,
+  "title": "S₃, S₄ as perpendicular complements",
+  "vocabulary": {
+    "allowed": [
+      "perpendicular",
+      "complement",
+      "S₃",
+      "S₄",
+      "1D",
+      "normal.",
+      "Vocabulary",
+      "forbidden:",
+      "matrix",
+      "construction",
+      "(Q5.3)."
+    ],
+    "forbidden": [
+      "matrix",
+      "construction",
+      "(Q5.3)."
+    ]
+  },
+  "questions": [
+    {
+      "id": "5.2.q1",
+      "topicId": "5.2",
+      "prompt": "What is S₃'s *perpendicular complement*?",
+      "options": [
+        {
+          "text": "S₄",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "S₃ itself",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: By construction, S₃⊥ = S₄ (and S₄⊥ = S₃). Step 2: They are perpendicular complements. Step 3: Used in *orthogonal complement*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "5.2.q2",
+      "topicId": "5.2",
+      "prompt": "Why is S₄ 1",
+      "options": [
+        {
+          "text": "Perp to 2D",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Always 2D",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: S₃ is 2D. Step 2: Its orthogonal complement in ℝ³ is 1D (a line). Step 3: Used in *dim theorem*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "5.2.q3",
+      "topicId": "5.2",
+      "prompt": "What is the *direction* of S₄?",
+      "options": [
+        {
+          "text": "Normal to S₃",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "In plane",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: S₄ is the set of vectors ⊥ S₃. Step 2: All vectors in S₄ are perpendicular to S₃. Step 3: So S₄ direction = normal to S₃. Step 4: Used in *normal direction*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "5.2.q4",
+      "topicId": "5.2",
+      "prompt": "Why is *dim(S₃) + dim(S₄) = 3*?",
+      "options": [
+        {
+          "text": "Orth complement",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Always 4",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: dim(S₃) + dim(S₄) = n = 3 for ℝ³. Step 2: This is the orthogonal complement dimension theorem. Step 3: Used in *dimension counting*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "5.2.q5",
+      "topicId": "5.2",
+      "prompt": "Does *S₃ ∩ S₄ = {0}*?",
+      "options": [
+        {
+          "text": "Yes, only origin",
+          "correct": true
+        },
+        {
+          "text": "No, more",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Perpendicular subspaces intersect only at origin. Step 2: If v ∈ S₃ ∩ S₄, then v ⊥ v, so v = 0. Step 3: Used in *perpendicular subspaces*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "5.2.q6",
+      "topicId": "5.2",
+      "prompt": "Does S₃ ⊕ S₄ = ℝ³?",
+      "options": [
+        {
+          "text": "Yes, direct sum",
+          "correct": true
+        },
+        {
+          "text": "No, smaller",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: dim(S₃ ⊕ S₄) = 2 + 1 = 3 = dim(ℝ³). Step 2: With intersection = {0}, equals ℝ³. Step 3: This is the *direct sum decomposition*. Step 4: Used in *orthogonal decompositions*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "5.2.q7",
+      "topicId": "5.2",
+      "prompt": "Why are S₃ and S₄ *perpendicular*?",
+      "options": [
+        {
+          "text": "By construction",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Random choice",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: S₄ is defined as the orthogonal complement of S₃. Step 2: So they're perpendicular by definition. Step 3: Used in *definition*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "5.2.q8",
+      "topicId": "5.2",
+      "prompt": "What is the *intersection* S₃ ∩ S₄?",
+      "options": [
+        {
+          "text": "Just origin",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Whole S₃",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Only vector ⊥ itself is origin. Step 2: So intersection = {0}. Step 3: Used in *perpendicular subspaces*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "5.2.q9",
+      "topicId": "5.2",
+      "prompt": "Why does *dim(S₄) = 3 − dim(S₃)*?",
+      "options": [
+        {
+          "text": "Complement",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Always equal",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: For S a subspace of ℝⁿ: dim(S) + dim(S⊥) = n. Step 2: So dim(S⊥) = n − dim(S). Step 3: Used in *dimension formula*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "5.2.q10",
+      "topicId": "5.2",
+      "prompt": "If S₃ is the *xy",
+      "options": [
+        {
+          "text": "z-axis",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Always full",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: xy-plane has normal (0, 0, 1) = z-axis. Step 2: So S₄ = z-axis. Step 3: Used in *coordinate axes*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "5.2.q11",
+      "topicId": "5.2",
+      "prompt": "Why is S₄ a *line* (1D) in ℝ³?",
+      "options": [
+        {
+          "text": "Dim theorem",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Always 2D",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: dim(S₄) = 3 − dim(S₃) = 3 − 2 = 1. Step 2: 1D = line. Step 3: Used in *dim theorem*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "5.2.q12",
+      "topicId": "5.2",
+      "prompt": "Does S₄ contain the *normal* to S₃?",
+      "options": [
+        {
+          "text": "Yes, all normals",
+          "correct": true
+        },
+        {
+          "text": "No, only some",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: The normal to S₃ is ⊥ S₃. Step 2: So normal ∈ S₃⊥ = S₄. Step 3: All vectors ⊥ S₃ are in S₄. Step 4: Used in *normal inclusion*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "5.2.q13",
+      "topicId": "5.2",
+      "prompt": "Is S₄ *unique*?",
+      "options": [
+        {
+          "text": "Yes, always",
+          "correct": true
+        },
+        {
+          "text": "No, multiple",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: The orthogonal complement is unique. Step 2: S₄ = S₃⊥ is uniquely determined. Step 3: Used in *uniqueness*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "5.2.q14",
+      "topicId": "5.2",
+      "prompt": "What does *dim(S₃) + dim(S₄) = 3* mean geometrically?",
+      "options": [
+        {
+          "text": "Decomposes ℝ³",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Always equal",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: S₃ + S₄ covers ℝ³ (any vector splits). Step 2: The decomposition is orthogonal. Step 3: Used in *direct sum decomposition*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "5.2.q15",
+      "topicId": "5.2",
+      "prompt": "Why is the *decomposition* unique?",
+      "options": [
+        {
+          "text": "Perpendicular",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "No reason",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Orthogonal decomposition is unique. Step 2: Each vector v has unique v_S₃ ∈ S₃ and v_S₄ ∈ S₄ with v = v_S₃ + v_S₄. Step 3: Used in *uniqueness of decomposition*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "5.2.q16",
+      "topicId": "5.2",
+      "prompt": "How does S₃ ⊕ S₄ = ℝ³ help in *projections*?",
+      "options": [
+        {
+          "text": "Split vec",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "No use",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Any v = v_S₃ + v_S₄. Step 2: v_S₃ is projection onto S₃. Step 3: Used in *projection*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "5.2.q17",
+      "topicId": "5.2",
+      "prompt": "Is every 2D subspace's complement *another* 2D subspace?",
+      "options": [
+        {
+          "text": "No, 1D comp",
+          "correct": true
+        },
+        {
+          "text": "Yes, 2D only",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Complement of 2D in ℝ³ is 1D, not 2D. Step 2: dim(S⊥) = 3 − dim(S) = 3 − 2 = 1. Step 3: Used in *complement dimension*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "5.2.q18",
+      "topicId": "5.2",
+      "prompt": "What if S₃ were 3D in ℝ³ — what would S₄ be?",
+      "options": [
+        {
+          "text": "Just origin",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Full space",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: If S₃ = ℝ³, then S₄ = ℝ³⊥ = {0}. Step 2: So just origin. Step 3: Used in *extreme case*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "5.2.q19",
+      "topicId": "5.2",
+      "prompt": "If S₃ is *only* origin (0D) — what is S₄?",
+      "options": [
+        {
+          "text": "All of ℝ³",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Random set",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: If S₃ = {0}, then S₄ = {0}⊥ = ℝ³ (every vector is ⊥ origin). Step 2: So full space. Step 3: Used in *extreme case*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "5.2.q20",
+      "topicId": "5.2",
+      "prompt": "What if we worked in ℝ⁴ instead — what would S₃⊥ be?",
+      "options": [
+        {
+          "text": "1D subspace",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Same as ℝ³",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: dim(S₃) = 2, so dim(S₃⊥) = 4 − 2 = 2. Step 2: 2D in ℝ⁴, not 1D. Step 3: Wait, correction — S₃ has dim 2 (a 2D subspace). In ℝ⁴, dim(complement) = 4 − 2 = 2. So 2D.\n\n(Corrected) **Correct:** a) A 2D subspace\n\n**Explanation (corrected):** Step 1: dim(S₃) = 2 in ℝ⁴. Step 2: dim(S₃⊥) = 4 − 2 = 2. Step 3: 2D complement. Step 4: Used in *higher-dim*.\n\n---",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    }
+  ]
+}

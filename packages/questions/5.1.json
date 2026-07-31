@@ -1,0 +1,550 @@
+{
+  "id": "5.1",
+  "moduleId": 5,
+  "number": 1,
+  "title": "Two 2-dim subspaces in ℝ³",
+  "vocabulary": {
+    "allowed": [
+      "2D",
+      "subspace",
+      "plane",
+      "through",
+      "origin",
+      "span",
+      "two",
+      "vectors.",
+      "Vocabulary",
+      "forbidden:",
+      "perpendicular",
+      "complement",
+      "(Q5.2)."
+    ],
+    "forbidden": [
+      "perpendicular",
+      "complement",
+      "(Q5.2)."
+    ]
+  },
+  "questions": [
+    {
+      "id": "5.1.q1",
+      "topicId": "5.1",
+      "prompt": "What is a *2",
+      "options": [
+        {
+          "text": "Plane through origin",
+          "correct": true
+        },
+        {
+          "text": "Line through origin",
+          "correct": false
+        },
+        {
+          "text": "Just origin",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: 2D subspace in ℝ³ = plane through origin. Step 2: Like a sheet of paper passing through origin. Step 3: This is the geometric picture. Step 4: Used in *3D geometry*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "5.1.q2",
+      "topicId": "5.1",
+      "prompt": "How many *2D subspaces* does ℝ³ contain?",
+      "options": [
+        {
+          "text": "Infinitely many",
+          "correct": true
+        },
+        {
+          "text": "Just one",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Different planes through origin (different normals). Step 2: Infinitely many 2D subspaces. Step 3: Used in *family of subspaces*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "5.1.q3",
+      "topicId": "5.1",
+      "prompt": "Why does *every 2D subspace* contain origin?",
+      "options": [
+        {
+          "text": "Subspaces",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Not always",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Subspaces contain zero vector by definition. Step 2: So all 2D subspaces (which are subspaces) contain origin. Step 3: Used in *subspace axiom*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "5.1.q4",
+      "topicId": "5.1",
+      "prompt": "How is a 2D subspace of ℝ³ *constructed*?",
+      "options": [
+        {
+          "text": "Two vectors",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "One vector",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: span of two independent vectors = 2D subspace. Step 2: This is the construction. Step 3: Used in *spanning set*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "5.1.q5",
+      "topicId": "5.1",
+      "prompt": "What is one 2D subspace of ℝ³?",
+      "options": [
+        {
+          "text": "xy-plane",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Always full",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: xy-plane = {(x, y, 0) : x, y ∈ ℝ} = span{(1, 0, 0), (0, 1, 0)}. Step 2: This is a 2D subspace. Step 3: Used in *coordinate planes*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "5.1.q6",
+      "topicId": "5.1",
+      "prompt": "What is another 2D subspace of ℝ³?",
+      "options": [
+        {
+          "text": "xz-plane",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Same xy",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: xz-plane = {(x, 0, z) : x, z ∈ ℝ} = span{(1, 0, 0), (0, 0, 1)}. Step 2: Different 2D subspace. Step 3: Used in *coordinate planes*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "5.1.q7",
+      "topicId": "5.1",
+      "prompt": "Are the *xy",
+      "options": [
+        {
+          "text": "No, different",
+          "correct": true
+        },
+        {
+          "text": "Yes, same",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: xy-plane has z = 0; xz-plane has y = 0. Step 2: Different constraints → different subspaces. Step 3: Used in *plane comparison*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "5.1.q8",
+      "topicId": "5.1",
+      "prompt": "What is the *intersection* of xy",
+      "options": [
+        {
+          "text": "x-axis",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Just origin",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: xy-plane ∩ xz-plane = {(x, 0, 0)} = x-axis. Step 2: The x-axis. Step 3: Used in *plane intersection*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "5.1.q9",
+      "topicId": "5.1",
+      "prompt": "How many *2D subspaces* contain the x",
+      "options": [
+        {
+          "text": "Infinitely many",
+          "correct": true
+        },
+        {
+          "text": "Just one",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Any plane through the x-axis. Step 2: Infinitely many (varying tilt). Step 3: Used in *family through a line*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "5.1.q10",
+      "topicId": "5.1",
+      "prompt": "What is the *normal* to the xy",
+      "options": [
+        {
+          "text": "z-axis",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "y-axis",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: xy-plane has normal (0, 0, 1) = z-axis direction. Step 2: z-axis ⊥ xy-plane. Step 3: Used in *normals*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "5.1.q11",
+      "topicId": "5.1",
+      "prompt": "What is the *normal* to a plane through origin with direction (1, 1, 1)?",
+      "options": [
+        {
+          "text": "Perp vec",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Always (1, 0, 0)",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Any vector perpendicular to (1, 1, 1) and a second direction. Step 2: Specifically, normal is in the null space of [1, 1, 1]. Step 3: Used in *normal computation*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "5.1.q12",
+      "topicId": "5.1",
+      "prompt": "Can a 2D subspace of ℝ³ be *parametrised*?",
+      "options": [
+        {
+          "text": "Yes, two params",
+          "correct": true
+        },
+        {
+          "text": "No, only one",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: 2D subspace is parametrised by 2 parameters (s, t). Step 2: x = s · v₁ + t · v₂. Step 3: This is the standard parametrisation. Step 4: Used in *surface parametrisation*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "5.1.q13",
+      "topicId": "5.1",
+      "prompt": "What is the *dimension* of a 2D subspace?",
+      "options": [
+        {
+          "text": "Two",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Zero",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: 2D subspace by definition has dimension 2. Step 2: Trivially true. Step 3: Used in *dimension definition*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "5.1.q14",
+      "topicId": "5.1",
+      "prompt": "Why are *two* vectors enough to span a 2D subspace?",
+      "options": [
+        {
+          "text": "2D = 2 vec",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Need 3",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: A 2D subspace needs 2 independent vectors to span it. Step 2: That's the definition. Step 3: Used in *spanning set size*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "5.1.q15",
+      "topicId": "5.1",
+      "prompt": "What if the two vectors are *parallel* — what happens?",
+      "options": [
+        {
+          "text": "Just a line",
+          "correct": true
+        },
+        {
+          "text": "Bigger plane",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Parallel vectors are dependent. Step 2: span = 1D = line. Step 3: Not 2D. Step 4: Used in *dependent vectors*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "5.1.q16",
+      "topicId": "5.1",
+      "prompt": "Why does a 2D subspace look like a *plane* in ℝ³?",
+      "options": [
+        {
+          "text": "2D in 3D",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Always cube",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: 2D subspace embedded in 3D looks like a flat sheet (plane). Step 2: This is the geometric picture. Step 3: Used in *3D visualisation*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "5.1.q17",
+      "topicId": "5.1",
+      "prompt": "Does a 2D subspace have *volume*?",
+      "options": [
+        {
+          "text": "No, only area",
+          "correct": true
+        },
+        {
+          "text": "Yes, volume",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: 2D subspace has area, not volume. Step 2: Volume is for 3D regions. Step 3: Used in *dimensional measure*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "5.1.q18",
+      "topicId": "5.1",
+      "prompt": "What if we had a 1D subspace of ℝ³ — what would it look like?",
+      "options": [
+        {
+          "text": "A line",
+          "correct": true
+        },
+        {
+          "text": "A plane",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: 1D subspace = line through origin. Step 2: Used in *low-dimensional subspaces*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "5.1.q19",
+      "topicId": "5.1",
+      "prompt": "Why is a 2D subspace *flat* (no curves)?",
+      "options": [
+        {
+          "text": "Linear subspace",
+          "correct": true
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        },
+        {
+          "text": "Always curved",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Linear subspaces are flat (no curvature). Step 2: Curved objects are manifolds, not subspaces. Step 3: Used in *linear vs nonlinear*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "5.1.q20",
+      "topicId": "5.1",
+      "prompt": "What if we had a 2D subspace not through origin — would it be a subspace?",
+      "options": [
+        {
+          "text": "No, not subspace",
+          "correct": true
+        },
+        {
+          "text": "Yes, subspace",
+          "correct": false
+        },
+        {
+          "text": "Random here",
+          "correct": false
+        },
+        {
+          "text": "Skip here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Subspaces must contain origin. Step 2: A plane not through origin is *affine*, not a subspace. Step 3: Used in *affine geometry*.\n\n---",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    }
+  ]
+}
