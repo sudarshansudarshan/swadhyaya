@@ -36,14 +36,19 @@ type Question = {
 
 type Props = {
   item: Item;
-  progress: any;
+  progress: {
+    videoCompleted?: boolean | null;
+    activityCompleted?: boolean | null;
+    quizCompleted?: boolean | null;
+  } | null;
   questions: Question[];
-  userId: string;
   sectionTitle: string;
   backHref: string;
+  sectionVideoHref: string | null;
+  nextItemHref: string | null;
 };
 
-export function ItemClient({ item, progress, questions, userId, sectionTitle, backHref }: Props) {
+export function ItemClient({ item, progress, questions, sectionTitle, backHref, sectionVideoHref, nextItemHref }: Props) {
   const router = useRouter();
   const [showConsent, setShowConsent] = useState(
     !progress && (item.type === 'VIDEO' || item.type === 'QUIZ')
@@ -65,6 +70,11 @@ export function ItemClient({ item, progress, questions, userId, sectionTitle, ba
     setShowConsent(false);
   }, [item.id]);
 
+  const goNext = useCallback(() => {
+    if (nextItemHref) router.push(nextItemHref);
+    else router.refresh();
+  }, [nextItemHref, router]);
+
   async function markVideoWatched() {
     setBusy(true);
     try {
@@ -73,7 +83,7 @@ export function ItemClient({ item, progress, questions, userId, sectionTitle, ba
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ itemId: item.id }),
       });
-      router.refresh();
+      goNext();
     } finally {
       setBusy(false);
     }
@@ -87,30 +97,45 @@ export function ItemClient({ item, progress, questions, userId, sectionTitle, ba
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ itemId: item.id }),
       });
-      router.refresh();
+      goNext();
     } finally {
       setBusy(false);
     }
   }
 
-  async function submitQuiz(answers: { questionId: string; selectedIndex: number; correct: boolean }[]) {
-    setBusy(true);
+  async function submitQuiz(
+    answers: { questionId: string; selectedIndex: number; correct: boolean }[],
+  ): Promise<{ score: number; total: number; passed: boolean; needsReAnswer?: boolean; redirectTo?: string | null }> {
+    const res = await fetch('/api/progress/quiz-submit', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ itemId: item.id, answers }),
+    });
+    if (!res.ok) throw new Error('Quiz submission failed');
+    const data = await res.json();
+    return {
+      score: data.correct,
+      total: data.total,
+      passed: data.passed,
+      needsReAnswer: data.needsReAnswer,
+      redirectTo: data.redirectTo,
+    };
+  }
+
+  const handleProctorFail = useCallback(async () => {
     try {
-      const res = await fetch('/api/progress/quiz-submit', {
+      const res = await fetch('/api/progress/section-reset', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ itemId: item.id, answers }),
+        body: JSON.stringify({ itemId: item.id }),
       });
       const data = await res.json();
-      if (data.passed) {
-        router.refresh();
-      } else {
-        alert(`You scored ${data.correct}/${data.total}. You need ${item.quizPassThreshold} to pass. Try again.`);
-      }
-    } finally {
-      setBusy(false);
+      if (data.redirectTo) router.push(data.redirectTo);
+      else if (sectionVideoHref) router.push(sectionVideoHref);
+    } catch {
+      if (sectionVideoHref) router.push(sectionVideoHref);
     }
-  }
+  }, [item.id, router, sectionVideoHref]);
 
   if (showConsent) {
     return (
@@ -122,7 +147,7 @@ export function ItemClient({ item, progress, questions, userId, sectionTitle, ba
   }
 
   return (
-    <ProctorPanel itemId={item.id}>
+    <ProctorPanel itemId={item.id} onFail={handleProctorFail}>
       <div className="space-y-4 max-w-4xl">
         <div className="flex items-center gap-2 text-sm">
           <Link href={backHref} className="flex items-center text-muted-foreground hover:text-gray-900">
@@ -172,6 +197,10 @@ export function ItemClient({ item, progress, questions, userId, sectionTitle, ba
             passThreshold={item.quizPassThreshold}
             timeLimit={item.quizTimeLimit || undefined}
             onSubmit={submitQuiz}
+            onNext={goNext}
+            onRewatchVideo={() => {
+              if (sectionVideoHref) router.push(sectionVideoHref);
+            }}
           />
         )}
       </div>
