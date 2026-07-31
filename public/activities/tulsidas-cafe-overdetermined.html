@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tulsidas's Cafe — When Three Equations Beat Two Unknowns</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=IBM+Plex+Mono:wght@500;600&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#FAF5E8; --paper-line:#D8CFB6; --ink:#26332B; --ink-soft:#5B6B60;
+    --eq1:#B8860B; --eq1-soft:#F3E9CE;
+    --eq2:#7B2D8E; --eq2-soft:#F3E5F7;
+    --eq3:#0E7490; --eq3-soft:#CFFAFE;
+    --accent:#1F6F5C; --accent-soft:#DCEDE7;
+    --warn:#B5502E; --warn-soft:#FBEFE8;
+    --card:#FFFDF7; --shadow:0 2px 10px rgba(38,51,43,0.08);
+  }
+  *{box-sizing:border-box;} html,body{margin:0;padding:0;}
+  body{
+    background:repeating-linear-gradient(#FAF5E8 0px,#FAF5E8 27px,var(--paper-line) 28px),var(--paper);
+    background-size:100% 28px; color:var(--ink);
+    font-family:'Source Sans 3',sans-serif; min-height:100vh; padding:28px 16px 60px;
+  }
+  .wrap{max-width:1080px;margin:0 auto;}
+
+  header.hero{
+    background:var(--card); border:1px solid var(--paper-line);
+    border-radius:14px; box-shadow:var(--shadow);
+    padding:26px 28px 22px; margin-bottom:20px;
+  }
+  .eyebrow{font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);margin:0 0 6px;}
+  h1{font-family:'Caveat',cursive;font-weight:700;font-size:40px;margin:0 0 10px;line-height:1.05;}
+  header.hero p{max-width:760px;line-height:1.55;font-size:15.5px;margin:0 0 8px;}
+  .matrix-row{
+    background:var(--paper); border:1px dashed var(--paper-line);
+    border-radius:10px; padding:14px 18px; margin-top:10px;
+    font-family:'IBM Plex Mono',monospace; font-size:14px;
+    text-align:center; line-height:1.5;
+  }
+  .matrix-row .m{
+    display:inline-block; vertical-align:middle;
+    border-left:2px solid var(--ink); border-right:2px solid var(--ink);
+    padding:2px 8px; line-height:1.1; margin:0 4px;
+  }
+  .matrix-row .m .row{display:block;font-size:14px;font-weight:700;}
+  .matrix-row .v{
+    display:inline-block; vertical-align:middle;
+    border-left:1.5px solid var(--ink); border-right:1.5px solid var(--ink);
+    padding:2px 6px; line-height:1.1; margin:0 4px;
+  }
+  .matrix-row .v .row{display:block;font-size:13px;}
+  .matrix-row .eq{font-size:18px;font-weight:700;margin:0 6px;}
+
+  .grid-layout{display:grid;grid-template-columns:360px 1fr;gap:20px;align-items:start;}
+  @media (max-width:880px){.grid-layout{grid-template-columns:1fr;}}
+
+  .card{background:var(--card);border:1px solid var(--paper-line);border-radius:14px;box-shadow:var(--shadow);padding:20px;}
+  .panel-title{font-family:'Caveat',cursive;font-weight:700;font-size:24px;margin:0 0 4px;}
+  .panel-sub{font-size:13px;color:var(--ink-soft);margin:0 0 14px;line-height:1.4;}
+
+  .equations-box{
+    background:var(--paper); border:1px solid var(--paper-line);
+    border-radius:10px; padding:12px; margin-bottom:14px;
+    font-family:'IBM Plex Mono',monospace; font-size:14px; font-weight:600;
+    text-align:center; line-height:1.7;
+  }
+  .equations-box .eq{display:inline-block;padding:3px 10px;border-radius:6px;margin:2px 3px;}
+  .equations-box .eq.e1{background:var(--eq1-soft);color:var(--eq1);}
+  .equations-box .eq.e2{background:var(--eq2-soft);color:var(--eq2);}
+  .equations-box .eq.e3{background:var(--eq3-soft);color:var(--eq3);}
+
+  .field{margin-bottom:12px;}
+  .field label{display:flex;justify-content:space-between;font-size:13.5px;font-weight:600;margin-bottom:6px;}
+  .field label span.val{font-family:'IBM Plex Mono',monospace;color:var(--accent);font-weight:600;}
+  .xy-row{display:flex;gap:8px;}
+  .xy-row .xy-field{flex:1;}
+  .xy-row .xy-field label{font-size:11.5px;color:var(--ink-soft);margin-bottom:3px;text-transform:uppercase;letter-spacing:.04em;font-weight:700;}
+  input[type=number]{
+    width:100%; padding:9px 10px; border-radius:8px;
+    border:1px solid var(--paper-line);
+    font-family:'IBM Plex Mono',monospace; font-size:16px;
+    background:var(--paper); color:var(--ink);
+    -moz-appearance:textfield;
+  }
+  input[type=number]::-webkit-inner-spin-button,
+  input[type=number]::-webkit-outer-spin-button{-webkit-appearance:none;margin:0;}
+  input[type=number]:focus{
+    outline:2px solid var(--accent); outline-offset:-1px;
+    border-color:var(--accent); background:var(--card);
+  }
+  .helper{font-size:12px;color:var(--ink-soft);margin-top:6px;line-height:1.4;}
+  .helper span.k{font-family:'IBM Plex Mono',monospace;color:var(--ink);font-weight:600;}
+
+  .err-table{
+    margin-bottom:14px;
+    font-family:'IBM Plex Mono',monospace; font-size:13px;
+  }
+  .err-row{
+    display:grid; grid-template-columns:1fr 1fr 1fr;
+    gap:6px; margin-bottom:4px; align-items:center;
+  }
+  .err-row .lbl{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;}
+  .err-row .lbl.e1{color:var(--eq1);}
+  .err-row .lbl.e2{color:var(--eq2);}
+  .err-row .lbl.e3{color:var(--eq3);}
+  .err-row .val{
+    padding:6px 8px; border-radius:6px;
+    background:var(--paper); border:1px solid var(--paper-line);
+    text-align:center; font-weight:600; font-size:13px;
+  }
+
+  .total-box{
+    background:var(--accent-soft); border:1px solid var(--accent);
+    border-radius:9px; padding:10px 12px; margin-bottom:14px;
+    font-family:'IBM Plex Mono',monospace; font-size:14px; font-weight:700;
+    text-align:center; color:var(--accent);
+  }
+  .total-box .best{font-size:12px;color:var(--ink-soft);font-weight:600;margin-top:4px;}
+
+  .jars{display:flex;gap:10px;margin-bottom:14px;}
+  .jar{flex:1;text-align:center;padding:10px 6px;border-radius:10px;border:1px solid var(--paper-line);}
+  .jar.a-jar{background:var(--accent-soft);}
+  .jar.c-jar{background:var(--paper);}
+  .jar .name{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-soft);}
+  .jar .amt{font-family:'IBM Plex Mono',monospace;font-size:18px;font-weight:600;margin-top:4px;}
+
+  button{
+    font-family:'Source Sans 3',sans-serif; font-weight:600; font-size:14.5px;
+    border:none; border-radius:9px; padding:11px 16px; cursor:pointer;
+    width:100%; transition:transform .08s ease, filter .15s ease;
+  }
+  button:active{transform:translateY(1px);}
+  button:disabled{opacity:.4;cursor:not-allowed;}
+  .btn-primary{background:var(--accent);color:#fff;}
+  .btn-primary:hover:not(:disabled){filter:brightness(1.08);}
+  .btn-secondary{background:var(--paper);color:var(--ink);border:1px solid var(--paper-line);margin-top:8px;}
+  .btn-secondary:hover:not(:disabled){background:#F0E9D6;}
+
+  .status{
+    font-size:13.5px; line-height:1.5; padding:12px;
+    border-radius:9px; background:var(--paper);
+    border:1px solid var(--paper-line); margin-bottom:14px; min-height:20px;
+  }
+  .status.feedback-good{background:var(--accent-soft);border-color:var(--accent);color:var(--accent);font-weight:600;}
+  .status.feedback-mid{background:var(--eq1-soft);border-color:var(--eq1);color:var(--eq1);font-weight:600;}
+
+  .steps{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap;}
+  .step-dot{
+    width:26px;height:26px;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:600;
+    border:1.5px solid var(--paper-line);color:var(--ink-soft);background:var(--paper);
+  }
+  .step-dot.done{background:var(--accent);border-color:var(--accent);color:#fff;}
+
+  .graph-card{display:flex;flex-direction:column;}
+  .legend{display:flex;gap:18px;flex-wrap:wrap;margin:6px 0 12px;font-size:12.5px;font-family:'IBM Plex Mono',monospace;}
+  .legend span{display:inline-flex;align-items:center;gap:6px;}
+  .line-eq1{width:18px;height:3px;background:var(--eq1);display:inline-block;}
+  .line-eq2{width:18px;height:3px;background:var(--eq2);display:inline-block;}
+  .line-eq3{width:18px;height:3px;background:var(--eq3);display:inline-block;}
+  .dot.guess{background:var(--accent);}
+  .dot.best{background:var(--warn);}
+
+  svg{width:100%;height:auto;display:block;}
+  .axis-label{font-family:'IBM Plex Mono',monospace;font-size:12px;fill:var(--ink-soft);}
+  .tick-label{font-family:'IBM Plex Mono',monospace;font-size:10px;fill:var(--ink-soft);}
+
+  .reflect,.explore{margin-top:20px;padding-top:16px;border-top:1px dashed var(--paper-line);}
+  .reflect.hidden,.explore.hidden{display:none;}
+  .q{margin-bottom:16px;}
+  .q p.qtext{font-weight:600;margin:0 0 8px;font-size:14.5px;}
+  .options{display:flex;gap:8px;flex-wrap:wrap;}
+  .opt{
+    padding:8px 14px;border-radius:8px;border:1px solid var(--paper-line);
+    background:var(--paper);font-size:13.5px;cursor:pointer;font-weight:600;
+  }
+  .opt.correct{background:var(--accent-soft);border-color:var(--accent);color:var(--accent);}
+  .opt.wrong{background:var(--warn-soft);border-color:var(--warn);color:var(--warn);}
+  .opt:disabled{cursor:default;}
+
+  .explore .panel-title{font-size:22px;}
+  .explore-inputs{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin:10px 0 12px;}
+  .explore-inputs .field{margin-bottom:0;}
+  .explore-eq{
+    background:var(--accent-soft); border:1px solid var(--accent);
+    border-radius:8px; padding:10px; margin-bottom:10px;
+    font-family:'IBM Plex Mono',monospace; font-size:14px; text-align:center; color:var(--accent);font-weight:700;
+  }
+
+  footer.note{text-align:center;font-size:12px;color:var(--ink-soft);margin-top:26px;font-family:'IBM Plex Mono',monospace;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <p class="eyebrow">Linear Algebra · Overdetermined Systems</p>
+    <h1>Tulsidas's Cafe — When Three Equations Beat Two Unknowns</h1>
+    <p>Three tables reported their bills. That gives three equations — but only two unknowns (A and C). The system is <em>overdetermined</em>. There may be no (A, C) that satisfies all three at once. The best we can do is <strong>guess</strong> values that make the total error as small as possible.</p>
+
+    <div class="equations-box">
+      <div><span class="eq e1">3A + 1C = 1200</span></div>
+      <div><span class="eq e2">1A + 2C = 1000</span></div>
+      <div><span class="eq e3">1A + 1C = 900</span></div>
+    </div>
+
+    <div class="matrix-row">
+      <span class="m">
+        <span class="row">3&nbsp;&nbsp;1&nbsp;&nbsp;1</span>
+        <span class="row">1&nbsp;&nbsp;2&nbsp;&nbsp;1</span>
+      </span>
+      <span class="eq">·</span>
+      <span class="v">
+        <span class="row">A</span>
+        <span class="row">C</span>
+      </span>
+      <span class="eq">=</span>
+      <span class="v">
+        <span class="row">1200</span>
+        <span class="row">1000</span>
+      </span>
+      <span class="eq" style="color:var(--warn);">·</span>
+      <span class="v" style="border-color:var(--warn);">
+        <span class="row">900</span>
+      </span>
+      <p style="margin:8px 0 0;font-size:11px;color:var(--ink-soft);font-family:'Source Sans 3',sans-serif;">
+        3 equations, 2 unknowns — usually inconsistent. Guess and check; minimise the error.
+      </p>
+    </div>
+  </header>
+
+  <div class="grid-layout">
+
+    <!-- LEFT CONTROL PANEL -->
+    <div class="card">
+      <p class="panel-title">Guess and check</p>
+      <p class="panel-sub">Type (A, C). Watch the per-equation error and the total. Lower is better — there is no exact answer.</p>
+
+      <div class="field">
+        <label>Try <span class="val">A</span> and <span class="val">C</span></label>
+        <div class="xy-row">
+          <div class="xy-field"><label>A</label><input type="number" id="inA" step="any" value="200"></div>
+          <div class="xy-field"><label>C</label><input type="number" id="inC" step="any" value="400"></div>
+        </div>
+      </div>
+
+      <div class="err-table">
+        <div class="err-row">
+          <div class="lbl e1">Eq 1</div>
+          <div class="lbl e2">Eq 2</div>
+          <div class="lbl e3">Eq 3</div>
+        </div>
+        <div class="err-row">
+          <div class="val" id="err1">err = ?</div>
+          <div class="val" id="err2">err = ?</div>
+          <div class="val" id="err3">err = ?</div>
+        </div>
+      </div>
+
+      <div class="total-box">
+        <div id="totalErr">total error² = ?</div>
+        <div class="best" id="bestLine">best so far: none yet</div>
+      </div>
+
+      <div class="jars">
+        <div class="jar a-jar"><div class="name">Your A</div><div class="amt" id="aJar">200</div></div>
+        <div class="jar c-jar"><div class="name">Your C</div><div class="amt" id="cJar">400</div></div>
+      </div>
+
+      <div class="steps" id="stepDots"></div>
+
+      <div class="status" id="statusBox">Type (A, C). Hit <strong>Guess</strong> to record this attempt. Lower total error² is better.</div>
+
+      <button class="btn-primary" id="guessBtn">Record this guess</button>
+      <button class="btn-secondary" id="bestBtn">Show me the best fit (least squares)</button>
+      <button class="btn-secondary" id="resetBtn">Start over</button>
+    </div>
+
+    <!-- RIGHT GRAPH -->
+    <div class="card graph-card">
+      <p class="panel-title">Three lines, no common point</p>
+      <div class="legend">
+        <span><span class="line-eq1"></span>3A + C = 1200</span>
+        <span><span class="line-eq2"></span>A + 2C = 1000</span>
+        <span><span class="line-eq3"></span>A + C = 900</span>
+        <span><i class="dot guess"></i>your guess</span>
+        <span><i class="dot best"></i>best (lowest error)</span>
+      </div>
+      <p class="panel-sub" style="margin:6px 0 10px;">The three lines form a <em>triangle</em> — no single (A, C) lies on all three. The closest point is the centre of the triangle (least-squares fit).</p>
+      <svg id="graphSvg" viewBox="0 0 640 500" xmlns="http://www.w3.org/2000/svg"></svg>
+    </div>
+  </div>
+
+  <!-- REFLECTION QUIZ -->
+  <div class="card reflect hidden" id="reflectCard">
+    <p class="panel-title">What do you notice?</p>
+    <p class="panel-sub">After a few guesses, look at the geometry. Then answer these.</p>
+
+    <div class="q" id="q1">
+      <p class="qtext">1. Why is there no exact solution?</p>
+      <div class="options">
+        <button class="opt" data-correct="false">The equations are too hard</button>
+        <button class="opt" data-correct="false">We forgot to include the right number of tables</button>
+        <button class="opt" data-correct="true">Three equations in two unknowns is generally overdetermined — the three lines form a triangle, so they don't meet at one point</button>
+      </div>
+    </div>
+
+    <div class="q" id="q2">
+      <p class="qtext">2. The least-squares best fit for this system is —</p>
+      <div class="options">
+        <button class="opt" data-correct="true">A ≈ 280, C ≈ 403 (centre of the triangle)</button>
+        <button class="opt" data-correct="false">A = 280, C = 360 (from the previous question — but that doesn't satisfy eq 3)</button>
+        <button class="opt" data-correct="false">A = 200, C = 500 (mid-range guess)</button>
+      </div>
+    </div>
+
+    <div class="q" id="q3">
+      <p class="qtext">3. Why is "minimise the total error" a reasonable thing to do when no exact answer exists?</p>
+      <div class="options">
+        <button class="opt" data-correct="false">Because it's the only mathematical operation possible</button>
+        <button class="opt" data-correct="true">Because we want the (A, C) that <em>best fits all three observations</em> simultaneously — no single equation is fully satisfied, but the total mismatch is as small as possible</button>
+        <button class="opt" data-correct="false">Because the cafe owner was generous</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- EXPLORE MODE -->
+  <div class="card explore hidden" id="exploreCard">
+    <p class="panel-title">Now you try: change a bill</p>
+    <p class="panel-sub">Watch the triangle change and the best-fit point slide.</p>
+
+    <div class="explore-inputs">
+      <div class="field">
+        <label>Bill of table 1</label>
+        <input type="number" id="expB1" min="0" max="3000" step="50" value="1200">
+      </div>
+      <div class="field">
+        <label>Bill of table 2</label>
+        <input type="number" id="expB2" min="0" max="3000" step="50" value="1000">
+      </div>
+      <div class="field">
+        <label>Bill of table 3</label>
+        <input type="number" id="expB3" min="0" max="3000" step="50" value="900">
+      </div>
+    </div>
+
+    <div class="explore-eq" id="exploreEq">Best fit: A ≈ 280.00, C ≈ 403.33</div>
+
+    <div class="helper">Try <strong>1200 → 1500</strong> (table 1 bills more) — see how the triangle tilts. Try <strong>all three bills equal</strong> — does the triangle shrink to a point?</div>
+  </div>
+
+  <footer class="note">Built for overdetermined systems · 3 equations, 2 unknowns, no exact solution · best we can do: minimise the squared error (least squares)</footer>
+</div>
+
+<script>
+(function(){
+  const svgNS = "http://www.w3.org/2000/svg";
+  const svg = document.getElementById('graphSvg');
+  const M = {l: 70, r: 20, t: 30, b: 50};
+  const PW = 640 - M.l - M.r;
+  const PH = 500 - M.t - M.b;
+
+  // ---- STATE ----
+  // The 3-equation system. Coefficients are fixed; RHS is configurable in explore mode.
+  const A = [[3, 1], [1, 2], [1, 1]];
+  let b = [1200, 1000, 900];
+  const EQ_COLORS = ['#B8860B', '#7B2D8E', '#0E7490'];
+
+  // Track the user's best guess
+  let bestGuess = null;       // {A, C, totalErr}
+  let attempts = 0;
+  let optimalRevealed = false;
+
+  // Compute the analytical least-squares solution: A^T A x = A^T b
+  function computeLeastSquares(){
+    // A^T A is 2x2; A^T b is 2x1.
+    const at = [[A[0][0], A[1][0], A[2][0]], [A[0][1], A[1][1], A[2][1]]];
+    const ata = [
+      [at[0][0]*A[0][0] + at[0][1]*A[1][0] + at[0][2]*A[2][0], at[0][0]*A[0][1] + at[0][1]*A[1][1] + at[0][2]*A[2][1]],
+      [at[1][0]*A[0][0] + at[1][1]*A[1][0] + at[1][2]*A[2][0], at[1][0]*A[0][1] + at[1][1]*A[1][1] + at[1][2]*A[2][1]]
+    ];
+    const atb = [
+      at[0][0]*b[0] + at[0][1]*b[1] + at[0][2]*b[2],
+      at[1][0]*b[0] + at[1][1]*b[1] + at[1][2]*b[2]
+    ];
+    const D = ata[0][0]*ata[1][1] - ata[0][1]*ata[1][0];
+    if(Math.abs(D) < 1e-9) return null;
+    return {
+      A: (ata[1][1]*atb[0] - ata[0][1]*atb[1]) / D,
+      C: (ata[0][0]*atb[1] - ata[1][0]*atb[0]) / D
+    };
+  }
+
+  function predict(aVal, cVal){
+    const lhs = A.map(row => row[0]*aVal + row[1]*cVal);
+    const errors = lhs.map((y, i) => y - b[i]);
+    const totalSqErr = errors.reduce((s, e) => s + e*e, 0);
+    return {lhs, errors, totalSqErr};
+  }
+
+  function formatNum(v){
+    if(Math.abs(v) < 1e-9) return '0';
+    if(Math.abs(v) < 0.01) return v.toFixed(2);
+    if(Number.isInteger(v)) return v.toString();
+    return v.toFixed(1);
+  }
+
+  // ---- DOM ----
+  const inA = document.getElementById('inA');
+  const inC = document.getElementById('inC');
+  const aJar = document.getElementById('aJar');
+  const cJar = document.getElementById('cJar');
+  const err1 = document.getElementById('err1');
+  const err2 = document.getElementById('err2');
+  const err3 = document.getElementById('err3');
+  const totalErr = document.getElementById('totalErr');
+  const bestLine = document.getElementById('bestLine');
+  const statusBox = document.getElementById('statusBox');
+  const guessBtn = document.getElementById('guessBtn');
+  const bestBtn = document.getElementById('bestBtn');
+  const resetBtn = document.getElementById('resetBtn');
+  const stepDots = document.getElementById('stepDots');
+  const reflectCard = document.getElementById('reflectCard');
+  const exploreCard = document.getElementById('exploreCard');
+
+  for(let i=1;i<=3;i++){
+    const d = document.createElement('div');
+    d.className='step-dot';
+    d.textContent=i;
+    d.id='step-'+i;
+    stepDots.appendChild(d);
+  }
+
+  function updateLive(){
+    const a = parseFloat(inA.value);
+    const c = parseFloat(inC.value);
+    if(isNaN(a) || isNaN(c)){
+      aJar.textContent = '?'; cJar.textContent = '?';
+      err1.textContent = 'err = ?'; err2.textContent = 'err = ?'; err3.textContent = 'err = ?';
+      totalErr.textContent = 'total error² = ?';
+      render();
+      return;
+    }
+    aJar.textContent = formatNum(a);
+    cJar.textContent = formatNum(c);
+    const {lhs, errors, totalSqErr} = predict(a, c);
+    err1.textContent = `err = ${formatNum(errors[0])}`;
+    err2.textContent = `err = ${formatNum(errors[1])}`;
+    err3.textContent = `err = ${formatNum(errors[2])}`;
+    err1.style.color = Math.abs(errors[0]) < 0.5 ? 'var(--accent)' : 'var(--warn)';
+    err2.style.color = Math.abs(errors[1]) < 0.5 ? 'var(--accent)' : 'var(--warn)';
+    err3.style.color = Math.abs(errors[2]) < 0.5 ? 'var(--accent)' : 'var(--warn)';
+    totalErr.textContent = `total error² = ${formatNum(totalSqErr)}`;
+    render();
+  }
+
+  function setStatus(html, cls){
+    statusBox.innerHTML = html;
+    statusBox.className = 'status' + (cls ? (' '+cls) : '');
+  }
+
+  function recordGuess(){
+    const a = parseFloat(inA.value);
+    const c = parseFloat(inC.value);
+    if(isNaN(a) || isNaN(c)){
+      setStatus('Enter numbers for both A and C.');
+      return;
+    }
+    const {errors, totalSqErr} = predict(a, c);
+    attempts++;
+    if(!bestGuess || totalSqErr < bestGuess.totalErr){
+      bestGuess = {A: a, C: c, totalErr: totalSqErr, errors};
+      bestLine.textContent = `best so far: A=${formatNum(a)}, C=${formatNum(c)}, err²=${formatNum(totalSqErr)}`;
+      setStatus(`New best! err² = ${formatNum(totalSqErr)}.`, 'feedback-good');
+    } else {
+      setStatus(`Recorded. err² = ${formatNum(totalSqErr)} (best still ${formatNum(bestGuess.totalErr)}). Try to lower the total.`, 'feedback-mid');
+    }
+    if(attempts >= 1){
+      const d = document.getElementById('step-1');
+      if(d) d.classList.add('done');
+    }
+    if(attempts >= 2){
+      const d = document.getElementById('step-2');
+      if(d) d.classList.add('done');
+    }
+    if(attempts >= 3){
+      const d = document.getElementById('step-3');
+      if(d) d.classList.add('done');
+    }
+    if(attempts >= 2){
+      reflectCard.classList.remove('hidden');
+    }
+    render();
+  }
+
+  function showBest(){
+    const sol = computeLeastSquares();
+    if(!sol){
+      setStatus('Cannot compute — the system has no unique least-squares solution.', 'feedback-mid');
+      return;
+    }
+    inA.value = formatNum(sol.A);
+    inC.value = formatNum(sol.C);
+    optimalRevealed = true;
+    attempts++;
+    const {errors, totalSqErr} = predict(sol.A, sol.C);
+    bestGuess = {A: sol.A, C: sol.C, totalErr: totalSqErr, errors};
+    bestLine.textContent = `best (least squares): A=${formatNum(sol.A)}, C=${formatNum(sol.C)}, err²=${formatNum(totalSqErr)}`;
+    setStatus(`The least-squares best fit is <strong>A = ${formatNum(sol.A)}, C = ${formatNum(sol.C)}</strong> with total err² = ${formatNum(totalSqErr)}. No (A, C) satisfies all three equations exactly.`, 'feedback-good');
+    document.querySelectorAll('.step-dot').forEach(d => d.classList.add('done'));
+    reflectCard.classList.remove('hidden');
+    render();
+  }
+
+  function resetGame(){
+    attempts = 0;
+    bestGuess = null;
+    optimalRevealed = false;
+    inA.value = '200'; inC.value = '400';
+    b = [1200, 1000, 900];
+    document.querySelectorAll('.step-dot').forEach(d => d.classList.remove('done'));
+    reflectCard.classList.add('hidden');
+    exploreCard.classList.add('hidden');
+    bestLine.textContent = 'best so far: none yet';
+    setStatus('Type (A, C). Hit <strong>Guess</strong> to record this attempt. Lower total error² is better.');
+    updateLive();
+  }
+
+  guessBtn.addEventListener('click', recordGuess);
+  bestBtn.addEventListener('click', showBest);
+  resetBtn.addEventListener('click', resetGame);
+  inA.addEventListener('input', updateLive);
+  inC.addEventListener('input', updateLive);
+  inA.addEventListener('keydown', (e)=>{ if(e.key === 'Enter') recordGuess(); });
+  inC.addEventListener('keydown', (e)=>{ if(e.key === 'Enter') recordGuess(); });
+
+  // ---- SVG rendering ----
+  function niceMax(v){
+    if(v <= 0) return 10;
+    const mag = Math.pow(10, Math.floor(Math.log10(v)));
+    const norm = v / mag;
+    let n;
+    if(norm <= 1) n = 1;
+    else if(norm <= 2) n = 2;
+    else if(norm <= 2.5) n = 2.5;
+    else if(norm <= 5) n = 5;
+    else n = 10;
+    return n * mag;
+  }
+
+  function getBounds(){
+    // Each line: a11*A + a12*C = b[i]
+    // y-intercept: A=0, C = b/a12 (if a12 != 0)
+    // x-intercept: C=0, A = b/a11
+    const pts = [{x:0,y:0}];
+    for(let i = 0; i < 3; i++){
+      if(Math.abs(A[i][0]) > 1e-9) pts.push({x: b[i]/A[i][0], y: 0});
+      if(Math.abs(A[i][1]) > 1e-9) pts.push({x: 0, y: b[i]/A[i][1]});
+    }
+    if(bestGuess) pts.push({x: bestGuess.A, y: bestGuess.C});
+    const a = parseFloat(inA.value);
+    const c = parseFloat(inC.value);
+    if(!isNaN(a) && !isNaN(c)) pts.push({x: a, y: c});
+    if(optimalRevealed){
+      const sol = computeLeastSquares();
+      if(sol) pts.push({x: sol.A, y: sol.C});
+    }
+    const xs = pts.map(p => p.x);
+    const ys = pts.map(p => p.y);
+    const xMax = Math.max(...xs, 100);
+    const yMax = Math.max(...ys, 100);
+    return {xMin: 0, xMax, yMin: 0, yMax};
+  }
+
+  function render(){
+    while(svg.firstChild) svg.removeChild(svg.firstChild);
+
+    const bounds = getBounds();
+    const xR = bounds.xMax - bounds.xMin;
+    const yR = bounds.yMax - bounds.yMin;
+    const xSc = PW / xR;
+    const ySc = PH / yR;
+
+    function toS(dx, dy){
+      return {
+        x: M.l + (dx - bounds.xMin) * xSc,
+        y: M.t + PH - (dy - bounds.yMin) * ySc
+      };
+    }
+
+    const originSvg = toS(0, 0);
+
+    // ---- Grid ----
+    const xStep = niceMax(xR / 8);
+    const yStep = niceMax(yR / 6);
+    for(let v = Math.ceil(bounds.xMin / xStep) * xStep; v <= bounds.xMax; v += xStep){
+      if(v === 0) continue;
+      const p = toS(v, 0);
+      if(p.x < M.l - 1 || p.x > M.l + PW + 1) continue;
+      svg.appendChild(mkL(p.x, M.t, p.x, M.t + PH, '#E4DCC4', 1));
+      const t = mkT(p.x, originSvg.y + 16, '' + Math.round(v), 'tick-label');
+      t.setAttribute('text-anchor', 'middle');
+      svg.appendChild(t);
+    }
+    for(let v = Math.ceil(bounds.yMin / yStep) * yStep; v <= bounds.yMax; v += yStep){
+      if(v === 0) continue;
+      const p = toS(0, v);
+      if(p.y < M.t - 1 || p.y > M.t + PH + 1) continue;
+      svg.appendChild(mkL(M.l, p.y, M.l + PW, p.y, '#E4DCC4', 1));
+      const t = mkT(M.l - 6, p.y + 3, '' + Math.round(v), 'tick-label');
+      t.setAttribute('text-anchor', 'end');
+      svg.appendChild(t);
+    }
+
+    // ---- Axes ----
+    if(0 >= bounds.yMin && 0 <= bounds.yMax){
+      svg.appendChild(mkL(M.l, originSvg.y, M.l + PW, originSvg.y, '#26332B', 1.5));
+    }
+    if(0 >= bounds.xMin && 0 <= bounds.xMax){
+      svg.appendChild(mkL(originSvg.x, M.t, originSvg.x, M.t + PH, '#26332B', 1.5));
+    }
+
+    // axis labels
+    const xlab = mkT(M.l + PW/2, M.t + PH + 42, 'A (adult)', 'axis-label');
+    xlab.setAttribute('text-anchor', 'middle');
+    svg.appendChild(xlab);
+    const ylab = mkT(16, M.t + PH/2, 'C (child)', 'axis-label');
+    ylab.setAttribute('text-anchor', 'middle');
+    ylab.setAttribute('transform', `rotate(-90 16 ${M.t + PH/2})`);
+    svg.appendChild(ylab);
+
+    // ---- Three lines ----
+    function drawLine(i){
+      const color = EQ_COLORS[i];
+      const labelText = [b[i]==1200?'3A + C = 1200':`3A + C = ${b[i]}`,
+                         b[i]==1000?'A + 2C = 1000':`A + 2C = ${b[i]}`,
+                         b[i]==900?'A + C = 900':`A + C = ${b[i]}`][i];
+      // Sample the line
+      let d = '';
+      let started = false;
+      for(let x = bounds.xMin; x <= bounds.xMax; x += (bounds.xMax - bounds.xMin)/200){
+        const y = (b[i] - A[i][0]*x) / A[i][1];
+        if(!isFinite(y)) continue;
+        if(y < bounds.yMin || y > bounds.yMax) continue;
+        const sp = toS(x, y);
+        if(sp.x < M.l - 5 || sp.x > M.l + PW + 5 || sp.y < M.t - 5 || sp.y > M.t + PH + 5) continue;
+        d += (started ? ' L ' : 'M ') + sp.x + ' ' + sp.y + ' ';
+        started = true;
+      }
+      const path = document.createElementNS(svgNS, 'path');
+      path.setAttribute('d', d);
+      path.setAttribute('stroke', color);
+      path.setAttribute('stroke-width', '2.5');
+      path.setAttribute('fill', 'none');
+      svg.appendChild(path);
+
+      // label near the line (middle of the line)
+      const midX = (bounds.xMin + bounds.xMax) / 2;
+      const midY = (b[i] - A[i][0]*midX) / A[i][1];
+      if(isFinite(midY) && midY >= bounds.yMin && midY <= bounds.yMax){
+        const sp = toS(midX, midY);
+        const t = mkT(sp.x + 8, sp.y - 6, labelText, 'tick-label');
+        t.setAttribute('fill', color);
+        t.setAttribute('font-weight', '700');
+        t.setAttribute('font-size', '12');
+        svg.appendChild(t);
+      }
+    }
+    drawLine(0);
+    drawLine(1);
+    drawLine(2);
+
+    // ---- User's current guess marker ----
+    const a = parseFloat(inA.value);
+    const c = parseFloat(inC.value);
+    if(!isNaN(a) && !isNaN(c) && a >= bounds.xMin && a <= bounds.xMax && c >= bounds.yMin && c <= bounds.yMax){
+      const sp = toS(a, c);
+      const c1 = document.createElementNS(svgNS, 'circle');
+      c1.setAttribute('cx', sp.x); c1.setAttribute('cy', sp.y);
+      c1.setAttribute('r', 6);
+      c1.setAttribute('fill', '#1F6F5C');
+      c1.setAttribute('fill-opacity', '0.6');
+      c1.setAttribute('stroke', '#1F6F5C');
+      c1.setAttribute('stroke-width', '2');
+      svg.appendChild(c1);
+      const t = mkT(sp.x + 8, sp.y - 8, `(${formatNum(a)}, ${formatNum(c)})`, 'tick-label');
+      t.setAttribute('fill', '#1F6F5C');
+      t.setAttribute('font-weight', '700');
+      svg.appendChild(t);
+    }
+
+    // ---- Best so far marker ----
+    if(bestGuess){
+      const sp = toS(bestGuess.A, bestGuess.C);
+      const c1 = document.createElementNS(svgNS, 'circle');
+      c1.setAttribute('cx', sp.x); c1.setAttribute('cy', sp.y);
+      c1.setAttribute('r', 6);
+      c1.setAttribute('fill', '#B5502E');
+      c1.setAttribute('stroke', '#B5502E');
+      c1.setAttribute('stroke-width', '2');
+      svg.appendChild(c1);
+      const t = mkT(sp.x - 8, sp.y + 14, `best (err²=${formatNum(bestGuess.totalErr)})`, 'tick-label');
+      t.setAttribute('fill', '#B5502E');
+      t.setAttribute('font-weight', '700');
+      t.setAttribute('text-anchor', 'end');
+      svg.appendChild(t);
+    }
+  }
+
+  function mkL(x1, y1, x2, y2, stroke, w){
+    const l = document.createElementNS(svgNS, 'line');
+    l.setAttribute('x1', x1); l.setAttribute('y1', y1);
+    l.setAttribute('x2', x2); l.setAttribute('y2', y2);
+    l.setAttribute('stroke', stroke); l.setAttribute('stroke-width', w);
+    return l;
+  }
+  function mkT(x, y, text, cls){
+    const t = document.createElementNS(svgNS, 'text');
+    t.setAttribute('x', x); t.setAttribute('y', y);
+    t.setAttribute('class', cls);
+    t.textContent = text;
+    return t;
+  }
+
+  // ---- QUIZ ----
+  document.querySelectorAll('.q .options').forEach(group => {
+    group.querySelectorAll('.opt').forEach(btn => {
+      btn.addEventListener('click', ()=>{
+        const correct = btn.dataset.correct === 'true';
+        group.querySelectorAll('.opt').forEach(b => {
+          b.disabled = true;
+          if(b.dataset.correct === 'true') b.classList.add('correct');
+        });
+        if(!correct) btn.classList.add('wrong');
+        if(group.parentElement.id === 'q3' && correct){
+          setTimeout(()=>{
+            exploreCard.classList.remove('hidden');
+            exploreCard.scrollIntoView({behavior:'smooth', block:'nearest'});
+            rebuildExplore();
+          }, 400);
+        }
+      });
+    });
+  });
+
+  // ---- EXPLORE ----
+  const expB1 = document.getElementById('expB1');
+  const expB2 = document.getElementById('expB2');
+  const expB3 = document.getElementById('expB3');
+  const exploreEq = document.getElementById('exploreEq');
+
+  function rebuildExplore(){
+    const n1 = parseFloat(expB1.value);
+    const n2 = parseFloat(expB2.value);
+    const n3 = parseFloat(expB3.value);
+    if([n1, n2, n3].some(v => isNaN(v))) return;
+    b = [n1, n2, n3];
+    const sol = computeLeastSquares();
+    if(sol){
+      exploreEq.textContent = `Best fit: A ≈ ${formatNum(sol.A)}, C ≈ ${formatNum(sol.C)}`;
+    } else {
+      exploreEq.textContent = 'No unique solution — system is degenerate';
+    }
+    render();
+  }
+  [expB1, expB2, expB3].forEach(inp => {
+    inp.addEventListener('input', rebuildExplore);
+  });
+
+  // init
+  updateLive();
+})();
+</script>
+</body>
+</html>

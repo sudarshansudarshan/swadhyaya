@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Varāhamihira's Star Map — Linear Transformations in ℝ²</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=IBM+Plex+Mono:wght@500;600&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#FAF5E8; --paper-line:#D8CFB6; --ink:#26332B; --ink-soft:#5B6B60;
+    --fn:#1F6F5C; --fn-soft:#DCEDE7; --pt:#7B5EA7; --pt-soft:#EAE3F5;
+    --target:#B8860B; --target-soft:#F3E9CE; --d1:#B5502E; --d1-soft:#FBEFE8;
+    --card:#FFFDF7; --shadow:0 2px 10px rgba(38,51,43,0.08);
+  }
+  *{box-sizing:border-box;} html,body{margin:0;padding:0;}
+  body{
+    background:repeating-linear-gradient(#FAF5E8 0px,#FAF5E8 27px,var(--paper-line) 28px),var(--paper);
+    background-size:100% 28px; color:var(--ink); font-family:'Source Sans 3',sans-serif;
+    min-height:100vh; padding:28px 16px 60px;
+  }
+  .wrap{max-width:1080px;margin:0 auto;}
+  header.hero{background:var(--card);border:1px solid var(--paper-line);border-radius:14px;box-shadow:var(--shadow);padding:26px 28px 22px;margin-bottom:20px;}
+  .eyebrow{font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);margin:0 0 6px;}
+  h1{font-family:'Caveat',cursive;font-weight:700;font-size:38px;margin:0 0 10px;line-height:1.05;}
+  header.hero p{max-width:680px;line-height:1.55;font-size:15.5px;margin:0 0 8px;}
+  .dim-grid{display:flex;gap:14px;flex-wrap:wrap;margin-top:12px;}
+  .dim-grid span{font-family:'IBM Plex Mono',monospace;font-size:13px;padding:8px 14px;border-radius:8px;font-weight:600;border:1px solid var(--paper-line);background:var(--paper);}
+  .grid-layout{display:grid;grid-template-columns:300px 1fr;gap:20px;align-items:start;}
+  @media (max-width:800px){.grid-layout{grid-template-columns:1fr;}}
+  .card{background:var(--card);border:1px solid var(--paper-line);border-radius:14px;box-shadow:var(--shadow);padding:20px;}
+  .panel-title{font-family:'Caveat',cursive;font-weight:700;font-size:24px;margin:0 0 4px;}
+  .panel-sub{font-size:13px;color:var(--ink-soft);margin:0 0 14px;line-height:1.4;}
+  .eq-highlight{
+    font-family:'IBM Plex Mono',monospace;font-size:20px;font-weight:600;text-align:center;
+    padding:12px;border-radius:10px;margin-bottom:14px;border:1px solid var(--paper-line);
+    background:var(--fn-soft);border-color:var(--fn);color:var(--fn);line-height:1.3;word-break:break-all;
+  }
+  .eq-matrix{
+    font-family:'IBM Plex Mono',monospace;font-size:17px;font-weight:600;text-align:center;
+    padding:10px 12px;border-radius:10px;margin-bottom:14px;border:1px solid var(--paper-line);
+    background:var(--pt-soft);border-color:var(--pt);color:var(--pt);line-height:1.4;
+  }
+  .field{margin-bottom:14px;}
+  .field label{display:flex;justify-content:space-between;font-size:13.5px;font-weight:600;margin-bottom:6px;}
+  .field label span.val{font-family:'IBM Plex Mono',monospace;font-weight:600;color:var(--pt);}
+  .coord-row{display:flex;gap:8px;}
+  .coord-row .cflex{flex:1;}
+  .coord-row .cflex label{font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--ink-soft);margin-bottom:2px;}
+  .coord-row .cflex input{font-size:13px;padding:6px 7px;width:100%;border-radius:8px;border:1px solid var(--paper-line);font-family:'IBM Plex Mono',monospace;background:var(--paper);color:var(--ink);}
+  .coord-row .cflex input:focus{outline:2px solid var(--pt);outline-offset:-1px;border-color:var(--pt);}
+  input[type=number]{width:100%;padding:9px 10px;border-radius:8px;border:1px solid var(--paper-line);font-family:'IBM Plex Mono',monospace;font-size:16px;background:var(--paper);color:var(--ink);}
+  input[type=number]:focus{outline:2px solid var(--pt);outline-offset:-1px;border-color:var(--pt);}
+  .helper{font-size:12px;color:var(--ink-soft);margin-top:4px;line-height:1.4;}
+  .pairs{display:flex;gap:14px;margin-bottom:14px;}
+  .pair{flex:1;text-align:center;padding:12px 8px;border-radius:10px;border:1px solid var(--paper-line);}
+  .pair.in{background:var(--pt-soft);} .pair.in .name{color:var(--pt);}
+  .pair.out{background:var(--fn-soft);} .pair.out .name{color:var(--fn);}
+  .pair .name{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;}
+  .pair .amt{font-family:'IBM Plex Mono',monospace;font-size:20px;font-weight:600;margin-top:4px;}
+  .arrow-hint{font-size:22px;display:flex;align-items:center;justify-content:center;color:var(--ink-soft);}
+  button{font-family:'Source Sans 3',sans-serif;font-weight:600;font-size:14.5px;border:none;border-radius:9px;padding:11px 16px;cursor:pointer;width:100%;transition:transform .08s ease,filter .15s ease;}
+  button:active{transform:translateY(1px);}button:disabled{opacity:.4;cursor:not-allowed;}
+  .btn-primary{background:var(--fn);color:#fff;}.btn-primary:hover:not(:disabled){filter:brightness(1.08);}
+  .btn-secondary{background:var(--paper);color:var(--ink);border:1px solid var(--paper-line);margin-top:8px;}
+  .btn-secondary:hover:not(:disabled){background:#F0E9D6;}
+  .status{font-size:13.5px;line-height:1.5;padding:12px;border-radius:9px;background:var(--paper);border:1px solid var(--paper-line);margin-bottom:14px;min-height:20px;}
+  .status.feedback-good{background:var(--fn-soft);border-color:var(--fn);color:var(--fn);font-weight:600;}
+  .status.feedback-mid{background:var(--pt-soft);border-color:var(--pt);color:var(--pt);font-weight:600;}
+  .status.feedback-target{background:var(--target-soft);border-color:var(--target);color:var(--target);font-weight:600;}
+  .graph-card{display:flex;flex-direction:column;}
+  .graph-card .panel-title{margin-bottom:0;}
+  .graph-card .panel-sub{margin-bottom:6px;}
+  .legend{display:flex;gap:18px;flex-wrap:wrap;margin:6px 0 12px;font-size:12.5px;font-family:'IBM Plex Mono',monospace;}
+  .legend span{display:inline-flex;align-items:center;gap:6px;}
+  .dot{width:10px;height:10px;border-radius:50%;display:inline-block;}
+  .dot.in{background:var(--pt);} .dot.out{background:var(--fn);}
+  .graph-wrap svg{width:100%;height:auto;display:block;background:#FFFDF7;border:1px solid var(--paper-line);border-radius:8px;}
+  .graph-wrap{position:relative;}
+  .axis-label{font-family:'IBM Plex Mono',monospace;font-size:12px;fill:var(--ink-soft);}
+  .tick-label{font-family:'IBM Plex Mono',monospace;font-size:10px;fill:var(--ink-soft);}
+  .steps{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap;}
+  .step-dot{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:600;border:1.5px solid var(--paper-line);color:var(--ink-soft);background:var(--paper);}
+  .step-dot.done{background:var(--fn);border-color:var(--fn);color:#fff;}
+  .step-dot.solution{background:var(--target);border-color:var(--target);color:#fff;}
+  .step-dot.active{border-color:var(--pt);color:var(--pt);background:var(--pt-soft);}
+  .reflect,.explore{margin-top:20px;padding-top:16px;border-top:1px dashed var(--paper-line);}
+  .reflect.hidden,.explore.hidden{display:none;}
+  .q{margin-bottom:16px;}.q p.qtext{font-weight:600;margin:0 0 8px;font-size:14.5px;}
+  .options{display:flex;gap:8px;flex-wrap:wrap;}
+  .opt{padding:8px 14px;border-radius:8px;border:1px solid var(--paper-line);background:var(--paper);font-size:13.5px;cursor:pointer;font-weight:600;}
+  .opt.correct{background:var(--fn-soft);border-color:var(--fn);color:var(--fn);}
+  .opt.wrong{background:#F6DCD4;border-color:var(--d1);color:#8C3A1F;}
+  .opt:disabled{cursor:default;}
+  .explore .panel-title{font-size:22px;}
+  .explore-inputs{display:flex;gap:10px;flex-wrap:wrap;margin:10px 0 14px;}
+  .explore-inputs .field{flex:1;min-width:70px;margin-bottom:0;}
+  .explore-inputs .field label{font-size:11px;}
+  .explore-inputs input[type=number]{font-size:13px;padding:7px 8px;}
+  footer.note{text-align:center;font-size:12px;color:var(--ink-soft);margin-top:26px;font-family:'IBM Plex Mono',monospace;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <p class="eyebrow">Intuition Builder · Linear Transformations</p>
+    <h1>Varāhamihira's Star Map — φ : ℝ² → ℝ²</h1>
+    <p>Varāhamihira mapped star positions from one celestial frame to another using linear transformations. A linear map sends (x, y) to new coordinates by multiplying with a matrix. Here φ(x, y) = (2x + 3y, 3x + 4y). Predict where each star lands!</p>
+    <div class="dim-grid">
+      <span style="background:var(--pt-soft);border-color:var(--pt);color:var(--pt);">Input point v ∈ ℝ²</span>
+      <span style="background:var(--fn-soft);border-color:var(--fn);color:var(--fn);">φ(v) = A v</span>
+      <span style="background:var(--d1-soft);border-color:var(--d1);color:var(--d1);">det A = −1</span>
+    </div>
+  </header>
+
+  <div class="grid-layout">
+    <div class="card">
+      <p class="panel-title" id="stepTitle">φ(1, 0) — basis vector</p>
+      <p class="panel-sub" id="stepSub">Predict where the basis vector î = (1, 0) lands under φ.</p>
+
+      <div class="eq-highlight" id="eqDisplay">φ(1, 0) = ( ?, ? )</div>
+      <div class="eq-matrix" id="matrixDisplay">A = [[2, 3], [3, 4]]</div>
+
+      <div class="coord-row" id="inputDisplay" style="margin-bottom:14px;">
+        <div class="cflex" style="text-align:center;"><label style="font-size:11px;">INPUT v</label><div style="font-family:'IBM Plex Mono',monospace;font-size:18px;font-weight:600;color:var(--pt);padding:6px;" id="inputVal">(1, 0)</div></div>
+        <div class="cflex" style="text-align:center;"><label style="font-size:11px;">→ φ(v)</label><div style="font-size:22px;color:var(--ink-soft);">→</div></div>
+        <div class="cflex"><label style="font-size:11px;">PREDICT OUTPUT</label></div>
+      </div>
+
+      <div class="coord-row" id="multiField">
+        <div class="cflex"><label>x'</label><input type="number" id="predX" step="any" placeholder="x′"></div>
+        <div class="cflex"><label>y'</label><input type="number" id="predY" step="any" placeholder="y′"></div>
+      </div>
+
+      <div class="pairs" id="pointPairs">
+        <div class="pair in"><div class="name">INPUT v</div><div class="amt" id="pairIn">(1, 0)</div></div>
+        <div class="pair out"><div class="name">φ(v) OUTPUT</div><div class="amt" id="pairOut">?</div></div>
+      </div>
+
+      <div class="steps" id="stepDots"></div>
+
+      <div class="status" id="statusBox">Varāhamihira maps (x, y) → (2x + 3y, 3x + 4y). Where does (1, 0) go?</div>
+
+      <button class="btn-primary" id="checkBtn">Predict &amp; Reveal</button>
+      <button class="btn-secondary" id="resetBtn">Start over</button>
+    </div>
+
+    <div class="card graph-card">
+      <p class="panel-title" id="graphTitle">Mapping in ℝ²</p>
+      <div class="legend" id="graphLegend">
+        <span><i class="dot in"></i>input v</span>
+        <span><i class="dot out"></i>φ(v) output</span>
+      </div>
+      <div class="graph-wrap" id="graphContainer">
+        <svg id="graphSvg" viewBox="0 0 640 460" xmlns="http://www.w3.org/2000/svg"></svg>
+      </div>
+    </div>
+  </div>
+
+  <!-- REFLECTION QUIZ -->
+  <div class="card reflect hidden" id="reflectCard">
+    <p class="panel-title">Linear transformations &amp; invertibility</p>
+    <p class="panel-sub">Every matrix A with non-zero determinant is invertible — you can undo the map.</p>
+
+    <div class="q" id="q1">
+      <p class="qtext">1. What is the determinant of A = [[2, 3], [3, 4]]?</p>
+      <div class="options">
+        <button class="opt" data-correct="false">2·4 + 3·3 = 17</button>
+        <button class="opt" data-correct="true">2·4 − 3·3 = −1</button>
+        <button class="opt" data-correct="false">2·3 − 3·4 = −6</button>
+      </div>
+    </div>
+
+    <div class="q" id="q2">
+      <p class="qtext">2. Is φ invertible?</p>
+      <div class="options">
+        <button class="opt" data-correct="true">Yes — det ≠ 0, so A⁻¹ exists</button>
+        <button class="opt" data-correct="false">No — det = 0 would make it singular</button>
+        <button class="opt" data-correct="false">Only if φ is onto</button>
+      </div>
+    </div>
+
+    <div class="q" id="q3">
+      <p class="qtext">3. φ(1, 0) = (2, 3) and φ(0, 1) = (3, 4). What is φ(1, 1)?</p>
+      <div class="options">
+        <button class="opt" data-correct="false">(5, 6)</button>
+        <button class="opt" data-correct="true">(5, 7) — φ is linear, so φ(1,1) = φ(1,0) + φ(0,1)</button>
+        <button class="opt" data-correct="false">(6, 7)</button>
+      </div>
+    </div>
+
+    <div class="q" id="q4">
+      <p class="qtext">4. Which high-school method inverts a 2×2 matrix A = [[a, b], [c, d]]?</p>
+      <div class="options">
+        <button class="opt" data-correct="true">(1/det) · [[d, −b], [−c, a]]</button>
+        <button class="opt" data-correct="false">(1/det) · [[a, −c], [−b, d]]</button>
+        <button class="opt" data-correct="false">[[d, −b], [−c, a]] (no 1/det)</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- EXPLORE MODE -->
+  <div class="card explore hidden" id="exploreCard">
+    <p class="panel-title">Map any point in ℝ²</p>
+    <p class="panel-sub">Type any (x, y) and see where φ sends it. The grey dashed line shows the mapping.</p>
+
+    <div class="explore-inputs">
+      <div class="field"><label>x <span class="val" id="expXVal">1</span></label><input type="number" id="expX" step="0.5" value="1"></div>
+      <div class="field"><label>y <span class="val" id="expYVal">0</span></label><input type="number" id="expY" step="0.5" value="0"></div>
+    </div>
+
+    <div class="eq-highlight" id="exploreEq" style="font-size:17px;padding:10px;">φ(1, 0) = (2, 3)</div>
+
+    <div id="explorePlot" style="width:100%;height:400px;background:#FFFDF7;border:1px solid var(--paper-line);border-radius:8px;"></div>
+    <div class="helper" style="margin-top:4px;">Move the sliders or type values directly. The purple dot is the input, the green dot is φ(input). The matrix A = [[2, 3], [3, 4]]. det A = −1 ≠ 0, so φ is invertible.</div>
+  </div>
+
+  <footer class="note">φ(x,y) = (2x+3y, 3x+4y) · A = [[2, 3], [3, 4]] · det A = −1 · A⁻¹ = [[−4, 3], [3, −2]]</footer>
+</div>
+
+<script>
+(function(){
+  const $ = id => document.getElementById(id);
+
+  // ---- STATE ----
+  const STEPS = [
+    {input:[1,0], output:[2,3], label:'φ(1, 0) — basis î', desc:'Where does î = (1, 0) go?'},
+    {input:[0,1], output:[3,4], label:'φ(0, 1) — basis ĵ', desc:'Where does ĵ = (0, 1) go?'},
+    {input:[1,1], output:[5,7], label:'φ(1, 1) — sum', desc:'By linearity, φ(1,1) = φ(1,0) + φ(0,1)'},
+    {input:[1,-1], output:[-1,-1], label:'φ(1, −1) — difference', desc:'φ(1,−1) = φ(1,0) − φ(0,1)'},
+    {input:[-2,0], output:[-4,-6], label:'φ(−2, 0) — scaling', desc:'φ(−2, 0) = −2·φ(1, 0)'},
+    {input:[-1,2], output:[4,5], label:'φ(−1, 2) — combo', desc:'φ(−1, 2) = −φ(1,0) + 2·φ(0,1)'},
+  ];
+  const TOTAL = STEPS.length;
+  let step = 0;
+  let prediction = null;
+  let revealed = false;
+
+  const stepDots = $('stepDots');
+  const statusBox = $('statusBox');
+  const checkBtn = $('checkBtn');
+  const resetBtn = $('resetBtn');
+  const reflectCard = $('reflectCard');
+  const exploreCard = $('exploreCard');
+  const stepTitle = $('stepTitle');
+  const stepSub = $('stepSub');
+  const eqDisplay = $('eqDisplay');
+  const matrixDisplay = $('matrixDisplay');
+  const inputDisplay = $('inputVal');
+  const multiField = $('multiField');
+  const predX = $('predX'), predY = $('predY');
+  const pairIn = $('pairIn'), pairOut = $('pairOut');
+  const graphTitle = $('graphTitle');
+  const graphLegend = $('graphLegend');
+  const svg = $('graphSvg');
+  const svgNS = "http://www.w3.org/2000/svg";
+
+  for(let i=1;i<=TOTAL;i++){
+    const d = document.createElement('div');
+    d.className='step-dot'; d.textContent=i; d.id='step-'+i;
+    stepDots.appendChild(d);
+  }
+
+  function getSD(){ return STEPS[step]; }
+
+  function fmt(v){ return Number.isInteger(v) ? v : v.toFixed(3); }
+
+  function fmtPt(arr){ return `(${arr.map(fmt).join(', ')})`; }
+
+  function updateUI(){
+    const sd = getSD();
+    const [ix,iy]=sd.input;
+    stepTitle.textContent = sd.label;
+    stepSub.textContent = sd.desc;
+
+    if(revealed){
+      const [ox,oy]=sd.output;
+      eqDisplay.textContent = `φ(${fmt(ix)}, ${fmt(iy)}) = (${fmt(ox)}, ${fmt(oy)})`;
+      pairIn.textContent = fmtPt(sd.input);
+      pairOut.textContent = fmtPt(sd.output);
+    } else {
+      eqDisplay.textContent = `φ(${fmt(ix)}, ${fmt(iy)}) = ( ?, ? )`;
+      pairIn.textContent = fmtPt(sd.input);
+      pairOut.textContent = '?';
+    }
+
+    inputDisplay.textContent = fmtPt(sd.input);
+    matrixDisplay.innerHTML = `A = [[2, 3], [3, 4]] &nbsp;&nbsp; det = −1`;
+    graphTitle.textContent = `φ : ℝ² → ℝ²`;
+
+    if(!revealed){
+      predX.value = '';
+      predY.value = '';
+      predX.placeholder = 'x′';
+      predY.placeholder = 'y′';
+    }
+
+    // last step
+    if(step >= TOTAL - 1 && revealed){
+      checkBtn.textContent = 'See all mappings';
+    } else if(step >= TOTAL){
+      checkBtn.disabled = true;
+      checkBtn.textContent = 'Complete';
+    } else if(revealed && step < TOTAL - 1){
+      checkBtn.textContent = 'Next mapping';
+    } else {
+      checkBtn.textContent = 'Predict & Reveal';
+    }
+
+    if(step >= TOTAL){
+      checkBtn.disabled = true;
+    }
+  }
+
+  function markDots(){
+    document.querySelectorAll('.step-dot').forEach(d => d.classList.remove('active'));
+    for(let i=0;i<step&&i<TOTAL;i++){
+      const d = $('step-'+(i+1));
+      if(d) d.classList.add('done');
+    }
+    if(step < TOTAL){
+      const d = $('step-'+(step+1));
+      if(d) d.classList.add('active');
+    }
+  }
+
+  function setStatus(html, cls){
+    statusBox.innerHTML = html;
+    statusBox.className = 'status' + (cls ? ' '+cls : '');
+  }
+
+  // ---- SVG helpers ----
+  function clampPx(px, lo, hi, margin){
+    const a = lo + margin, b = hi - margin;
+    if(px < a) return {v:a, clamped:true, dir:-1};
+    if(px > b) return {v:b, clamped:true, dir:1};
+    return {v:px, clamped:false, dir:0};
+  }
+
+  function ptOnEdgePx(px, py, xL, xR, yT, yB, margin){
+    const cx = clampPx(px, xL, xR, margin);
+    const cy = clampPx(py, yT, yB, margin);
+    return {cx:cx.v, cy:cy.v, clamped:cx.clamped||cy.clamped};
+  }
+
+  // ---- SVG ----
+  function drawPtPx(px, py, label, fill, r, target, xL, xR, yT, yB){
+    const gap=10; r=r||8;
+    const c = ptOnEdgePx(px, py, xL, xR, yT, yB, gap);
+    const circ = document.createElementNS(svgNS,'circle');
+    circ.setAttribute('cx',c.cx); circ.setAttribute('cy',c.cy);
+    circ.setAttribute('r',r); circ.setAttribute('fill',fill);
+    target.appendChild(circ);
+    const txt = document.createElementNS(svgNS,'text');
+    txt.setAttribute('x',c.cx); txt.setAttribute('y',c.cy-14);
+    txt.setAttribute('text-anchor','middle'); txt.setAttribute('font-size','12');
+    txt.setAttribute('font-weight','600'); txt.setAttribute('fill',fill);
+    txt.setAttribute('font-family',"'IBM Plex Mono',monospace");
+    txt.textContent = label;
+    target.appendChild(txt);
+    if(c.clamped){
+      const a=c.cx, b=c.cy, sz=6;
+      const pts = px < xL ? `${a-sz},${b} ${a+sz},${b-sz} ${a+sz},${b+sz}`
+               : px > xR ? `${a+sz},${b} ${a-sz},${b-sz} ${a-sz},${b+sz}`
+               : py < yT ? `${a},${b-sz} ${a-sz},${b+sz} ${a+sz},${b+sz}`
+               : `${a},${b+sz} ${a-sz},${b-sz} ${a+sz},${b-sz}`;
+      const arr = document.createElementNS(svgNS,'polygon');
+      arr.setAttribute('points',pts);
+      arr.setAttribute('fill',fill);
+      target.appendChild(arr);
+    }
+  }
+
+  function drawMap(inputCoord, outputCoord){
+    while(svg.firstChild) svg.firstChild.remove();
+    const W=640,H=460, ox=70, oy=H-60, pw=W-ox-30, ph=oy-30;
+    const xMin=-8,xMax=12,yMin=-8,yMax=12;
+    const sx=pw/(xMax-xMin), sy=ph/(yMin-yMax);
+
+    function tx(v){return ox+(v-xMin)*sx;}
+    function ty(v){return oy+(v-yMin)*sy;}
+
+    // grid
+    for(let v=Math.ceil(xMin);v<=Math.floor(xMax);v++){
+      const l=document.createElementNS(svgNS,'line');
+      l.setAttribute('x1',tx(v)); l.setAttribute('y1',oy);
+      l.setAttribute('x2',tx(v)); l.setAttribute('y2',oy-ph);
+      l.setAttribute('stroke','#E4DCC4'); l.setAttribute('stroke-width',0.5);
+      svg.appendChild(l);
+    }
+    for(let v=Math.ceil(yMin);v<=Math.floor(yMax);v++){
+      const l=document.createElementNS(svgNS,'line');
+      l.setAttribute('x1',ox); l.setAttribute('y1',ty(v));
+      l.setAttribute('x2',ox+pw); l.setAttribute('y2',ty(v));
+      l.setAttribute('stroke','#E4DCC4'); l.setAttribute('stroke-width',0.5);
+      svg.appendChild(l);
+    }
+
+    // axes
+    const ax1=document.createElementNS(svgNS,'line');
+    ax1.setAttribute('x1',ox); ax1.setAttribute('y1',oy);
+    ax1.setAttribute('x2',ox+pw); ax1.setAttribute('y2',oy);
+    ax1.setAttribute('stroke','#26332B'); ax1.setAttribute('stroke-width',1.5);
+    svg.appendChild(ax1);
+    const ax2=document.createElementNS(svgNS,'line');
+    ax2.setAttribute('x1',ox); ax2.setAttribute('y1',oy);
+    ax2.setAttribute('x2',ox); ax2.setAttribute('y2',oy-ph);
+    ax2.setAttribute('stroke','#26332B'); ax2.setAttribute('stroke-width',1.5);
+    svg.appendChild(ax2);
+
+    const tl=document.createElementNS(svgNS,'text');
+    tl.setAttribute('x',ox+pw+10); tl.setAttribute('y',oy+4);
+    tl.setAttribute('class','axis-label'); tl.textContent='x';
+    svg.appendChild(tl);
+    const tl2=document.createElementNS(svgNS,'text');
+    tl2.setAttribute('x',ox-12); tl2.setAttribute('y',oy-ph-8);
+    tl2.setAttribute('class','axis-label'); tl2.textContent='y';
+    svg.appendChild(tl2);
+
+    for(let v=Math.ceil(xMin);v<=Math.floor(xMax);v++){
+      if(v===0) continue;
+      const l=document.createElementNS(svgNS,'text');
+      l.setAttribute('x',tx(v)); l.setAttribute('y',oy+16);
+      l.setAttribute('text-anchor','middle'); l.setAttribute('class','tick-label');
+      l.textContent=v; svg.appendChild(l);
+    }
+    for(let v=Math.ceil(yMin);v<=Math.floor(yMax);v++){
+      if(v===0) continue;
+      const l=document.createElementNS(svgNS,'text');
+      l.setAttribute('x',ox-10); l.setAttribute('y',ty(v)+4);
+      l.setAttribute('text-anchor','end'); l.setAttribute('class','tick-label');
+      l.textContent=v; svg.appendChild(l);
+    }
+    const zl=document.createElementNS(svgNS,'text');
+    zl.setAttribute('x',tx(0)); zl.setAttribute('y',oy+16);
+    zl.setAttribute('text-anchor','middle'); zl.setAttribute('class','tick-label');
+    zl.textContent='0'; svg.appendChild(zl);
+
+    const xL=ox, xR=ox+pw, yT=oy-ph, yB=oy;
+
+    // mapping arrow (dashed)
+    if(outputCoord){
+      const [ix,iy]=inputCoord;
+      const [oox,ooy]=outputCoord;
+      const l=document.createElementNS(svgNS,'line');
+      l.setAttribute('x1',tx(ix)); l.setAttribute('y1',ty(iy));
+      l.setAttribute('x2',tx(oox)); l.setAttribute('y2',ty(ooy));
+      l.setAttribute('stroke','var(--target)'); l.setAttribute('stroke-width',1.5);
+      l.setAttribute('stroke-dasharray','5,4');
+      svg.appendChild(l);
+    }
+
+    // input point
+    const [ix,iy]=inputCoord;
+    drawPtPx(tx(ix),ty(iy),'v ' + fmtPt(inputCoord),'var(--pt)',8,svg,xL,xR,yT,yB);
+
+    // output point
+    if(outputCoord){
+      const [oox,ooy]=outputCoord;
+      drawPtPx(tx(oox),ty(ooy),'φ(v) ' + fmtPt(outputCoord),'var(--fn)',8,svg,xL,xR,yT,yB);
+    }
+
+    // prediction
+    if(prediction && revealed){
+      const [gx,gy]=prediction;
+      const c = ptOnEdgePx(tx(gx),ty(gy), xL, xR, yT, yB, 10);
+      const gc=document.createElementNS(svgNS,'circle');
+      gc.setAttribute('cx',c.cx); gc.setAttribute('cy',c.cy);
+      gc.setAttribute('r',7); gc.setAttribute('fill','none');
+      gc.setAttribute('stroke','var(--target)'); gc.setAttribute('stroke-width',2.5);
+      svg.appendChild(gc);
+    }
+  }
+
+  function renderGraph(){
+    const sd = getSD();
+    const out = revealed ? sd.output : null;
+    drawMap(sd.input, out);
+  }
+
+  function resetGame(){
+    step=0; prediction=null; revealed=false;
+    checkBtn.disabled=false;
+    reflectCard.classList.add('hidden');
+    exploreCard.classList.add('hidden');
+    document.querySelectorAll('.step-dot').forEach(d=>d.classList.remove('done','solution','active'));
+    const f=$('step-1'); if(f) f.classList.add('active');
+    updateUI(); markDots(); renderGraph();
+    setStatus('Varāhamihira maps (x, y) → (2x + 3y, 3x + 4y). Where does (1, 0) go?');
+  }
+
+  resetBtn.addEventListener('click', resetGame);
+
+  function getGuess(){
+    const x=parseFloat(predX.value);
+    const y=parseFloat(predY.value);
+    if(isNaN(x)||isNaN(y)) return null;
+    return [x,y];
+  }
+
+  function checkGuess(){
+    if(step>=TOTAL){
+      checkBtn.disabled=true;
+      setTimeout(()=>{reflectCard.classList.remove('hidden');exploreCard.classList.remove('hidden');reflectCard.scrollIntoView({behavior:'smooth',block:'nearest'});},500);
+      setStatus('All mappings explored! Reflect on linearity and invertibility below.','feedback-target');
+      return;
+    }
+    const sd = getSD();
+    if(revealed){
+      step++; revealed=false; prediction=null;
+      if(step>=TOTAL){
+        checkBtn.textContent = 'Finish';
+        setStatus('All done! Click Finish to reflect on what you learned.','feedback-target');
+      } else {
+        checkBtn.textContent = 'Predict & Reveal';
+        const next = STEPS[step];
+        setStatus(`Next: φ${fmtPt(next.input)}. Where does it go?`);
+      }
+      updateUI(); markDots(); renderGraph();
+      return;
+    }
+
+    const guess = getGuess();
+    if(guess===null || guess.some(v=>v===null||isNaN(v))){
+      setStatus('Enter a valid number for each coordinate.');
+      return;
+    }
+    prediction = guess;
+    revealed = true;
+
+    const actual = sd.output;
+    const dx=Math.abs(guess[0]-actual[0]), dy=Math.abs(guess[1]-actual[1]);
+    const tol=0.05;
+    let msg,cls;
+    if(dx<tol&&dy<tol){
+      msg=`Correct! φ${fmtPt(sd.input)} = ${fmtPt(actual)}.`;
+      cls='feedback-good';
+    } else {
+      msg=`You predicted φ${fmtPt(sd.input)} = ${fmtPt(guess)}. Actual: <strong>${fmtPt(actual)}</strong>.`;
+      cls='feedback-mid';
+    }
+
+    if(step+1>=TOTAL){
+      msg += ' That\'s every mapping.';
+      checkBtn.textContent = 'See all mappings';
+    } else {
+      checkBtn.textContent = 'Next mapping';
+    }
+
+    setStatus(msg,cls);
+    markDots(); renderGraph();
+    updateUI();
+  }
+
+  checkBtn.addEventListener('click', checkGuess);
+  predX.addEventListener('keydown', e=>{if(e.key==='Enter') checkGuess();});
+  predY.addEventListener('keydown', e=>{if(e.key==='Enter') checkGuess();});
+
+  // ---- EXPLORE MODE ----
+  const expX=$('expX'), expY=$('expY');
+  const expXVal=$('expXVal'), expYVal=$('expYVal');
+  const exploreEq=$('exploreEq');
+  const explorePlot=$('explorePlot');
+
+  function rebuildExplore(){
+    const x=parseFloat(expX.value)||0, y=parseFloat(expY.value)||0;
+    expXVal.textContent=x; expYVal.textContent=y;
+    const ox=2*x+3*y, oy2=3*x+4*y;
+    exploreEq.textContent=`φ(${fmt(x)}, ${fmt(y)}) = (${fmt(ox)}, ${fmt(oy2)})`;
+
+    // Recreate the SVG
+    while(explorePlot.firstChild) explorePlot.firstChild.remove();
+    const W2=640,H2=400, ox2=70, oy3=H2-50, pw2=W2-ox2-30, ph2=oy3-30;
+    const xMin2=-8,xMax2=12,yMin2=-8,yMax2=12;
+    const sx2=pw2/(xMax2-xMin2), sy2=ph2/(yMin2-yMax2);
+    const s2=document.createElementNS(svgNS,'svg');
+    s2.setAttribute('viewBox',`0 0 ${W2} ${H2}`);
+    s2.setAttribute('width','100%');
+    s2.setAttribute('height','100%');
+    s2.style.display='block';
+
+    function tx2(v){return ox2+(v-xMin2)*sx2;}
+    function ty2(v){return oy3+(v-yMin2)*sy2;}
+    const xL2=ox2, xR2=ox2+pw2, yT2=oy3-ph2, yB2=oy3;
+
+    for(let v=Math.ceil(xMin2);v<=Math.floor(xMax2);v++){
+      const l=document.createElementNS(svgNS,'line');
+      l.setAttribute('x1',tx2(v)); l.setAttribute('y1',oy3);
+      l.setAttribute('x2',tx2(v)); l.setAttribute('y2',oy3-ph2);
+      l.setAttribute('stroke','#E4DCC4'); l.setAttribute('stroke-width',0.5);
+      s2.appendChild(l);
+    }
+    for(let v=Math.ceil(yMin2);v<=Math.floor(yMax2);v++){
+      const l=document.createElementNS(svgNS,'line');
+      l.setAttribute('x1',ox2); l.setAttribute('y1',ty2(v));
+      l.setAttribute('x2',ox2+pw2); l.setAttribute('y2',ty2(v));
+      l.setAttribute('stroke','#E4DCC4'); l.setAttribute('stroke-width',0.5);
+      s2.appendChild(l);
+    }
+
+    const a1=document.createElementNS(svgNS,'line');
+    a1.setAttribute('x1',ox2); a1.setAttribute('y1',oy3);
+    a1.setAttribute('x2',ox2+pw2); a1.setAttribute('y2',oy3);
+    a1.setAttribute('stroke','#26332B'); a1.setAttribute('stroke-width',1.5);
+    s2.appendChild(a1);
+    const a2=document.createElementNS(svgNS,'line');
+    a2.setAttribute('x1',ox2); a2.setAttribute('y1',oy3);
+    a2.setAttribute('x2',ox2); a2.setAttribute('y2',oy3-ph2);
+    a2.setAttribute('stroke','#26332B'); a2.setAttribute('stroke-width',1.5);
+    s2.appendChild(a2);
+
+    // mapping arrow
+    const ml=document.createElementNS(svgNS,'line');
+    ml.setAttribute('x1',tx2(x)); ml.setAttribute('y1',ty2(y));
+    ml.setAttribute('x2',tx2(ox)); ml.setAttribute('y2',ty2(oy2));
+    ml.setAttribute('stroke','var(--target)'); ml.setAttribute('stroke-width',1.5);
+    ml.setAttribute('stroke-dasharray','5,4');
+    s2.appendChild(ml);
+
+    // input point (clamped)
+    drawPtPx(tx2(x),ty2(y),'v ('+fmt(x)+', '+fmt(y)+')','var(--pt)',8,s2,xL2,xR2,yT2,yB2);
+
+    // output point (clamped)
+    drawPtPx(tx2(ox),ty2(oy2),'φ(v) ('+fmt(ox)+', '+fmt(oy2)+')','var(--fn)',8,s2,xL2,xR2,yT2,yB2);
+
+    explorePlot.appendChild(s2);
+  }
+
+  [expX, expY].forEach(el => el.addEventListener('input', rebuildExplore));
+
+  // ---- QUIZ ----
+  document.querySelectorAll('.q .options').forEach(group=>{
+    group.querySelectorAll('.opt').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        const correct = btn.dataset.correct === 'true';
+        group.querySelectorAll('.opt').forEach(b=>{
+          b.disabled = true;
+          if(b.dataset.correct==='true') b.classList.add('correct');
+        });
+        if(!correct) btn.classList.add('wrong');
+      });
+    });
+  });
+
+  // ---- INIT ----
+  resetGame();
+  rebuildExplore();
+})();
+</script>
+</body>
+</html>

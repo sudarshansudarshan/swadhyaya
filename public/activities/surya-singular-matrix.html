@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sūrya's Singular Eclipse — When a Matrix Collapses</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=IBM+Plex+Mono:wght@500;600&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#FAF5E8; --paper-line:#D8CFB6; --ink:#26332B; --ink-soft:#5B6B60;
+    --fn:#1F6F5C; --fn-soft:#DCEDE7; --fn-fill:rgba(31,111,92,0.18);
+    --pt:#7B5EA7; --pt-soft:#EAE3F5; --pt-fill:rgba(123,94,167,0.15);
+    --target:#B8860B; --target-soft:#F3E9CE;
+    --d1:#B5502E; --d1-soft:#FBEFE8; --d1-fill:rgba(181,80,46,0.12);
+    --card:#FFFDF7; --shadow:0 2px 10px rgba(38,51,43,0.08);
+  }
+  *{box-sizing:border-box;} html,body{margin:0;padding:0;}
+  body{
+    background:repeating-linear-gradient(#FAF5E8 0px,#FAF5E8 27px,var(--paper-line) 28px),var(--paper);
+    background-size:100% 28px; color:var(--ink); font-family:'Source Sans 3',sans-serif;
+    min-height:100vh; padding:28px 16px 60px;
+  }
+  .wrap{max-width:1080px;margin:0 auto;}
+  header.hero{background:var(--card);border:1px solid var(--paper-line);border-radius:14px;box-shadow:var(--shadow);padding:26px 28px 22px;margin-bottom:20px;}
+  .eyebrow{font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);margin:0 0 6px;}
+  h1{font-family:'Caveat',cursive;font-weight:700;font-size:38px;margin:0 0 10px;line-height:1.05;}
+  header.hero p{max-width:680px;line-height:1.55;font-size:15.5px;margin:0 0 8px;}
+  .dim-grid{display:flex;gap:14px;flex-wrap:wrap;margin-top:12px;}
+  .dim-grid span{font-family:'IBM Plex Mono',monospace;font-size:13px;padding:8px 14px;border-radius:8px;font-weight:600;border:1px solid var(--paper-line);background:var(--paper);}
+  .grid-layout{display:grid;grid-template-columns:300px 1fr;gap:20px;align-items:start;}
+  @media (max-width:800px){.grid-layout{grid-template-columns:1fr;}}
+  .card{background:var(--card);border:1px solid var(--paper-line);border-radius:14px;box-shadow:var(--shadow);padding:20px;}
+  .panel-title{font-family:'Caveat',cursive;font-weight:700;font-size:24px;margin:0 0 4px;}
+  .panel-sub{font-size:13px;color:var(--ink-soft);margin:0 0 14px;line-height:1.4;}
+  .matrix-card{
+    font-family:'IBM Plex Mono',monospace;font-size:16px;font-weight:600;text-align:center;
+    padding:14px;border-radius:10px;margin-bottom:14px;line-height:1.6;
+    background:var(--target-soft);border:1px solid var(--target);color:var(--ink);
+  }
+  .matrix-card .big{font-size:26px;font-weight:700;color:var(--target);}
+  .field{margin-bottom:14px;}
+  .field label{display:flex;justify-content:space-between;font-size:13.5px;font-weight:600;margin-bottom:6px;}
+  .field label span.val{font-family:'IBM Plex Mono',monospace;font-weight:600;color:var(--pt);}
+  .coord-row{display:flex;gap:8px;}
+  .coord-row .cflex{flex:1;}
+  .coord-row .cflex label{font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--ink-soft);margin-bottom:2px;}
+  .coord-row .cflex input{font-size:13px;padding:6px 7px;width:100%;border-radius:8px;border:1px solid var(--paper-line);font-family:'IBM Plex Mono',monospace;background:var(--paper);color:var(--ink);}
+  .coord-row .cflex input:focus{outline:2px solid var(--pt);outline-offset:-1px;border-color:var(--pt);}
+  input[type=number]{width:100%;padding:9px 10px;border-radius:8px;border:1px solid var(--paper-line);font-family:'IBM Plex Mono',monospace;font-size:16px;background:var(--paper);color:var(--ink);}
+  input[type=number]:focus{outline:2px solid var(--pt);outline-offset:-1px;border-color:var(--pt);}
+  .helper{font-size:12px;color:var(--ink-soft);margin-top:4px;line-height:1.4;}
+  .pair-box{display:flex;gap:8px;margin-bottom:14px;}
+  .pair-box span{flex:1;text-align:center;padding:10px 6px;border-radius:10px;border:1px solid var(--paper-line);font-size:12px;font-weight:600;font-family:'IBM Plex Mono',monospace;}
+  .pair-box .in{background:var(--pt-soft);border-color:var(--pt);color:var(--pt);}
+  .pair-box .out{background:var(--fn-soft);border-color:var(--fn);color:var(--fn);}
+  .pair-box .prop{background:var(--d1-soft);border-color:var(--d1);color:var(--d1);}
+  button{font-family:'Source Sans 3',sans-serif;font-weight:600;font-size:14.5px;border:none;border-radius:9px;padding:11px 16px;cursor:pointer;width:100%;transition:transform .08s ease,filter .15s ease;}
+  button:active{transform:translateY(1px);}button:disabled{opacity:.4;cursor:not-allowed;}
+  .btn-primary{background:var(--fn);color:#fff;}.btn-primary:hover:not(:disabled){filter:brightness(1.08);}
+  .btn-secondary{background:var(--paper);color:var(--ink);border:1px solid var(--paper-line);margin-top:8px;}
+  .btn-secondary:hover:not(:disabled){background:#F0E9D6;}
+  .status{font-size:13.5px;line-height:1.5;padding:12px;border-radius:9px;background:var(--paper);border:1px solid var(--paper-line);margin-bottom:14px;min-height:20px;}
+  .status.feedback-good{background:var(--fn-soft);border-color:var(--fn);color:var(--fn);font-weight:600;}
+  .status.feedback-mid{background:var(--pt-soft);border-color:var(--pt);color:var(--pt);font-weight:600;}
+  .status.feedback-target{background:var(--target-soft);border-color:var(--target);color:var(--target);font-weight:600;}
+  .graph-card{display:flex;flex-direction:column;}
+  .graph-card .panel-title{margin-bottom:0;}
+  .graph-card .panel-sub{margin-bottom:6px;}
+  .legend{display:flex;gap:16px;flex-wrap:wrap;margin:6px 0 12px;font-size:12px;font-family:'IBM Plex Mono',monospace;}
+  .legend span{display:inline-flex;align-items:center;gap:5px;}
+  .swatch{width:18px;height:4px;border-radius:2px;display:inline-block;}
+  .swatch.nullsp{background:var(--d1);border-color:var(--d1);}
+  .swatch.colsp{background:var(--target);border-color:var(--target);}
+  .swatch.pt-in{width:8px;height:8px;border-radius:50%;background:var(--pt);}
+  .swatch.pt-out{width:8px;height:8px;border-radius:50%;background:var(--fn);}
+  .graph-wrap svg{width:100%;height:auto;display:block;background:#FFFDF7;border:1px solid var(--paper-line);border-radius:8px;}
+  .graph-wrap{position:relative;}
+  .axis-label{font-family:'IBM Plex Mono',monospace;font-size:12px;fill:var(--ink-soft);}
+  .tick-label{font-family:'IBM Plex Mono',monospace;font-size:10px;fill:var(--ink-soft);}
+  .line-label{font-family:'IBM Plex Mono',monospace;font-size:9px;fill:var(--ink-soft);font-weight:600;}
+  .steps{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap;}
+  .step-dot{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:600;border:1.5px solid var(--paper-line);color:var(--ink-soft);background:var(--paper);}
+  .step-dot.done{background:var(--fn);border-color:var(--fn);color:#fff;}
+  .step-dot.solution{background:var(--target);border-color:var(--target);color:#fff;}
+  .step-dot.active{border-color:var(--pt);color:var(--pt);background:var(--pt-soft);}
+  .reflect,.explore{margin-top:20px;padding-top:16px;border-top:1px dashed var(--paper-line);}
+  .reflect.hidden,.explore.hidden{display:none;}
+  .q{margin-bottom:16px;}.q p.qtext{font-weight:600;margin:0 0 8px;font-size:14.5px;}
+  .options{display:flex;gap:8px;flex-wrap:wrap;}
+  .opt{padding:8px 14px;border-radius:8px;border:1px solid var(--paper-line);background:var(--paper);font-size:13.5px;cursor:pointer;font-weight:600;}
+  .opt.correct{background:var(--fn-soft);border-color:var(--fn);color:var(--fn);}
+  .opt.wrong{background:#F6DCD4;border-color:var(--d1);color:#8C3A1F;}
+  .opt:disabled{cursor:default;}
+  .explore .panel-title{font-size:22px;}
+  .explore-inputs{display:flex;gap:10px;flex-wrap:wrap;margin:10px 0 14px;}
+  .explore-inputs .field{flex:1;min-width:70px;margin-bottom:0;}
+  .explore-inputs .field label{font-size:11px;}
+  .explore-inputs input[type=number]{font-size:13px;padding:7px 8px;}
+  footer.note{text-align:center;font-size:12px;color:var(--ink-soft);margin-top:26px;font-family:'IBM Plex Mono',monospace;}
+  .highlight-line{background:rgba(181,80,46,0.08);border-radius:6px;padding:8px 10px;margin-bottom:12px;font-size:13px;line-height:1.5;border-left:3px solid var(--d1);}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <p class="eyebrow">Intuition Builder · Singular Matrices</p>
+    <h1>Sūrya's Singular Eclipse — A = [[1, 2], [2, 4]]</h1>
+    <p>Like a solar eclipse where the sun's disc vanishes behind the moon, the singular matrix makes an entire line of vectors disappear into the origin. Discover the <strong>nullspace</strong> — the set of vectors that A maps to (0, 0).</p>
+    <div class="dim-grid">
+      <span style="background:var(--d1-soft);border-color:var(--d1);color:var(--d1);">det A = 0</span>
+      <span style="background:var(--target-soft);border-color:var(--target);color:var(--target);">Nullspace: t·(−2, 1)</span>
+      <span style="background:var(--pt-soft);border-color:var(--pt);color:var(--pt);">Rank 1</span>
+    </div>
+  </header>
+
+  <div class="grid-layout">
+    <div class="card">
+      <p class="panel-title" id="stepTitle">Meet the Singular Matrix</p>
+      <p class="panel-sub" id="stepSub">A has determinant 0 — it collapses a dimension.</p>
+
+      <div class="matrix-card" id="matrixDisplay">
+        A&nbsp;=&nbsp;<span class="big">[[1,&nbsp;2],&nbsp;[2,&nbsp;4]]</span>&nbsp;:&nbsp;ℝ²&nbsp;→&nbsp;ℝ²&nbsp;&nbsp;det&nbsp;=&nbsp;0
+      </div>
+
+      <div class="highlight-line" id="nullspaceInfo">
+        <strong>Nullspace</strong>: All vectors of the form t·(−2, 1) satisfy A·v = <strong>0</strong>
+      </div>
+
+      <div class="pair-box" id="pairBox">
+        <span class="in" id="badgeIn">Input v = (?, ?)</span>
+        <span class="out" id="badgeOut">A(v) = (?, ?)</span>
+        <span class="prop" id="badgeProp">det = 0</span>
+      </div>
+
+      <div class="coord-row" id="predictRow" style="display:none;margin-bottom:12px;">
+        <div class="cflex"><label>GUESS x'</label><input type="number" id="predX" step="any" placeholder="x′"></div>
+        <div class="cflex"><label>GUESS y'</label><input type="number" id="predY" step="any" placeholder="y′"></div>
+      </div>
+
+      <div class="steps" id="stepDots"></div>
+
+      <div class="status" id="statusBox">Step 1 of 4 — Watch: A sends a nullspace vector to (0, 0).</div>
+
+      <button class="btn-primary" id="checkBtn">Reveal Mapping</button>
+      <button class="btn-secondary" id="resetBtn">Start over</button>
+    </div>
+
+    <div class="card graph-card">
+      <p class="panel-title" id="graphTitle">A : ℝ² → ℝ² &nbsp; (det = 0)</p>
+      <div class="legend" id="graphLegend">
+        <span><i class="swatch nullsp"></i>nullspace (Av = 0)</span>
+        <span><i class="swatch colsp"></i>column space</span>
+        <span><i class="swatch pt-in"></i>input v</span>
+        <span><i class="swatch pt-out"></i>A(v)</span>
+      </div>
+      <div class="graph-wrap" id="graphContainer">
+        <svg id="graphSvg" viewBox="0 0 640 460" xmlns="http://www.w3.org/2000/svg"></svg>
+      </div>
+    </div>
+  </div>
+
+  <!-- REFLECTION QUIZ -->
+  <div class="card reflect hidden" id="reflectCard">
+    <p class="panel-title">The Nullspace &amp; Singular Matrices</p>
+    <p class="panel-sub">When det A = 0, the matrix is singular — it maps non-zero vectors to zero and is not invertible.</p>
+
+    <div class="q" id="q1">
+      <p class="qtext">1. What is the nullspace of A = [[1, 2], [2, 4]]?</p>
+      <div class="options">
+        <button class="opt" data-correct="false">The x-axis: t·(1, 0)</button>
+        <button class="opt" data-correct="true">t·(−2, 1) — because 1·(−2) + 2·1 = 0 and 2·(−2) + 4·1 = 0</button>
+        <button class="opt" data-correct="false">t·(0, 0) — only the origin</button>
+      </div>
+    </div>
+
+    <div class="q" id="q2">
+      <p class="qtext">2. Is A invertible?</p>
+      <div class="options">
+        <button class="opt" data-correct="false">Yes — all matrices are invertible</button>
+        <button class="opt" data-correct="true">No — det = 0, so A⁻¹ does not exist. Many inputs map to the same output.</button>
+        <button class="opt" data-correct="false">Only if we restrict to positive inputs</button>
+      </div>
+    </div>
+
+    <div class="q" id="q3">
+      <p class="qtext">3. If A(v) = (0, 0), what can you say about v?</p>
+      <div class="options">
+        <button class="opt" data-correct="false">v must be (0, 0)</button>
+        <button class="opt" data-correct="true">v lies on the nullspace line — there are infinitely many solutions</button>
+        <button class="opt" data-correct="false">v is infinite</button>
+      </div>
+    </div>
+
+    <div class="q" id="q4">
+      <p class="qtext">4. What is the rank of A?</p>
+      <div class="options">
+        <button class="opt" data-correct="true">1 — the column space is a line (all multiples of (1, 2))</button>
+        <button class="opt" data-correct="false">2 — full rank</button>
+        <button class="opt" data-correct="false">0 — everything maps to zero</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- EXPLORE MODE -->
+  <div class="card explore hidden" id="exploreCard">
+    <p class="panel-title">Explore the Nullspace</p>
+    <p class="panel-sub">Type any (x, y). If the point lies on the <span style="color:var(--d1);font-weight:600;">red nullspace line</span>, A(v) = (0, 0). Otherwise A(v) lands on the <span style="color:var(--target);font-weight:600;">gold column space line</span>.</p>
+
+    <div class="explore-inputs">
+      <div class="field"><label>x <span class="val" id="expXVal">1</span></label><input type="number" id="expX" step="0.5" value="1"></div>
+      <div class="field"><label>y <span class="val" id="expYVal">0</span></label><input type="number" id="expY" step="0.5" value="0"></div>
+    </div>
+
+    <div class="matrix-card" id="exploreEq" style="font-size:15px;padding:10px;">
+      A(<span id="expIn">1, 0</span>) = <span id="expOut">(1, 2)</span>
+    </div>
+
+    <div id="explorePlot" style="width:100%;height:400px;background:#FFFDF7;border:1px solid var(--paper-line);border-radius:8px;"></div>
+    <div class="helper" style="margin-top:4px;">The <strong>nullspace</strong> is a whole line of vectors that A collapses to zero. Every other vector maps to the <strong>column space</strong> line. Since det = 0, A is not invertible — you cannot uniquely recover v from A(v).</div>
+  </div>
+
+  <footer class="note">A = [[1, 2], [2, 4]] · det = 0 · nullspace = t·(−2, 1) · column space = t·(1, 2) · rank = 1</footer>
+</div>
+
+<script>
+(function(){
+  const $ = id => document.getElementById(id);
+
+  const A = (v) => [1*v[0] + 2*v[1], 2*v[0] + 4*v[1]];
+  const NS_DIR = [-2, 1]; // nullspace direction
+  const CS_DIR = [1, 2];  // column space direction
+
+  const STEPS = [
+    {name:'Nullspace Vector', v:[-2,1], desc:'A(−2, 1) = (0, 0) — the vector lies on the nullspace line.', ns:true, guess:false},
+    {name:'Off the Nullspace', v:[1,0], desc:'A(1, 0) = (1, 2) — lands on the column space line.', ns:false, guess:false},
+    {name:'Many to One', v:[-1,2], desc:'A(−1, 2) = (3, 6) = A(3, 0) — two different inputs, same output!', ns:false, guess:false},
+    {name:'Where does it map?', v:[2,-1], desc:'Is (2, −1) on the nullspace? Predict A(2, −1).', ns:false, guess:true},
+    {name:'Another one', v:[-4,2], desc:'(−4, 2) = 2·(−2, 1). What is A(−4, 2)?', ns:true, guess:true},
+    {name:'Which input?', v:[0,0], desc:'Find a non-zero vector v such that A(v) = (0, 0).', ns:true, guess:true},
+  ];
+  const TOTAL = STEPS.length;
+  let step = 0;
+  let revealed = false;
+  let prediction = null;
+
+  const stepDots = $('stepDots');
+  const statusBox = $('statusBox');
+  const checkBtn = $('checkBtn');
+  const resetBtn = $('resetBtn');
+  const reflectCard = $('reflectCard');
+  const exploreCard = $('exploreCard');
+  const stepTitle = $('stepTitle');
+  const stepSub = $('stepSub');
+  const matrixDisplay = $('matrixDisplay');
+  const graphTitle = $('graphTitle');
+  const nullspaceInfo = $('nullspaceInfo');
+  const badgeIn = $('badgeIn'), badgeOut = $('badgeOut'), badgeProp = $('badgeProp');
+  const predictRow = $('predictRow');
+  const predX = $('predX'), predY = $('predY');
+  const svg = $('graphSvg');
+  const svgNS = "http://www.w3.org/2000/svg";
+
+  for(let i=1;i<=TOTAL;i++){
+    const d = document.createElement('div');
+    d.className='step-dot'; d.textContent=i; d.id='step-'+i;
+    stepDots.appendChild(d);
+  }
+
+  function getSD(){ return STEPS[step]; }
+
+  function fmt(v){ return Number.isInteger(v) ? v : v.toFixed(3); }
+
+  function fmtPt(v){ return `(${fmt(v[0])}, ${fmt(v[1])})`; }
+
+  function clampPx(px, lo, hi, margin){
+    const a=lo+margin, b=hi-margin;
+    if(px<a) return {v:a, clamped:true};
+    if(px>b) return {v:b, clamped:true};
+    return {v:px, clamped:false};
+  }
+
+  function ptOnEdgePx(px, py, xL, xR, yT, yB, margin){
+    const cx=clampPx(px,xL,xR,margin), cy=clampPx(py,yT,yB,margin);
+    return {cx:cx.v, cy:cy.v, clamped:cx.clamped||cy.clamped};
+  }
+
+  function updateUI(){
+    const sd = getSD();
+    stepTitle.textContent = sd.name;
+    stepSub.textContent = sd.desc;
+    const out = A(sd.v);
+    badgeIn.textContent = `Input v = ${fmtPt(sd.v)}`;
+    badgeOut.textContent = `A(v) = ${revealed ? fmtPt(out) : '(?, ?)'}`;
+    badgeProp.textContent = sd.ns ? 'On nullspace' : 'Off nullspace';
+
+    if(sd.guess && !revealed){
+      predictRow.style.display = 'flex';
+      predX.value = ''; predY.value = '';
+    } else {
+      predictRow.style.display = 'none';
+    }
+
+    if(step >= TOTAL - 1 && revealed){
+      checkBtn.textContent = 'See all';
+    } else if(step >= TOTAL){
+      checkBtn.disabled = true; checkBtn.textContent = 'Complete';
+    } else if(revealed){
+      checkBtn.textContent = 'Next';
+    } else {
+      checkBtn.textContent = 'Reveal Mapping';
+    }
+    if(step >= TOTAL) checkBtn.disabled = true;
+  }
+
+  function markDots(){
+    document.querySelectorAll('.step-dot').forEach(d=>d.classList.remove('active'));
+    for(let i=0;i<step&&i<TOTAL;i++){
+      const d=$('step-'+(i+1));
+      if(d) d.classList.add('done');
+    }
+    if(step < TOTAL){ const d=$('step-'+(step+1)); if(d) d.classList.add('active'); }
+  }
+
+  function setStatus(html, cls){
+    statusBox.innerHTML = html;
+    statusBox.className = 'status' + (cls ? ' '+cls : '');
+  }
+
+  function drawScene(inV, showOut, isNS){
+    while(svg.firstChild) svg.firstChild.remove();
+    const W=640,H=460, ox=72, oy=H-70, pw=W-ox-38, ph=oy-48;
+    const xMin=-6,xMax=8,yMin=-6,yMax=8;
+    const sx=pw/(xMax-xMin), sy=ph/(yMin-yMax);
+    const xL=ox, xR=ox+pw, yT=oy-ph, yB=oy;
+
+    function tx(v){return ox+(v-xMin)*sx;}
+    function ty(v){return oy+(v-yMin)*sy;}
+
+    // grid
+    for(let v=Math.ceil(xMin);v<=Math.floor(xMax);v++){
+      const l=document.createElementNS(svgNS,'line');
+      l.setAttribute('x1',tx(v)); l.setAttribute('y1',oy);
+      l.setAttribute('x2',tx(v)); l.setAttribute('y2',oy-ph);
+      l.setAttribute('stroke','#E4DCC4'); l.setAttribute('stroke-width',0.5);
+      svg.appendChild(l);
+    }
+    for(let v=Math.ceil(yMin);v<=Math.floor(yMax);v++){
+      const l=document.createElementNS(svgNS,'line');
+      l.setAttribute('x1',ox); l.setAttribute('y1',ty(v));
+      l.setAttribute('x2',ox+pw); l.setAttribute('y2',ty(v));
+      l.setAttribute('stroke','#E4DCC4'); l.setAttribute('stroke-width',0.5);
+      svg.appendChild(l);
+    }
+
+    // axes
+    const a1=document.createElementNS(svgNS,'line');
+    a1.setAttribute('x1',ox); a1.setAttribute('y1',oy);
+    a1.setAttribute('x2',ox+pw); a1.setAttribute('y2',oy);
+    a1.setAttribute('stroke','#26332B'); a1.setAttribute('stroke-width',1.5);
+    svg.appendChild(a1);
+    const a2=document.createElementNS(svgNS,'line');
+    a2.setAttribute('x1',ox); a2.setAttribute('y1',oy);
+    a2.setAttribute('x2',ox); a2.setAttribute('y2',oy-ph);
+    a2.setAttribute('stroke','#26332B'); a2.setAttribute('stroke-width',1.5);
+    svg.appendChild(a2);
+
+    // tick labels
+    const tl=document.createElementNS(svgNS,'text');
+    tl.setAttribute('x',ox+pw+10); tl.setAttribute('y',oy+4);
+    tl.setAttribute('class','axis-label'); tl.textContent='x';
+    svg.appendChild(tl);
+    const tl2=document.createElementNS(svgNS,'text');
+    tl2.setAttribute('x',ox-12); tl2.setAttribute('y',oy-ph-8);
+    tl2.setAttribute('class','axis-label'); tl2.textContent='y';
+    svg.appendChild(tl2);
+    for(let v=Math.ceil(xMin);v<=Math.floor(xMax);v++){
+      if(v===0) continue;
+      const l=document.createElementNS(svgNS,'text');
+      l.setAttribute('x',tx(v)); l.setAttribute('y',oy+16);
+      l.setAttribute('text-anchor','middle'); l.setAttribute('class','tick-label');
+      l.textContent=v; svg.appendChild(l);
+    }
+    for(let v=Math.ceil(yMin);v<=Math.floor(yMax);v++){
+      if(v===0) continue;
+      const l=document.createElementNS(svgNS,'text');
+      l.setAttribute('x',ox-10); l.setAttribute('y',ty(v)+4);
+      l.setAttribute('text-anchor','end'); l.setAttribute('class','tick-label');
+      l.textContent=v; svg.appendChild(l);
+    }
+    const z=document.createElementNS(svgNS,'text');
+    z.setAttribute('x',tx(0)); z.setAttribute('y',oy+16);
+    z.setAttribute('text-anchor','middle'); z.setAttribute('class','tick-label');
+    z.textContent='0'; svg.appendChild(z);
+
+    // draw nullspace line (through origin, direction (-2,1))
+    function drawLine(dir, color, label, dash){
+      const len=12;
+      const p1=[-dir[0]*len, -dir[1]*len], p2=[dir[0]*len, dir[1]*len];
+      const l=document.createElementNS(svgNS,'line');
+      l.setAttribute('x1',tx(p1[0])); l.setAttribute('y1',ty(p1[1]));
+      l.setAttribute('x2',tx(p2[0])); l.setAttribute('y2',ty(p2[1]));
+      l.setAttribute('stroke',color); l.setAttribute('stroke-width',2);
+      if(dash) l.setAttribute('stroke-dasharray',dash);
+      svg.appendChild(l);
+      const lbl=document.createElementNS(svgNS,'text');
+      lbl.setAttribute('x',tx(dir[0]*7.5)); lbl.setAttribute('y',ty(dir[1]*7.5)-10);
+      lbl.setAttribute('text-anchor','middle'); lbl.setAttribute('class','line-label');
+      lbl.setAttribute('fill',color);
+      lbl.textContent=label; svg.appendChild(lbl);
+    }
+
+    drawLine(NS_DIR, 'var(--d1)', 'nullspace: t·(−2, 1)');
+    drawLine(CS_DIR, 'var(--target)', 'column space: t·(1, 2)', '5,4');
+
+    // input point
+    const [ix,iy]=inV;
+    const outV = showOut ? A(inV) : null;
+
+    // mapping arrow
+    if(outV){
+      const [oxx,oyy]=outV;
+      const ml=document.createElementNS(svgNS,'line');
+      ml.setAttribute('x1',tx(ix)); ml.setAttribute('y1',ty(iy));
+      ml.setAttribute('x2',tx(oxx)); ml.setAttribute('y2',ty(oyy));
+      ml.setAttribute('stroke','var(--target)'); ml.setAttribute('stroke-width',1.2);
+      ml.setAttribute('stroke-dasharray','4,4'); ml.setAttribute('opacity','0.6');
+      svg.appendChild(ml);
+    }
+
+    // place labeled point
+    function place(px, py, label, fill, yOff){
+      const gap=10;
+      const c=ptOnEdgePx(px,py,xL,xR,yT,yB,gap);
+      const circ=document.createElementNS(svgNS,'circle');
+      circ.setAttribute('cx',c.cx); circ.setAttribute('cy',c.cy);
+      circ.setAttribute('r',7); circ.setAttribute('fill',fill);
+      svg.appendChild(circ);
+      const txt=document.createElementNS(svgNS,'text');
+      txt.setAttribute('x',c.cx); txt.setAttribute('y',c.cy + (yOff||-12));
+      txt.setAttribute('text-anchor','middle'); txt.setAttribute('font-size','10');
+      txt.setAttribute('fill',fill); txt.setAttribute('font-weight','600');
+      txt.setAttribute('font-family',"'IBM Plex Mono',monospace");
+      txt.textContent=label; svg.appendChild(txt);
+      if(c.clamped){
+        const a=c.cx,b=c.cy,sz=4;
+        const pts=px<xL?`${a-sz},${b} ${a+sz},${b-sz} ${a+sz},${b+sz}`:px>xR?`${a+sz},${b} ${a-sz},${b-sz} ${a-sz},${b+sz}`:py<yT?`${a},${b-sz} ${a-sz},${b+sz} ${a+sz},${b+sz}`:`${a},${b+sz} ${a-sz},${b-sz} ${a+sz},${b-sz}`;
+        const arr=document.createElementNS(svgNS,'polygon');
+        arr.setAttribute('points',pts); arr.setAttribute('fill',fill);
+        svg.appendChild(arr);
+      }
+    }
+
+    place(tx(ix),ty(iy),'v '+fmtPt(inV),'var(--pt)',-12);
+
+    if(outV){
+      const [oxx,oyy]=outV;
+      const isZero = oxx===0 && oyy===0;
+      place(tx(oxx),ty(oyy),isZero ? 'A(v) = (0, 0)' : 'A(v) '+fmtPt(outV),'var(--fn)',14);
+    }
+
+    // if last step and not revealed, show a hint line
+    if(step===TOTAL-1 && !revealed){
+      const hint=document.createElementNS(svgNS,'text');
+      hint.setAttribute('x',tx(-3)); hint.setAttribute('y',ty(5));
+      hint.setAttribute('text-anchor','middle'); hint.setAttribute('font-size','11');
+      hint.setAttribute('fill','var(--ink-soft)'); hint.setAttribute('font-style','italic');
+      hint.textContent='(hint: pick any vector on the red line)';
+      svg.appendChild(hint);
+    }
+  }
+
+  function renderGraph(){
+    const sd = getSD();
+    drawScene(sd.v, revealed, sd.ns);
+  }
+
+  function resetGame(){
+    step=0; revealed=false; prediction=null;
+    checkBtn.disabled=false;
+    reflectCard.classList.add('hidden');
+    exploreCard.classList.add('hidden');
+    document.querySelectorAll('.step-dot').forEach(d=>d.classList.remove('done','solution','active'));
+    const f=$('step-1'); if(f) f.classList.add('active');
+    updateUI(); markDots(); renderGraph();
+    setStatus('Step 1 of 4 — Watch: A sends a nullspace vector to (0, 0).');
+  }
+
+  resetBtn.addEventListener('click', resetGame);
+
+  function getGuess(){
+    const x=parseFloat(predX.value), y=parseFloat(predY.value);
+    return (isNaN(x)||isNaN(y)) ? null : [x,y];
+  }
+
+  function checkGuess(){
+    if(step>=TOTAL){
+      checkBtn.disabled=true;
+      setTimeout(()=>{reflectCard.classList.remove('hidden');exploreCard.classList.remove('hidden');reflectCard.scrollIntoView({behavior:'smooth',block:'nearest'});},500);
+      setStatus('All steps complete! Reflect on nullspace and singular matrices below.','feedback-target');
+      return;
+    }
+    const sd = getSD();
+    if(revealed){
+      step++; revealed=false; prediction=null;
+      if(step>=TOTAL){
+        checkBtn.textContent='Finish';
+        setStatus('All done! Click Finish to reflect.','feedback-target');
+      } else {
+        checkBtn.textContent='Reveal Mapping';
+        setStatus(`Step ${step+1}: ${STEPS[step].desc}`);
+      }
+      updateUI(); markDots(); renderGraph();
+      return;
+    }
+
+    if(sd.guess){
+      const guess = getGuess();
+      if(guess===null || isNaN(guess[0])||isNaN(guess[1])){
+        setStatus('Enter valid x′ and y′.');
+        return;
+      }
+      prediction = guess;
+      const actual = A(sd.v);
+      const dx=Math.abs(guess[0]-actual[0]), dy=Math.abs(guess[1]-actual[1]);
+      const tol=0.05;
+      let msg,cls;
+      if(dx<tol&&dy<tol){
+        msg=`Correct! A${fmtPt(sd.v)} = ${fmtPt(actual)}.`;
+        cls='feedback-good';
+      } else {
+        msg=`You guessed ${fmtPt(guess)}. Actual: <strong>${fmtPt(actual)}</strong>.`;
+        cls='feedback-mid';
+      }
+      revealed=true;
+      if(step+1>=TOTAL){
+        msg+=' All steps done!';
+        checkBtn.textContent='See all';
+      } else {
+        checkBtn.textContent='Next';
+      }
+      setStatus(msg,cls);
+      markDots(); renderGraph();
+      updateUI();
+    } else {
+      revealed=true;
+      const out = A(sd.v);
+      let msg;
+      if(sd.ns){
+        msg = `A${fmtPt(sd.v)} = ${fmtPt(out)}. It's on the nullspace!`;
+      } else if(step===2){
+        msg = `A(−1, 2) = (3, 6) and A(3, 0) = (3, 6) — two inputs, one output!`;
+      } else {
+        msg = `A${fmtPt(sd.v)} = ${fmtPt(out)}. Lands on the column space line.`;
+      }
+      if(step+1>=TOTAL){
+        msg+=' Final step!';
+        checkBtn.textContent='See all';
+      } else {
+        checkBtn.textContent='Next';
+      }
+      setStatus(msg,'feedback-good');
+      markDots(); renderGraph();
+      updateUI();
+    }
+  }
+
+  checkBtn.addEventListener('click', checkGuess);
+  predX.addEventListener('keydown', e=>{if(e.key==='Enter') checkGuess();});
+  predY.addEventListener('keydown', e=>{if(e.key==='Enter') checkGuess();});
+
+  // ---- EXPLORE MODE ----
+  const expX=$('expX'), expY=$('expY');
+  const expXVal=$('expXVal'), expYVal=$('expYVal');
+  const expIn=$('expIn'), expOut=$('expOut');
+  const explorePlot=$('explorePlot');
+
+  function rebuildExplore(){
+    const x=parseFloat(expX.value)||0, y=parseFloat(expY.value)||0;
+    expXVal.textContent=x; expYVal.textContent=y;
+    const ox=1*x+2*y, oy2=2*x+4*y;
+    expIn.textContent=`${fmt(x)}, ${fmt(y)}`;
+    expOut.textContent=`${fmt(ox)}, ${fmt(oy2)}`;
+
+    while(explorePlot.firstChild) explorePlot.firstChild.remove();
+    const W=640,H=420, o2x=72, o2y=H-68, pw2=W-o2x-38, ph2=o2y-48;
+    const xMi=-6,xMa=8,yMi=-6,yMa=8;
+    const sx2=pw2/(xMa-xMi), sy2=ph2/(yMi-yMa);
+    const s2=document.createElementNS(svgNS,'svg');
+    s2.setAttribute('viewBox',`0 0 ${W} ${H}`);
+    s2.setAttribute('width','100%'); s2.setAttribute('height','100%');
+    s2.style.display='block';
+
+    function t2x(v){return o2x+(v-xMi)*sx2;}
+    function t2y(v){return o2y+(v-yMi)*sy2;}
+
+    // grid
+    for(let v=Math.ceil(xMi);v<=Math.floor(xMa);v++){
+      const l=document.createElementNS(svgNS,'line');
+      l.setAttribute('x1',t2x(v)); l.setAttribute('y1',o2y);
+      l.setAttribute('x2',t2x(v)); l.setAttribute('y2',o2y-ph2);
+      l.setAttribute('stroke','#E4DCC4'); l.setAttribute('stroke-width',0.5);
+      s2.appendChild(l);
+    }
+    for(let v=Math.ceil(yMi);v<=Math.floor(yMa);v++){
+      const l=document.createElementNS(svgNS,'line');
+      l.setAttribute('x1',o2x); l.setAttribute('y1',t2y(v));
+      l.setAttribute('x2',o2x+pw2); l.setAttribute('y2',t2y(v));
+      l.setAttribute('stroke','#E4DCC4'); l.setAttribute('stroke-width',0.5);
+      s2.appendChild(l);
+    }
+
+    // axes
+    const a1=document.createElementNS(svgNS,'line');
+    a1.setAttribute('x1',o2x); a1.setAttribute('y1',o2y);
+    a1.setAttribute('x2',o2x+pw2); a1.setAttribute('y2',o2y);
+    a1.setAttribute('stroke','#26332B'); a1.setAttribute('stroke-width',1.5);
+    s2.appendChild(a1);
+    const a2=document.createElementNS(svgNS,'line');
+    a2.setAttribute('x1',o2x); a2.setAttribute('y1',o2y);
+    a2.setAttribute('x2',o2x); a2.setAttribute('y2',o2y-ph2);
+    a2.setAttribute('stroke','#26332B'); a2.setAttribute('stroke-width',1.5);
+    s2.appendChild(a2);
+
+    // axis + tick labels
+    const al1=document.createElementNS(svgNS,'text');
+    al1.setAttribute('x',o2x+pw2+10); al1.setAttribute('y',o2y+4);
+    al1.setAttribute('class','axis-label'); al1.textContent='x';
+    s2.appendChild(al1);
+    const al2=document.createElementNS(svgNS,'text');
+    al2.setAttribute('x',o2x-12); al2.setAttribute('y',o2y-ph2-8);
+    al2.setAttribute('class','axis-label'); al2.textContent='y';
+    s2.appendChild(al2);
+    for(let v=Math.ceil(xMi);v<=Math.floor(xMa);v++){
+      if(v===0) continue;
+      const l=document.createElementNS(svgNS,'text');
+      l.setAttribute('x',t2x(v)); l.setAttribute('y',o2y+16);
+      l.setAttribute('text-anchor','middle'); l.setAttribute('class','tick-label');
+      l.textContent=v; s2.appendChild(l);
+    }
+    for(let v=Math.ceil(yMi);v<=Math.floor(yMa);v++){
+      if(v===0) continue;
+      const l=document.createElementNS(svgNS,'text');
+      l.setAttribute('x',o2x-10); l.setAttribute('y',t2y(v)+4);
+      l.setAttribute('text-anchor','end'); l.setAttribute('class','tick-label');
+      l.textContent=v; s2.appendChild(l);
+    }
+    const zl=document.createElementNS(svgNS,'text');
+    zl.setAttribute('x',t2x(0)); zl.setAttribute('y',o2y+16);
+    zl.setAttribute('text-anchor','middle'); zl.setAttribute('class','tick-label');
+    zl.textContent='0'; s2.appendChild(zl);
+
+    // nullspace + column space lines
+    function drawLine2(dir, color, dash){
+      const len=12;
+      const p1=[-dir[0]*len,-dir[1]*len], p2=[dir[0]*len,dir[1]*len];
+      const l=document.createElementNS(svgNS,'line');
+      l.setAttribute('x1',t2x(p1[0])); l.setAttribute('y1',t2y(p1[1]));
+      l.setAttribute('x2',t2x(p2[0])); l.setAttribute('y2',t2y(p2[1]));
+      l.setAttribute('stroke',color); l.setAttribute('stroke-width',2);
+      if(dash) l.setAttribute('stroke-dasharray',dash);
+      s2.appendChild(l);
+    }
+    drawLine2([-2,1], 'var(--d1)');
+    drawLine2([1,2], 'var(--target)', '5,4');
+
+    const xL2=o2x, xR2=o2x+pw2, yT2=o2y-ph2, yB2=o2y;
+
+    // mapping arrow
+    const ml=document.createElementNS(svgNS,'line');
+    ml.setAttribute('x1',t2x(x)); ml.setAttribute('y1',t2y(y));
+    ml.setAttribute('x2',t2x(ox)); ml.setAttribute('y2',t2y(oy2));
+    ml.setAttribute('stroke','var(--target)'); ml.setAttribute('stroke-width',1.2);
+    ml.setAttribute('stroke-dasharray','4,4'); ml.setAttribute('opacity','0.6');
+    s2.appendChild(ml);
+
+    function place2(px,py,lbl,fl,yOff){
+      const gap=10;
+      const c=ptOnEdgePx(px,py,xL2,xR2,yT2,yB2,gap);
+      const circ=document.createElementNS(svgNS,'circle');
+      circ.setAttribute('cx',c.cx); circ.setAttribute('cy',c.cy);
+      circ.setAttribute('r',7); circ.setAttribute('fill',fl);
+      s2.appendChild(circ);
+      const txt=document.createElementNS(svgNS,'text');
+      txt.setAttribute('x',c.cx); txt.setAttribute('y',c.cy+(yOff||-12));
+      txt.setAttribute('text-anchor','middle'); txt.setAttribute('font-size','10');
+      txt.setAttribute('font-weight','600'); txt.setAttribute('fill',fl);
+      txt.setAttribute('font-family',"'IBM Plex Mono',monospace");
+      txt.textContent=lbl; s2.appendChild(txt);
+      if(c.clamped){
+        const a=c.cx,b=c.cy,sz=4;
+        const pts=px<xL2?`${a-sz},${b} ${a+sz},${b-sz} ${a+sz},${b+sz}`:px>xR2?`${a+sz},${b} ${a-sz},${b-sz} ${a-sz},${b+sz}`:py<yT2?`${a},${b-sz} ${a-sz},${b+sz} ${a+sz},${b+sz}`:`${a},${b+sz} ${a-sz},${b-sz} ${a+sz},${b-sz}`;
+        const arr=document.createElementNS(svgNS,'polygon');
+        arr.setAttribute('points',pts); arr.setAttribute('fill',fl);
+        s2.appendChild(arr);
+      }
+    }
+
+    const isZero = ox===0 && oy2===0;
+    place2(t2x(x),t2y(y),'v ('+fmt(x)+', '+fmt(y)+')','var(--pt)',-12);
+    place2(t2x(ox),t2y(oy2),isZero?'A(v)=(0,0)':'A(v) ('+fmt(ox)+', '+fmt(oy2)+')','var(--fn)',14);
+
+    explorePlot.appendChild(s2);
+  }
+
+  [expX, expY].forEach(el => el.addEventListener('input', rebuildExplore));
+
+  // ---- QUIZ ----
+  document.querySelectorAll('.q .options').forEach(group=>{
+    group.querySelectorAll('.opt').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        const correct = btn.dataset.correct === 'true';
+        group.querySelectorAll('.opt').forEach(b=>{
+          b.disabled = true;
+          if(b.dataset.correct==='true') b.classList.add('correct');
+        });
+        if(!correct) btn.classList.add('wrong');
+      });
+    });
+  });
+
+  // ---- INIT ----
+  resetGame();
+  rebuildExplore();
+})();
+</script>
+</body>
+</html>

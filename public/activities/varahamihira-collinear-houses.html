@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Varāhamihira's Observatory — Are the Points Collinear?</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=IBM+Plex+Mono:wght@500;600&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/plotly.js/2.32.0/plotly.min.js"></script>
+<style>
+  :root{
+    --paper:#FAF5E8; --paper-line:#D8CFB6; --ink:#26332B; --ink-soft:#5B6B60;
+    --vara:#1F6F5C; --jyoti:#B8860B; --graha:#7B5EA7; --nakshat:#B5502E;
+    --path:#8A9A8E; --card:#FFFDF7; --shadow:0 2px 10px rgba(38,51,43,0.08);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background: repeating-linear-gradient(#FAF5E8 0px,#FAF5E8 27px,var(--paper-line) 28px), var(--paper);
+    background-size:100% 28px;
+    color:var(--ink); font-family:'Source Sans 3',sans-serif;
+    min-height:100vh; padding:28px 16px 60px;
+  }
+  .wrap{max-width:1100px;margin:0 auto;}
+  header.hero{
+    background:var(--card); border:1px solid var(--paper-line); border-radius:14px;
+    box-shadow:var(--shadow); padding:26px 28px 22px; margin-bottom:20px;
+  }
+  .eyebrow{font-family:'IBM Plex Mono',monospace; font-size:12px; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-soft); margin:0 0 6px;}
+  h1{font-family:'Caveat',cursive; font-weight:700; font-size:42px; margin:0 0 10px; line-height:1.05;}
+  header.hero p{max-width:680px; line-height:1.55; font-size:15.5px; margin:0 0 8px;}
+  .rule-list{display:flex; gap:10px; flex-wrap:wrap; margin-top:12px;}
+  .rule-list span{
+    font-family:'IBM Plex Mono',monospace; font-size:12.5px; background:var(--paper);
+    border:1px dashed var(--paper-line); border-radius:8px; padding:6px 10px;
+  }
+  .grid-layout{display:grid; grid-template-columns:320px 1fr; gap:20px; align-items:start;}
+  @media (max-width:840px){ .grid-layout{grid-template-columns:1fr;} }
+  .card{background:var(--card); border:1px solid var(--paper-line); border-radius:14px; box-shadow:var(--shadow); padding:20px;}
+  .panel-title{font-family:'Caveat',cursive; font-weight:700; font-size:24px; margin:0 0 4px;}
+  .panel-sub{font-size:13px; color:var(--ink-soft); margin:0 0 14px; line-height:1.4;}
+
+  .status{font-size:13.5px; line-height:1.55; padding:12px; border-radius:9px; background:var(--paper); border:1px solid var(--paper-line); margin-bottom:14px; min-height:20px;}
+  .status.good{background:#E1EFE9; border-color:var(--vara); color:var(--vara); font-weight:600;}
+  .status.mid{background:#EFE6F6; border-color:var(--graha); color:var(--graha); font-weight:600;}
+
+  .facing{display:flex; align-items:center; gap:10px; margin-bottom:14px; padding:10px 12px; background:var(--paper); border:1px solid var(--paper-line); border-radius:9px;}
+  .facing .arrow{font-size:22px; transition:transform .25s ease;}
+  .facing .lbl{font-family:'IBM Plex Mono',monospace; font-size:12.5px; color:var(--ink-soft);}
+  .facing .pos{font-family:'IBM Plex Mono',monospace; font-size:13.5px; font-weight:600; margin-left:auto;}
+
+  .guess-row{display:flex; gap:8px; margin-bottom:10px;}
+  .guess-row input{
+    width:100%; padding:9px 10px; border-radius:8px; border:1px solid var(--paper-line);
+    font-family:'IBM Plex Mono',monospace; font-size:14px; background:var(--paper); color:var(--ink);
+  }
+  .guess-row label{font-size:11px; color:var(--ink-soft); display:block; margin-bottom:3px; font-weight:600;}
+  .guess-field{flex:1;}
+
+  button{font-family:'Source Sans 3',sans-serif; font-weight:600; font-size:14.5px; border:none; border-radius:9px; padding:11px 16px; cursor:pointer; width:100%; transition:transform .08s ease, filter .15s ease;}
+  button:active{transform:translateY(1px);}
+  button:disabled{opacity:.4; cursor:not-allowed;}
+  .btn-primary{background:var(--vara); color:#fff;}
+  .btn-primary:hover:not(:disabled){filter:brightness(1.08);}
+  .btn-secondary{background:var(--paper); color:var(--ink); border:1px solid var(--paper-line); margin-top:8px;}
+  .btn-secondary:hover:not(:disabled){background:#F0E9D6;}
+
+  .steps{display:flex; gap:6px; margin-bottom:14px; flex-wrap:wrap;}
+  .step-dot{width:24px; height:24px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-family:'IBM Plex Mono',monospace; font-size:11px; font-weight:600; border:1.5px solid var(--paper-line); color:var(--ink-soft); background:var(--paper);}
+  .step-dot.done{background:var(--vara); border-color:var(--vara); color:#fff;}
+  .step-dot.active{border-color:var(--jyoti); color:var(--jyoti); background:#F3E9CE;}
+
+  .legend{display:flex; gap:16px; flex-wrap:wrap; margin:6px 0 10px; font-size:12.5px; font-family:'IBM Plex Mono',monospace;}
+  .legend span{display:inline-flex; align-items:center; gap:6px;}
+  .dot{width:10px; height:10px; border-radius:50%; display:inline-block;}
+  .dot.vara{background:var(--vara);} .dot.jyoti{background:var(--jyoti);}
+  .dot.graha{background:var(--graha);} .dot.nakshat{background:var(--nakshat);}
+
+  #plot{width:100%; height:460px;}
+
+  .reflect,.explore{margin-top:20px; padding-top:16px; border-top:1px dashed var(--paper-line);}
+  .reflect.hidden,.explore.hidden{display:none;}
+  .q{margin-bottom:16px;}
+  .q p.qtext{font-weight:600; margin:0 0 8px; font-size:14.5px;}
+  .options{display:flex; gap:8px; flex-wrap:wrap;}
+  .opt{padding:8px 14px; border-radius:8px; border:1px solid var(--paper-line); background:var(--paper); font-size:13.5px; cursor:pointer; font-weight:600;}
+  .opt.correct{background:#E1EFE9; border-color:var(--vara); color:var(--vara);}
+  .opt.wrong{background:#F6DCD4; border-color:var(--nakshat); color:#8C3A1F;}
+  .opt:disabled{cursor:default;}
+
+  .eq-box{
+    font-family:'IBM Plex Mono',monospace; font-size:20px; font-weight:600; text-align:center;
+    background:var(--paper); border:1px solid var(--paper-line); border-radius:10px; padding:14px; margin:10px 0 16px; color:var(--vara);
+  }
+  .field{margin-bottom:16px;}
+  .field label{display:flex; justify-content:space-between; font-size:13.5px; font-weight:600; margin-bottom:6px;}
+  .field label span.val{font-family:'IBM Plex Mono',monospace; color:var(--graha); font-weight:600;}
+  input[type=range]{width:100%; accent-color:var(--graha);}
+
+  .fit-checklist{margin:6px 0 16px; display:flex; flex-direction:column; gap:8px;}
+  .fit-row{
+    display:flex; align-items:center; gap:10px; padding:9px 12px; border-radius:9px;
+    background:var(--paper); border:1px solid var(--paper-line); font-size:13.5px;
+  }
+  .fit-row.pass{background:#E1EFE9; border-color:var(--vara);}
+  .fit-row.fail{background:#FBEFE8; border-color:#D8B49A;}
+  .fit-row .mark{font-size:16px; width:20px; text-align:center;}
+  .fit-row.pass .mark{color:var(--vara);}
+  .fit-row.fail .mark{color:#B5502E;}
+  .fit-row .hint{margin-left:auto; font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--ink-soft);}
+  .fit-success-banner{
+    text-align:center; font-weight:700; color:var(--vara); background:#E1EFE9;
+    border:1px solid var(--vara); border-radius:9px; padding:10px; margin-bottom:12px; font-size:14.5px;
+  }
+
+  .ggb-btn{
+    display:inline-block; text-decoration:none; text-align:center;
+    background:var(--paper); border:1px solid var(--paper-line); color:var(--ink);
+    font-weight:600; font-size:13.5px; padding:10px 14px; border-radius:9px; margin-top:4px;
+  }
+  .ggb-btn:hover{background:#F0E9D6;}
+
+  footer.note{text-align:center; font-size:12px; color:var(--ink-soft); margin-top:26px; font-family:'IBM Plex Mono',monospace;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <p class="eyebrow">Intuition Builder · Linear Equations in Two Variables</p>
+    <h1>Varāhamihira's Observatory — Are the Points Collinear?</h1>
+    <p>Varāhamihira sets up an observatory at the origin. He places a marker 2 units along the x-axis, then alternates <strong>left turn, walk 1</strong> and <strong>right turn, walk 1</strong> to place three observation posts: Jyoti, Graha, and Nakṣatra. Mark each post, then determine if they lie on the same straight line.</p>
+    <div class="rule-list">
+      <span>Start: (0,0)</span>
+      <span>Walk 2 → x-axis</span>
+      <span>Left, walk 1 → Jyoti</span>
+      <span>Right 1, Left 1 → Graha</span>
+      <span>Right 1, Left 1 → Nakṣatra</span>
+    </div>
+  </header>
+
+  <div class="grid-layout">
+    <div class="card">
+      <p class="panel-title">Take the walk</p>
+      <p class="panel-sub">Press "Next step" to move Varāhamihira. When he's about to reach an observation post, take a guess first.</p>
+
+      <div class="facing">
+        <span class="arrow" id="arrowIcon">→</span>
+        <span class="lbl" id="facingLbl">facing +x</span>
+        <span class="pos" id="posLbl">(0, 0)</span>
+      </div>
+
+      <div class="steps" id="stepDots"></div>
+
+      <div class="status" id="statusBox">Ready? Hit "Next step" to send Varāhamihira walking along the x-axis.</div>
+
+      <div id="guessArea"></div>
+
+      <button class="btn-primary" id="nextBtn">Next step</button>
+      <button class="btn-secondary" id="resetBtn">Start over</button>
+    </div>
+
+    <div class="card">
+      <p class="panel-title">The walk, plotted</p>
+      <div class="legend">
+        <span><i class="dot vara"></i>Observatory</span>
+        <span><i class="dot jyoti"></i>Jyoti</span>
+        <span><i class="dot graha"></i>Graha</span>
+        <span><i class="dot nakshat"></i>Nakṣatra</span>
+      </div>
+      <div id="plot"></div>
+    </div>
+  </div>
+
+  <div class="card fit hidden" id="fitCard">
+    <p class="panel-title">Draw your own line</p>
+    <p class="panel-sub">Click any two points on the grid below — like laying a ruler across graph paper — to draw a straight line through them. Can you find a line that runs through Jyoti, Graha <em>and</em> Nakṣatra?</p>
+
+    <div class="legend">
+      <span><i class="dot vara"></i>Observatory</span>
+      <span><i class="dot jyoti"></i>Jyoti</span>
+      <span><i class="dot graha"></i>Graha</span>
+      <span><i class="dot nakshat"></i>Nakṣatra</span>
+      <span style="color:#7B5EA7; font-weight:600;">● your clicks</span>
+    </div>
+
+    <div id="fitPlot" style="width:100%;height:420px;"></div>
+
+    <div class="field" style="margin-top:14px;">
+      <label>Slope (m) <span class="val" id="mVal">0</span></label>
+      <input type="range" id="mSlider" min="-3" max="3" step="0.5" value="0">
+    </div>
+    <div class="field">
+      <label>Intercept (c) <span class="val" id="cVal">0</span></label>
+      <input type="range" id="cSlider" min="-4" max="4" step="0.5" value="0">
+    </div>
+
+    <div class="eq-box" id="fitEqBox">y = 0x + 0</div>
+
+    <div class="fit-checklist" id="fitChecklist"></div>
+
+    <button class="btn-secondary" id="clearFitBtn">Clear my line</button>
+    <button class="btn-primary" id="revealAnswerBtn" disabled style="margin-top:8px;">Continue to the answer</button>
+    <p style="text-align:center; margin:10px 0 0;"><a href="#" id="skipFitLink" style="font-size:12.5px; color:var(--ink-soft);">I'm stuck — show me the answer</a></p>
+  </div>
+
+  <div class="card reflect hidden" id="reflectCard">
+    <p class="panel-title">Locking it in</p>
+    <p class="panel-sub">You just found (or saw) a line through all three posts. Let's put words and an equation to what you discovered.</p>
+
+    <div class="q" id="q1">
+      <p class="qtext">1. Jyoti (2,1), Graha (3,2) and Nakṣatra (4,3) —</p>
+      <div class="options">
+        <button class="opt" data-correct="false">not on a line — random points</button>
+        <button class="opt" data-correct="true">yes, they lie on one straight line</button>
+      </div>
+    </div>
+
+    <div class="q" id="q2">
+      <p class="qtext">2. Going from Jyoti to Graha, x increases by 1 and y increases by 1. Going from Graha to Nakṣatra?</p>
+      <div class="options">
+        <button class="opt" data-correct="false">x by 1, y by 2</button>
+        <button class="opt" data-correct="true">x by 1, y by 1 — same rate</button>
+        <button class="opt" data-correct="false">x by 2, y by 1</button>
+      </div>
+    </div>
+
+    <div class="q" id="q3">
+      <p class="qtext">3. A constant rate of change (same rise for the same run, every step) is the signature of…</p>
+      <div class="options">
+        <button class="opt" data-correct="false">a curve</button>
+        <button class="opt" data-correct="true">a straight line</button>
+        <button class="opt" data-correct="false">no pattern at all</button>
+      </div>
+    </div>
+
+    <p class="panel-sub" style="margin-top:6px;">Since y is always 1 less than x at every post, the equation of the line is:</p>
+    <div class="eq-box">y = x − 1</div>
+    <a class="ggb-btn" href="https://www.geogebra.org/graphing" target="_blank" rel="noopener">Open GeoGebra ↗ — type <strong>y = x - 1</strong> to verify</a>
+  </div>
+
+  <div class="card explore hidden" id="exploreCard">
+    <p class="panel-title">Now generalize it</p>
+    <p class="panel-sub">What if Varāhamihira's first walk wasn't 2 units, or each turn-step wasn't 1 unit? Drag the sliders and watch where the line ends up — the slope never changes, only where it crosses the axes.</p>
+
+    <div class="field">
+      <label>First walk along x-axis <span class="val" id="aVal">2</span> units</label>
+      <input type="range" id="aSlider" min="2" max="6" step="1" value="2">
+    </div>
+    <div class="field">
+      <label>Each turn-step <span class="val" id="bVal">1</span> units</label>
+      <input type="range" id="bSlider" min="1" max="3" step="1" value="1">
+    </div>
+    <div class="eq-box" id="genEq">y = x − 1</div>
+    <div id="genPlot" style="width:100%;height:400px;"></div>
+  </div>
+
+  <footer class="note">Varāhamihira's observatory: collinearity &amp; slope · every step keeps the same rise-over-run, which is exactly what "lying on a line" means</footer>
+</div>
+
+<script>
+(function(){
+  // direction cycle, counter-clockwise: +x, +y, -x, -y
+  const DIRS = [{dx:1,dy:0,icon:'→',lbl:'facing +x'}, {dx:0,dy:1,icon:'↑',lbl:'facing +y'},
+                {dx:-1,dy:0,icon:'←',lbl:'facing −x'}, {dx:0,dy:-1,icon:'↓',lbl:'facing −y'}];
+
+  const actions = [
+    {act:'walk', units:2, note:'Varāhamihira walks 2 units along the x-axis.'},
+    {act:'turn', dir:'left', note:'He takes a left turn.'},
+    {act:'walk', units:1, note:"Walks 1 unit… and reaches <strong>Jyoti's</strong> post!", house:'Jyoti', color:'jyoti'},
+    {act:'turn', dir:'right', note:'Takes a right turn.'},
+    {act:'walk', units:1, note:'Walks 1 unit.'},
+    {act:'turn', dir:'left', note:'Takes a left turn.'},
+    {act:'walk', units:1, note:"Walks 1 unit… and reaches <strong>Graha's</strong> post!", house:'Graha', color:'graha'},
+    {act:'turn', dir:'right', note:'Takes a right turn.'},
+    {act:'walk', units:1, note:'Walks 1 unit.'},
+    {act:'turn', dir:'left', note:'Takes a left turn.'},
+    {act:'walk', units:1, note:"Walks 1 unit… and reaches <strong>Nakṣatra's</strong> post!", house:'Nakṣatra', color:'nakshat'},
+  ];
+
+  let idx = 0;
+  let dirIdx = 0;
+  let pos = {x:0,y:0};
+  let pathX = [0], pathY = [0];
+  let houses = [];      // {name,x,y,color}
+  let awaitingGuess = false;
+  let guessLocked = null;
+
+  const nextBtn = document.getElementById('nextBtn');
+  const resetBtn = document.getElementById('resetBtn');
+  const statusBox = document.getElementById('statusBox');
+  const guessArea = document.getElementById('guessArea');
+  const arrowIcon = document.getElementById('arrowIcon');
+  const facingLbl = document.getElementById('facingLbl');
+  const posLbl = document.getElementById('posLbl');
+  const stepDots = document.getElementById('stepDots');
+  const reflectCard = document.getElementById('reflectCard');
+  const exploreCard = document.getElementById('exploreCard');
+  const fitCard = document.getElementById('fitCard');
+
+  const houseSteps = actions.filter(a=>a.house).length;
+  for(let i=1;i<=houseSteps;i++){
+    const d = document.createElement('div');
+    d.className='step-dot'; d.textContent=i; d.id='step-'+i;
+    stepDots.appendChild(d);
+  }
+  let houseCount = 0;
+
+  function colorVar(name){
+    const map = {vara:'#1F6F5C', jyoti:'#B8860B', graha:'#7B5EA7', nakshat:'#B5502E'};
+    return map[name] || '#1F6F5C';
+  }
+
+  function updateFacing(){
+    arrowIcon.textContent = DIRS[dirIdx].icon;
+    facingLbl.textContent = DIRS[dirIdx].lbl;
+    posLbl.textContent = `(${pos.x}, ${pos.y})`;
+  }
+
+  function baseLayout(){
+    return {
+      margin:{l:40,r:20,t:20,b:40},
+      xaxis:{range:[-1,7], gridcolor:'#E4DCC4', zeroline:true, zerolinecolor:'#26332B', title:'x'},
+      yaxis:{range:[-1,6], gridcolor:'#E4DCC4', zeroline:true, zerolinecolor:'#26332B', title:'y', scaleanchor:'x'},
+      plot_bgcolor:'#FFFDF7', paper_bgcolor:'#FFFDF7',
+      font:{family:'IBM Plex Mono, monospace', size:11, color:'#26332B'},
+      showlegend:false
+    };
+  }
+
+  function draw(){
+    const traces = [];
+    traces.push({
+      x:pathX, y:pathY, mode:'lines+markers', type:'scatter',
+      line:{color:'#8A9A8E', width:2, dash:'dot'},
+      marker:{size:5, color:'#8A9A8E'}
+    });
+    traces.push({
+      x:[0], y:[0], mode:'markers+text', type:'scatter',
+      marker:{size:14, color:colorVar('vara'), line:{color:'#FFFDF7',width:2}},
+      text:['Observatory'], textposition:'bottom center'
+    });
+    houses.forEach(h=>{
+      traces.push({
+        x:[h.x], y:[h.y], mode:'markers+text', type:'scatter',
+        marker:{size:14, color:colorVar(h.color), line:{color:'#FFFDF7',width:2}},
+        text:[`${h.name} (${h.x},${h.y})`], textposition:'top center'
+      });
+    });
+    // current position marker (if mid-walk and not already a house)
+    const lastIsHouse = houses.some(h=>h.x===pos.x && h.y===pos.y);
+    if(!lastIsHouse){
+      traces.push({
+        x:[pos.x], y:[pos.y], mode:'markers', type:'scatter',
+        marker:{size:11, color:'#26332B', symbol:'diamond'}
+      });
+    }
+    // guess marker
+    if(guessLocked){
+      traces.push({
+        x:[guessLocked.x], y:[guessLocked.y], mode:'markers+text', type:'scatter',
+        marker:{size:13, color:'#7B5EA7', symbol:'circle-open', line:{width:3}},
+        text:[`you: (${guessLocked.x},${guessLocked.y})`], textposition:'bottom center',
+        textfont:{color:'#7B5EA7'}
+      });
+    }
+    Plotly.react('plot', traces, baseLayout(), {displayModeBar:false, responsive:true});
+  }
+
+  function updateStatus(html, cls){
+    statusBox.innerHTML = html;
+    statusBox.className = 'status' + (cls?(' '+cls):'');
+  }
+
+  function computeTarget(){
+    const a = actions[idx];
+    const d = DIRS[dirIdx];
+    return {x: pos.x + d.dx*a.units, y: pos.y + d.dy*a.units};
+  }
+
+  function showGuessInputs(){
+    guessArea.innerHTML = `
+      <div class="guess-row">
+        <div class="guess-field"><label>Guess x</label><input type="number" id="gx" value="${pos.x}"></div>
+        <div class="guess-field"><label>Guess y</label><input type="number" id="gy" value="${pos.y}"></div>
+      </div>`;
+  }
+
+  function clearGuessInputs(){ guessArea.innerHTML = ''; }
+
+  function processStep(){
+    const a = actions[idx];
+
+    if(a.act === 'turn'){
+      dirIdx = a.dir === 'left' ? (dirIdx+1)%4 : (dirIdx+3)%4;
+      updateStatus(a.note);
+      updateFacing();
+      idx++;
+      if(actions[idx] && actions[idx].house && !awaitingGuess){
+        awaitingGuess = true;
+        showGuessInputs();
+        nextBtn.textContent = 'Lock guess & reveal';
+        updateStatus(a.note + ' Now guess the coordinates of the next house before revealing it.');
+      }
+      draw();
+      return;
+    }
+
+    // walk action
+    if(a.house && awaitingGuess){
+      const gx = parseFloat(document.getElementById('gx').value);
+      const gy = parseFloat(document.getElementById('gy').value);
+      guessLocked = {x:gx, y:gy};
+      draw();
+      const target = computeTarget();
+      pos = target;
+      pathX.push(pos.x); pathY.push(pos.y);
+      houses.push({name:a.house, x:pos.x, y:pos.y, color:a.color});
+      houseCount++;
+      const dot = document.getElementById('step-'+houseCount);
+      if(dot) dot.classList.add('done');
+
+      const correct = (gx===target.x && gy===target.y);
+      const feedback = correct
+        ? `Exactly right! ${a.note} — you guessed it before it happened.`
+        : `${a.note} You guessed (${gx},${gy}); the actual point is (${target.x},${target.y}).`;
+      updateStatus(feedback, correct?'good':'mid');
+      guessLocked = null;
+      awaitingGuess = false;
+      clearGuessInputs();
+      idx++;
+      updateFacing();
+      draw();
+      nextBtn.textContent = 'Next step';
+      if(idx>=actions.length){
+        nextBtn.disabled = true;
+        setTimeout(()=>{
+          fitCard.classList.remove('hidden');
+          initFit();
+          fitCard.scrollIntoView({behavior:'smooth', block:'nearest'});
+        }, 400);
+      }
+      return;
+    }
+
+    // plain walk (no house / no guess needed, e.g. first 2-unit walk or intermediate step)
+    pos = computeTarget();
+    pathX.push(pos.x); pathY.push(pos.y);
+    if(a.house){
+      houses.push({name:a.house, x:pos.x, y:pos.y, color:a.color});
+      houseCount++;
+      const dot = document.getElementById('step-'+houseCount);
+      if(dot) dot.classList.add('done');
+    }
+    updateStatus(a.note);
+    updateFacing();
+    idx++;
+    draw();
+    if(idx>=actions.length){
+      nextBtn.disabled = true;
+      setTimeout(()=>{
+        fitCard.classList.remove('hidden');
+        initFit();
+        fitCard.scrollIntoView({behavior:'smooth', block:'nearest'});
+      }, 400);
+    }
+  }
+
+  nextBtn.addEventListener('click', processStep);
+
+  resetBtn.addEventListener('click', ()=>{
+    idx=0; dirIdx=0; pos={x:0,y:0}; pathX=[0]; pathY=[0]; houses=[];
+    awaitingGuess=false; guessLocked=null; houseCount=0;
+    nextBtn.disabled=false; nextBtn.textContent='Next step';
+    clearGuessInputs();
+    document.querySelectorAll('.step-dot').forEach(d=>d.classList.remove('done'));
+    reflectCard.classList.add('hidden');
+    exploreCard.classList.add('hidden');
+    fitCard.classList.add('hidden');
+    fitClickPoints = []; fitM = 0; fitC = 0;
+    updateStatus('Ready? Hit "Next step" to send Varāhamihira walking along the x-axis.');
+    updateFacing();
+    draw();
+  });
+
+  // ---- DRAW-YOUR-OWN-LINE (fit) MODE ----
+  let fitClickPoints = [];   // up to 2 {x,y}
+  let fitM = 0, fitC = 0;
+  const mSlider = document.getElementById('mSlider');
+  const cSlider = document.getElementById('cSlider');
+  const mVal = document.getElementById('mVal');
+  const cVal = document.getElementById('cVal');
+  const fitEqBox = document.getElementById('fitEqBox');
+  const fitChecklist = document.getElementById('fitChecklist');
+  const clearFitBtn = document.getElementById('clearFitBtn');
+  const revealAnswerBtn = document.getElementById('revealAnswerBtn');
+  const skipFitLink = document.getElementById('skipFitLink');
+
+  function fitLayout(){
+    return {
+      margin:{l:40,r:20,t:20,b:40},
+      xaxis:{range:[-1,7], gridcolor:'#E4DCC4', zeroline:true, zerolinecolor:'#26332B', title:'x'},
+      yaxis:{range:[-1,6], gridcolor:'#E4DCC4', zeroline:true, zerolinecolor:'#26332B', title:'y', scaleanchor:'x'},
+      plot_bgcolor:'#FFFDF7', paper_bgcolor:'#FFFDF7',
+      font:{family:'IBM Plex Mono, monospace', size:11, color:'#26332B'},
+      showlegend:false
+    };
+  }
+
+  function eqString(m,c){
+    const mPart = m===0 ? '0' : (m===1 ? 'x' : (m===-1 ? '−x' : `${m}x`));
+    const cPart = c===0 ? '' : (c>0 ? ` + ${c}` : ` − ${Math.abs(c)}`);
+    return `y = ${mPart}${cPart}`;
+  }
+
+  function drawFit(){
+    const traces = [];
+    // the line, drawn across the visible range
+    const lx = [-1, 7];
+    const ly = lx.map(x=>fitM*x+fitC);
+    traces.push({x:lx, y:ly, mode:'lines', type:'scatter', line:{color:'#7B5EA7', width:2.5}});
+
+    // the two anchor clicks, if any
+    if(fitClickPoints.length){
+      traces.push({
+        x:fitClickPoints.map(p=>p.x), y:fitClickPoints.map(p=>p.y),
+        mode:'markers', type:'scatter',
+        marker:{size:12, color:'#7B5EA7', symbol:'x', line:{width:2}}
+      });
+    }
+
+    traces.push({x:[0], y:[0], mode:'markers+text', type:'scatter', marker:{size:13,color:colorVar('vara'),line:{color:'#FFFDF7',width:2}}, text:['Observatory'], textposition:'bottom center'});
+    houses.forEach(h=>{
+      traces.push({x:[h.x], y:[h.y], mode:'markers+text', type:'scatter', marker:{size:13,color:colorVar(h.color),line:{color:'#FFFDF7',width:2}}, text:[`${h.name} (${h.x},${h.y})`], textposition:'top center'});
+    });
+
+    Plotly.react('fitPlot', traces, fitLayout(), {displayModeBar:false, responsive:true});
+
+    fitEqBox.textContent = eqString(fitM, fitC);
+    renderChecklist();
+  }
+
+  function renderChecklist(){
+    fitChecklist.innerHTML = '';
+    let allPass = true;
+    houses.forEach(h=>{
+      const predicted = fitM*h.x + fitC;
+      const diff = h.y - predicted;
+      const pass = Math.abs(diff) < 0.05;
+      if(!pass) allPass = false;
+      const row = document.createElement('div');
+      row.className = 'fit-row ' + (pass ? 'pass':'fail');
+      const hint = pass ? 'on the line' : (diff>0 ? `line is ${Math.abs(diff).toFixed(1)} too low here` : `line is ${Math.abs(diff).toFixed(1)} too high here`);
+      row.innerHTML = `<span class="mark">${pass?'✓':'✕'}</span><span>${h.name} (${h.x}, ${h.y})</span><span class="hint">${hint}</span>`;
+      fitChecklist.appendChild(row);
+    });
+    if(allPass && houses.length===3){
+      const banner = document.createElement('div');
+      banner.className = 'fit-success-banner';
+      banner.textContent = `Your line ${eqString(fitM,fitC)} passes through all three houses — that's the equation!`;
+      fitChecklist.prepend(banner);
+      revealAnswerBtn.disabled = false;
+    } else {
+      revealAnswerBtn.disabled = true;
+    }
+  }
+
+  document.getElementById('fitPlot').addEventListener('plotly_click', function(e){
+    if(!e || !e.points || !e.points.length) return;
+    const p = e.points[0];
+    const x = Math.round(p.x), y = Math.round(p.y);
+    if(fitClickPoints.length>=2) fitClickPoints = [];
+    fitClickPoints.push({x,y});
+    if(fitClickPoints.length===2){
+      const [p1,p2] = fitClickPoints;
+      if(p2.x === p1.x){
+        fitEqBox.textContent = 'Pick two points with different x values';
+        return;
+      }
+      fitM = (p2.y-p1.y)/(p2.x-p1.x);
+      fitC = p1.y - fitM*p1.x;
+      mSlider.value = Math.max(-3, Math.min(3, Math.round(fitM*2)/2));
+      cSlider.value = Math.max(-4, Math.min(4, Math.round(fitC*2)/2));
+      mVal.textContent = mSlider.value;
+      cVal.textContent = cSlider.value;
+    }
+    drawFit();
+  });
+
+  mSlider.addEventListener('input', ()=>{
+    fitM = parseFloat(mSlider.value);
+    mVal.textContent = fitM;
+    fitClickPoints = [];
+    drawFit();
+  });
+  cSlider.addEventListener('input', ()=>{
+    fitC = parseFloat(cSlider.value);
+    cVal.textContent = fitC;
+    fitClickPoints = [];
+    drawFit();
+  });
+
+  clearFitBtn.addEventListener('click', ()=>{
+    fitClickPoints = []; fitM = 0; fitC = 0;
+    mSlider.value = 0; cSlider.value = 0;
+    mVal.textContent = 0; cVal.textContent = 0;
+    drawFit();
+  });
+
+  revealAnswerBtn.addEventListener('click', ()=>{
+    reflectCard.classList.remove('hidden');
+    reflectCard.scrollIntoView({behavior:'smooth', block:'nearest'});
+  });
+
+  skipFitLink.addEventListener('click', (e)=>{
+    e.preventDefault();
+    reflectCard.classList.remove('hidden');
+    reflectCard.scrollIntoView({behavior:'smooth', block:'nearest'});
+  });
+
+  function initFit(){
+    fitClickPoints = []; fitM = 0; fitC = 0;
+    mSlider.value = 0; cSlider.value = 0;
+    mVal.textContent = 0; cVal.textContent = 0;
+    drawFit();
+  }
+
+  // quiz
+  document.querySelectorAll('.q .options').forEach(group=>{
+    group.querySelectorAll('.opt').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        const correct = btn.dataset.correct === 'true';
+        group.querySelectorAll('.opt').forEach(b=>{
+          b.disabled = true;
+          if(b.dataset.correct==='true') b.classList.add('correct');
+        });
+        if(!correct) btn.classList.add('wrong');
+        if(group.parentElement.id==='q3' && correct){
+          setTimeout(()=>{
+            exploreCard.classList.remove('hidden');
+            exploreCard.scrollIntoView({behavior:'smooth', block:'nearest'});
+            rebuildExplore();
+          }, 400);
+        }
+      });
+    });
+  });
+
+  // explore mode: general a (first walk), b (turn-step)
+  const aSlider = document.getElementById('aSlider');
+  const bSlider = document.getElementById('bSlider');
+  const aVal = document.getElementById('aVal');
+  const bVal = document.getElementById('bVal');
+  const genEq = document.getElementById('genEq');
+
+  function rebuildExplore(){
+    const a = parseInt(aSlider.value,10);
+    const b = parseInt(bSlider.value,10);
+    aVal.textContent = a; bVal.textContent = b;
+
+    // walk path: (0,0)->(a,0)->(a,b)->(a+b,b)->(a+b,2b)->(a+2b,2b)->(a+2b,3b)
+    const px = [0,a,a,a+b,a+b,a+2*b,a+2*b];
+    const py = [0,0,b,b,2*b,2*b,3*b];
+    const jyoti = {x:a, y:b}, graha={x:a+b, y:2*b}, nakshat={x:a+2*b, y:3*b};
+
+    const intercept = b - a; // y = x + (b-a)
+    const eqStr = intercept === 0 ? 'y = x' : (intercept>0 ? `y = x + ${intercept}` : `y = x − ${Math.abs(intercept)}`);
+    genEq.textContent = eqStr;
+
+    const lineX = [-1, a+2*b+2];
+    const lineY = lineX.map(x=>x+intercept);
+
+    const traces = [
+      {x:px, y:py, mode:'lines+markers', type:'scatter', line:{color:'#8A9A8E', width:2, dash:'dot'}, marker:{size:5,color:'#8A9A8E'}},
+      {x:[0], y:[0], mode:'markers+text', type:'scatter', marker:{size:13,color:colorVar('vara'),line:{color:'#FFFDF7',width:2}}, text:['Observatory'], textposition:'bottom center'},
+      {x:[jyoti.x], y:[jyoti.y], mode:'markers+text', type:'scatter', marker:{size:13,color:colorVar('jyoti'),line:{color:'#FFFDF7',width:2}}, text:[`Jyoti (${jyoti.x},${jyoti.y})`], textposition:'top center'},
+      {x:[graha.x], y:[graha.y], mode:'markers+text', type:'scatter', marker:{size:13,color:colorVar('graha'),line:{color:'#FFFDF7',width:2}}, text:[`Graha (${graha.x},${graha.y})`], textposition:'top center'},
+      {x:[nakshat.x], y:[nakshat.y], mode:'markers+text', type:'scatter', marker:{size:13,color:colorVar('nakshat'),line:{color:'#FFFDF7',width:2}}, text:[`Nakṣatra (${nakshat.x},${nakshat.y})`], textposition:'top center'},
+      {x:lineX, y:lineY, mode:'lines', type:'scatter', line:{color:'#1F6F5C', width:2}}
+    ];
+    const layout = {
+      margin:{l:40,r:20,t:20,b:40},
+      xaxis:{range:[-1, a+2*b+3], gridcolor:'#E4DCC4', zeroline:true, zerolinecolor:'#26332B', title:'x'},
+      yaxis:{range:[-1, 3*b+3], gridcolor:'#E4DCC4', zeroline:true, zerolinecolor:'#26332B', title:'y', scaleanchor:'x'},
+      plot_bgcolor:'#FFFDF7', paper_bgcolor:'#FFFDF7',
+      font:{family:'IBM Plex Mono, monospace', size:11, color:'#26332B'},
+      showlegend:false
+    };
+    Plotly.react('genPlot', traces, layout, {displayModeBar:false, responsive:true});
+  }
+  aSlider.addEventListener('input', rebuildExplore);
+  bSlider.addEventListener('input', rebuildExplore);
+
+  updateFacing();
+  draw();
+})();
+</script>
+</body>
+</html>

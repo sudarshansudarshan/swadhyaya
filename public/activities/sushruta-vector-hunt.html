@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sushruta's Vector Hunt — Find all [x; y] with [1 1][x; y] = 0</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=IBM+Plex+Mono:wght@500;600&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#FAF5E8; --paper-line:#D8CFB6; --ink:#26332B; --ink-soft:#5B6B60;
+    --mat:#B8860B; --mat-soft:#F3E9CE;
+    --vec:#0E7490; --vec-soft:#CFFAFE;
+    --line:#7B2D8E; --line-soft:#F3E5F7;
+    --good:#1F6F5C; --good-soft:#DCEDE7;
+    --bad:#B5502E; --bad-soft:#FBEFE8;
+    --card:#FFFDF7; --shadow:0 2px 10px rgba(38,51,43,0.08);
+  }
+  *{box-sizing:border-box;} html,body{margin:0;padding:0;}
+  body{
+    background:repeating-linear-gradient(#FAF5E8 0px,#FAF5E8 27px,var(--paper-line) 28px),var(--paper);
+    background-size:100% 28px; color:var(--ink);
+    font-family:'Source Sans 3',sans-serif; min-height:100vh; padding:28px 16px 60px;
+  }
+  .wrap{max-width:1080px;margin:0 auto;}
+
+  header.hero{
+    background:var(--card); border:1px solid var(--paper-line);
+    border-radius:14px; box-shadow:var(--shadow);
+    padding:26px 28px 22px; margin-bottom:20px;
+  }
+  .eyebrow{font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);margin:0 0 6px;}
+  h1{font-family:'Caveat',cursive;font-weight:700;font-size:42px;margin:0 0 10px;line-height:1.05;}
+  header.hero p{max-width:760px;line-height:1.55;font-size:15.5px;margin:0 0 8px;}
+  .rule-badge{
+    display:inline-flex; gap:10px; align-items:center; flex-wrap:wrap;
+    background:var(--paper); border:1px dashed var(--paper-line);
+    border-radius:10px; padding:10px 14px; margin-top:12px;
+    font-family:'IBM Plex Mono',monospace; font-size:14px;
+  }
+  .rule-badge .piece{display:inline-flex;align-items:center;gap:6px;}
+  .piece.mat{color:var(--mat);font-weight:700;}
+  .piece.vec{color:var(--vec);font-weight:700;}
+  .piece.op{color:var(--ink-soft);}
+  .piece.bracket{
+    border-left:2px solid var(--ink); border-right:2px solid var(--ink);
+    padding:1px 6px; line-height:1.0; margin:0 3px;
+    font-size:13px;
+  }
+
+  .grid-layout{display:grid;grid-template-columns:360px 1fr;gap:20px;align-items:start;}
+  @media (max-width:880px){.grid-layout{grid-template-columns:1fr;}}
+
+  .card{background:var(--card);border:1px solid var(--paper-line);border-radius:14px;box-shadow:var(--shadow);padding:20px;}
+  .panel-title{font-family:'Caveat',cursive;font-weight:700;font-size:24px;margin:0 0 4px;}
+  .panel-sub{font-size:13px;color:var(--ink-soft);margin:0 0 14px;line-height:1.4;}
+
+  .equation-display{
+    background:var(--mat-soft); border:1.5px solid var(--mat);
+    border-radius:12px; padding:14px 14px; margin-bottom:14px;
+    font-family:'IBM Plex Mono',monospace; font-size:17px; font-weight:600;
+    text-align:center; color:var(--mat); line-height:1.5;
+  }
+  .equation-display .piece{display:inline-block;vertical-align:middle;}
+  .equation-display .mat{display:inline-block;border-left:2px solid var(--mat);border-right:2px solid var(--mat);padding:3px 8px;margin:0 4px;}
+  .equation-display .mat .row{display:block;font-size:18px;font-weight:700;color:var(--mat);}
+  .equation-display .vec{display:inline-block;border-left:2px solid var(--vec);border-right:2px solid var(--vec);padding:3px 8px;margin:0 4px;}
+  .equation-display .vec .row{display:block;font-size:18px;font-weight:700;color:var(--vec);}
+  .equation-display .eq{font-size:20px;font-weight:700;color:var(--ink);margin:0 6px;}
+
+  .field{margin-bottom:12px;}
+  .field label{display:flex;justify-content:space-between;font-size:13.5px;font-weight:600;margin-bottom:6px;}
+  .field label span.val{font-family:'IBM Plex Mono',monospace;color:var(--vec);font-weight:600;}
+  .xy-row{display:flex;gap:8px;}
+  .xy-row .xy-field{flex:1;}
+  .xy-row .xy-field label{font-size:11.5px;color:var(--ink-soft);margin-bottom:3px;text-transform:uppercase;letter-spacing:.04em;font-weight:700;}
+  input[type=number]{
+    width:100%; padding:9px 10px; border-radius:8px;
+    border:1px solid var(--paper-line);
+    font-family:'IBM Plex Mono',monospace; font-size:16px;
+    background:var(--paper); color:var(--ink);
+    -moz-appearance:textfield;
+  }
+  input[type=number]::-webkit-inner-spin-button,
+  input[type=number]::-webkit-outer-spin-button{-webkit-appearance:none;margin:0;}
+  input[type=number]:focus{
+    outline:2px solid var(--vec); outline-offset:-1px;
+    border-color:var(--vec); background:var(--card);
+  }
+  .helper{font-size:12px;color:var(--ink-soft);margin-top:6px;line-height:1.4;}
+  .helper span.k{font-family:'IBM Plex Mono',monospace;color:var(--ink);font-weight:600;}
+
+  .result-box{
+    background:var(--paper); border:1px solid var(--paper-line);
+    border-radius:9px; padding:12px; margin-bottom:14px;
+    font-family:'IBM Plex Mono',monospace; font-size:14px; text-align:center;
+    font-weight:600;
+  }
+  .result-box .formula{font-size:12px;color:var(--ink-soft);margin-bottom:6px;}
+  .result-box .value{font-size:22px;font-weight:700;color:var(--ink);}
+  .result-box.passed .value{color:var(--good);}
+  .result-box.failed .value{color:var(--bad);}
+  .result-box.passed{background:var(--good-soft);border-color:var(--good);}
+  .result-box.failed{background:var(--bad-soft);border-color:var(--bad);}
+
+  /* Trial log table */
+  .trial-log{
+    background:var(--paper); border:1px solid var(--paper-line);
+    border-radius:9px; padding:10px 8px; margin-bottom:12px;
+  }
+  .trial-log h4{
+    margin:0 0 6px; font-family:'Caveat',cursive; font-size:18px; color:var(--ink);
+    text-align:center;
+  }
+  .trial-log table{width:100%; border-collapse:collapse; font-family:'IBM Plex Mono',monospace; font-size:12px;}
+  .trial-log th{
+    background:var(--ink); color:#fff; padding:5px 4px;
+    font-weight:600; font-size:10px; text-transform:uppercase; letter-spacing:.04em;
+  }
+  .trial-log th:first-child{border-top-left-radius:6px;}
+  .trial-log th:last-child{border-top-right-radius:6px;}
+  .trial-log td{padding:4px 4px; text-align:center; border-bottom:1px dashed var(--paper-line);}
+  .trial-log tr.solved td{background:var(--good-soft);color:var(--good);font-weight:700;}
+  .trial-log tr.current td{background:var(--vec-soft);color:var(--vec);font-weight:700;}
+  .trial-log .empty{color:var(--ink-soft);font-style:italic;font-size:11px;padding:8px;}
+  .trial-log .ok{color:var(--good);font-weight:700;}
+  .trial-log .no{color:var(--bad);}
+
+  button{
+    font-family:'Source Sans 3',sans-serif; font-weight:600; font-size:14.5px;
+    border:none; border-radius:9px; padding:11px 16px; cursor:pointer;
+    width:100%; transition:transform .08s ease, filter .15s ease;
+  }
+  button:active{transform:translateY(1px);}
+  button:disabled{opacity:.4;cursor:not-allowed;}
+  .btn-primary{background:var(--vec);color:#fff;}
+  .btn-primary:hover:not(:disabled){filter:brightness(1.08);}
+  .btn-secondary{background:var(--paper);color:var(--ink);border:1px solid var(--paper-line);margin-top:8px;}
+  .btn-secondary:hover:not(:disabled){background:#F0E9D6;}
+
+  .graph-card{display:flex;flex-direction:column;}
+  .legend{display:flex;gap:18px;flex-wrap:wrap;margin:6px 0 12px;font-size:12.5px;font-family:'IBM Plex Mono',monospace;}
+  .legend span{display:inline-flex;align-items:center;gap:6px;}
+  .dot{width:10px;height:10px;border-radius:50%;display:inline-block;}
+  .dot.m-vec{background:var(--mat);}
+  .dot.v-vec{background:var(--vec);}
+
+  svg{width:100%;height:auto;display:block;cursor:crosshair;}
+  .axis-label{font-family:'IBM Plex Mono',monospace;font-size:12px;fill:var(--ink-soft);}
+  .tick-label{font-family:'IBM Plex Mono',monospace;font-size:10px;fill:var(--ink-soft);}
+
+  .reflect,.explore{margin-top:20px;padding-top:16px;border-top:1px dashed var(--paper-line);}
+  .reflect.hidden,.explore.hidden{display:none;}
+  .q{margin-bottom:16px;}
+  .q p.qtext{font-weight:600;margin:0 0 8px;font-size:14.5px;}
+  .options{display:flex;gap:8px;flex-wrap:wrap;}
+  .opt{
+    padding:8px 14px;border-radius:8px;border:1px solid var(--paper-line);
+    background:var(--paper);font-size:13.5px;cursor:pointer;font-weight:600;
+  }
+  .opt.correct{background:var(--good-soft);border-color:var(--good);color:var(--good);}
+  .opt.wrong{background:var(--bad-soft);border-color:var(--bad);color:var(--bad);}
+  .opt:disabled{cursor:default;}
+
+  .explore .panel-title{font-size:22px;}
+  .explore-inputs{display:flex;gap:10px;flex-wrap:wrap;margin:10px 0 14px;}
+  .explore-inputs .field{flex:1;min-width:90px;margin-bottom:0;}
+  .explore-eq{
+    background:var(--line-soft); border:1px solid var(--line);
+    border-radius:8px; padding:10px; margin-bottom:10px;
+    font-family:'IBM Plex Mono',monospace; font-size:14px; text-align:center; color:var(--line); font-weight:700;
+  }
+
+  .arrow-mat{fill:none;stroke:var(--mat);stroke-width:2.5;stroke-linecap:round;}
+  .arrow-vec{fill:none;stroke:var(--vec);stroke-width:2.5;stroke-linecap:round;}
+  .dragging{cursor:grabbing !important;}
+
+  footer.note{text-align:center;font-size:12px;color:var(--ink-soft);margin-top:26px;font-family:'IBM Plex Mono',monospace;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <p class="eyebrow">Matrix Multiplication · Vector Hunt</p>
+    <h1>Sushruta's Vector Hunt — Find all [x; y] with [1 1][x; y] = 0</h1>
+    <p>We want every column-vector <em>v</em> = [x; y] that the matrix <em>M</em> = [1 1] sends to zero. Multiply <em>M</em> by <em>v</em>: <em>Mv</em> = 1·x + 1·y. We need this to be zero — so <strong>x + y = 0</strong>. Find all (x, y) that work.</p>
+    <div class="rule-badge">
+      <span class="piece mat bracket">
+        <span style="font-size:14px;">1&nbsp;&nbsp;1</span>
+      </span>
+      <span class="piece op">·</span>
+      <span class="piece vec bracket">
+        <span style="font-size:14px;">x</span>
+        <span style="font-size:14px;">y</span>
+      </span>
+      <span class="piece op">=</span>
+      <span class="piece bracket" style="border-color:var(--ink);">
+        <span style="font-size:14px;">0</span>
+      </span>
+      <span class="piece op">⟺</span>
+      <span class="piece mat">x + y = 0</span>
+      <span class="piece op">⟺</span>
+      <span class="piece vec">y = −x</span>
+    </div>
+  </header>
+
+  <div class="grid-layout">
+
+    <!-- LEFT CONTROL PANEL -->
+    <div class="card">
+      <p class="panel-title">Try a vector [x; y]</p>
+      <p class="panel-sub">Type x and y. The product Mv = 1·x + 1·y tells you instantly whether your vector solves the equation. Click or drag in the graph too.</p>
+
+      <div class="equation-display">
+        <span class="piece">[&nbsp;1&nbsp;&nbsp;1&nbsp;]</span>
+        <span class="piece eq">·</span>
+        <span class="piece vec bracket">
+          <span class="row" id="dispX">x</span>
+          <span class="row" id="dispY">y</span>
+        </span>
+        <span class="piece eq">=</span>
+        <span class="piece" style="font-size:22px;color:var(--ink);" id="resultBig">?</span>
+      </div>
+
+      <div class="field">
+        <label>Try <span class="val">x</span> and <span class="val">y</span></label>
+        <div class="xy-row">
+          <div class="xy-field"><label>x</label><input type="number" id="inX" step="any" value="1"></div>
+          <div class="xy-field"><label>y</label><input type="number" id="inY" step="any" value="-1"></div>
+        </div>
+        <div class="helper">Tip: try <span class="k">x = 2, y = −2</span> · <span class="k">x = −3, y = 3</span> · <span class="k">x = 0, y = 1</span> (one of these does <em>not</em> work — find out which).</div>
+      </div>
+
+      <div class="result-box" id="resultBox">
+        <div class="formula">M · v = 1·x + 1·y = ?</div>
+        <div class="value" id="resultValue">?</div>
+      </div>
+
+      <div class="trial-log">
+        <h4>Trial log</h4>
+        <table>
+          <thead>
+            <tr>
+              <th style="width:18px;">#</th>
+              <th>(x, y)</th>
+              <th>M · v</th>
+              <th>solved?</th>
+            </tr>
+          </thead>
+          <tbody id="trialBody">
+          </tbody>
+        </table>
+      </div>
+
+      <button class="btn-primary" id="recordBtn" style="margin-top:8px;">Record this trial</button>
+      <button class="btn-secondary" id="resetBtn">Clear all</button>
+    </div>
+
+    <!-- RIGHT GRAPH -->
+    <div class="card graph-card">
+      <p class="panel-title">The plane</p>
+      <div class="legend">
+        <span><i class="dot m-vec"></i>matrix row [1 1] (gold)</span>
+        <span><i class="dot v-vec"></i>your vector v (teal)</span>
+        <span><span style="color:var(--line);">─ ─</span>line of every solution (y = −x)</span>
+      </div>
+      <p class="panel-sub" style="margin:6px 0 10px;">Click anywhere on the plane to drop v there. Drag the teal tip to move v live. The dashed purple line is <em>y = −x</em> — every point on it is a solution to Mv = 0.</p>
+      <svg id="graphSvg" viewBox="0 0 640 500" xmlns="http://www.w3.org/2000/svg"></svg>
+    </div>
+  </div>
+
+  <!-- REFLECTION QUIZ -->
+  <div class="card reflect hidden" id="reflectCard">
+    <p class="panel-title">What do you notice?</p>
+    <p class="panel-sub">You can move v anywhere. Then answer these.</p>
+
+    <div class="q" id="q1">
+      <p class="qtext">1. Which of these vectors solves [1 1][x; y] = 0?</p>
+      <div class="options">
+        <button class="opt" data-correct="false">(3, 3) — same direction as [1 1], the product is 6</button>
+        <button class="opt" data-correct="true">(3, −3) — the product is 1·3 + 1·(−3) = 0</button>
+        <button class="opt" data-correct="false">(1, 0) — the product is 1, not 0</button>
+        <button class="opt" data-correct="false">(0, 1) — the product is 1, not 0</button>
+      </div>
+    </div>
+
+    <div class="q" id="q2">
+      <p class="qtext">2. The equation <strong>x + y = 0</strong> says that y is —</p>
+      <div class="options">
+        <button class="opt" data-correct="false">always zero (so the only solution is (0, 0))</button>
+        <button class="opt" data-correct="false">twice x (so y = 2x)</button>
+        <button class="opt" data-correct="true">the negative of x (so y = −x)</button>
+      </div>
+    </div>
+
+    <div class="q" id="q3">
+      <p class="qtext">3. Every solution (x, y) sits on the line —</p>
+      <div class="options">
+        <button class="opt" data-correct="false">y = x (parallel to the matrix row [1 1])</button>
+        <button class="opt" data-correct="true">y = −x (perpendicular to the matrix row [1 1])</button>
+        <button class="opt" data-correct="false">y = 0 (the x-axis only)</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- EXPLORE MODE -->
+  <div class="card explore hidden" id="exploreCard">
+    <p class="panel-title">Now you try: change the matrix row</p>
+    <p class="panel-sub">Pick any matrix row [m₁ m₂]. The set of solutions is the line through origin where m₁·x + m₂·y = 0. Where does it lie?</p>
+
+    <div class="explore-inputs">
+      <div class="field"><label>m₁</label><input type="number" id="expM1" step="0.5" value="1"></div>
+      <div class="field"><label>m₂</label><input type="number" id="expM2" step="0.5" value="1"></div>
+    </div>
+
+    <div class="explore-eq" id="exploreEq">Row [1 1] — solutions on the line y = −x</div>
+  </div>
+
+  <footer class="note">Built for matrix-times-vector · find every v with Mv = 0 · the solutions form a line through the origin (y = −m₁·x / m₂)</footer>
+</div>
+
+<script>
+(function(){
+  const svgNS = "http://www.w3.org/2000/svg";
+  const svg = document.getElementById('graphSvg');
+  const M = {l: 70, r: 20, t: 30, b: 50};
+  const PW = 640 - M.l - M.r;
+  const PH = 500 - M.t - M.b;
+
+  // ---- STATE ----
+  let m1 = 1, m2 = 1;       // matrix row [m1 m2]
+  let isDragging = null;
+  let rounds = 0;
+
+  // ---- DOM ----
+  const inX = document.getElementById('inX');
+  const inY = document.getElementById('inY');
+  const dispX = document.getElementById('dispX');
+  const dispY = document.getElementById('dispY');
+  const resultBox = document.getElementById('resultBox');
+  const resultValue = document.getElementById('resultValue');
+  const resultBig = document.getElementById('resultBig');
+  const resetBtn = document.getElementById('resetBtn');
+  const recordBtn = document.getElementById('recordBtn');
+  const trialBody = document.getElementById('trialBody');
+  const reflectCard = document.getElementById('reflectCard');
+  const exploreCard = document.getElementById('exploreCard');
+
+  function formatNum(v){
+    if(Math.abs(v) < 1e-9) return '0';
+    if(Number.isInteger(v)) return v.toString();
+    return (Math.round(v*100)/100).toString();
+  }
+
+  function Mv(x, y){
+    return m1*x + m2*y;
+  }
+
+  // ---- Trial log ----
+  const trials = [];
+  let trialCounter = 0;
+  const MAX_TRIALS = 50;
+
+  function renderTrialsTable(){
+    if(trials.length === 0){
+      trialBody.innerHTML = '<tr><td colspan="4" class="empty">no trials yet — click "Record this trial"</td></tr>';
+      return;
+    }
+    const a = parseFloat(inX.value);
+    const b = parseFloat(inY.value);
+    const currentX = isNaN(a) ? null : a;
+    const currentY = isNaN(b) ? null : b;
+
+    const rows = trials.map((t) => {
+      const isCurrent = currentX !== null && currentY !== null &&
+        Math.abs(t.x - currentX) < 1e-9 && Math.abs(t.y - currentY) < 1e-9;
+      const cls = isCurrent ? 'current' : (t.solved ? 'solved' : '');
+      return `<tr class="${cls}">
+        <td>${t.id}</td>
+        <td>(${formatNum(t.x)}, ${formatNum(t.y)})</td>
+        <td>${formatNum(t.mv)}</td>
+        <td>${t.solved ? '<span class="ok">✓</span>' : '<span class="no">✗</span>'}</td>
+      </tr>`;
+    }).join('');
+    trialBody.innerHTML = rows;
+  }
+
+  function recordCurrentTrial(){
+    const x = parseFloat(inX.value);
+    const y = parseFloat(inY.value);
+    if(isNaN(x) || isNaN(y)) return;
+    const mv = Mv(x, y);
+    trialCounter++;
+    trials.push({
+      id: trialCounter,
+      x: x,
+      y: y,
+      mv: mv,
+      solved: Math.abs(mv) < 0.005
+    });
+    while(trials.length > MAX_TRIALS){
+      trials.shift();
+    }
+    renderTrialsTable();
+    render();
+
+    if(Math.abs(mv) < 0.005){
+      rounds++;
+      if(rounds >= 2) reflectCard.classList.remove('hidden');
+    }
+  }
+
+  function updateLive(){
+    const x = parseFloat(inX.value);
+    const y = parseFloat(inY.value);
+    if(isNaN(x) || isNaN(y)){
+      resultValue.textContent = '?';
+      resultBig.textContent = '?';
+      resultBox.className = 'result-box';
+      dispX.textContent = 'x';
+      dispY.textContent = 'y';
+      render();
+      renderTrialsTable();
+      return;
+    }
+    dispX.textContent = formatNum(x);
+    dispY.textContent = formatNum(y);
+    const mv = Mv(x, y);
+    resultValue.textContent = formatNum(mv);
+    resultBig.textContent = formatNum(mv);
+    const solved = Math.abs(mv) < 0.005;
+    resultBox.className = 'result-box ' + (solved ? 'passed' : 'failed');
+    render();
+    renderTrialsTable();
+    if(solved){
+      rounds++;
+      if(rounds >= 2) reflectCard.classList.remove('hidden');
+    }
+  }
+
+  function resetGame(){
+    inX.value = '1'; inY.value = '-1';
+    m1 = 1; m2 = 1;
+    reflectCard.classList.add('hidden');
+    exploreCard.classList.add('hidden');
+    rounds = 0;
+    trials.length = 0;
+    trialCounter = 0;
+    updateLive();
+    renderTrialsTable();
+  }
+
+  inX.addEventListener('input', updateLive);
+  inY.addEventListener('input', updateLive);
+  inX.addEventListener('keydown', (e)=>{ if(e.key === 'Enter') recordCurrentTrial(); });
+  inY.addEventListener('keydown', (e)=>{ if(e.key === 'Enter') recordCurrentTrial(); });
+  resetBtn.addEventListener('click', resetGame);
+  recordBtn.addEventListener('click', recordCurrentTrial);
+
+  // ---- SVG rendering ----
+  function getBounds(){
+    // The line of solutions: m1*x + m2*y = 0 ⇒ if m2 ≠ 0, y = -m1/m2 * x
+    // If m2 = 0, then m1*x = 0 ⇒ x = 0 (the y-axis)
+    const candidates = [];
+    // The matrix row itself (visualized as a point if we want, but really it's a row vector)
+    // Show m1, m2 as a vector? Actually, just include the unit vectors
+    if(Math.abs(m2) > 1e-9){
+      // Line y = -m1/m2 * x. Include sample points on this line
+      for(let x = -5; x <= 5; x += 1){
+        candidates.push({x: x, y: -m1*x/m2});
+      }
+    } else {
+      // Vertical line at x=0 (y-axis)
+      for(let y = -5; y <= 5; y += 1){
+        candidates.push({x: 0, y: y});
+      }
+    }
+    const x = parseFloat(inX.value);
+    const y = parseFloat(inY.value);
+    if(!isNaN(x) && !isNaN(y)) candidates.push({x: x, y: y});
+    const xs = candidates.map(p => p.x);
+    const ys = candidates.map(p => p.y);
+    let xR = Math.max(Math.abs(Math.min(...xs)), Math.abs(Math.max(...xs)));
+    let yR = Math.max(Math.abs(Math.min(...ys)), Math.abs(Math.max(...ys)));
+    xR = Math.max(xR, 4);
+    yR = Math.max(yR, 4);
+    return {xMin: -xR, xMax: xR, yMin: -yR, yMax: yR};
+  }
+
+  function render(){
+    while(svg.firstChild) svg.removeChild(svg.firstChild);
+
+    const bounds = getBounds();
+    const xR = bounds.xMax - bounds.xMin;
+    const yR = bounds.yMax - bounds.yMin;
+    const xSc = PW / xR;
+    const ySc = PH / yR;
+
+    function toS(dx, dy){
+      return {
+        x: M.l + (dx - bounds.xMin) * xSc,
+        y: M.t + PH - (dy - bounds.yMin) * ySc
+      };
+    }
+
+    const originSvg = toS(0, 0);
+
+    // ---- Grid ----
+    const xStep = Math.max(1, Math.round(xR / 6));
+    const yStep = Math.max(1, Math.round(yR / 6));
+    for(let v = Math.ceil(bounds.xMin / xStep) * xStep; v <= bounds.xMax; v += xStep){
+      if(v === 0) continue;
+      const p = toS(v, 0);
+      if(p.x < M.l - 1 || p.x > M.l + PW + 1) continue;
+      const ln = mkL(p.x, M.t, p.x, M.t + PH, '#E4DCC4', 1);
+      ln.setAttribute('stroke-dasharray', '2 3');
+      svg.appendChild(ln);
+      const t = mkT(p.x, originSvg.y + 16, formatNum(v), 'tick-label');
+      t.setAttribute('text-anchor', 'middle');
+      svg.appendChild(t);
+    }
+    for(let v = Math.ceil(bounds.yMin / yStep) * yStep; v <= bounds.yMax; v += yStep){
+      if(v === 0) continue;
+      const p = toS(0, v);
+      if(p.y < M.t - 1 || p.y > M.t + PH + 1) continue;
+      const ln = mkL(M.l, p.y, M.l + PW, p.y, '#E4DCC4', 1);
+      ln.setAttribute('stroke-dasharray', '2 3');
+      svg.appendChild(ln);
+      const t = mkT(M.l - 6, p.y + 3, formatNum(v), 'tick-label');
+      t.setAttribute('text-anchor', 'end');
+      svg.appendChild(t);
+    }
+
+    // ---- Axes through (0,0) ----
+    if(0 >= bounds.yMin && 0 <= bounds.yMax){
+      svg.appendChild(mkL(M.l, originSvg.y, M.l + PW, originSvg.y, '#26332B', 1.5));
+    }
+    if(0 >= bounds.xMin && 0 <= bounds.xMax){
+      svg.appendChild(mkL(originSvg.x, M.t, originSvg.x, M.t + PH, '#26332B', 1.5));
+    }
+
+    // axis labels
+    const xlab = mkT(M.l + PW/2, M.t + PH + 42, 'x', 'axis-label');
+    xlab.setAttribute('text-anchor', 'middle');
+    svg.appendChild(xlab);
+    const ylab = mkT(16, M.t + PH/2, 'y', 'axis-label');
+    ylab.setAttribute('text-anchor', 'middle');
+    ylab.setAttribute('transform', `rotate(-90 16 ${M.t + PH/2})`);
+    svg.appendChild(ylab);
+
+    // ---- Line of solutions: m1*x + m2*y = 0 ----
+    if(Math.abs(m1) > 1e-9 || Math.abs(m2) > 1e-9){
+      let d = '';
+      let started = false;
+      if(Math.abs(m2) > 1e-9){
+        const slope = -m1 / m2;
+        for(let x = bounds.xMin; x <= bounds.xMax; x += (bounds.xMax - bounds.xMin)/200){
+          const y = slope * x;
+          if(!isFinite(y)) continue;
+          if(y < bounds.yMin || y > bounds.yMax) continue;
+          const sp = toS(x, y);
+          if(sp.x < M.l - 5 || sp.x > M.l + PW + 5 || sp.y < M.t - 5 || sp.y > M.t + PH + 5) continue;
+          d += (started ? ' L ' : 'M ') + sp.x + ' ' + sp.y + ' ';
+          started = true;
+        }
+      } else {
+        // Vertical line at x=0
+        for(let y = bounds.yMin; y <= bounds.yMax; y += (bounds.yMax - bounds.yMin)/200){
+          const sp = toS(0, y);
+          if(sp.x < M.l - 5 || sp.x > M.l + PW + 5 || sp.y < M.t - 5 || sp.y > M.t + PH + 5) continue;
+          d += (started ? ' L ' : 'M ') + sp.x + ' ' + sp.y + ' ';
+          started = true;
+        }
+      }
+      const path = document.createElementNS(svgNS, 'path');
+      path.setAttribute('d', d);
+      path.setAttribute('stroke', '#7B2D8E');
+      path.setAttribute('stroke-width', '2');
+      path.setAttribute('stroke-dasharray', '6 4');
+      path.setAttribute('fill', 'none');
+      svg.appendChild(path);
+
+      // Label near one end of the line
+      const labX = bounds.xMax * 0.85;
+      const labY = Math.abs(m2) > 1e-9 ? (-m1 / m2) * labX : bounds.yMax * 0.85;
+      if(labY >= bounds.yMin && labY <= bounds.yMax){
+        const sp = toS(labX, labY);
+        const t = mkT(sp.x - 6, sp.y - 8, 'every solution', 'tick-label');
+        t.setAttribute('fill', '#7B2D8E');
+        t.setAttribute('font-weight', '700');
+        t.setAttribute('font-size', '11');
+        t.setAttribute('text-anchor', 'end');
+        svg.appendChild(t);
+      }
+    }
+
+    // ---- v vector (teal) ----
+    const x = parseFloat(inX.value);
+    const y = parseFloat(inY.value);
+    if(!isNaN(x) && !isNaN(y) && (x !== 0 || y !== 0)){
+      drawArrow(x, y, '#0E7490', 'arrow-vec', `v = (${formatNum(x)}, ${formatNum(y)})`);
+    }
+
+    // ---- origin marker ----
+    const oc = document.createElementNS(svgNS, 'circle');
+    oc.setAttribute('cx', originSvg.x); oc.setAttribute('cy', originSvg.y);
+    oc.setAttribute('r', 3);
+    oc.setAttribute('fill', '#26332B');
+    svg.appendChild(oc);
+  }
+
+  function drawArrow(toX, toY, color, className, label){
+    const originSvg = toS(0, 0);
+    const sp2 = toS(toX, toY);
+    const dx = sp2.x - originSvg.x, dy = sp2.y - originSvg.y;
+    const len = Math.sqrt(dx*dx + dy*dy);
+    if(len < 1) return;
+    const ux = dx/len, uy = dy/len;
+    const tipX = sp2.x - ux * 4;
+    const tipY = sp2.y - uy * 4;
+    const shaft = mkL(originSvg.x, originSvg.y, tipX, tipY, color, 0);
+    shaft.setAttribute('class', className);
+    svg.appendChild(shaft);
+    const head = 8;
+    const left = { x: sp2.x - head*ux + head*0.4*uy, y: sp2.y - head*uy - head*0.4*ux };
+    const right = { x: sp2.x - head*ux - head*0.4*uy, y: sp2.y - head*uy + head*0.4*ux };
+    const headPath = document.createElementNS(svgNS, 'path');
+    headPath.setAttribute('d', `M ${sp2.x} ${sp2.y} L ${left.x} ${left.y} L ${right.x} ${right.y} Z`);
+    headPath.setAttribute('fill', color);
+    svg.appendChild(headPath);
+    const dotC = document.createElementNS(svgNS, 'circle');
+    dotC.setAttribute('cx', sp2.x); dotC.setAttribute('cy', sp2.y);
+    dotC.setAttribute('r', 3);
+    dotC.setAttribute('fill', color);
+    svg.appendChild(dotC);
+    if(label){
+      const off = 14;
+      const lx = sp2.x + ux*off;
+      const ly = sp2.y + uy*off - 6;
+      const t = mkT(lx, ly, label, 'tick-label');
+      t.setAttribute('text-anchor', (ux > 0.1 ? 'start' : (ux < -0.1 ? 'end' : 'middle')));
+      t.setAttribute('fill', color);
+      t.setAttribute('font-weight', '700');
+      t.setAttribute('font-size', '12');
+      svg.appendChild(t);
+    }
+  }
+
+  function mkL(x1, y1, x2, y2, stroke, w){
+    const l = document.createElementNS(svgNS, 'line');
+    l.setAttribute('x1', x1); l.setAttribute('y1', y1);
+    l.setAttribute('x2', x2); l.setAttribute('y2', y2);
+    l.setAttribute('stroke', stroke); l.setAttribute('stroke-width', w);
+    return l;
+  }
+  function mkT(x, y, text, cls){
+    const t = document.createElementNS(svgNS, 'text');
+    t.setAttribute('x', x); t.setAttribute('y', y);
+    t.setAttribute('class', cls);
+    t.textContent = text;
+    return t;
+  }
+
+  // ---- Interactive graph control ----
+  function pixelToData(px, py){
+    const b = getBounds();
+    const xR = b.xMax - b.xMin;
+    const yR = b.yMax - b.yMin;
+    const xSc = PW / xR, ySc = PH / yR;
+    return {
+      x: b.xMin + (px - M.l) / xSc,
+      y: b.yMin + (M.t + PH - py) / ySc
+    };
+  }
+  function round2(v){ return Math.round(v * 100) / 100; }
+  function eventToPixel(e){
+    const rect = svg.getBoundingClientRect();
+    const sx = 640 / rect.width;
+    const sy = 500 / rect.height;
+    return {
+      px: (e.clientX - rect.left) * sx,
+      py: (e.clientY - rect.top) * sy
+    };
+  }
+
+  svg.addEventListener('mousedown', (e)=>{
+    const {px, py} = eventToPixel(e);
+    const data = pixelToData(px, py);
+    isDragging = true;
+    inX.value = String(round2(data.x));
+    inY.value = String(round2(data.y));
+    updateLive();
+    svg.classList.add('dragging');
+    e.preventDefault();
+  });
+
+  document.addEventListener('mousemove', (e)=>{
+    if(!isDragging) return;
+    const rect = svg.getBoundingClientRect();
+    const sx = 640 / rect.width, sy = 500 / rect.height;
+    const px = (e.clientX - rect.left) * sx;
+    const py = (e.clientY - rect.top) * sy;
+    const cx = Math.max(M.l, Math.min(M.l + PW, px));
+    const cy = Math.max(M.t, Math.min(M.t + PH, py));
+    const data = pixelToData(cx, cy);
+    inX.value = String(round2(data.x));
+    inY.value = String(round2(data.y));
+    updateLive();
+  });
+
+  document.addEventListener('mouseup', ()=>{
+    if(!isDragging) return;
+    isDragging = null;
+    svg.classList.remove('dragging');
+  });
+
+  // ---- QUIZ ----
+  document.querySelectorAll('.q .options').forEach(group => {
+    group.querySelectorAll('.opt').forEach(btn => {
+      btn.addEventListener('click', ()=>{
+        const correct = btn.dataset.correct === 'true';
+        group.querySelectorAll('.opt').forEach(b => {
+          b.disabled = true;
+          if(b.dataset.correct === 'true') b.classList.add('correct');
+        });
+        if(!correct) btn.classList.add('wrong');
+        if(group.parentElement.id === 'q3' && correct){
+          setTimeout(()=>{
+            exploreCard.classList.remove('hidden');
+            exploreCard.scrollIntoView({behavior:'smooth', block:'nearest'});
+            rebuildExplore();
+          }, 400);
+        }
+      });
+    });
+  });
+
+  // ---- EXPLORE ----
+  const expM1 = document.getElementById('expM1');
+  const expM2 = document.getElementById('expM2');
+  const exploreEq = document.getElementById('exploreEq');
+
+  function rebuildExplore(){
+    const nv1 = parseFloat(expM1.value);
+    const nv2 = parseFloat(expM2.value);
+    if(isNaN(nv1) || isNaN(nv2)) return;
+    if(nv1 === 0 && nv2 === 0){
+      exploreEq.textContent = 'row [0 0] — every vector satisfies this trivially (any v works)';
+      m1 = nv1; m2 = nv2;
+      render();
+      return;
+    }
+    m1 = nv1; m2 = nv2;
+    if(Math.abs(nv2) < 1e-9){
+      exploreEq.textContent = `row [${formatNum(nv1)} ${formatNum(nv2)}] — solutions on x = 0 (the y-axis)`;
+    } else {
+      const slope = -nv1 / nv2;
+      const sign = (slope < 0 ? '−' : '');
+      exploreEq.textContent = `row [${formatNum(nv1)} ${formatNum(nv2)}] — solutions on y = ${formatNum(slope)}·x (slope ${sign}${Math.abs(slope).toFixed(2)})`;
+    }
+    render();
+  }
+  [expM1, expM2].forEach(inp => {
+    inp.addEventListener('input', rebuildExplore);
+  });
+
+  // init
+  renderTrialsTable();
+  updateLive();
+})();
+</script>
+</body>
+</html>

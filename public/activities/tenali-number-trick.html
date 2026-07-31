@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tenali's Number Trick — What is f(5)?</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=IBM+Plex+Mono:wght@500;600&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper: #FAF5E8;
+    --paper-line: #D8CFB6;
+    --ink: #26332B;
+    --ink-soft: #5B6B60;
+    --tenali: #B8860B;
+    --tenali-soft: #F3E9CE;
+    --accent: #1F6F5C;
+    --accent-soft: #DCEDE7;
+    --slope: #B8860B;
+    --slope-soft: #F3E9CE;
+    --intercept: #7B5EA7;
+    --intercept-soft: #EAE3F5;
+    --good: #1F6F5C;
+    --card: #FFFDF7;
+    --shadow: 0 2px 10px rgba(38,51,43,0.08);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:
+      repeating-linear-gradient(#FAF5E8 0px, #FAF5E8 27px, var(--paper-line) 28px),
+      var(--paper);
+    background-size: 100% 28px;
+    color:var(--ink);
+    font-family:'Source Sans 3', sans-serif;
+    min-height:100vh;
+    padding: 28px 16px 60px;
+  }
+  .wrap{max-width:1080px;margin:0 auto;}
+
+  header.hero{
+    background: var(--card);
+    border:1px solid var(--paper-line);
+    border-radius:14px;
+    box-shadow: var(--shadow);
+    padding: 26px 28px 22px;
+    margin-bottom:20px;
+    position:relative;
+    overflow:hidden;
+  }
+  .eyebrow{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--ink-soft);
+    margin:0 0 6px;
+  }
+  h1{
+    font-family:'Caveat', cursive;
+    font-weight:700;
+    font-size:44px;
+    margin:0 0 10px;
+    color:var(--ink);
+    line-height:1.05;
+  }
+  header.hero p{
+    max-width:680px;
+    line-height:1.55;
+    font-size:15.5px;
+    color:var(--ink);
+    margin:0 0 8px;
+  }
+  .rule-badge{
+    display:inline-flex;
+    gap:14px;
+    align-items:center;
+    background:var(--paper);
+    border:1px dashed var(--paper-line);
+    border-radius:10px;
+    padding:10px 14px;
+    margin-top:10px;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:13px;
+  }
+  .rule-badge .pill{
+    display:inline-flex; align-items:center; gap:6px;
+    padding:3px 9px; border-radius:20px; font-weight:600;
+  }
+  .pill.step-pick{ background:var(--accent-soft); color:var(--accent); }
+  .pill.step-square{ background:var(--tenali-soft); color:var(--tenali); }
+  .pill.step-sub{ background:var(--intercept-soft); color:var(--intercept); }
+  .pill.eq{ background:var(--paper); border:1px solid var(--paper-line); color:var(--ink); }
+
+  .grid-layout{
+    display:grid;
+    grid-template-columns: 320px 1fr;
+    gap:20px;
+    align-items:start;
+  }
+  @media (max-width: 800px){
+    .grid-layout{ grid-template-columns: 1fr; }
+  }
+
+  .card{
+    background:var(--card);
+    border:1px solid var(--paper-line);
+    border-radius:14px;
+    box-shadow: var(--shadow);
+    padding:20px;
+  }
+
+  .panel-title{
+    font-family:'Caveat', cursive;
+    font-weight:700;
+    font-size:24px;
+    margin:0 0 4px;
+  }
+  .panel-sub{
+    font-size:13px; color:var(--ink-soft); margin:0 0 16px; line-height:1.4;
+  }
+
+  .eq-box{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:22px;
+    font-weight:600;
+    text-align:center;
+    background:var(--paper);
+    border:1px solid var(--paper-line);
+    border-radius:10px;
+    padding:10px;
+    margin-bottom:16px;
+    color:var(--tenali);
+  }
+
+  .field{ margin-bottom:16px; }
+  .field label{
+    display:flex; justify-content:space-between;
+    font-size:13.5px; font-weight:600; margin-bottom:6px;
+  }
+  .field label span.val{
+    font-family:'IBM Plex Mono', monospace;     color:var(--tenali);
+    font-weight:600;
+  }
+  input[type=number]{
+    width:100%;
+    padding:9px 10px;
+    border-radius:8px;
+    border:1px solid var(--paper-line);
+    font-family:'IBM Plex Mono', monospace;
+    font-size:16px;
+    background:var(--paper);
+    color:var(--ink);
+    -moz-appearance: textfield;
+  }
+  input[type=number]::-webkit-inner-spin-button,
+  input[type=number]::-webkit-outer-spin-button{
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  input[type=number]:focus{
+    outline:2px solid var(--tenali);
+    outline-offset:-1px;
+    border-color:var(--tenali);
+    background:var(--card);
+  }
+  input[type=number]:disabled{
+    opacity:.5;
+    cursor:not-allowed;
+  }
+  .helper{ font-size:12px; color:var(--ink-soft); margin-top:6px; line-height:1.4; }
+  .helper span.k{ font-family:'IBM Plex Mono', monospace; color:var(--ink); font-weight:600; }
+
+  .jars{ display:flex; gap:14px; margin-bottom:18px; }
+  .jar{
+    flex:1; text-align:center; padding:12px 6px;
+    border-radius:10px; border:1px solid var(--paper-line);
+  }
+  .jar.x-jar{ background:var(--accent-soft); }
+  .jar.fx-jar{ background:var(--tenali-soft); }
+  .jar .name{ font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:.05em; }
+  .jar.x-jar .name{ color:var(--accent); }
+  .jar.fx-jar .name{ color:var(--tenali); }
+  .jar .amt{ font-family:'IBM Plex Mono', monospace; font-size:22px; font-weight:600; margin-top:4px; }
+
+  button{
+    font-family:'Source Sans 3', sans-serif;
+    font-weight:600; font-size:14.5px;
+    border:none; border-radius:9px;
+    padding:11px 16px; cursor:pointer;
+    width:100%;
+    transition: transform .08s ease, filter .15s ease;
+  }
+  button:active{ transform: translateY(1px); }
+  button:disabled{ opacity:.4; cursor:not-allowed; }
+  .btn-primary{ background:var(--tenali); color:#fff; }
+  .btn-primary:hover:not(:disabled){ filter:brightness(1.08); }
+  .btn-secondary{ background:var(--paper); color:var(--ink); border:1px solid var(--paper-line); margin-top:8px; }
+  .btn-secondary:hover:not(:disabled){ background:#F0E9D6; }
+
+  .status{
+    font-size:13.5px; line-height:1.5; padding:12px 12px; border-radius:9px;
+    background:var(--paper); border:1px solid var(--paper-line); margin-bottom:14px; min-height:20px;
+  }
+  .status.feedback-good{ background:var(--accent-soft); border-color:var(--accent); color:var(--accent); font-weight:600; }
+  .status.feedback-mid{ background:var(--intercept-soft); border-color:var(--intercept); color:var(--intercept); font-weight:600; }
+
+  .graph-card{ display:flex; flex-direction:column; }
+  .graph-card .panel-title{ margin-bottom:0; }
+  .legend{
+    display:flex; gap:18px; flex-wrap:wrap; margin: 6px 0 12px;
+    font-size:12.5px; font-family:'IBM Plex Mono', monospace;
+  }
+  .legend span{ display:inline-flex; align-items:center; gap:6px; }
+  .dot{ width:10px; height:10px; border-radius:50%; display:inline-block; }
+  .dot.guess{ background:var(--intercept); }
+  .dot.actual{ background:var(--tenali); }
+  .dot.curve{ background:var(--accent); }
+  .dot.vertex{ background:var(--intercept); }
+  .dot.origin{ background:var(--ink); }
+
+  svg{ width:100%; height:auto; display:block; }
+  .axis-label{
+    font-family:'IBM Plex Mono', monospace; font-size:12px; fill:var(--ink-soft);
+  }
+  .tick-label{ font-family:'IBM Plex Mono', monospace; font-size:10px; fill:var(--ink-soft); }
+
+  .steps{ display:flex; gap:6px; margin-bottom:14px; flex-wrap:wrap; }
+  .step-dot{
+    width:26px; height:26px; border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    font-family:'IBM Plex Mono', monospace; font-size:12px; font-weight:600;
+    border:1.5px solid var(--paper-line); color:var(--ink-soft); background:var(--paper);
+  }
+  .step-dot.done{ background:var(--tenali); border-color:var(--tenali); color:#fff; }
+  .step-dot.active{ border-color:var(--accent); color:var(--accent); background:var(--accent-soft); }
+
+  .reflect{
+    margin-top:20px; padding-top:16px; border-top:1px dashed var(--paper-line);
+  }
+  .reflect.hidden, .explore.hidden{ display:none; }
+  .q{ margin-bottom:16px; }
+  .q p.qtext{ font-weight:600; margin:0 0 8px; font-size:14.5px; }
+  .options{ display:flex; gap:8px; flex-wrap:wrap; }
+  .opt{
+    padding:8px 14px; border-radius:8px; border:1px solid var(--paper-line);
+    background:var(--paper); font-size:13.5px; cursor:pointer; font-weight:600;
+  }
+  .opt.correct{ background:var(--accent-soft); border-color:var(--accent); color:var(--accent); }
+  .opt.wrong{ background:var(--tenali-soft); border-color:var(--tenali); color:var(--tenali); }
+  .opt:disabled{ cursor:default; }
+
+  .explore{ margin-top:20px; padding-top:16px; border-top:1px dashed var(--paper-line); }
+  .explore .panel-title{ font-size:22px; }
+
+  .explore-inputs{
+    display:flex; gap:16px; flex-wrap:wrap; margin:10px 0 16px;
+  }
+  .explore-inputs .field{
+    flex:1; min-width:140px; margin-bottom:0;
+  }
+  .explore-inputs .field label span.v-int{
+    font-family:'IBM Plex Mono', monospace; color:var(--intercept); font-weight:600;
+  }
+
+  footer.note{
+    text-align:center; font-size:12px; color:var(--ink-soft); margin-top:26px;
+    font-family:'IBM Plex Mono', monospace;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <p class="eyebrow">Intuition Builder · Functions and Graphs</p>
+    <h1>Tenali's Number Trick — What is f(5)?</h1>
+    <p>Tenali's number trick: <strong>pick a number x</strong>, <strong>square it</strong>, then <strong>subtract 10</strong>. The result is called <em>f(x)</em>. So f(x) = x² − 10. Try the trick five times for x = 1, 2, 3, 4, 5 — by the end you'll have computed <strong>f(5)</strong>.</p>
+    <div class="rule-badge">
+      <span class="pill step-pick">pick x</span>
+      <span>→</span>
+      <span class="pill step-square">square (x²)</span>
+      <span>−</span>
+      <span class="pill step-sub">10</span>
+      <span>=</span>
+      <span class="pill eq">f(x) = x² − 10</span>
+    </div>
+  </header>
+
+  <div class="grid-layout">
+
+    <!-- LEFT CONTROL PANEL -->
+    <div class="card">
+      <p class="panel-title">Evaluate f(x)</p>
+      <p class="panel-sub">For each round, type the value of f(x) = x² − 10 for the given x. Tenali will check.</p>
+
+      <div class="eq-box" id="eqDisplay">f(x) = x² − 10</div>
+
+      <div class="field">
+        <label>For x = <span id="currentXLabel">1</span>, predict f(x):</label>
+        <input type="number" id="predictY" step="any" placeholder="?">
+        <div class="helper" id="predictHelper">f(<span class="k" id="xDisplay">1</span>) = <span class="k">1</span>² − <span class="k">10</span> = ?</div>
+      </div>
+
+      <div class="jars">
+        <div class="jar x-jar">
+          <div class="name">Input (x)</div>
+          <div class="amt" id="xVal">1</div>
+        </div>
+        <div class="jar fx-jar">
+          <div class="name">Output f(x)</div>
+          <div class="amt" id="yVal">?</div>
+        </div>
+      </div>
+
+      <div class="steps" id="stepDots"></div>
+
+      <div class="status" id="statusBox">Tenali picks <strong>x = 1</strong>. Type what <strong>f(1)</strong> should be, then press Predict.</div>
+
+      <button class="btn-primary" id="checkBtn">Predict &amp; Reveal</button>
+      <button class="btn-secondary" id="resetBtn">Start over</button>
+    </div>
+
+    <!-- RIGHT GRAPH -->
+    <div class="card graph-card">
+      <p class="panel-title">The graph of f(x)</p>
+      <div class="legend">
+        <span><i class="dot guess"></i>your guess</span>
+        <span><i class="dot actual"></i>actual point</span>
+        <span><i class="dot curve"></i>y = x² − 10</span>
+        <span><i class="dot vertex"></i>vertex (0, −10)</span>
+        <span><i class="dot origin"></i>origin (0, 0)</span>
+      </div>
+      <svg id="graphSvg" viewBox="0 0 640 500" xmlns="http://www.w3.org/2000/svg"></svg>
+    </div>
+  </div>
+
+  <!-- REFLECTION QUIZ -->
+  <div class="card reflect hidden" id="reflectCard">
+    <p class="panel-title">What do you notice?</p>
+    <p class="panel-sub">All five points are plotted. Look at the shape they form before you answer.</p>
+
+    <div class="q" id="q1">
+      <p class="qtext">1. The five points (1, f(1)) through (5, f(5)) form a shape that looks like…</p>
+      <div class="options">
+        <button class="opt" data-correct="false">a straight line going up</button>
+        <button class="opt" data-correct="true">a curve that dips down then rises — like a U or smile (a parabola)</button>
+        <button class="opt" data-correct="false">a scattered cloud, no clear shape</button>
+      </div>
+    </div>
+
+    <div class="q" id="q2">
+      <p class="qtext">2. What is <strong>f(5)</strong>?</p>
+      <div class="options">
+        <button class="opt" data-correct="false">f(5) = 5</button>
+        <button class="opt" data-correct="false">f(5) = 35</button>
+        <button class="opt" data-correct="true">f(5) = 15</button>
+      </div>
+    </div>
+
+    <div class="q" id="q3">
+      <p class="qtext">3. Where does the curve reach its lowest point (its minimum, or <em>vertex</em>)?</p>
+      <div class="options">
+        <button class="opt" data-correct="false">At x = 0, f(x) = 0 — it passes through the origin</button>
+        <button class="opt" data-correct="true">At x = 0, f(x) = −10 — the vertex sits below the origin</button>
+        <button class="opt" data-correct="false">The curve never has a minimum — it keeps going down forever</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- EXPLORE MODE -->
+  <div class="card explore hidden" id="exploreCard">
+    <p class="panel-title">Now you try: shift the curve</p>
+    <p class="panel-sub">Change the constant c. The whole parabola slides up or down — but the U-shape stays the same. Watch the vertex move with it.</p>
+
+    <div class="explore-inputs">
+      <div class="field">
+        <label>Constant <em>c</em> (the "subtract" amount) <span class="v-int" id="expCVal">−10</span></label>
+        <input type="number" id="expC" min="-20" max="20" step="1" value="-10">
+        <div class="helper">Try <strong>c = 0</strong> — the vertex sits right on the x-axis (passes through origin). Try <strong>c = +10</strong> — the whole curve lifts upward.</div>
+      </div>
+    </div>
+
+    <div class="eq-box" id="exploreEq">f(x) = x² − 10</div>
+  </div>
+
+  <footer class="note">Built for function evaluation &amp; parabolas · f(x) = x² + c is a parabola with vertex at (0, c) · f(5) = 5² − 10 = 15</footer>
+</div>
+
+<script>
+(function(){
+  const svgNS = "http://www.w3.org/2000/svg";
+  const svg = document.getElementById('graphSvg');
+  const originX = 80, originY = 460;
+  const plotW = 520, plotH = 400;
+
+  // ---- STATE ----
+  const MAIN_STEPS = 5;
+  let c = -10; // f(x) = x² + c (default c=-10 means f(x) = x² - 10)
+  let step = 0;
+  let points = [];
+  let prediction = null;
+  let revealed = false;
+  let mode = 'predict';
+
+  // ---- DOM ----
+  const predictY = document.getElementById('predictY');
+  const currentXLabel = document.getElementById('currentXLabel');
+  const xDisplay = document.getElementById('xDisplay');
+  const xVal = document.getElementById('xVal');
+  const yVal = document.getElementById('yVal');
+  const eqDisplay = document.getElementById('eqDisplay');
+  const predictHelper = document.getElementById('predictHelper');
+  const statusBox = document.getElementById('statusBox');
+  const checkBtn = document.getElementById('checkBtn');
+  const resetBtn = document.getElementById('resetBtn');
+  const stepDots = document.getElementById('stepDots');
+  const reflectCard = document.getElementById('reflectCard');
+  const exploreCard = document.getElementById('exploreCard');
+
+  for(let i=1;i<=MAIN_STEPS;i++){
+    const d = document.createElement('div');
+    d.className='step-dot';
+    d.textContent = i;
+    d.id = 'step-'+i;
+    stepDots.appendChild(d);
+  }
+
+  function eqString(intercept){
+    const cPart = intercept === 0 ? '' : (intercept > 0 ? ` + ${intercept}` : ` − ${Math.abs(intercept)}`);
+    return `f(x) = x²${cPart}`;
+  }
+
+  function updateEq(){
+    eqDisplay.textContent = eqString(c);
+  }
+
+  function updatePredictHelper(){
+    const currentX = step + 1;
+    currentXLabel.textContent = currentX;
+    xDisplay.textContent = currentX;
+    xVal.textContent = currentX;
+    yVal.textContent = '?';
+    predictHelper.innerHTML = `f(<span class="k">${currentX}</span>) = <span class="k">${currentX}</span>² − <span class="k">10</span> = ?`;
+  }
+
+  function updateStatus(html, cls){
+    statusBox.innerHTML = html;
+    statusBox.className = 'status' + (cls ? (' '+cls) : '');
+  }
+
+  function getCurrentTarget(){
+    const x = step + 1;
+    return {x, y: x*x + c};
+  }
+
+  function niceMax(v){
+    if(v <= 0) return 10;
+    const mag = Math.pow(10, Math.floor(Math.log10(v)));
+    const norm = v / mag;
+    let n;
+    if(norm <= 1) n = 1; else if(norm <= 2) n = 2; else if(norm <= 4) n = 4; else if(norm <= 5) n = 5; else n = 10;
+    return n * mag;
+  }
+  function niceMin(v){
+    if(v >= 0) return 0;
+    const mag = Math.pow(10, Math.floor(Math.log10(Math.abs(v))));
+    const norm = Math.abs(v) / mag;
+    let n;
+    if(norm <= 1) n = 1; else if(norm <= 2) n = 2; else if(norm <= 4) n = 4; else if(norm <= 5) n = 5; else n = 10;
+    return -(n * mag);
+  }
+
+  function getDataBounds(){
+    const allPts = points.concat([]);
+    const expCraw = document.getElementById('expC');
+    const useC = (mode === 'explore' && expCraw && expCraw.value !== '') ? parseFloat(expCraw.value) : c;
+    // parabola at x = ±6 with current c
+    const xMinData = -6, xMaxData = 6;
+    const yAtMin = xMinData * xMinData + useC;
+    const yAtMax = xMaxData * xMaxData + useC;
+    const allYs = [...allPts.map(p => p.y), useC, yAtMin, yAtMax];
+    let minY = Math.min(...allYs);
+    let maxY = Math.max(...allYs);
+    // Include 0 in the y-range so the x-axis (y=0) is always visible
+    minY = Math.min(minY, 0);
+    maxY = Math.max(maxY, 0);
+    return {
+      xMin: xMinData,
+      xMax: xMaxData,
+      yMin: niceMin(minY - 1),
+      yMax: niceMax(maxY + 1)
+    };
+  }
+
+  function render(){
+    while(svg.firstChild) svg.removeChild(svg.firstChild);
+
+    const bounds = getDataBounds();
+    const xRange = bounds.xMax - bounds.xMin;
+    const yRange = bounds.yMax - bounds.yMin;
+    const xScale = plotW / xRange;
+    const yScale = plotH / yRange;
+    const originDataX = bounds.xMin;
+    const originDataY = bounds.yMin;
+
+    function toSvg(dx, dy){
+      return {
+        x: originX + (dx - originDataX) * xScale,
+        y: originY - (dy - originDataY) * yScale
+      };
+    }
+
+    // SVG coords of the data origin (0, 0)
+    const originSvg = toSvg(0, 0);
+
+    // grid lines + tick labels — anchored to the data axes
+    const xStep = niceMax(xRange / 6) || 1;
+    const yStep = niceMax(yRange / 6) || 1;
+
+    const yAxisInRange = (0 >= bounds.xMin && 0 <= bounds.xMax);
+    const xAxisInRange = (0 >= bounds.yMin && 0 <= bounds.yMax);
+
+    // vertical grid lines (constant x), with x-tick labels just below the x-axis
+    for(let v = Math.ceil(bounds.xMin / xStep) * xStep; v <= bounds.xMax; v += xStep){
+      if(v === 0) continue;
+      const p = toSvg(v, 0);
+      if(p.x >= originX - 1 && p.x <= originX + plotW + 1){
+        const gl = mkLine(p.x, originY, p.x, originY - plotH, '#E4DCC4', 1);
+        svg.appendChild(gl);
+        const labelY = xAxisInRange ? originSvg.y + 18 : originY + 18;
+        const tl = mkText(p.x, labelY, '' + Math.round(v), 'tick-label');
+        tl.setAttribute('text-anchor', 'middle');
+        svg.appendChild(tl);
+      }
+    }
+
+    // horizontal grid lines (constant y), with y-tick labels just left of the y-axis
+    for(let v = Math.ceil(bounds.yMin / yStep) * yStep; v <= bounds.yMax; v += yStep){
+      if(v === 0) continue;
+      const p = toSvg(0, v);
+      if(p.y <= originY + 1 && p.y >= originY - plotH - 1){
+        const gl = mkLine(originX, p.y, originX + plotW, p.y, '#E4DCC4', 1);
+        svg.appendChild(gl);
+        const labelX = yAxisInRange ? originSvg.x - 8 : originX - 8;
+        const tl = mkText(labelX, p.y + 3, '' + Math.round(v), 'tick-label');
+        tl.setAttribute('text-anchor', 'end');
+        svg.appendChild(tl);
+      }
+    }
+
+    // axes — drawn THROUGH the data origin (0, 0), not at the plot corner
+    if(xAxisInRange){
+      svg.appendChild(mkLine(originX, originSvg.y, originX + plotW, originSvg.y, '#26332B', 1.5));
+    }
+    if(yAxisInRange){
+      svg.appendChild(mkLine(originSvg.x, originY - plotH, originSvg.x, originY, '#26332B', 1.5));
+    }
+
+    // axis labels — at the plot edges, away from the axes themselves
+    const xlab = mkText(originX + plotW/2, originY + 42, 'Input x', 'axis-label');
+    xlab.setAttribute('text-anchor', 'middle');
+    svg.appendChild(xlab);
+    const ylab = mkText(18, originY - plotH/2, 'Output f(x)', 'axis-label');
+    ylab.setAttribute('text-anchor', 'middle');
+    ylab.setAttribute('transform', `rotate(-90 18 ${originY - plotH/2})`);
+    svg.appendChild(ylab);
+
+    // origin marker + label — placed above-right of origin so it doesn't overlap the axis lines
+    if(yAxisInRange && xAxisInRange){
+      const o = document.createElementNS(svgNS, 'circle');
+      o.setAttribute('cx', originSvg.x); o.setAttribute('cy', originSvg.y);
+      o.setAttribute('r', 4);
+      o.setAttribute('fill', '#26332B');
+      svg.appendChild(o);
+      const ol = mkText(originSvg.x + 8, originSvg.y - 8, '(0, 0)', 'tick-label');
+      ol.setAttribute('font-weight', '600');
+      ol.setAttribute('fill', '#26332B');
+      svg.appendChild(ol);
+    }
+
+    // parabola curve (always shown, since equation is fixed)
+    const useC = (mode === 'explore') ? (parseFloat(document.getElementById('expC').value) || c) : c;
+    const parabolaPts = [];
+    const sampleStep = 0.2;
+    for(let xi = bounds.xMin; xi <= bounds.xMax + 0.001; xi += sampleStep){
+      parabolaPts.push({x: xi, y: xi*xi + useC});
+    }
+    let d = '';
+    parabolaPts.forEach((p, i) => {
+      const sp = toSvg(p.x, p.y);
+      if(sp.x < originX - 5 || sp.x > originX + plotW + 5 ||
+         sp.y < originY - plotH - 5 || sp.y > originY + 5) return;
+      d += (i === 0 ? 'M ' : 'L ') + sp.x + ' ' + sp.y + ' ';
+    });
+    const path = document.createElementNS(svgNS, 'path');
+    path.setAttribute('d', d);
+    path.setAttribute('stroke', '#1F6F5C');
+    path.setAttribute('stroke-width', '2.5');
+    path.setAttribute('fill', 'none');
+    svg.appendChild(path);
+
+    // vertex (0, c) marker
+    const vp = toSvg(0, useC);
+    if(vp.y >= originY - plotH && vp.y <= originY &&
+       vp.x >= originX && vp.x <= originX + plotW){
+      const vc = document.createElementNS(svgNS, 'circle');
+      vc.setAttribute('cx', vp.x); vc.setAttribute('cy', vp.y);
+      vc.setAttribute('r', 5);
+      vc.setAttribute('fill', '#7B5EA7');
+      vc.setAttribute('stroke', '#FFFDF7'); vc.setAttribute('stroke-width', '2');
+      svg.appendChild(vc);
+      const vl = mkText(vp.x - 8, vp.y - 8, `vertex (0, ${useC})`, 'tick-label');
+      vl.setAttribute('text-anchor', 'end');
+      vl.setAttribute('font-weight', '600');
+      vl.setAttribute('fill', '#7B5EA7');
+      svg.appendChild(vl);
+    }
+
+    // x-intercept (where parabola crosses x-axis, i.e. where x² + c = 0)
+    // skip in main mode; mark in explore for insight
+    if(mode === 'explore'){
+      const disc = -useC;
+      if(disc > 0){
+        const sq = Math.sqrt(disc);
+        [-sq, sq].forEach(xr => {
+          if(xr >= bounds.xMin && xr <= bounds.xMax){
+            const ip = toSvg(xr, 0);
+            const ic = document.createElementNS(svgNS, 'circle');
+            ic.setAttribute('cx', ip.x); ic.setAttribute('cy', ip.y);
+            ic.setAttribute('r', 3.5);
+            ic.setAttribute('fill', '#7B5EA7');
+            svg.appendChild(ic);
+          }
+        });
+      }
+    }
+
+    // confirmed points (main mode)
+    points.forEach((p) => {
+      const sp = toSvg(p.x, p.y);
+      if(sp.x < originX - 10 || sp.x > originX + plotW + 10 ||
+         sp.y < originY - plotH - 10 || sp.y > originY + 10) return;
+      const c = document.createElementNS(svgNS, 'circle');
+      c.setAttribute('cx', sp.x); c.setAttribute('cy', sp.y);
+      c.setAttribute('r', 7);
+      c.setAttribute('fill', '#B8860B');
+      c.setAttribute('stroke', '#FFFDF7'); c.setAttribute('stroke-width', '2');
+      svg.appendChild(c);
+      const lab = mkText(sp.x + 10, sp.y - 8, `(${p.x}, ${p.y})`, 'tick-label');
+      lab.setAttribute('font-weight', '600');
+      lab.setAttribute('fill', '#B8860B');
+      svg.appendChild(lab);
+    });
+
+    // prediction marker (predict mode, before reveal)
+    if(mode === 'predict' && prediction !== null && !revealed){
+      const target = getCurrentTarget();
+      const sp = toSvg(target.x, prediction);
+      const targetSp = toSvg(target.x, target.y);
+      if(Math.abs(prediction - target.y) > 0.05){
+        const guide = mkLine(sp.x, sp.y, targetSp.x, targetSp.y, '#7B5EA7', 1.5);
+        guide.setAttribute('stroke-dasharray', '4 3');
+        guide.setAttribute('stroke-opacity', '0.5');
+        svg.appendChild(guide);
+      }
+      const c = document.createElementNS(svgNS, 'circle');
+      c.setAttribute('cx', sp.x); c.setAttribute('cy', sp.y);
+      c.setAttribute('r', 7);
+      c.setAttribute('fill', '#7B5EA7');
+      c.setAttribute('fill-opacity', '0.9');
+      c.setAttribute('stroke', '#FFFDF7'); c.setAttribute('stroke-width', '2');
+      svg.appendChild(c);
+      const lab = mkText(sp.x + 10, sp.y - 10, `you: ${prediction}`, 'tick-label');
+      lab.setAttribute('fill', '#7B5EA7');
+      lab.setAttribute('font-weight', '600');
+      svg.appendChild(lab);
+    }
+
+    // explore mode: plot 5 weekly points for current c
+    if(mode === 'explore'){
+      for(let xi = 1; xi <= 5; xi++){
+        const yi = xi*xi + useC;
+        const sp = toSvg(xi, yi);
+        if(sp.x < originX - 10 || sp.x > originX + plotW + 10 ||
+           sp.y < originY - plotH - 10 || sp.y > originY + 10) continue;
+        const ec = document.createElementNS(svgNS, 'circle');
+        ec.setAttribute('cx', sp.x); ec.setAttribute('cy', sp.y);
+        ec.setAttribute('r', 6);
+        ec.setAttribute('fill', '#B8860B');
+        ec.setAttribute('fill-opacity', '0.85');
+        ec.setAttribute('stroke', '#FFFDF7'); ec.setAttribute('stroke-width', '2');
+        svg.appendChild(ec);
+        const lab = mkText(sp.x + 8, sp.y - 6, `(${xi},${yi})`, 'tick-label');
+        lab.setAttribute('font-weight', '600');
+        lab.setAttribute('fill', '#B8860B');
+        svg.appendChild(lab);
+      }
+    }
+  }
+
+  function mkLine(x1, y1, x2, y2, stroke, w){
+    const l = document.createElementNS(svgNS, 'line');
+    l.setAttribute('x1', x1); l.setAttribute('y1', y1);
+    l.setAttribute('x2', x2); l.setAttribute('y2', y2);
+    l.setAttribute('stroke', stroke); l.setAttribute('stroke-width', w);
+    return l;
+  }
+  function mkText(x, y, text, cls){
+    const t = document.createElementNS(svgNS, 'text');
+    t.setAttribute('x', x); t.setAttribute('y', y);
+    t.setAttribute('class', cls);
+    t.textContent = text;
+    return t;
+  }
+
+  // ---- MAIN LOGIC ----
+  function checkPrediction(){
+    if(mode === 'done') return;
+    if(revealed){
+      step++;
+      revealed = false;
+      prediction = null;
+      predictY.value = '';
+      checkBtn.textContent = 'Predict & Reveal';
+      if(step >= MAIN_STEPS){
+        mode = 'done';
+        checkBtn.textContent = 'Finish';
+        checkBtn.disabled = true;
+        updateStatus('All 5 rounds done — and you\'ve computed <strong>f(5) = 15</strong>. Scroll down to reflect!', 'feedback-good');
+        render();
+        setTimeout(()=>{
+          reflectCard.classList.remove('hidden');
+          reflectCard.scrollIntoView({behavior:'smooth', block:'nearest'});
+        }, 500);
+        return;
+      }
+      updatePredictHelper();
+      const nextX = step + 1;
+      updateStatus(`Tenali picks <strong>x = ${nextX}</strong>. Type what <strong>f(${nextX})</strong> should be, then press Predict.`);
+      render();
+      return;
+    }
+
+    const py = parseFloat(predictY.value);
+    if(isNaN(py)){
+      updateStatus('Enter a number for your prediction first.');
+      return;
+    }
+    prediction = py;
+    const target = getCurrentTarget();
+    const diff = Math.abs(py - target.y);
+
+    revealed = true;
+    points.push({x: target.x, y: target.y});
+
+    const dot = document.getElementById('step-' + (step + 1));
+    if(dot) dot.classList.add('done', 'active');
+    if(step > 0){
+      const prev = document.getElementById('step-' + step);
+      if(prev) prev.classList.remove('active');
+    }
+
+    yVal.textContent = py;
+
+    let msg, cls;
+    if(diff < 0.05){
+      msg = `Exactly right! f(${target.x}) = ${target.x}² − 10 = <strong>${target.y}</strong>.`;
+      cls = 'feedback-good';
+    } else {
+      const dir = py > target.y ? 'high' : 'low';
+      msg = `Not quite. You guessed <strong>${py}</strong> (${Math.round(diff)} ${dir}). The actual value is f(${target.x}) = ${target.x}² − 10 = <strong>${target.y}</strong>.`;
+      cls = 'feedback-mid';
+    }
+
+    if(step + 1 >= MAIN_STEPS){
+      checkBtn.textContent = 'See the line';
+      mode = 'done';
+      msg += ' 🎉 That\'s f(5) = 15 — the answer!';
+    } else {
+      checkBtn.textContent = 'Next x';
+    }
+
+    updateStatus(msg, cls);
+    render();
+  }
+
+  checkBtn.addEventListener('click', checkPrediction);
+
+  predictY.addEventListener('input', () => {
+    const raw = predictY.value;
+    if(raw === '' || raw === '-'){
+      prediction = null;
+      yVal.textContent = '?';
+      render();
+      return;
+    }
+    const py = parseFloat(raw);
+    if(isNaN(py)){
+      prediction = null;
+      yVal.textContent = '?';
+      render();
+      return;
+    }
+    prediction = py;
+    yVal.textContent = py;
+    if(mode === 'predict') render();
+  });
+
+  predictY.addEventListener('keydown', (e) => {
+    if(e.key === 'Enter') checkPrediction();
+  });
+
+  function resetGame(){
+    step = 0;
+    points = [];
+    prediction = null;
+    revealed = false;
+    mode = 'predict';
+    c = -10;
+    predictY.value = '';
+    predictY.disabled = false;
+    checkBtn.disabled = false;
+    checkBtn.textContent = 'Predict & Reveal';
+    document.querySelectorAll('.step-dot').forEach(d => d.classList.remove('done', 'active'));
+    reflectCard.classList.add('hidden');
+    exploreCard.classList.add('hidden');
+    document.getElementById('expC').value = -10;
+    document.getElementById('expCVal').textContent = '−10';
+    updateEq();
+    updatePredictHelper();
+    updateStatus('Tenali picks <strong>x = 1</strong>. Type what <strong>f(1)</strong> should be, then press Predict.');
+    render();
+  }
+
+  resetBtn.addEventListener('click', resetGame);
+
+  // ---- QUIZ ----
+  document.querySelectorAll('.q .options').forEach(group => {
+    group.querySelectorAll('.opt').forEach(btn => {
+      btn.addEventListener('click', ()=>{
+        const correct = btn.dataset.correct === 'true';
+        group.querySelectorAll('.opt').forEach(b => {
+          b.disabled = true;
+          if(b.dataset.correct === 'true') b.classList.add('correct');
+        });
+        if(!correct) btn.classList.add('wrong');
+        if(group.parentElement.id === 'q3' && correct){
+          setTimeout(()=>{
+            exploreCard.classList.remove('hidden');
+            exploreCard.scrollIntoView({behavior:'smooth', block:'nearest'});
+            rebuildExplore();
+          }, 400);
+        }
+      });
+    });
+  });
+
+  // ---- EXPLORE MODE ----
+  const expC = document.getElementById('expC');
+  const expCVal = document.getElementById('expCVal');
+  const exploreEq = document.getElementById('exploreEq');
+
+  function rebuildExplore(){
+    mode = 'explore';
+    const ec = parseFloat(expC.value);
+    const useC = isNaN(ec) ? -10 : ec;
+    expCVal.textContent = useC;
+    exploreEq.textContent = eqString(useC);
+    render();
+  }
+
+  expC.addEventListener('input', rebuildExplore);
+
+  // init
+  updateEq();
+  updatePredictHelper();
+  render();
+})();
+</script>
+</body>
+</html>
