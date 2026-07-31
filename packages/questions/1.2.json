@@ -1,0 +1,563 @@
+{
+  "id": "1.2",
+  "moduleId": 1,
+  "number": 2,
+  "title": "Houses of Bala, Chetan, Divya (Atul's grid walk)",
+  "vocabulary": {
+    "allowed": [
+      "walks",
+      "turns",
+      "position",
+      "point",
+      "line",
+      "origin",
+      "axis",
+      "grid",
+      "units",
+      "step",
+      "horizontal",
+      "vertical",
+      "endpoint",
+      "left",
+      "right",
+      "up",
+      "down.",
+      "Vocabulary",
+      "forbidden:",
+      "slope",
+      "(Q1.3)",
+      "matrix",
+      "(Q1.7)",
+      "ratio."
+    ],
+    "forbidden": [
+      "slope",
+      "(Q1.3)",
+      "matrix",
+      "(Q1.7)",
+      "ratio."
+    ]
+  },
+  "questions": [
+    {
+      "id": "1.2.q1",
+      "topicId": "1.2",
+      "prompt": "Why do all the kids' endpoint positions lie on one single straight line?",
+      "options": [
+        {
+          "text": "They all repeat the same step",
+          "correct": true
+        },
+        {
+          "text": "They walk at random angles",
+          "correct": false
+        },
+        {
+          "text": "They trace a circle shape",
+          "correct": false
+        },
+        {
+          "text": "They each walk different paths",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Each kid follows the same walking pattern — for example, \"right 2, up 1\" repeated. Step 2: When the same pattern is repeated from the same start (origin), every endpoint is a scaled-up version of the base step. Step 3: Scaled-up versions of one vector all lie on one line. Step 4: This \"repeated step → straight line of endpoints\" is the geometric meaning of *homogeneity* — and we will see it again as the *span of a vector* in Mission 3.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.2.q2",
+      "topicId": "1.2",
+      "prompt": "As a kid takes more and more steps following the same pattern, the endpoint moves in which direction on the grid?",
+      "options": [
+        {
+          "text": "Diagonally outward",
+          "correct": true
+        },
+        {
+          "text": "Only horizontally right",
+          "correct": false
+        },
+        {
+          "text": "Only vertically upward",
+          "correct": false
+        },
+        {
+          "text": "In a zigzag pattern",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Each repeated step adds both a rightward and an upward move. Step 2: So every new endpoint is further right *and* further up than the previous one. Step 3: That combined motion traces a diagonal path outward from origin. Step 4: The trap \"only horizontally right\" would mean each step has no upward component — which contradicts the \"up 1\" part of the pattern. Step 5: This \"diagonal outward\" picture is the seed of *eigenvector direction* — a special direction along which a matrix scales without rotating, which we will study in Mission 13.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.2.q3",
+      "topicId": "1.2",
+      "prompt": "What does it *mean* on the grid when two different kids end up at the same position?",
+      "options": [
+        {
+          "text": "Their total steps match",
+          "correct": true
+        },
+        {
+          "text": "They walked random paths",
+          "correct": false
+        },
+        {
+          "text": "They took no steps at all",
+          "correct": false
+        },
+        {
+          "text": "They walked in circles only",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: A position is described by the pair (right-steps, up-steps) taken so far. Step 2: Two kids end at the same position iff their (right-steps, up-steps) totals are equal. Step 3: Different sequences can produce the same totals — that's the *commutativity* of grid moves. Step 4: The trap \"no steps at all\" describes the special case where both end at origin. Step 5: This \"different paths, same endpoint\" is the geometric meaning of *commutativity* — formally A · B = B · A, which we will study for matrices in Mission 7.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.2.q4",
+      "topicId": "1.2",
+      "prompt": "If a kid turns left and then immediately turns right (with same step size), the net effect on direction is:",
+      "options": [
+        {
+          "text": "back to original heading",
+          "correct": true
+        },
+        {
+          "text": "rotated left by twice",
+          "correct": false
+        },
+        {
+          "text": "rotated right by twice",
+          "correct": false
+        },
+        {
+          "text": "facing the opposite way",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: A \"left\" turn followed by an equal \"right\" turn cancels out. Step 2: The kid ends up facing the same direction they started. Step 3: This is true for any sequence where the turns sum to zero. Step 4: The trap \"rotated left by twice\" treats each turn as accumulating, not cancelling. Step 5: This \"opposites cancel\" property is the seed of *inverse operations* — a left turn is the *inverse* of a right turn, the same idea we will formalise for matrices in Mission 8.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.2.q5",
+      "topicId": "1.2",
+      "prompt": "Why does walking the same pattern from origin always land on the same straight line of points?",
+      "options": [
+        {
+          "text": "Each step adds same vector",
+          "correct": true
+        },
+        {
+          "text": "Each step is randomly chosen",
+          "correct": false
+        },
+        {
+          "text": "Each step curves the path",
+          "correct": false
+        },
+        {
+          "text": "Each step reverses direction",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Each step adds the same (right, up) shift — say (2, 1). Step 2: Adding the same shift repeatedly traces a straight diagonal line. Step 3: The endpoints are origin + n × (2, 1) for n = 0, 1, 2, … Step 4: This is the geometric picture of a *span* — the set of all \"scaled copies\" of one vector. Step 5: We will formalise this as *span{v}* in Mission 3 — the line generated by a single direction vector.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.2.q6",
+      "topicId": "1.2",
+      "prompt": "If a kid walks \"right 4, up 2\" repeatedly from origin, the endpoints form what shape?",
+      "options": [
+        {
+          "text": "A straight line of points",
+          "correct": true
+        },
+        {
+          "text": "A circle around origin",
+          "correct": false
+        },
+        {
+          "text": "A zigzag of corners",
+          "correct": false
+        },
+        {
+          "text": "A scattered set of dots",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Each step adds the same shift (4, 2). Step 2: Repeating it produces points (0, 0), (4, 2), (8, 4), (12, 6) — all collinear. Step 3: The trap \"circle\" would require equal-distance points from origin — not the case here. Step 4: The trap \"zigzag\" would require alternating directions. Step 5: This \"single direction → single line\" geometry is the foundation of *one-dimensional subspaces*, the simplest case of *subspaces* in Mission 3.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.2.q7",
+      "topicId": "1.2",
+      "prompt": "What stays *invariant* when a kid repeats the same walking pattern over and over?",
+      "options": [
+        {
+          "text": "The direction of each step",
+          "correct": true
+        },
+        {
+          "text": "The endpoint position each time",
+          "correct": false
+        },
+        {
+          "text": "The total steps taken each time",
+          "correct": false
+        },
+        {
+          "text": "The starting grid square",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: The *direction* of each step is fixed — same right-component, same up-component. Step 2: The endpoint *position* changes (it grows), and the *total steps* changes. Step 3: But the *direction* — the ratio of right to up — stays the same. Step 4: The trap \"starting grid square\" describes origin, which is also fixed, but origin is a *position*, not an *invariant*. Step 5: This \"fixed direction under scaling\" is the geometric meaning of *eigenvector*, which we will define formally in Mission 13.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.2.q8",
+      "topicId": "1.2",
+      "prompt": "Why do repeated endpoints lie on a straight line and not a curve?",
+      "options": [
+        {
+          "text": "Each step is straight itself",
+          "correct": true
+        },
+        {
+          "text": "Steps are randomly chosen",
+          "correct": false
+        },
+        {
+          "text": "Endpoints circle back",
+          "correct": false
+        },
+        {
+          "text": "Endpoints zigzag corners",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: A straight step (right + up) is itself a straight line — no bend. Step 2: Repeating straight steps traces a longer straight line. Step 3: Curves appear only when steps bend or rotate. Step 4: The trap \"endpoints zigzag corners\" would be true for \"right then left then right\" — alternating direction. Step 5: This \"straight + straight = straight\" additivity is the seed of *linearity* — straight motions compose into straight motions, the property of *linear maps* we will use in Mission 12.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.2.q9",
+      "topicId": "1.2",
+      "prompt": "If one kid walks the pattern longer than another kid, what changes about their final endpoint?",
+      "options": [
+        {
+          "text": "It sits further out",
+          "correct": true
+        },
+        {
+          "text": "It sits closer to origin",
+          "correct": false
+        },
+        {
+          "text": "It sits at origin only",
+          "correct": false
+        },
+        {
+          "text": "It sits at the same spot",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Each step moves the endpoint outward by the same shift. Step 2: More steps means more shifts added — the endpoint moves further from origin. Step 3: The *direction* stays the same (same line), only the *distance* changes. Step 4: The trap \"closer to origin\" would mean steps shrink, but they don't. Step 5: This \"scale by number of steps\" idea is *scalar multiplication* — multiplying a vector by a number scales its length but not its direction. We will formalise this in Mission 3.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.2.q10",
+      "topicId": "1.2",
+      "prompt": "How can a child predict the next endpoint without actually walking the next step?",
+      "options": [
+        {
+          "text": "Continue along the line",
+          "correct": true
+        },
+        {
+          "text": "Just add a fixed number",
+          "correct": false
+        },
+        {
+          "text": "Pick any point at random",
+          "correct": false
+        },
+        {
+          "text": "Wait for someone to say",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: The endpoints lie on a known line (drawn on the grid). Step 2: To predict the next endpoint, extend the line one more step in the same direction. Step 3: This is \"extrapolation\" — using the pattern to extend into the future. Step 4: The trap \"add a fixed number\" ignores which direction the line goes. Step 5: This is the essence of *linear prediction* — knowing the line tells you every future point, the basis of *regression* in statistics and *interpolation* in numerical methods.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.2.q11",
+      "topicId": "1.2",
+      "prompt": "Why is \"right 3, up 2\" different from \"up 2, right 3\" in *outcome*, even though the kid ends at the same spot?",
+      "options": [
+        {
+          "text": "Different paths taken",
+          "correct": true
+        },
+        {
+          "text": "Different final endpoints",
+          "correct": false
+        },
+        {
+          "text": "Different number of steps",
+          "correct": false
+        },
+        {
+          "text": "Different grid orientation",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: The two orders trace different routes — one goes east then north, the other north then east. Step 2: The endpoint is the same (because the moves commute). Step 3: But the *intermediate path* differs. Step 4: For kids this is obvious; for matrices, it is the famous A · B = B · A question. Step 5: When matrices *do* commute, they have a special property; when they don't, order matters. We will explore *commuting matrices* in Mission 12.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.2.q12",
+      "topicId": "1.2",
+      "prompt": "If a kid walks partway through a pattern and then stops, what is left on the graph?",
+      "options": [
+        {
+          "text": "A partial step on the line",
+          "correct": true
+        },
+        {
+          "text": "A completed full line",
+          "correct": false
+        },
+        {
+          "text": "A circle of endpoints",
+          "correct": false
+        },
+        {
+          "text": "A zigzag of corners",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Stopping mid-pattern means the endpoint is only partway along the line. Step 2: The endpoint sits on the line between origin and the next full step. Step 3: No new line is created — just one point on the existing line. Step 4: This \"intermediate endpoint lies on the same line\" property is *convexity* — the line between any two points on a line is also on the line. Step 5: We will use this *convex combination* idea when discussing *subspaces* in Mission 3.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.2.q13",
+      "topicId": "1.2",
+      "prompt": "What does it mean for several endpoints to \"lie on one line\"?",
+      "options": [
+        {
+          "text": "They share one direction",
+          "correct": true
+        },
+        {
+          "text": "They form a circle shape",
+          "correct": false
+        },
+        {
+          "text": "They scatter at random",
+          "correct": false
+        },
+        {
+          "text": "They zigzag between turns",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: \"Lie on one line\" means a single straight line passes through every endpoint. Step 2: For endpoints of repeated same-step walks, they share one direction — the step direction. Step 3: The trap \"form a circle\" describes equidistant points, not collinear. Step 4: This \"shared direction = collinear\" is the geometric meaning of *linear dependence*, which we will formalise for arbitrary vectors in Mission 3.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.2.q14",
+      "topicId": "1.2",
+      "prompt": "Why do different kids' endpoints align on the same line when they all walk the same pattern?",
+      "options": [
+        {
+          "text": "They share the step shape",
+          "correct": true
+        },
+        {
+          "text": "They walk in opposite ways",
+          "correct": false
+        },
+        {
+          "text": "They start from random spots",
+          "correct": false
+        },
+        {
+          "text": "They trace different shapes",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Same pattern → same direction of motion. Step 2: Starting from origin, every kid's endpoints are scalar multiples of the same step. Step 3: Scalar multiples of one vector all lie on one line through origin. Step 4: The trap \"different shapes\" describes different patterns, not the same one. Step 5: This \"all scalar multiples of one vector lie on one line\" is the formal definition of *one-dimensional subspace*, which we will study in Mission 3.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.2.q15",
+      "topicId": "1.2",
+      "prompt": "If a kid takes a step \"left 2, down 1\" instead of \"right 2, up 1\", how does the line change?",
+      "options": [
+        {
+          "text": "It flips to opposite side",
+          "correct": true
+        },
+        {
+          "text": "It stays exactly the same",
+          "correct": false
+        },
+        {
+          "text": "It curves into a circle",
+          "correct": false
+        },
+        {
+          "text": "It moves off the grid",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: \"Left 2, down 1\" is the negative of \"right 2, up 1\" — opposite direction. Step 2: So the line flips to the opposite diagonal — into the bottom-left quadrant. Step 3: The trap \"stays exactly the same\" ignores the sign change. Step 4: This \"negation flips direction\" property is *scalar multiplication by −1*, which we will use when defining *vector negation* in Mission 3.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.2.q16",
+      "topicId": "1.2",
+      "prompt": "How is walking on a grid similar to reading a graph?",
+      "options": [
+        {
+          "text": "Both use coordinates",
+          "correct": true
+        },
+        {
+          "text": "Both trace circles only",
+          "correct": false
+        },
+        {
+          "text": "Both use random jumps",
+          "correct": false
+        },
+        {
+          "text": "Both avoid the origin",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: A grid walk produces a sequence of (x, y) positions. Step 2: A graph plots (x, y) positions on a sheet. Step 3: Both rely on the same coordinate system. Step 4: The trap \"traces circles only\" describes specific circular walks, not the general structure. Step 5: This \"grid walk = graph plot\" link is the seed of *parameterised curves* — describing a moving point by its coordinates over time. We will use this idea in Mission 14 when we study *eigen-decompositions*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.2.q17",
+      "topicId": "1.2",
+      "prompt": "If the same kid walks two different patterns (say one \"right 2, up 1\" and one \"right 1, up 2\"), how many different lines appear?",
+      "options": [
+        {
+          "text": "Two different lines",
+          "correct": true
+        },
+        {
+          "text": "One single line only",
+          "correct": false
+        },
+        {
+          "text": "A circle of points",
+          "correct": false
+        },
+        {
+          "text": "No lines at all",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Pattern 1 gives endpoints along line 1; pattern 2 gives endpoints along line 2. Step 2: Different step directions give different lines. Step 3: The two lines both pass through origin but head in different directions. Step 4: This \"two different directions → two different lines through origin\" is the geometric meaning of *two linearly independent vectors* — a concept we will formalise in Mission 3 and use throughout the rest of the course.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.2.q18",
+      "topicId": "1.2",
+      "prompt": "What if the same kid walked the same pattern but started from position (5, 3) instead of origin — how would the line change?",
+      "options": [
+        {
+          "text": "Line shifts to new start",
+          "correct": true
+        },
+        {
+          "text": "Line stays at origin only",
+          "correct": false
+        },
+        {
+          "text": "Line tilts to vertical",
+          "correct": false
+        },
+        {
+          "text": "Line curves into arc",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Starting from a new point shifts every endpoint by the same (5, 3) amount. Step 2: The shape stays a straight line, just translated. Step 3: The line is now *parallel* to the original but no longer passes through origin. Step 4: The trap \"stays at origin\" ignores the new starting position. Step 5: This \"translated line is parallel to original\" is the geometric meaning of *affine subspaces*, contrasted with *linear subspaces* — a distinction we will make formal in Mission 4.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.2.q19",
+      "topicId": "1.2",
+      "prompt": "Why is a grid helpful for understanding lines and patterns?",
+      "options": [
+        {
+          "text": "It shows motion step by step",
+          "correct": true
+        },
+        {
+          "text": "It hides all the steps",
+          "correct": false
+        },
+        {
+          "text": "It only works for squares",
+          "correct": false
+        },
+        {
+          "text": "It avoids the origin point",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: A grid makes each step visible — you can see the kid's position after every move. Step 2: This makes it easy to count and verify the endpoint formula. Step 3: The trap \"hides all the steps\" describes the opposite — a graph without gridlines. Step 4: This \"step-by-step visualisation\" is the same idea as *discretisation* — turning a smooth line into discrete sample points, the foundation of *numerical analysis*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.2.q20",
+      "topicId": "1.2",
+      "prompt": "What if a kid walked in a circle on the grid (right, up, left, down repeatedly) — what shape would the endpoints trace?",
+      "options": [
+        {
+          "text": "A closed loop shape",
+          "correct": true
+        },
+        {
+          "text": "A straight line outward",
+          "correct": false
+        },
+        {
+          "text": "A diagonal only",
+          "correct": false
+        },
+        {
+          "text": "A single frozen point",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: \"Right, up, left, down\" returns to the starting position after four steps. Step 2: Repeating this trace a closed loop — same four endpoints every cycle. Step 3: This is *periodic motion* — a closed orbit. Step 4: The trap \"straight line outward\" describes unidirectional stepping, not circular. Step 5: This *periodic orbit* picture is the seed of *circles, ellipses, and eigen-rotations* — concepts that show up in *singular value decomposition* (Mission 14) and *Fourier analysis*.\n\n---",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    }
+  ]
+}

@@ -1,0 +1,551 @@
+{
+  "id": "1.5",
+  "moduleId": 1,
+  "number": 5,
+  "title": "Plot y = 2x + 1",
+  "vocabulary": {
+    "allowed": [
+      "line",
+      "origin",
+      "slope",
+      "intercept",
+      "shift",
+      "mx",
+      "form",
+      "axis",
+      "vertical",
+      "horizontal",
+      "lift.",
+      "Vocabulary",
+      "forbidden:",
+      "matrix",
+      "vector."
+    ],
+    "forbidden": [
+      "matrix",
+      "vector."
+    ]
+  },
+  "questions": [
+    {
+      "id": "1.5.q1",
+      "topicId": "1.5",
+      "prompt": "Why does y = 2x + 1 *not* pass through origin, while y = 2x does?",
+      "options": [
+        {
+          "text": "The +1 lifts it up",
+          "correct": true
+        },
+        {
+          "text": "Slopes are unequal",
+          "correct": false
+        },
+        {
+          "text": "Both pass through",
+          "correct": false
+        },
+        {
+          "text": "The +1 makes slope",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: At x = 0: y = 2(0) + 1 = 1 for y = 2x + 1. So the line crosses y-axis at (0, 1), not (0, 0). Step 2: At x = 0: y = 2(0) = 0 for y = 2x. So that line crosses y-axis at origin. Step 3: The +1 \"lifts\" the line up by 1 unit. Step 4: The trap \"slopes are unequal\" — both have slope 2. Step 5: This \"constant shifts the line off origin\" property is the seed of *affine lines*, the topic of Mission 4.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.5.q2",
+      "topicId": "1.5",
+      "prompt": "Where does the line y = 2x + 1 cross the y",
+      "options": [
+        {
+          "text": "At (0, 1) only",
+          "correct": true
+        },
+        {
+          "text": "At (1, 0) only",
+          "correct": false
+        },
+        {
+          "text": "At (0, 0) only",
+          "correct": false
+        },
+        {
+          "text": "Nowhere at all",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: The y-axis is x = 0. Step 2: Substitute x = 0 into y = 2x + 1: y = 1. Step 3: So the line crosses y-axis at (0, 1). Step 4: The trap (1, 0) is on the x-axis, not y-axis. Step 5: This \"y-intercept = constant c\" formula is the algebraic content of the constant term in y = mx + c, used throughout *linear regression*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.5.q3",
+      "topicId": "1.5",
+      "prompt": "What is the *y",
+      "options": [
+        {
+          "text": "The value of c",
+          "correct": true
+        },
+        {
+          "text": "The value of m",
+          "correct": false
+        },
+        {
+          "text": "The value of x",
+          "correct": false
+        },
+        {
+          "text": "The slope of the line",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: The y-intercept is the y-value where the line crosses the y-axis. Step 2: At x = 0: y = c. Step 3: So the y-intercept is c. Step 4: The trap \"value of m\" is the slope, not the intercept. Step 5: This \"intercept = constant\" rule is used in *regression* to set the baseline value, and in *machine learning* as the *bias term*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.5.q4",
+      "topicId": "1.5",
+      "prompt": "If you increase c in y = 2x + c from 1 to 5, what changes about the line?",
+      "options": [
+        {
+          "text": "It lifts up more",
+          "correct": true
+        },
+        {
+          "text": "Slope changes too",
+          "correct": false
+        },
+        {
+          "text": "Line tilts downward",
+          "correct": false
+        },
+        {
+          "text": "Line crosses origin",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Increasing c moves the y-intercept upward — from (0, 1) to (0, 5). Step 2: The slope stays at 2; only the intercept changes. Step 3: The line is \"lifted up\" higher above origin. Step 4: The trap \"slope changes\" is wrong — slope is independent of c. Step 5: This \"intercept change → vertical shift\" rule is the seed of *translation*, used in Q1.18 for translated lines.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.5.q5",
+      "topicId": "1.5",
+      "prompt": "Why does changing c in y = 2x + c not change the *slope* of the line?",
+      "options": [
+        {
+          "text": "Slope is the coefficient of x",
+          "correct": true
+        },
+        {
+          "text": "Slope depends on c",
+          "correct": false
+        },
+        {
+          "text": "Slope is always one",
+          "correct": false
+        },
+        {
+          "text": "Slope is always zero",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: In y = 2x + c, the coefficient of x is 2 — that is the slope. Step 2: The constant c is *added*, not multiplied by x. Step 3: So changing c affects the y-intercept but not the slope. Step 4: The trap \"slope depends on c\" confuses slope with intercept. Step 5: This \"slope ↔ x-coefficient, intercept ↔ constant\" separation is the algebraic anatomy of the line equation, which we will extend to *matrix equations* in Mission 7.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.5.q6",
+      "topicId": "1.5",
+      "prompt": "If y = 2x + 1 and y = 2x − 1 are drawn on the same graph, what is true?",
+      "options": [
+        {
+          "text": "Parallel lines",
+          "correct": true
+        },
+        {
+          "text": "Same single line",
+          "correct": false
+        },
+        {
+          "text": "Crossing at origin",
+          "correct": false
+        },
+        {
+          "text": "Crossing at (0, 1)",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Both lines have slope 2. Step 2: Same slope + different intercepts = parallel lines. Step 3: They never intersect. Step 4: The trap \"same single line\" would describe same slope *and* same intercept. Step 5: This \"same slope → parallel\" rule is the geometric meaning of *parallel lines*, used in Q3.7 for parallel planes.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.5.q7",
+      "topicId": "1.5",
+      "prompt": "Why does y = 2x + 1 and y = 2x − 1 never meet?",
+      "options": [
+        {
+          "text": "Same slope parallel",
+          "correct": true
+        },
+        {
+          "text": "Different slopes here",
+          "correct": false
+        },
+        {
+          "text": "Both pass origin",
+          "correct": false
+        },
+        {
+          "text": "Lines curve always",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Two lines with the same slope are parallel — they maintain a constant distance apart. Step 2: Parallel lines never intersect. Step 3: The trap \"different slopes\" is wrong here — both are slope 2. Step 4: This \"parallel = same slope\" rule is the foundation of *parallel coordinates* in statistics, where multiple variables are shown as parallel lines.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.5.q8",
+      "topicId": "1.5",
+      "prompt": "What is the *direction* of the line y = 2x + 1 compared to y = 2x?",
+      "options": [
+        {
+          "text": "Same direction only",
+          "correct": true
+        },
+        {
+          "text": "Tilted more upward",
+          "correct": false
+        },
+        {
+          "text": "Tilted more downward",
+          "correct": false
+        },
+        {
+          "text": "Vertical instead now",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Direction = slope. Step 2: Both lines have slope 2 — same direction. Step 3: The \"+1\" only shifts the line up; it doesn't change direction. Step 4: The trap \"tilted more\" confuses slope with intercept. Step 5: This \"direction = slope, position = intercept\" separation is the algebraic anatomy that we will use in Mission 13 when discussing *eigendirections*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.5.q9",
+      "topicId": "1.5",
+      "prompt": "How does y = 2x + 1 differ from y = 2x in terms of position?",
+      "options": [
+        {
+          "text": "Lifted up by one",
+          "correct": true
+        },
+        {
+          "text": "Shifted right by one",
+          "correct": false
+        },
+        {
+          "text": "Stretched vertically up",
+          "correct": false
+        },
+        {
+          "text": "Compressed sideways",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: y = 2x + 1 has every y-value 1 higher than y = 2x for the same x. Step 2: So the entire line is shifted upward by 1 unit. Step 3: The trap \"shifted right\" would describe y = 2(x − 1), a different form. Step 4: This \"add constant → shift up\" is the rule for *vertical translations*, which we will use in *Fourier transforms* to add a DC offset.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.5.q10",
+      "topicId": "1.5",
+      "prompt": "Why does y = 2x + 1 cross the y",
+      "options": [
+        {
+          "text": "Constant is one now",
+          "correct": true
+        },
+        {
+          "text": "Slope is one here",
+          "correct": false
+        },
+        {
+          "text": "Slope is two here",
+          "correct": false
+        },
+        {
+          "text": "x equals zero then",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: y-intercept = constant term. Step 2: For y = 2x + 1, constant = 1, so y-intercept = 1. Step 3: At x = 0: y = 1. Step 4: The trap \"slope is one\" is wrong — slope is 2. Step 5: This \"intercept = constant\" formula is used in Q1.6 with sliders to see how changing c moves the line.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.5.q11",
+      "topicId": "1.5",
+      "prompt": "If you wanted the line y = 2x + c to pass through (1, 5), what c value works?",
+      "options": [
+        {
+          "text": "c equals three",
+          "correct": true
+        },
+        {
+          "text": "c equals five",
+          "correct": false
+        },
+        {
+          "text": "c equals one",
+          "correct": false
+        },
+        {
+          "text": "c equals zero",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Substitute (1, 5) into y = 2x + c: 5 = 2(1) + c = 2 + c. Step 2: So c = 3. Step 3: Verify: y = 2(1) + 3 = 5. Correct. Step 4: The trap \"c equals five\" treats the y-value as the constant. Step 5: This \"substitute to find c\" technique is the algebraic way of pinning a line to a specific point — the *boundary value problem* in differential equations.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.5.q12",
+      "topicId": "1.5",
+      "prompt": "What does the \"+1\" in y = 2x + 1 do geometrically?",
+      "options": [
+        {
+          "text": "Shifts line upward",
+          "correct": true
+        },
+        {
+          "text": "Tilts line more up",
+          "correct": false
+        },
+        {
+          "text": "Stretches line vertical",
+          "correct": false
+        },
+        {
+          "text": "Compresses line wide",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Every y-value is 1 more than y = 2x would give. Step 2: So the line sits 1 unit higher everywhere. Step 3: This is a *vertical translation* upward by 1. Step 4: The trap \"tilts more\" describes slope change, not shift. Step 5: This \"add constant → vertical shift\" rule is the foundation of *affine transformations* in computer graphics — translation is a separate operation from rotation and scaling.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.5.q13",
+      "topicId": "1.5",
+      "prompt": "Is the line y = 2x + 1 a *subspace* of the plane in the linear algebra sense?",
+      "options": [
+        {
+          "text": "Not a subspace",
+          "correct": true
+        },
+        {
+          "text": "Yes a subspace",
+          "correct": false
+        },
+        {
+          "text": "Only if c = 0",
+          "correct": false
+        },
+        {
+          "text": "Always subspace",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: A subspace must contain origin (0, 0). Step 2: But (0, 0) does not satisfy y = 2x + 1 — at x = 0, y = 1, not 0. Step 3: So y = 2x + 1 is NOT a subspace. Step 4: The trap \"yes\" misses the origin test. Step 5: This \"off-origin → not subspace\" is the geometric meaning of *affine vs linear subspaces*, a distinction we will use throughout Missions 3–16.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.5.q14",
+      "topicId": "1.5",
+      "prompt": "Why is y = 2x + 1 *parallel* to y = 2x + 5 but y = 2x + 1 is *not* parallel to y = 3x + 1?",
+      "options": [
+        {
+          "text": "Same slope in each",
+          "correct": true
+        },
+        {
+          "text": "Different slopes both",
+          "correct": false
+        },
+        {
+          "text": "Same intercept here",
+          "correct": false
+        },
+        {
+          "text": "Both pass origin",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Parallel lines need the *same* slope (and different intercepts). Step 2: y = 2x + 1 and y = 2x + 5 have same slope 2 → parallel. Step 3: y = 2x + 1 and y = 3x + 1 have different slopes (2 vs 3) → not parallel. Step 4: The trap \"same intercept\" confuses intercept with slope. Step 5: This \"parallel ↔ same slope\" rule is the geometric meaning of *direction* being preserved, used in Q3.7 for planes.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.5.q15",
+      "topicId": "1.5",
+      "prompt": "What does *changing c* in y = mx + c do to the line, geometrically?",
+      "options": [
+        {
+          "text": "Slides up or down",
+          "correct": true
+        },
+        {
+          "text": "Rotates around origin",
+          "correct": false
+        },
+        {
+          "text": "Stretches outward",
+          "correct": false
+        },
+        {
+          "text": "Compresses inward",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: c is the y-intercept — the y-value at x = 0. Step 2: Changing c moves the y-intercept up or down. Step 3: The whole line slides up or down accordingly. Step 4: The trap \"rotates\" describes slope change, not intercept change. Step 5: This \"intercept change = vertical slide\" is the *translation* operation, distinct from *rotation* and *scaling* in linear algebra.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.5.q16",
+      "topicId": "1.5",
+      "prompt": "If c = 0, what happens to the line y = 2x + c?",
+      "options": [
+        {
+          "text": "Passes through origin",
+          "correct": true
+        },
+        {
+          "text": "Becomes vertical",
+          "correct": false
+        },
+        {
+          "text": "Becomes horizontal",
+          "correct": false
+        },
+        {
+          "text": "Disappears entirely",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: With c = 0, the line becomes y = 2x. Step 2: This passes through origin. Step 3: The trap \"vertical\" describes x = constant, not y = mx. Step 4: This \"c = 0 → through origin\" is the rule for *linear subspaces* (Mission 3) — and also for *homogeneous* differential equations in calculus.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.5.q17",
+      "topicId": "1.5",
+      "prompt": "Two lines y = 2x + 1 and y = 3x + 1 cross at what point?",
+      "options": [
+        {
+          "text": "At origin only",
+          "correct": false
+        },
+        {
+          "text": "At (0, 1) only",
+          "correct": true
+        },
+        {
+          "text": "At (1, 3) only",
+          "correct": false
+        },
+        {
+          "text": "Nowhere on grid",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: At x = 0: y = 1 for both lines. Step 2: So both lines pass through (0, 1). Step 3: That's the y-intercept they share. Step 4: So they cross at (0, 1). Step 5: This \"shared y-intercept → cross at (0, c)\" rule is the geometry of *same constant, different slopes* — used in Q3.13 for parallel line families.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.5.q18",
+      "topicId": "1.5",
+      "prompt": "What if the constant in y = 2x + c were negative, say c = −3 — what would the line look like?",
+      "options": [
+        {
+          "text": "Crosses below origin",
+          "correct": true
+        },
+        {
+          "text": "Crosses at origin",
+          "correct": false
+        },
+        {
+          "text": "Crosses above origin",
+          "correct": false
+        },
+        {
+          "text": "Stays vertical only",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: At x = 0: y = 2(0) + (−3) = −3. Step 2: So the line crosses y-axis at (0, −3), which is below origin. Step 3: The trap \"above origin\" reverses the sign. Step 4: This \"negative c → below origin\" is the symmetric case of \"positive c → above origin\". Step 5: We will use this in Q1.18 with translated lines — the sign of the intercept determines which side of origin the line sits.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.5.q19",
+      "topicId": "1.5",
+      "prompt": "Why is the y",
+      "options": [
+        {
+          "text": "Starting value baseline",
+          "correct": true
+        },
+        {
+          "text": "Maximum slope only",
+          "correct": false
+        },
+        {
+          "text": "Final value of graph",
+          "correct": false
+        },
+        {
+          "text": "Number of variables",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: In a real-life model y = mx + c, c is the value when x = 0. Step 2: That's the *starting* or *baseline* value. Step 3: For example, c could be the starting height of a plant, or the initial deposit in a bank account. Step 4: The trap \"maximum slope\" confuses intercept with slope. Step 5: This \"intercept = baseline\" interpretation is the foundation of *linear regression with intercept*, used in *machine learning* as the *bias term*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.5.q20",
+      "topicId": "1.5",
+      "prompt": "What if you wanted to *remove* the y",
+      "options": [
+        {
+          "text": "Subtract one from y",
+          "correct": true
+        },
+        {
+          "text": "Add one to x",
+          "correct": false
+        },
+        {
+          "text": "Multiply by slope",
+          "correct": false
+        },
+        {
+          "text": "Divide by two",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: y = 2x + 1 → y − 1 = 2x. Step 2: Subtracting 1 from y shifts the line down so it passes through origin. Step 3: The result y − 1 = 2x is equivalent to y = 2x + 1 but centred on origin. Step 4: This \"recentre on origin\" step is the bridge from *affine* to *linear* — used in Q1.18 to convert translated lines into linear subspaces.\n\n---",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    }
+  ]
+}

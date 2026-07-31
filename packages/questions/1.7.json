@@ -1,0 +1,556 @@
+{
+  "id": "1.7",
+  "moduleId": 1,
+  "number": 7,
+  "title": "Simultaneous equations as a matrix",
+  "vocabulary": {
+    "allowed": [
+      "matrix",
+      "equation",
+      "system",
+      "column",
+      "row",
+      "entry",
+      "simultaneous",
+      "unknowns",
+      "two",
+      "equations",
+      "two",
+      "unknowns.",
+      "Vocabulary",
+      "forbidden:",
+      "determinant",
+      "eigenvector",
+      "span",
+      "kernel."
+    ],
+    "forbidden": [
+      "determinant",
+      "eigenvector",
+      "span",
+      "kernel."
+    ]
+  },
+  "questions": [
+    {
+      "id": "1.7.q1",
+      "topicId": "1.7",
+      "prompt": "Why is writing 2x + 3y = 7 and 4x − y = 5 as a *matrix equation* useful?",
+      "options": [
+        {
+          "text": "Compact form",
+          "correct": true
+        },
+        {
+          "text": "Hides the math",
+          "correct": false
+        },
+        {
+          "text": "Makes it harder",
+          "correct": false
+        },
+        {
+          "text": "Removes unknowns",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Two separate equations can be written as A · x = b, where A collects coefficients, x holds unknowns, b holds right-hand sides. Step 2: This single matrix equation is more compact than two separate ones. Step 3: The trap \"hides the math\" misses the point — it makes the math *cleaner*. Step 4: This \"compact representation\" idea is the foundation of *matrix algebra*, used throughout linear algebra and *machine learning*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.7.q2",
+      "topicId": "1.7",
+      "prompt": "In the matrix equation A · x = b for 2x + 3y = 7 and 4x − y = 5, what does A contain?",
+      "options": [
+        {
+          "text": "The coefficients",
+          "correct": true
+        },
+        {
+          "text": "The unknowns",
+          "correct": false
+        },
+        {
+          "text": "The right sides",
+          "correct": false
+        },
+        {
+          "text": "The solutions",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: A is the *coefficient matrix* — it holds the numbers multiplying x and y. Step 2: For 2x + 3y = 7 and 4x − y = 5, A = [[2, 3], [4, −1]]. Step 3: The trap \"unknowns\" describes x, not A. Step 4: This \"coefficient matrix\" pattern is the foundation of *systems of linear equations* — the workhorse of *numerical methods*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.7.q3",
+      "topicId": "1.7",
+      "prompt": "In A · x = b, what does the vector *b* hold?",
+      "options": [
+        {
+          "text": "The right-hand sides",
+          "correct": true
+        },
+        {
+          "text": "The coefficients",
+          "correct": false
+        },
+        {
+          "text": "The unknowns only",
+          "correct": false
+        },
+        {
+          "text": "The matrix shape",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: *b* is the right-hand side vector. Step 2: For 2x + 3y = 7 and 4x − y = 5, b = [7, 5]. Step 3: The trap \"coefficients\" describes A, not b. Step 4: This \"right-hand side = output\" convention is the standard in linear algebra and *neural network layers*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.7.q4",
+      "topicId": "1.7",
+      "prompt": "In A · x = b, what does the vector *x* hold?",
+      "options": [
+        {
+          "text": "The unknowns",
+          "correct": true
+        },
+        {
+          "text": "The coefficients",
+          "correct": false
+        },
+        {
+          "text": "The right sides",
+          "correct": false
+        },
+        {
+          "text": "The matrix shape",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: *x* is the unknown vector — what we are solving for. Step 2: For the system, x = [x, y] — the two unknowns. Step 3: The trap \"coefficients\" describes A. Step 4: This \"unknown vector\" convention is standard — *x* is always the input/output variable in matrix equations.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.7.q5",
+      "topicId": "1.7",
+      "prompt": "Why does a *matrix* of size 2×2 fit a system with 2 equations and 2 unknowns?",
+      "options": [
+        {
+          "text": "Two rows two cols",
+          "correct": true
+        },
+        {
+          "text": "Three rows two cols",
+          "correct": false
+        },
+        {
+          "text": "One row two cols",
+          "correct": false
+        },
+        {
+          "text": "Two rows one col",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: 2 equations → 2 rows. Step 2: 2 unknowns → 2 columns. Step 3: So matrix A is 2×2. Step 4: The other options describe mismatched sizes. Step 5: This \"rows = equations, columns = unknowns\" rule is the foundation of *matrix dimensions* and *linear system theory*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.7.q6",
+      "topicId": "1.7",
+      "prompt": "How does matrix form A · x = b differ from listing equations?",
+      "options": [
+        {
+          "text": "Single compact form",
+          "correct": true
+        },
+        {
+          "text": "Lists every step",
+          "correct": false
+        },
+        {
+          "text": "Uses words only",
+          "correct": false
+        },
+        {
+          "text": "Avoids numbers",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Two equations → one matrix equation. Step 2: The matrix form is more compact, easier to manipulate algebraically. Step 3: The trap \"lists every step\" describes verbose writing. Step 4: This \"compactness\" enables operations like *matrix inversion*, *row reduction*, and *Gaussian elimination* — Mission 7–8 territory.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.7.q7",
+      "topicId": "1.7",
+      "prompt": "What does the matrix product A · x do, conceptually?",
+      "options": [
+        {
+          "text": "Combines unknowns",
+          "correct": true
+        },
+        {
+          "text": "Just adds numbers",
+          "correct": false
+        },
+        {
+          "text": "Skips equations",
+          "correct": false
+        },
+        {
+          "text": "Avoids variables",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: A · x multiplies each row of A by the unknown vector x. Step 2: The result is a vector — each entry is one equation's left side. Step 3: So A · x \"combines\" the unknowns through the coefficients. Step 4: This \"matrix-vector product = evaluate system\" idea is the workhorse of *linear algebra computation*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.7.q8",
+      "topicId": "1.7",
+      "prompt": "Why are matrices a *natural* language for linear systems?",
+      "options": [
+        {
+          "text": "They collect numbers",
+          "correct": true
+        },
+        {
+          "text": "They hide equations",
+          "correct": false
+        },
+        {
+          "text": "They avoid unknowns",
+          "correct": false
+        },
+        {
+          "text": "They are random",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: A linear system is defined by its coefficients and right-hand sides. Step 2: Matrices collect numbers in a structured way (rows and columns). Step 3: So matrices are the natural representation. Step 4: The trap \"hide equations\" misses that the matrix *is* the equation system, just compactly. Step 5: This is why linear algebra is so widely applied — *machine learning*, *physics*, *economics* all use matrices to handle linear systems.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.7.q9",
+      "topicId": "1.7",
+      "prompt": "In the equation 2x + 3y = 7, what is the *column* of A corresponding to y?",
+      "options": [
+        {
+          "text": "[3, −1] column",
+          "correct": true
+        },
+        {
+          "text": "[2, 4] column",
+          "correct": false
+        },
+        {
+          "text": "[7, 5] column",
+          "correct": false
+        },
+        {
+          "text": "[2, 3] column",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: A = [[2, 3], [4, −1]]. Step 2: First column corresponds to x, second to y. Step 3: So y's column is [3, −1]. Step 4: The trap \"[2, 4]\" is the x-column. Step 5: This \"columns = variables\" convention is consistent throughout matrix algebra — used in Mission 7.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.7.q10",
+      "topicId": "1.7",
+      "prompt": "What does A · x = b *look like* algebraically for 2x + 3y = 7, 4x − y = 5?",
+      "options": [
+        {
+          "text": "[[2,3],[4,−1]]·[x,y]",
+          "correct": true
+        },
+        {
+          "text": "[x,y]·[[2,3],[4,−1]]",
+          "correct": false
+        },
+        {
+          "text": "[[2,3],[4,−1]]·[7,5]",
+          "correct": false
+        },
+        {
+          "text": "[2,3]·[4,−1]",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: A = [[2, 3], [4, −1]], x = [x, y]. Step 2: So A · x = [[2, 3], [4, −1]] · [x, y]. Step 3: The trap \"[x, y] · A\" reverses order — that's x · A, different operation. Step 4: This \"matrix times column vector\" form is the standard convention in linear algebra.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.7.q11",
+      "topicId": "1.7",
+      "prompt": "Why must A · x give a *column vector* result?",
+      "options": [
+        {
+          "text": "Matrix times vector",
+          "correct": true
+        },
+        {
+          "text": "Result is always row",
+          "correct": false
+        },
+        {
+          "text": "Result is a matrix",
+          "correct": false
+        },
+        {
+          "text": "Result is a number",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: For 2×2 A and 2×1 x, the result is 2×1 — a column vector. Step 2: The dimensions match: (2×2) · (2×1) = (2×1). Step 3: The trap \"result is a number\" describes scalar multiplication, not this. Step 4: This \"dimension matching\" rule is the foundation of *matrix multiplication validity*, used throughout *linear algebra*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.7.q12",
+      "topicId": "1.7",
+      "prompt": "How is solving A · x = b different from solving a single equation?",
+      "options": [
+        {
+          "text": "Many unknowns",
+          "correct": true
+        },
+        {
+          "text": "Just one unknown",
+          "correct": false
+        },
+        {
+          "text": "No unknowns at all",
+          "correct": false
+        },
+        {
+          "text": "Random unknowns",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: A single equation ax = b has one unknown. Step 2: A · x = b can have many unknowns (2 in our 2×2 case, more in larger systems). Step 3: The trap \"just one unknown\" describes the single equation case. Step 4: This \"many unknowns\" feature is what makes *linear algebra* useful for *machine learning* — handling many variables at once.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.7.q13",
+      "topicId": "1.7",
+      "prompt": "What does it mean for a system A · x = b to have a *unique* solution?",
+      "options": [
+        {
+          "text": "One solution exists",
+          "correct": true
+        },
+        {
+          "text": "No solutions exist",
+          "correct": false
+        },
+        {
+          "text": "Infinitely many solutions",
+          "correct": false
+        },
+        {
+          "text": "Random solutions only",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: \"Unique\" means exactly one x satisfies A · x = b. Step 2: This happens when the equations are independent — each one adds new info. Step 3: The trap \"no solutions\" describes inconsistent systems. Step 4: This \"unique solution\" idea is the seed of *determinants* (Mission 14) — when det(A) ≠ 0, the solution is unique.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.7.q14",
+      "topicId": "1.7",
+      "prompt": "If two equations in a system are *multiples* of each other (like x + y = 2 and 2x + 2y = 4), what happens?",
+      "options": [
+        {
+          "text": "Only one is useful",
+          "correct": true
+        },
+        {
+          "text": "They have many solutions",
+          "correct": false
+        },
+        {
+          "text": "They have no solutions",
+          "correct": false
+        },
+        {
+          "text": "They have unique solution",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: If two equations are multiples, they carry the *same* information. Step 2: So effectively only one equation is independent. Step 3: With one equation and two unknowns, infinitely many (x, y) satisfy it. Step 4: This \"redundant equations\" situation is the topic of Q2.3 — *overdetermined systems*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.7.q15",
+      "topicId": "1.7",
+      "prompt": "Why is writing a system as A · x = b a useful *first step* before solving?",
+      "options": [
+        {
+          "text": "Reveals structure",
+          "correct": true
+        },
+        {
+          "text": "Solves instantly",
+          "correct": false
+        },
+        {
+          "text": "Avoids solving",
+          "correct": false
+        },
+        {
+          "text": "Hides the answer",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: The matrix form makes the structure of the system visible. Step 2: You can immediately see dimensions, dependencies, redundancies. Step 3: This guides the solution strategy. Step 4: The trap \"solves instantly\" overstates — it sets up the solving, not the solving itself. Step 5: This \"structure → strategy\" is the *geometric approach* to linear systems — used in *Singular Value Decomposition* (Mission 14).",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.7.q16",
+      "topicId": "1.7",
+      "prompt": "What does the *first row* of A represent in the system 2x + 3y = 7, 4x − y = 5?",
+      "options": [
+        {
+          "text": "First equation",
+          "correct": true
+        },
+        {
+          "text": "Second equation",
+          "correct": false
+        },
+        {
+          "text": "The unknowns only",
+          "correct": false
+        },
+        {
+          "text": "The right side",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Rows of A correspond to equations. Step 2: First row [2, 3] → 2x + 3y = 7 (first equation). Step 3: Second row [4, −1] → 4x − y = 5. Step 4: This \"rows = equations\" convention is universal in linear algebra. Step 5: We will use this row-equation correspondence when we discuss *row reduction* in Mission 7.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.7.q17",
+      "topicId": "1.7",
+      "prompt": "Can a system with 3 unknowns and 2 equations have a unique solution?",
+      "options": [
+        {
+          "text": "No, infinitely many",
+          "correct": true
+        },
+        {
+          "text": "Yes, always unique",
+          "correct": false
+        },
+        {
+          "text": "Only sometimes unique",
+          "correct": false
+        },
+        {
+          "text": "Depends on numbers",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: With 3 unknowns and 2 equations, we have fewer equations than unknowns. Step 2: At least one unknown remains free — can be any value. Step 3: So infinitely many solutions, not unique. Step 4: The trap \"yes, always\" misses the dimension count. Step 5: This \"fewer equations than unknowns → free variable\" rule is the foundation of *underdetermined systems*, used throughout *statistics* (regression has more variables than data points often).",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.7.q18",
+      "topicId": "1.7",
+      "prompt": "What if A in A · x = b had *all zeros* in the first row — what would that mean?",
+      "options": [
+        {
+          "text": "First eq is 0 = 0",
+          "correct": true
+        },
+        {
+          "text": "First eq has unknowns",
+          "correct": false
+        },
+        {
+          "text": "System has solution",
+          "correct": false
+        },
+        {
+          "text": "System is unique",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: All-zero first row in A means the first equation's coefficients are 0. Step 2: So the first equation is 0·x + 0·y = b₁, i.e., 0 = b₁. Step 3: This is either trivially true (if b₁ = 0) or impossible (if b₁ ≠ 0). Step 4: This \"zero row\" feature indicates either redundancy or inconsistency — depending on b₁. Step 5: We will use this *zero row detection* in Mission 16 to identify kernel elements.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.7.q19",
+      "topicId": "1.7",
+      "prompt": "Why does A · x = b look like a *single* equation even though it's a *system*?",
+      "options": [
+        {
+          "text": "Compact unified form",
+          "correct": true
+        },
+        {
+          "text": "Random hiding form",
+          "correct": false
+        },
+        {
+          "text": "Removes all equations",
+          "correct": false
+        },
+        {
+          "text": "Avoids all variables",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: A · x = b is a single matrix equation. Step 2: But it *encodes* many equations at once. Step 3: The compactness is the power — one symbol \"A · x\" represents many operations. Step 4: This \"many-in-one\" pattern is the foundation of *tensor notation* and *vectorised computation* in *machine learning*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.7.q20",
+      "topicId": "1.7",
+      "prompt": "What if we used *vectors* of unknowns x, y, z and a *3×3 matrix* A — what would the system describe?",
+      "options": [
+        {
+          "text": "Three equations",
+          "correct": true
+        },
+        {
+          "text": "One single equation",
+          "correct": false
+        },
+        {
+          "text": "No equations at all",
+          "correct": false
+        },
+        {
+          "text": "Random equations",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: A 3×3 matrix has 3 rows → 3 equations. Step 2: x = [x, y, z] has 3 unknowns. Step 3: So the system has 3 equations and 3 unknowns. Step 4: This generalises the 2×2 case naturally. Step 5: We will study 3×3 systems in Mission 7–8, and larger systems in Mission 14 for *least squares*.\n\n---",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    }
+  ]
+}

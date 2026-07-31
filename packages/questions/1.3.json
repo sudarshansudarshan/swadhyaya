@@ -1,0 +1,560 @@
+{
+  "id": "1.3",
+  "moduleId": 1,
+  "number": 3,
+  "title": "Plot y = x, y = 2x, y = 10x",
+  "vocabulary": {
+    "allowed": [
+      "line",
+      "origin",
+      "slope",
+      "(now",
+      "introduced)",
+      "steepness",
+      "plotting",
+      "mx",
+      "form",
+      "axis",
+      "points",
+      "climb.",
+      "Vocabulary",
+      "forbidden:",
+      "matrix",
+      "(Q1.7)",
+      "vector",
+      "(Q1.12)",
+      "function",
+      "(Q1.9)."
+    ],
+    "forbidden": [
+      "matrix",
+      "(Q1.7)",
+      "vector",
+      "(Q1.12)",
+      "function",
+      "(Q1.9)."
+    ]
+  },
+  "questions": [
+    {
+      "id": "1.3.q1",
+      "topicId": "1.3",
+      "prompt": "Why do all three lines y = x, y = 2x, and y = 10x pass through the origin point?",
+      "options": [
+        {
+          "text": "Because no constant added",
+          "correct": true
+        },
+        {
+          "text": "Because slopes are zero",
+          "correct": false
+        },
+        {
+          "text": "Because they are curves",
+          "correct": false
+        },
+        {
+          "text": "Because they are vertical",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: At x = 0, all three equations give y = 0. Step 2: So (0, 0) lies on all three lines. Step 3: This is because none of them has a \"+ c\" constant added. Step 4: The trap \"slopes are zero\" is wrong — the slopes are 1, 2, and 10. Step 5: This \"no constant → through origin\" property is what makes a line a *linear subspace* — we will study subspaces in Mission 3.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.3.q2",
+      "topicId": "1.3",
+      "prompt": "Looking at the three lines y = x, y = 2x, y = 10x, which one climbs the *steepest*?",
+      "options": [
+        {
+          "text": "The line y = 10x",
+          "correct": true
+        },
+        {
+          "text": "The line y = 2x",
+          "correct": false
+        },
+        {
+          "text": "The line y = x",
+          "correct": false
+        },
+        {
+          "text": "All three same steepness",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: For the same x value, y = 10x gives the largest y. Step 2: So this line rises fastest as we move right — steepest. Step 3: Slope 10 > slope 2 > slope 1, so y = 10x is steepest. Step 4: The trap \"all same steepness\" ignores the slopes. Step 5: This \"bigger slope → steeper line\" rule is the meaning of the *slope number* — a number that captures steepness, the foundation of *linear regression* and *gradient descent*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.3.q3",
+      "topicId": "1.3",
+      "prompt": "What does the *slope* of a line through origin tell you, visually?",
+      "options": [
+        {
+          "text": "How steeply it climbs",
+          "correct": true
+        },
+        {
+          "text": "Where it crosses origin",
+          "correct": false
+        },
+        {
+          "text": "Whether it bends or not",
+          "correct": false
+        },
+        {
+          "text": "Whether it is on grid",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Slope is the *rise/run* ratio — vertical change per unit horizontal change. Step 2: A larger slope means the line climbs faster. Step 3: So slope is the *steepness number* of the line. Step 4: The trap \"where it crosses origin\" is wrong — every line through origin crosses at origin. Step 5: This \"slope = steepness\" connection is the seed of the *derivative* concept in calculus — and later, of *eigenvalues* in Mission 13.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.3.q4",
+      "topicId": "1.3",
+      "prompt": "Between y = x and y = 2x, which point is on y = 2x but NOT on y = x?",
+      "options": [
+        {
+          "text": "(3, 6) only",
+          "correct": true
+        },
+        {
+          "text": "(1, 1) only",
+          "correct": false
+        },
+        {
+          "text": "(0, 0) only",
+          "correct": false
+        },
+        {
+          "text": "(5, 5) only",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: (3, 6): y = 6, x = 3. Is 6 = 2 × 3? Yes. Is 6 = 3? No. So this is on y = 2x only. Step 2: (1, 1) is on y = x (since 1 = 1), and also on y = 2x? No, 1 ≠ 2. So (1, 1) is on y = x only. Step 3: (0, 0) is on all three (since 0 = anything × 0). Step 4: (5, 5) is on y = x only. Step 5: The trap (5, 5) and (1, 1) are the points where y = x and y = 2x *differ* — but only (3, 6) is on the steeper line alone. This \"substitution check\" is exactly the verification method we will use for matrix equations in Mission 7.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.3.q5",
+      "topicId": "1.3",
+      "prompt": "If you double the slope of a line through origin, what happens to the steepness?",
+      "options": [
+        {
+          "text": "It doubles up steepness",
+          "correct": true
+        },
+        {
+          "text": "It stays exactly same",
+          "correct": false
+        },
+        {
+          "text": "It cuts in half steep",
+          "correct": false
+        },
+        {
+          "text": "It becomes zero flat",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Slope = steepness number. Step 2: Doubling the slope means doubling the rise per unit run. Step 3: So the line becomes twice as steep. Step 4: The trap \"cuts in half\" reverses the direction of change. Step 5: This \"scale slope → scale steepness\" is the geometric meaning of *scalar multiplication* applied to the slope, which we will generalise to *scalar multiplication of matrices* in Mission 12.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.3.q6",
+      "topicId": "1.3",
+      "prompt": "Why does y = 2x climb *faster* than y = x when x is positive?",
+      "options": [
+        {
+          "text": "Slope 2 > slope 1",
+          "correct": true
+        },
+        {
+          "text": "Both have slope zero",
+          "correct": false
+        },
+        {
+          "text": "y = x curves down",
+          "correct": false
+        },
+        {
+          "text": "y = 2x is horizontal",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: At x = 1: y = x gives y = 1; y = 2x gives y = 2. Step 2: At x = 2: y = x gives y = 2; y = 2x gives y = 4. Step 3: y = 2x is always twice y = x for the same x, so it climbs faster. Step 4: The trap \"y = x curves down\" is wrong — y = x is a straight line. Step 5: This \"bigger slope → bigger y\" relationship is the algebraic content of the line equation y = mx, which we will use as the *first matrix-vector product* in Mission 7.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.3.q7",
+      "topicId": "1.3",
+      "prompt": "Which of these describes what happens when x becomes negative on y = 2x?",
+      "options": [
+        {
+          "text": "y becomes negative too",
+          "correct": true
+        },
+        {
+          "text": "y becomes positive only",
+          "correct": false
+        },
+        {
+          "text": "y stays zero flat",
+          "correct": false
+        },
+        {
+          "text": "y doubles up steep",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: At x = −1: y = 2 × (−1) = −2. Step 2: At x = −3: y = 2 × (−3) = −6. Step 3: So negative x gives negative y. Step 4: The trap \"y becomes positive\" misses the sign rule. Step 5: This \"negative input → negative output\" pattern is the *homogeneity* of the rule, the same property we will use to detect linear maps in Mission 12.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.3.q8",
+      "topicId": "1.3",
+      "prompt": "Why is slope y = 10x a *steeper* line than y = 2x?",
+      "options": [
+        {
+          "text": "10 is bigger than 2",
+          "correct": true
+        },
+        {
+          "text": "10 is smaller than 2",
+          "correct": false
+        },
+        {
+          "text": "Both are equal slope",
+          "correct": false
+        },
+        {
+          "text": "10 makes line flatter",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Steepness = absolute value of slope. Step 2: Slope 10 is bigger than slope 2, so y = 10x is steeper. Step 3: The trap \"10 is smaller\" reverses the comparison. Step 4: This \"bigger slope → steeper line\" rule is the seed of *gradient descent* — moving in the direction of steepest increase, which is the core of how neural networks learn.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.3.q9",
+      "topicId": "1.3",
+      "prompt": "If two lines have the *same* slope and both pass through origin, what is true?",
+      "options": [
+        {
+          "text": "They are the same line",
+          "correct": true
+        },
+        {
+          "text": "They are perpendicular",
+          "correct": false
+        },
+        {
+          "text": "They cross at no point",
+          "correct": false
+        },
+        {
+          "text": "They form a triangle",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: A line through origin is uniquely determined by its slope. Step 2: Two lines with the same slope through the same point (origin) coincide. Step 3: So they are the *same* line, just described twice. Step 4: This \"slope + point = unique line\" idea is the *point-slope form* of a line, used to construct lines in geometry. Step 5: We will use this uniqueness in Mission 7 to set up matrix equations with unique solutions.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.3.q10",
+      "topicId": "1.3",
+      "prompt": "On the graph of y = 2x, where does the line cross the y",
+      "options": [
+        {
+          "text": "At origin point",
+          "correct": true
+        },
+        {
+          "text": "At y equals two",
+          "correct": false
+        },
+        {
+          "text": "At y equals zero",
+          "correct": false
+        },
+        {
+          "text": "At no point at all",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: The y-axis is the line x = 0. Step 2: On y = 2x, when x = 0, y = 0. Step 3: So the line crosses the y-axis at (0, 0) — origin. Step 4: The trap \"y equals two\" would describe a line like y = 2x + 2, which crosses y-axis at (0, 2). Step 5: This \"y = mx crosses y-axis at 0\" property is what defines *lines through origin*, the simplest case of *linear subspaces* in Mission 3.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.3.q11",
+      "topicId": "1.3",
+      "prompt": "Looking at y = x, y = 2x, y = 10x plotted together, what do you see?",
+      "options": [
+        {
+          "text": "Three lines fanning out",
+          "correct": true
+        },
+        {
+          "text": "Three parallel lines",
+          "correct": false
+        },
+        {
+          "text": "Three lines converging",
+          "correct": false
+        },
+        {
+          "text": "Three crossing curves",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: All three pass through origin and have positive slopes. Step 2: Different slopes mean different angles. Step 3: So they spread out like a fan from origin. Step 4: The trap \"parallel lines\" would describe lines with *same* slope — not different. Step 5: This \"fan of lines through origin\" picture is the geometric meaning of *all one-dimensional subspaces of R²*, a complete picture we will generalise in Mission 3.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.3.q12",
+      "topicId": "1.3",
+      "prompt": "Why does a bigger slope make a *steeper* line through origin?",
+      "options": [
+        {
+          "text": "More y per unit x",
+          "correct": true
+        },
+        {
+          "text": "Less y per unit x",
+          "correct": false
+        },
+        {
+          "text": "Same y per unit x",
+          "correct": false
+        },
+        {
+          "text": "Zero y per unit x",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Slope = (change in y) / (change in x). Step 2: A bigger slope means a bigger change in y per unit change in x. Step 3: So the line rises more for the same horizontal distance — steeper. Step 4: The trap \"less y per unit x\" reverses the direction. Step 5: This \"bigger quotient → steeper line\" is the *rise over run* definition of slope, the seed of *derivative* in calculus and *spectral radius* in linear algebra (Mission 13).",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.3.q13",
+      "topicId": "1.3",
+      "prompt": "If a line has slope 0 through origin, what does it look like?",
+      "options": [
+        {
+          "text": "A flat line on x-axis",
+          "correct": true
+        },
+        {
+          "text": "A vertical line up",
+          "correct": false
+        },
+        {
+          "text": "A diagonal going up",
+          "correct": false
+        },
+        {
+          "text": "A curve bending down",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Slope 0 means y = 0 × x = 0 always. Step 2: So y is always 0 — the line lies on the x-axis. Step 3: A horizontal flat line is the result. Step 4: The trap \"vertical\" describes *infinite* slope, not zero. Step 5: This \"slope 0 → x-axis\" property is the *zero matrix* analog in 1D — the linear map that sends everything to 0, which we will meet as the *zero transformation* in Mission 12.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.3.q14",
+      "topicId": "1.3",
+      "prompt": "Why does y = x have slope 1 exactly?",
+      "options": [
+        {
+          "text": "y always equals x",
+          "correct": true
+        },
+        {
+          "text": "y is twice x always",
+          "correct": false
+        },
+        {
+          "text": "y is half x always",
+          "correct": false
+        },
+        {
+          "text": "y is zero always",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: The slope is the coefficient of x in y = mx. Step 2: For y = x, the coefficient of x is 1. Step 3: So slope = 1. Step 4: The trap \"twice x\" describes y = 2x, slope 2. Step 5: This \"coefficient = slope\" link is the algebraic content of the line equation y = mx, and we will generalise it to matrix equations where the *matrix entries* play the role of slope in Mission 7.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.3.q15",
+      "topicId": "1.3",
+      "prompt": "What does it *mean* when y = 2x and y = 2x + 3 are drawn on the same graph?",
+      "options": [
+        {
+          "text": "Two parallel lines",
+          "correct": true
+        },
+        {
+          "text": "Two crossing lines",
+          "correct": false
+        },
+        {
+          "text": "One single line",
+          "correct": false
+        },
+        {
+          "text": "Two perpendicular lines",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: y = 2x has slope 2 and passes through origin. Step 2: y = 2x + 3 has slope 2 and passes through (0, 3). Step 3: Same slope means parallel — never meeting. Step 4: The trap \"two crossing lines\" would describe different slopes. Step 5: This \"same slope → parallel lines\" rule is the geometric meaning of *parallel translation*, which we will use when discussing *eigenspaces* (parallel lines of eigenvectors) in Mission 13.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.3.q16",
+      "topicId": "1.3",
+      "prompt": "If a line has slope 5 and passes through origin, what is the y",
+      "options": [
+        {
+          "text": "y equals fifteen",
+          "correct": true
+        },
+        {
+          "text": "y equals five only",
+          "correct": false
+        },
+        {
+          "text": "y equals three only",
+          "correct": false
+        },
+        {
+          "text": "y equals zero flat",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: y = 5x at x = 3 gives y = 5 × 3 = 15. Step 2: Slope 5 means each x adds 5 to y. Step 3: So at x = 3, y has grown by 15. Step 4: The trap \"y equals five\" only counts the first unit. Step 5: This \"slope × x = y\" formula is the algebraic content of the line equation, which we will write as A · x = b for matrix A = [5] in Mission 7.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.3.q17",
+      "topicId": "1.3",
+      "prompt": "Why do lines y = x, y = 2x, y = 10x all share the same *starting point* visually?",
+      "options": [
+        {
+          "text": "All pass through origin",
+          "correct": true
+        },
+        {
+          "text": "All have same slope",
+          "correct": false
+        },
+        {
+          "text": "All are parallel only",
+          "correct": false
+        },
+        {
+          "text": "All are vertical lines",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: All three have form y = mx with no constant. Step 2: At x = 0, all give y = 0. Step 3: So all three pass through (0, 0). Step 4: The trap \"same slope\" describes y = x only — not all three. Step 5: This \"shared origin\" property is what makes them all *linear subspaces* of R² — we will study subspaces formally in Mission 3.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.3.q18",
+      "topicId": "1.3",
+      "prompt": "What if a line through origin had *negative* slope, say y = −2x — how would it look?",
+      "options": [
+        {
+          "text": "Goes down to the right",
+          "correct": true
+        },
+        {
+          "text": "Goes up to the right",
+          "correct": false
+        },
+        {
+          "text": "Stays flat always",
+          "correct": false
+        },
+        {
+          "text": "Stays vertical only",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: At x = 1, y = −2. At x = 2, y = −4. At x = 3, y = −6. Step 2: y decreases as x increases — line goes down to the right. Step 3: The trap \"goes up\" reverses the direction. Step 4: This \"negative slope → descending line\" is the same rule as for positive slopes, just flipped. Step 5: We will use negative slopes when discussing *negative eigenvalues* in Mission 13 — directions along which a matrix flips orientation.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.3.q19",
+      "topicId": "1.3",
+      "prompt": "Why does plotting y = 2x for x = 1, 2, 3 give the points (1, 2), (2, 4), (3, 6)?",
+      "options": [
+        {
+          "text": "Rule gives y = 2x",
+          "correct": true
+        },
+        {
+          "text": "Points lie on a circle",
+          "correct": false
+        },
+        {
+          "text": "Slope equals three here",
+          "correct": false
+        },
+        {
+          "text": "y equals x only",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: For each x value, compute y = 2x. Step 2: At x = 1: y = 2. At x = 2: y = 4. At x = 3: y = 6. Step 3: So the points are (1, 2), (2, 4), (3, 6). Step 4: The trap \"circle\" describes quadratic relations, not linear. Step 5: This \"compute y for each x\" procedure is the seed of *function evaluation*, which becomes *matrix-vector multiplication* in Mission 7.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.3.q20",
+      "topicId": "1.3",
+      "prompt": "What if you plotted y = 0.5x on the same graph as y = 2x — which is closer to the x",
+      "options": [
+        {
+          "text": "The y = 0.5x line",
+          "correct": true
+        },
+        {
+          "text": "The y = 2x line",
+          "correct": false
+        },
+        {
+          "text": "Both equal distance",
+          "correct": false
+        },
+        {
+          "text": "Neither near axis",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: At x = 2: y = 0.5 × 2 = 1 for y = 0.5x; y = 2 × 2 = 4 for y = 2x. Step 2: So y = 0.5x has smaller y values — it hugs the x-axis. Step 3: The trap \"both equal distance\" ignores the different slopes. Step 4: This \"smaller slope → flatter line → closer to x-axis\" is the same rule as Q5 in reverse. Step 5: We will use this \"small slope → small image\" intuition in Mission 13 when studying *small eigenvalues*.\n\n---",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    }
+  ]
+}

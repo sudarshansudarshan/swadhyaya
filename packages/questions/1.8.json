@@ -1,0 +1,553 @@
+{
+  "id": "1.8",
+  "moduleId": 1,
+  "number": 8,
+  "title": "Inverse of a linear function f(x) = 3x + 2",
+  "vocabulary": {
+    "allowed": [
+      "function",
+      "inverse",
+      "input",
+      "output",
+      "undo",
+      "one-to-one",
+      "solve",
+      "f(x)",
+      "α.",
+      "Vocabulary",
+      "forbidden:",
+      "determinant",
+      "matrix",
+      "inverse",
+      "(Q1.14)."
+    ],
+    "forbidden": [
+      "determinant",
+      "matrix",
+      "inverse",
+      "(Q1.14)."
+    ]
+  },
+  "questions": [
+    {
+      "id": "1.8.q1",
+      "topicId": "1.8",
+      "prompt": "What does it mean for a function to be *one",
+      "options": [
+        {
+          "text": "Each input gives one output",
+          "correct": true
+        },
+        {
+          "text": "Multiple inputs same output",
+          "correct": false
+        },
+        {
+          "text": "Random output each time",
+          "correct": false
+        },
+        {
+          "text": "No inputs at all",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: A one-to-one function gives a *unique* output for each input. Step 2: Different inputs always give different outputs. Step 3: The trap \"multiple inputs same output\" describes *many-to-one*. Step 4: This \"one-to-one\" property is what allows an inverse to exist. Step 5: We will study *injectivity* formally for matrices in Mission 12 — same idea, higher dimensions.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.8.q2",
+      "topicId": "1.8",
+      "prompt": "Why does f(x) = 3x + 2 have a well",
+      "options": [
+        {
+          "text": "It is one-to-one",
+          "correct": true
+        },
+        {
+          "text": "It is many-to-one",
+          "correct": false
+        },
+        {
+          "text": "It has no outputs",
+          "correct": false
+        },
+        {
+          "text": "It is random here",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: f(x) = 3x + 2 is linear with non-zero slope. Step 2: Different x always give different f(x). Step 3: So f is one-to-one. Step 4: One-to-one functions have inverses. Step 5: This \"non-zero slope → one-to-one → invertible\" rule generalises to *non-singular matrices* in Mission 14.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.8.q3",
+      "topicId": "1.8",
+      "prompt": "What does the *inverse* f⁻¹ do to a number?",
+      "options": [
+        {
+          "text": "Undoes the function",
+          "correct": true
+        },
+        {
+          "text": "Randomises the value",
+          "correct": false
+        },
+        {
+          "text": "Squares the number",
+          "correct": false
+        },
+        {
+          "text": "Doubles the number",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: f⁻¹(y) gives the x such that f(x) = y. Step 2: So f⁻¹ *undoes* what f did. Step 3: The trap \"squares\" describes a different operation. Step 4: This \"inverse = undo\" intuition is the foundation of *matrix inverses* in Mission 14 and *function composition* in Mission 8.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.8.q4",
+      "topicId": "1.8",
+      "prompt": "For f(x) = 3x + 2, what is f(5)?",
+      "options": [
+        {
+          "text": "Seventeen",
+          "correct": true
+        },
+        {
+          "text": "Fifteen",
+          "correct": false
+        },
+        {
+          "text": "Thirteen",
+          "correct": false
+        },
+        {
+          "text": "Twenty-five",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Substitute x = 5: f(5) = 3(5) + 2 = 15 + 2 = 17. Step 2: So f(5) = 17. Step 3: The trap \"fifteen\" forgets the \"+ 2\". Step 4: This \"substitute to evaluate\" is *function evaluation*, the seed of *matrix-vector multiplication*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.8.q5",
+      "topicId": "1.8",
+      "prompt": "If f(α) = 17 for f(x) = 3x + 2, what is α?",
+      "options": [
+        {
+          "text": "α equals five",
+          "correct": true
+        },
+        {
+          "text": "α equals seven",
+          "correct": false
+        },
+        {
+          "text": "α equals ten",
+          "correct": false
+        },
+        {
+          "text": "α equals zero",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: We need 3α + 2 = 17. Step 2: Subtract 2: 3α = 15. Step 3: Divide by 3: α = 5. Step 4: So α = 5. Step 5: This \"solve for input from output\" is the *inverse evaluation* — central to *matrix inverse* computation.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.8.q6",
+      "topicId": "1.8",
+      "prompt": "Why is *solving* for α equivalent to *applying the inverse*?",
+      "options": [
+        {
+          "text": "f⁻¹ undoes f",
+          "correct": true
+        },
+        {
+          "text": "They are unrelated",
+          "correct": false
+        },
+        {
+          "text": "They are random",
+          "correct": false
+        },
+        {
+          "text": "They are impossible",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: f(α) = 17 means α = f⁻¹(17). Step 2: Solving for α directly is the same as applying the inverse. Step 3: The trap \"unrelated\" misses the algebraic equivalence. Step 4: This \"solve ↔ inverse\" equivalence is the foundation of *matrix equation solving*, where A · x = b is solved by x = A⁻¹ · b.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.8.q7",
+      "topicId": "1.8",
+      "prompt": "What is the formula for f⁻¹ when f(x) = 3x + 2?",
+      "options": [
+        {
+          "text": "f⁻¹(y) = (y−2)/3",
+          "correct": true
+        },
+        {
+          "text": "f⁻¹(y) = (y+2)/3",
+          "correct": false
+        },
+        {
+          "text": "f⁻¹(y) = 3y + 2",
+          "correct": false
+        },
+        {
+          "text": "f⁻¹(y) = 3y − 2",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Solve y = 3x + 2 for x. Step 2: y − 2 = 3x. Step 3: x = (y − 2)/3. Step 4: So f⁻¹(y) = (y − 2)/3. Step 5: The trap \"(y + 2)/3\" adds instead of subtracting. Step 6: This \"swap and invert\" pattern generalises to *matrix inverses* in Mission 14.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.8.q8",
+      "topicId": "1.8",
+      "prompt": "Why does every one",
+      "options": [
+        {
+          "text": "Inverse needs unique",
+          "correct": true
+        },
+        {
+          "text": "All functions have it",
+          "correct": false
+        },
+        {
+          "text": "Random functions only",
+          "correct": false
+        },
+        {
+          "text": "None have it ever",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: An inverse must give a *unique* answer. Step 2: That requires the original function to be one-to-one. Step 3: Many-to-one functions cannot have inverses (multiple inputs map to one output — which one to pick?). Step 4: This \"uniqueness ↔ invertibility\" link is the foundation of *determinant non-zero ↔ invertible matrix* in Mission 14.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.8.q9",
+      "topicId": "1.8",
+      "prompt": "If f(x) = 3x + 2 and g(y) = (y−2)/3, what is f(g(17))?",
+      "options": [
+        {
+          "text": "Seventeen",
+          "correct": true
+        },
+        {
+          "text": "Five only",
+          "correct": false
+        },
+        {
+          "text": "Fifteen",
+          "correct": false
+        },
+        {
+          "text": "Thirteen",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: g(17) = (17 − 2)/3 = 15/3 = 5. Step 2: f(5) = 3(5) + 2 = 17. Step 3: So f(g(17)) = 17 — back to start. Step 4: This \"f(g(y)) = y\" is the *inverse property* — applying f then g returns the input. Step 5: This generalises to *matrix inverses* in Mission 14 — A · A⁻¹ = I.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.8.q10",
+      "topicId": "1.8",
+      "prompt": "Why is the *inverse* of f(x) = 3x + 2 *not* equal to f(x) = 3x + 2?",
+      "options": [
+        {
+          "text": "They are different ops",
+          "correct": true
+        },
+        {
+          "text": "They are the same op",
+          "correct": false
+        },
+        {
+          "text": "They cancel out",
+          "correct": false
+        },
+        {
+          "text": "They are random",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: f(x) = 3x + 2 multiplies by 3 and adds 2. Step 2: f⁻¹(y) = (y − 2)/3 subtracts 2 and divides by 3. Step 3: These are different operations — they undo each other. Step 4: The trap \"same op\" misses that inverse is a different function. Step 5: This \"inverse ≠ original\" idea generalises — most matrices are *not* equal to their inverses.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.8.q11",
+      "topicId": "1.8",
+      "prompt": "What happens when you compose f with f⁻¹ in *any* order?",
+      "options": [
+        {
+          "text": "Get identity",
+          "correct": true
+        },
+        {
+          "text": "Get original f",
+          "correct": false
+        },
+        {
+          "text": "Get random output",
+          "correct": false
+        },
+        {
+          "text": "Get zero output",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: f(f⁻¹(x)) = x and f⁻¹(f(x)) = x. Step 2: So composing f and f⁻¹ in any order gives the *identity* function. Step 3: The trap \"get original f\" is wrong — composition gives identity, not f. Step 4: This \"f · f⁻¹ = I\" rule generalises to *matrix inverses*: A · A⁻¹ = A⁻¹ · A = I.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.8.q12",
+      "topicId": "1.8",
+      "prompt": "What is the *graph* of f(x) = 3x + 2 and f⁻¹(y) = (y−2)/3?",
+      "options": [
+        {
+          "text": "Reflections of each",
+          "correct": true
+        },
+        {
+          "text": "Same single line",
+          "correct": false
+        },
+        {
+          "text": "Parallel lines both",
+          "correct": false
+        },
+        {
+          "text": "Crossing at origin",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: f(x) = 3x + 2 is a line with slope 3. Step 2: f⁻¹(y) = y/3 − 2/3 is a line with slope 1/3. Step 3: These two lines are *reflections* across the y = x line. Step 4: This \"inverse = reflection\" geometry is the seed of *transpose of a matrix*, used in Mission 12.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.8.q13",
+      "topicId": "1.8",
+      "prompt": "Why is f(x) = 3x + 2 *invertible* while f(x) = 0 (the zero function) is not?",
+      "options": [
+        {
+          "text": "Slope is nonzero",
+          "correct": true
+        },
+        {
+          "text": "Slope is zero only",
+          "correct": false
+        },
+        {
+          "text": "Both invertible here",
+          "correct": false
+        },
+        {
+          "text": "Both not invertible",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: f(x) = 3x + 2 has slope 3 (nonzero) — one-to-one. Step 2: f(x) = 0 has slope 0 — many-to-one (all x map to 0). Step 3: So f(x) = 3x + 2 is invertible; f(x) = 0 is not. Step 4: This \"non-zero slope ↔ invertible\" is the *scalar version* of *det ≠ 0 ↔ matrix invertible* in Mission 14.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.8.q14",
+      "topicId": "1.8",
+      "prompt": "What does f⁻¹(17) mean in plain words?",
+      "options": [
+        {
+          "text": "Input that gives 17",
+          "correct": true
+        },
+        {
+          "text": "Output at input 17",
+          "correct": false
+        },
+        {
+          "text": "Random number only",
+          "correct": false
+        },
+        {
+          "text": "Always zero input",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: f⁻¹(17) is the input x such that f(x) = 17. Step 2: For f(x) = 3x + 2, that's x = 5. Step 3: The trap \"output at input 17\" reverses the direction. Step 4: This \"inverse = back-solve\" intuition is the foundation of *back-substitution* in *Gaussian elimination*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.8.q15",
+      "topicId": "1.8",
+      "prompt": "What is special about the *identity* function id(x) = x?",
+      "options": [
+        {
+          "text": "Leaves input unchanged",
+          "correct": true
+        },
+        {
+          "text": "Doubles the input",
+          "correct": false
+        },
+        {
+          "text": "Squares the input",
+          "correct": false
+        },
+        {
+          "text": "Zeros the input",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: id(x) = x returns the input unchanged. Step 2: So id(f(x)) = f(x) for any f. Step 3: This \"do nothing\" function is the *identity element* in function composition. Step 4: For matrices, the *identity matrix I* plays the same role — A · I = A.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.8.q16",
+      "topicId": "1.8",
+      "prompt": "Can a function be its *own* inverse?",
+      "options": [
+        {
+          "text": "Yes, sometimes",
+          "correct": true
+        },
+        {
+          "text": "No, never ever",
+          "correct": false
+        },
+        {
+          "text": "Only if linear",
+          "correct": false
+        },
+        {
+          "text": "Only if quadratic",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Some functions satisfy f(f(x)) = x. Step 2: For example, f(x) = 1/x is its own inverse (except at 0). Step 3: Another: f(x) = −x is its own inverse (applying twice gives x back). Step 4: Such functions are *involutions*. Step 5: We will meet involutory matrices in Mission 14 — those where A² = I.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.8.q17",
+      "topicId": "1.8",
+      "prompt": "Why does solving f(α) = 17 feel like *back",
+      "options": [
+        {
+          "text": "We start at output",
+          "correct": true
+        },
+        {
+          "text": "We start at input",
+          "correct": false
+        },
+        {
+          "text": "We ignore outputs",
+          "correct": false
+        },
+        {
+          "text": "We use random numbers",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: We start from the output value 17. Step 2: We work *backwards* through the function to find the input. Step 3: This is \"inverse direction\" — opposite to f's natural forward direction. Step 4: This \"back-tracking\" intuition is the foundation of *back-propagation* in *neural networks*, which uses inverse-function thinking to update weights.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.8.q18",
+      "topicId": "1.8",
+      "prompt": "What if f(x) = x² — does it have an inverse everywhere?",
+      "options": [
+        {
+          "text": "No, only on halves",
+          "correct": true
+        },
+        {
+          "text": "Yes, always here",
+          "correct": false
+        },
+        {
+          "text": "Yes, on all reals",
+          "correct": false
+        },
+        {
+          "text": "No, never ever",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: f(x) = x² is not one-to-one on all reals — f(2) = f(−2) = 4. Step 2: So f has no global inverse on ℝ. Step 3: But on x ≥ 0 (or x ≤ 0), f is one-to-one and has inverse √x (or −√x). Step 4: This \"inverse exists only on restricted domain\" is the seed of *branch cuts* in complex analysis and *domain restrictions* in linear algebra (Mission 12).",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.8.q19",
+      "topicId": "1.8",
+      "prompt": "Why does the *uniqueness* of α in f(α) = 17 matter?",
+      "options": [
+        {
+          "text": "Inverse needs it",
+          "correct": true
+        },
+        {
+          "text": "Any value works",
+          "correct": false
+        },
+        {
+          "text": "Random values fit",
+          "correct": false
+        },
+        {
+          "text": "Zero value works",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: If multiple α satisfy f(α) = 17, f⁻¹(17) is ambiguous. Step 2: So uniqueness is required for f⁻¹ to be a well-defined function. Step 3: The trap \"any value works\" misses uniqueness. Step 4: This \"uniqueness ↔ well-defined inverse\" is the foundation of *injectivity ↔ inverse exists* in linear algebra (Mission 12).",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.8.q20",
+      "topicId": "1.8",
+      "prompt": "What if f(x) = 3x + 2 were *applied twice*, f(f(x)) — what would that give?",
+      "options": [
+        {
+          "text": "9x + 8",
+          "correct": true
+        },
+        {
+          "text": "6x + 4 only",
+          "correct": false
+        },
+        {
+          "text": "9x + 2 only",
+          "correct": false
+        },
+        {
+          "text": "3x + 2 only",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: f(x) = 3x + 2. Step 2: f(f(x)) = f(3x + 2) = 3(3x + 2) + 2 = 9x + 6 + 2 = 9x + 8. Step 3: So f(f(x)) = 9x + 8. Step 4: The trap \"6x + 4\" describes 2·f(x), not f(f(x)). Step 5: This \"composition of linear functions is linear\" is the foundation of *matrix multiplication* in Mission 7 — composing linear maps gives a linear map.\n\n---",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    }
+  ]
+}

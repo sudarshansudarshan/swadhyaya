@@ -1,0 +1,549 @@
+{
+  "id": "1.6",
+  "moduleId": 1,
+  "number": 6,
+  "title": "Plot y = ax + b with sliders",
+  "vocabulary": {
+    "allowed": [
+      "slider",
+      "parameter",
+      "slope",
+      "intercept",
+      "change",
+      "drag",
+      "line",
+      "axis",
+      "knob.",
+      "Vocabulary",
+      "forbidden:",
+      "matrix",
+      "vector."
+    ],
+    "forbidden": [
+      "matrix",
+      "vector."
+    ]
+  },
+  "questions": [
+    {
+      "id": "1.6.q1",
+      "topicId": "1.6",
+      "prompt": "In y = ax + b, what does the slider *a* control?",
+      "options": [
+        {
+          "text": "Steepness of line",
+          "correct": true
+        },
+        {
+          "text": "Position on y-axis",
+          "correct": false
+        },
+        {
+          "text": "Width of graph",
+          "correct": false
+        },
+        {
+          "text": "Number of points",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: The coefficient a in y = ax + b is the slope. Step 2: Changing a changes how steep the line is. Step 3: So slider *a* controls steepness. Step 4: The trap \"position on y-axis\" describes slider *b*. Step 5: This \"a = slope, b = intercept\" separation is the algebraic anatomy of the line equation, used in *parameter estimation* in statistics.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.6.q2",
+      "topicId": "1.6",
+      "prompt": "In y = ax + b, what does the slider *b* control?",
+      "options": [
+        {
+          "text": "Position on y-axis",
+          "correct": true
+        },
+        {
+          "text": "Steepness of line",
+          "correct": false
+        },
+        {
+          "text": "Slope of the line",
+          "correct": false
+        },
+        {
+          "text": "Width of the line",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: The constant b in y = ax + b is the y-intercept. Step 2: Changing b moves where the line crosses the y-axis. Step 3: So slider *b* controls vertical position. Step 4: The trap \"steepness\" describes slider *a*. Step 5: This \"b = position, a = direction\" separation is the geometric meaning of *translation* vs *rotation*, central to *computer graphics*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.6.q3",
+      "topicId": "1.6",
+      "prompt": "If you drag slider *a* from 2 to 5 (keeping *b* = 1 fixed), what changes?",
+      "options": [
+        {
+          "text": "Line tilts steeper",
+          "correct": true
+        },
+        {
+          "text": "Line shifts upward",
+          "correct": false
+        },
+        {
+          "text": "Line shifts downward",
+          "correct": false
+        },
+        {
+          "text": "Line becomes vertical",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Slider *a* controls steepness (slope). Step 2: Increasing a from 2 to 5 makes the line steeper. Step 3: The line's y-intercept stays at (0, 1) since *b* is fixed. Step 4: The trap \"shifts up/down\" describes slider *b*. Step 5: This \"change a → rotate around y-intercept\" is the geometric meaning of *rotation around a fixed point*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.6.q4",
+      "topicId": "1.6",
+      "prompt": "If you drag slider *b* from 0 to 3 (keeping *a* = 2 fixed), what changes?",
+      "options": [
+        {
+          "text": "Line shifts upward",
+          "correct": true
+        },
+        {
+          "text": "Line tilts more up",
+          "correct": false
+        },
+        {
+          "text": "Line becomes steeper",
+          "correct": false
+        },
+        {
+          "text": "Line becomes vertical",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Slider *b* controls y-intercept. Step 2: Increasing b moves the y-intercept from (0, 0) to (0, 3). Step 3: The line slides up; slope stays at 2. Step 4: The trap \"tilts more up\" describes slider *a*. Step 5: This \"change b → vertical shift\" is the *translation* operation, distinct from rotation (slider a).",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.6.q5",
+      "topicId": "1.6",
+      "prompt": "Why do sliders *a* and *b* change *different* properties of the line?",
+      "options": [
+        {
+          "text": "They are different roles",
+          "correct": true
+        },
+        {
+          "text": "They are equal roles",
+          "correct": false
+        },
+        {
+          "text": "They swap roles here",
+          "correct": false
+        },
+        {
+          "text": "They have no role",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: *a* is the coefficient of x — controls how y changes with x (steepness). Step 2: *b* is the constant term — controls y at x = 0 (intercept). Step 3: So *a* and *b* have *different* algebraic roles. Step 4: The trap \"equal roles\" treats them as interchangeable. Step 5: This \"two parameters, two roles\" idea is the foundation of *two-parameter linear regression*, where slope and intercept are estimated separately.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.6.q6",
+      "topicId": "1.6",
+      "prompt": "With sliders at a = 0 and b = 5, what line is drawn?",
+      "options": [
+        {
+          "text": "Horizontal line high",
+          "correct": true
+        },
+        {
+          "text": "Vertical line up tall",
+          "correct": false
+        },
+        {
+          "text": "Diagonal line rising",
+          "correct": false
+        },
+        {
+          "text": "Line through origin",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: a = 0 means slope 0 — horizontal line. Step 2: b = 5 means y-intercept 5 — at height 5. Step 3: So the line is y = 5, a horizontal line at height 5. Step 4: The trap \"diagonal\" describes non-zero slope. Step 5: This \"a = 0 → horizontal\" rule is used in *Fourier analysis* to identify constant signals.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.6.q7",
+      "topicId": "1.6",
+      "prompt": "With sliders at a = 2 and b = 0, where does the line cross y",
+      "options": [
+        {
+          "text": "At origin only",
+          "correct": true
+        },
+        {
+          "text": "At y equals two",
+          "correct": false
+        },
+        {
+          "text": "At x equals two",
+          "correct": false
+        },
+        {
+          "text": "At no point at all",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: b = 0 means y-intercept = 0. Step 2: So the line crosses y-axis at (0, 0) — origin. Step 3: This is y = 2x, the line through origin. Step 4: The trap \"y equals two\" confuses intercept with slope. Step 5: This \"b = 0 → through origin\" property is the seed of *linear subspaces* (Mission 3) and *homogeneous* differential equations.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.6.q8",
+      "topicId": "1.6",
+      "prompt": "Why is *dragging* a slider a useful way to *see* parameter effects?",
+      "options": [
+        {
+          "text": "Shows changes live",
+          "correct": true
+        },
+        {
+          "text": "Hides changes away",
+          "correct": false
+        },
+        {
+          "text": "Removes line from view",
+          "correct": false
+        },
+        {
+          "text": "Makes line vertical only",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: A slider drag instantly updates the line on screen. Step 2: The user sees the *effect* of changing the parameter in real-time. Step 3: This builds intuition about parameter roles. Step 4: The trap \"hides changes\" describes a frozen display. Step 5: This \"live update\" technique is the foundation of *interactive visualisation* and *Geogebra-style* learning environments.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.6.q9",
+      "topicId": "1.6",
+      "prompt": "If slider *a* becomes negative (say a = −3), how does the line tilt?",
+      "options": [
+        {
+          "text": "Tilts downward right",
+          "correct": true
+        },
+        {
+          "text": "Tilts upward right",
+          "correct": false
+        },
+        {
+          "text": "Stays flat always",
+          "correct": false
+        },
+        {
+          "text": "Stays vertical only",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Negative slope means y decreases as x increases. Step 2: So the line goes down to the right (and up to the left). Step 3: The trap \"tilts up\" reverses the sign. Step 4: This \"negative slope → descending line\" is the same rule from Q1.3, applied via sliders. Step 5: We will use negative slopes in Mission 13 for *negative eigenvalues* — directions where the matrix flips orientation.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.6.q10",
+      "topicId": "1.6",
+      "prompt": "Can sliders *a* and *b* independently change a line's direction and position?",
+      "options": [
+        {
+          "text": "Yes, separately",
+          "correct": true
+        },
+        {
+          "text": "No, together only",
+          "correct": false
+        },
+        {
+          "text": "Only together fixed",
+          "correct": false
+        },
+        {
+          "text": "Only one at a time",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: *a* controls slope (direction), *b* controls intercept (position). Step 2: They are independent parameters. Step 3: So we can change one without affecting the other. Step 4: The trap \"no, together\" misses the algebraic independence. Step 5: This \"independent parameters\" property is the foundation of *two-dimensional parameter spaces*, used in *multiple regression* and *neural network weights*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.6.q11",
+      "topicId": "1.6",
+      "prompt": "Why is exploring *all* combinations of a and b useful?",
+      "options": [
+        {
+          "text": "Maps full family",
+          "correct": true
+        },
+        {
+          "text": "Hides the pattern",
+          "correct": false
+        },
+        {
+          "text": "Reveals one line only",
+          "correct": false
+        },
+        {
+          "text": "Makes graph smaller",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Each (a, b) pair gives one line y = ax + b. Step 2: The full set of (a, b) pairs is a 2D parameter space. Step 3: Exploring all pairs maps the entire family of lines. Step 4: The trap \"reveals one line\" misses the parameter range. Step 5: This \"parameter space exploration\" is the seed of *parameter sweeps* in machine learning and *grid search* in hyperparameter tuning.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.6.q12",
+      "topicId": "1.6",
+      "prompt": "What does slider *a* = 1, *b* = 0 give us?",
+      "options": [
+        {
+          "text": "The line y = x",
+          "correct": true
+        },
+        {
+          "text": "The line y = 0",
+          "correct": false
+        },
+        {
+          "text": "The line x = 0",
+          "correct": false
+        },
+        {
+          "text": "The line y = 2x",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: With a = 1, b = 0, the equation becomes y = 1·x + 0 = x. Step 2: So we get the line y = x. Step 3: The trap \"y = 0\" describes a = 0, b = 0. Step 4: This \"a = 1, b = 0\" special case is the *identity line*, the diagonal where x = y — the basis of *identity matrices* in Mission 7.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.6.q13",
+      "topicId": "1.6",
+      "prompt": "If you freeze a = 2 and only vary b, what shape do the lines form?",
+      "options": [
+        {
+          "text": "Parallel lines fan",
+          "correct": true
+        },
+        {
+          "text": "Crossing at origin",
+          "correct": false
+        },
+        {
+          "text": "All one single line",
+          "correct": false
+        },
+        {
+          "text": "Circle of lines",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Same slope a = 2, varying b. Step 2: Different intercepts with same slope → parallel lines. Step 3: They fan out vertically, never meeting. Step 4: The trap \"crossing at origin\" describes different slopes. Step 5: This \"vary intercept, fix slope → parallel family\" is the geometric meaning of *one-parameter line families*, used in Q3.7 for parallel planes.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.6.q14",
+      "topicId": "1.6",
+      "prompt": "Why does the line *rotate* around the y",
+      "options": [
+        {
+          "text": "Intercept stays fixed",
+          "correct": true
+        },
+        {
+          "text": "Intercept changes too",
+          "correct": false
+        },
+        {
+          "text": "Slope stays zero",
+          "correct": false
+        },
+        {
+          "text": "Slope is unchanged",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: With b fixed, the y-intercept (0, b) stays the same. Step 2: Changing a changes the slope, so the line tilts around the fixed point (0, b). Step 3: This is rotation around the y-intercept. Step 4: The trap \"intercept changes\" misses that b is fixed. Step 5: This \"rotate around fixed point\" geometry is the foundation of *pivot operations* in matrix algorithms.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.6.q15",
+      "topicId": "1.6",
+      "prompt": "What does slider *a* = 0, *b* = 0 give us?",
+      "options": [
+        {
+          "text": "The x-axis itself",
+          "correct": true
+        },
+        {
+          "text": "The y-axis itself",
+          "correct": false
+        },
+        {
+          "text": "A diagonal line up",
+          "correct": false
+        },
+        {
+          "text": "An empty graph sheet",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: y = 0·x + 0 = 0 always. Step 2: So y = 0 for every x — that's the x-axis. Step 3: The trap \"y-axis\" describes x = 0, a different equation. Step 4: This \"a = 0, b = 0\" gives the x-axis, the *zero set* of the y-coordinate. Step 5: We will use this \"zero set\" concept in Mission 3 for *null spaces* of linear maps.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.6.q16",
+      "topicId": "1.6",
+      "prompt": "How does dragging both sliders *together* (a up, b down) affect the line?",
+      "options": [
+        {
+          "text": "Tilts and shifts",
+          "correct": true
+        },
+        {
+          "text": "Stays unchanged",
+          "correct": false
+        },
+        {
+          "text": "Becomes vertical",
+          "correct": false
+        },
+        {
+          "text": "Disappears entirely",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: a up → slope steeper. Step 2: b down → intercept lower. Step 3: Both effects happen at once. Step 4: The trap \"stays unchanged\" ignores slider movements. Step 5: This \"combined rotation + translation\" is the foundation of *affine transformations* — rotation plus translation, used in *computer graphics* for moving and rotating objects.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.6.q17",
+      "topicId": "1.6",
+      "prompt": "Why are sliders useful for *learning* about parameters?",
+      "options": [
+        {
+          "text": "See effects live",
+          "correct": true
+        },
+        {
+          "text": "Hides equations only",
+          "correct": false
+        },
+        {
+          "text": "Removes graph entirely",
+          "correct": false
+        },
+        {
+          "text": "Makes graph static",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Sliders give instant visual feedback. Step 2: The learner *sees* how each parameter changes the line. Step 3: This builds deep intuition. Step 4: The trap \"hides equations\" misses the visual feedback. Step 5: This \"interactive learning\" approach is the foundation of *exploratory learning*, especially effective for visual topics like linear algebra.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.6.q18",
+      "topicId": "1.6",
+      "prompt": "What if slider *a* could only take *integer* values 1, 2, 3, … — how many different lines could you draw?",
+      "options": [
+        {
+          "text": "Infinitely many lines",
+          "correct": true
+        },
+        {
+          "text": "Only ten lines",
+          "correct": false
+        },
+        {
+          "text": "Just one line only",
+          "correct": false
+        },
+        {
+          "text": "No lines at all",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Integer values 1, 2, 3, … are infinitely many. Step 2: Each value of a gives a different slope. Step 3: So infinitely many lines (one for each a). Step 4: This \"infinite integer set\" is *countably infinite* — the size of the natural numbers, which we will use when discussing *infinite-dimensional spaces* in advanced linear algebra.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.6.q19",
+      "topicId": "1.6",
+      "prompt": "What is the *invariant* when only slider *a* moves (b fixed)?",
+      "options": [
+        {
+          "text": "The y-intercept only",
+          "correct": true
+        },
+        {
+          "text": "The slope always",
+          "correct": false
+        },
+        {
+          "text": "The line direction",
+          "correct": false
+        },
+        {
+          "text": "The graph size",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Slider a moves → slope changes. Step 2: Slider b is fixed → y-intercept stays the same. Step 3: So the y-intercept is the invariant. Step 4: The trap \"slope always\" reverses which is fixed. Step 5: This \"identify the invariant\" skill is the foundation of *symmetry analysis* — finding what stays the same under a transformation.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.6.q20",
+      "topicId": "1.6",
+      "prompt": "What if you had a third slider *c* for the equation y = ax² + bx + c — what would *c* control?",
+      "options": [
+        {
+          "text": "The starting value",
+          "correct": true
+        },
+        {
+          "text": "The slope of curve",
+          "correct": false
+        },
+        {
+          "text": "The width of graph",
+          "correct": false
+        },
+        {
+          "text": "The number of axes",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: In y = ax² + bx + c, c is the constant term. Step 2: At x = 0: y = c. Step 3: So c controls the y-value at x = 0 — the starting value. Step 4: This generalises the y-intercept role to parabolas. Step 5: We will use this in Q1.9 when plotting y = x² − 10, where c = −10 controls the height of the parabola at x = 0.\n\n---",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    }
+  ]
+}

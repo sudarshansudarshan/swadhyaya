@@ -1,0 +1,564 @@
+{
+  "id": "1.1",
+  "moduleId": 1,
+  "number": 1,
+  "title": "Ram and Lakshman's piggy-bank points",
+  "vocabulary": {
+    "allowed": [
+      "rule",
+      "relation",
+      "pattern",
+      "points",
+      "line",
+      "graph",
+      "equation",
+      "pair",
+      "week",
+      "savings.",
+      "Vocabulary",
+      "forbidden:",
+      "ratio",
+      "(as",
+      "formal",
+      "term)",
+      "slope",
+      "y-intercept",
+      "(these",
+      "arrive",
+      "later)."
+    ],
+    "forbidden": [
+      "ratio",
+      "(as",
+      "formal",
+      "term)",
+      "slope",
+      "y-intercept",
+      "(these",
+      "arrive",
+      "later)."
+    ]
+  },
+  "questions": [
+    {
+      "id": "1.1.q1",
+      "topicId": "1.1",
+      "prompt": "Why must all the brothers' weekly (R, L) points lie on one single straight line?",
+      "options": [
+        {
+          "text": "They all obey one rule",
+          "correct": true
+        },
+        {
+          "text": "They follow no pattern at all",
+          "correct": false
+        },
+        {
+          "text": "They trace a circle shape",
+          "correct": false
+        },
+        {
+          "text": "They scatter at random angles",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Every week's pair obeys the same rule — Ram's savings is always twice Lakshman's. Step 2: When every pair obeys one fixed rule, the points must line up on a single straight line. Step 3: The line passes through (0, 0) because when Lakshman has ₹0, Ram has ₹0 as well. Step 4: This \"fixed rule → one line\" idea is the seed of what we will call a *linear relationship* in Mission 3.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.1.q2",
+      "topicId": "1.1",
+      "prompt": "As the brothers keep saving week after week, the (R, L) points move in which direction on the graph?",
+      "options": [
+        {
+          "text": "upward and rightward together",
+          "correct": true
+        },
+        {
+          "text": "only toward the right side",
+          "correct": false
+        },
+        {
+          "text": "only toward the upper side",
+          "correct": false
+        },
+        {
+          "text": "in a circle around origin",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Each new week, both R and L get bigger. Step 2: Bigger L moves the point right; bigger R moves it up. Step 3: So every step on the graph goes to the top-right corner. Step 4: The trap \"only right\" would mean R froze, and \"only up\" would mean L froze — both break the rule R = 2L. Step 5: This \"rightward + upward together\" picture is the geometric meaning of a *positive linear rule* — when both inputs and outputs grow, the line climbs toward the top-right.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.1.q3",
+      "topicId": "1.1",
+      "prompt": "A new point lands at (12, 6) on the brothers' graph. What does this *mean* in real life?",
+      "options": [
+        {
+          "text": "Ram saved exactly twelve",
+          "correct": true
+        },
+        {
+          "text": "Lakshman saved twelve",
+          "correct": false
+        },
+        {
+          "text": "Both saved exactly twelve",
+          "correct": false
+        },
+        {
+          "text": "Neither saved anything yet",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: In the ordered pair (R, L), the first number is always R, the second is always L. Step 2: So (12, 6) reads as R = 12 and L = 6. Step 3: That means Ram saved 12 and Lakshman saved 6 — which fits the rule R = 2L. Step 4: The trap is reversing the order — the convention \"first coordinate = first variable\" is the same convention we will use for every matrix-vector product in Mission 12.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.1.q4",
+      "topicId": "1.1",
+      "prompt": "If Lakshman quadruples his savings, what *qualitative* change happens to Ram's savings?",
+      "options": [
+        {
+          "text": "It also quadruples up",
+          "correct": true
+        },
+        {
+          "text": "It stays exactly the same",
+          "correct": false
+        },
+        {
+          "text": "It drops down to zero",
+          "correct": false
+        },
+        {
+          "text": "It doubles just once",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: The rule R = 2L scales both sides together — if L becomes 4L, then R = 2 · 4L = 8L. Step 2: Ram's *new* R is 8L, his *old* R was 2L — so R has multiplied by 4. Step 3: The trap \"doubles just once\" confuses \"R doubles\" with \"R becomes double\" — actually R becomes *four times*. Step 4: This \"multiply input → multiply output by same factor\" behaviour is the seed of *homogeneity*, the property we will call *linearity* in Mission 12.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.1.q5",
+      "topicId": "1.1",
+      "prompt": "Why does the rule line R = 2L always pass through the origin (0, 0)?",
+      "options": [
+        {
+          "text": "Zero fits the rule cleanly",
+          "correct": true
+        },
+        {
+          "text": "The line is a circle shape",
+          "correct": false
+        },
+        {
+          "text": "Lines avoid origin always",
+          "correct": false
+        },
+        {
+          "text": "The rule has two inputs",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Substitute L = 0 into R = 2L: R = 2 × 0 = 0. Step 2: So (0, 0) satisfies the rule — the origin is on the line. Step 3: Whenever L = 0 forces R = 0, the line *must* include origin. Step 4: The trap \"the rule has two inputs\" misses the point — the reason is purely algebraic, not about how many variables. Step 5: This is what makes a *direct proportion* special — no fixed starting amount. We will contrast this with R = 2L + 1 in Q1.5, which does *not* pass through origin.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.1.q6",
+      "topicId": "1.1",
+      "prompt": "How would the brothers' graph *look* different if the rule changed from R = 2L to R = 2L + 1?",
+      "options": [
+        {
+          "text": "Line lifts above origin",
+          "correct": true
+        },
+        {
+          "text": "Line still passes through origin",
+          "correct": false
+        },
+        {
+          "text": "Line curves into a circle",
+          "correct": false
+        },
+        {
+          "text": "Line tilts downward only",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: At L = 0, R = 2(0) + 1 = 1, not 0. So the line crosses the R-axis at R = 1. Step 2: The line is still straight, but it is \"lifted up\" by 1 unit. Step 3: The trap \"still passes through origin\" only holds for R = 2L, not R = 2L + 1. Step 4: This \"shifted line\" idea is exactly what we will explore with y = 2x + 1 in Q1.5, and is the seed of *affine subspaces* (not *linear* ones) in Mission 4.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.1.q7",
+      "topicId": "1.1",
+      "prompt": "Compared with other straight lines, why is a line *through the origin* special?",
+      "options": [
+        {
+          "text": "Both inputs and outputs zero",
+          "correct": true
+        },
+        {
+          "text": "It curves around the origin",
+          "correct": false
+        },
+        {
+          "text": "It has a fixed starting point",
+          "correct": false
+        },
+        {
+          "text": "It only goes downward only",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: A line through origin has the property: whenever the input is 0, the output is also 0. Step 2: This makes the line pass through (0, 0), which is a unique geometric feature. Step 3: The trap \"fixed starting point\" describes lines like y = 2x + 1, *not* lines through origin. Step 4: This \"input-zero-implies-output-zero\" rule is one of the two defining properties of a *linear map*, the other being the \"scales with input\" rule from Q4. Both will matter in Mission 12.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.1.q8",
+      "topicId": "1.1",
+      "prompt": "If both brothers suddenly stopped saving entirely, the graph points would:",
+      "options": [
+        {
+          "text": "freeze at one single point",
+          "correct": true
+        },
+        {
+          "text": "keep rising as before",
+          "correct": false
+        },
+        {
+          "text": "turn into a horizontal line",
+          "correct": false
+        },
+        {
+          "text": "turn into a vertical line",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: If no more saving happens, R and L both stop changing. Step 2: A frozen R and a frozen L means every new \"point\" is the same (R, L) value. Step 3: A series of identical points is just one point drawn many times — the graph looks frozen. Step 4: The trap \"horizontal line\" would mean R keeps changing while L freezes — opposite of what \"both stop\" implies. Step 5: This is what \"stopping input → stopping output\" looks like geometrically — the same property we will use to detect *constant functions* in Mission 12.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.1.q9",
+      "topicId": "1.1",
+      "prompt": "What does it mean for a new point to \"satisfy\" the rule R = 2L?",
+      "options": [
+        {
+          "text": "It obeys the rule exactly",
+          "correct": true
+        },
+        {
+          "text": "It breaks the rule always",
+          "correct": false
+        },
+        {
+          "text": "It sits far from origin",
+          "correct": false
+        },
+        {
+          "text": "It sits on a circle shape",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: \"Satisfy\" means: plug in the point, and the rule holds true. Step 2: For (R, L) = (a, b), \"satisfies R = 2L\" means a = 2b. Step 3: For example, (10, 5) satisfies because 10 = 2 × 5. Step 4: The trap \"breaks the rule\" is the *opposite* meaning. Step 5: This plugging-in step is exactly what we will formalise as *substitution* in Mission 4, and what we will generalise as *A · x = b* for matrices in Mission 7.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.1.q10",
+      "topicId": "1.1",
+      "prompt": "If Ram's new rule became \"save half of Lakshman\", the new line would be:",
+      "options": [
+        {
+          "text": "closer to L-axis than R-axis",
+          "correct": true
+        },
+        {
+          "text": "closer to R-axis than L-axis",
+          "correct": false
+        },
+        {
+          "text": "exactly on the L-axis itself",
+          "correct": false
+        },
+        {
+          "text": "exactly on the R-axis itself",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: \"Save half of Lakshman\" means R = L/2. Step 2: So R is always *half* of L — R is smaller than L. Step 3: A point with a smaller R sits closer to the x-axis (which holds L) than to the y-axis (which holds R). Step 4: The trap \"closer to R-axis\" would describe R = 2L (where R > L), the original rule. Step 5: This \"smaller output than input\" picture is the geometric meaning of a *gentler* line — we will compare this to *steeper* lines in Q1.3.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.1.q11",
+      "topicId": "1.1",
+      "prompt": "Why does R = 2L produce a straight line and not a curve?",
+      "options": [
+        {
+          "text": "No squared or cubed terms",
+          "correct": true
+        },
+        {
+          "text": "It always passes through origin",
+          "correct": false
+        },
+        {
+          "text": "Brothers always save equal",
+          "correct": false
+        },
+        {
+          "text": "Time flows one direction",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: The rule R = 2L has only first-degree terms (no L², no L³). Step 2: First-degree rules always graph as straight lines. Step 3: A curve appears only when there is a square, cube, or other higher-degree term — like L² in Q1.9. Step 4: The trap \"passes through origin\" is a *consequence* of being straight-through-origin, not the *cause* of being straight. Step 5: This is the precise meaning of \"linear equation\" — linear in algebra means first-degree, no bends.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.1.q12",
+      "topicId": "1.1",
+      "prompt": "The rule \"R = 2L\" means, in plain words:",
+      "options": [
+        {
+          "text": "Ram saves twice Lakshman",
+          "correct": true
+        },
+        {
+          "text": "Lakshman saves twice Ram",
+          "correct": false
+        },
+        {
+          "text": "They save equal amounts",
+          "correct": false
+        },
+        {
+          "text": "Neither one saves anything",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: R = 2L means R equals 2 times L. Step 2: In plain words: \"Ram's amount is twice Lakshman's amount.\" Step 3: The trap \"Lakshman saves twice Ram\" reverses who has more — but R > L, so Ram has more. Step 4: This is a translation skill — turning symbols into everyday English. Step 5: The same translation skill will matter when we interpret matrix equations like A · x = b in Mission 7.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.1.q13",
+      "topicId": "1.1",
+      "prompt": "If Lakshman's savings double in one week, Ram's savings also double because:",
+      "options": [
+        {
+          "text": "both grow by the same factor",
+          "correct": true
+        },
+        {
+          "text": "Ram ignores Lakshman's number",
+          "correct": false
+        },
+        {
+          "text": "savings shrink by half each time",
+          "correct": false
+        },
+        {
+          "text": "only Lakshman keeps saving",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: The rule R = 2L is *homogeneous* — multiplying L by any number k multiplies R by the same k. Step 2: So if L → 2L, then R → 2R. Step 3: The trap \"only Lakshman keeps saving\" would describe a different rule entirely (like R = constant). Step 4: This \"same factor on both sides\" property is what makes a rule *linear* — we will write it formally as f(kx) = k · f(x) in Mission 8.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.1.q14",
+      "topicId": "1.1",
+      "prompt": "Why is a (R, L) graph sheet a better picture than just a table of weekly numbers?",
+      "options": [
+        {
+          "text": "Shows the underlying rule shape",
+          "correct": true
+        },
+        {
+          "text": "Shows just isolated numbers",
+          "correct": false
+        },
+        {
+          "text": "Hides the pattern always",
+          "correct": false
+        },
+        {
+          "text": "Makes the rule harder to see",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: A table lists each week's pair as separate numbers — the rule stays hidden between rows. Step 2: A graph plots all pairs at once — the eye immediately sees the straight line. Step 3: Once you see the straight line, the rule (R = 2L) is *obvious* from the geometry. Step 4: The trap \"hides the pattern\" describes a *bad* chart, like a pie chart — not a coordinate plot. Step 5: This is the power of *geometric reasoning* — it turns algebra back into shapes, the same way Mission 3 turns linear algebra into pictures.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.1.q15",
+      "topicId": "1.1",
+      "prompt": "If Ram saved nothing but Lakshman kept saving, what *visual* shape would the points form?",
+      "options": [
+        {
+          "text": "A horizontal line right",
+          "correct": true
+        },
+        {
+          "text": "A vertical line upward",
+          "correct": false
+        },
+        {
+          "text": "A diagonal line up-right",
+          "correct": false
+        },
+        {
+          "text": "A circle around origin",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Ram saves nothing → R stays at 0. Step 2: Lakshman keeps saving → L grows. Step 3: Points with R = 0 but L growing lie on the L-axis — a horizontal line. Step 4: The trap \"vertical line upward\" would be the opposite: L frozen, R growing. Step 5: This \"freeze one variable → one axis\" trick is the seed of *coordinate axes as test cases*, the diagnostic we will use to find the *kernel* of a matrix in Q1.16.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.1.q16",
+      "topicId": "1.1",
+      "prompt": "What stays *invariant* — the same — across all weeks of the brothers' saving?",
+      "options": [
+        {
+          "text": "The rule linking R to L",
+          "correct": true
+        },
+        {
+          "text": "The exact savings each week",
+          "correct": false
+        },
+        {
+          "text": "The direction of line tilt",
+          "correct": false
+        },
+        {
+          "text": "The position on the graph",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: An \"invariant\" is something that does not change. Step 2: Across weeks, savings values change — R and L both grow. Step 3: But the *rule* R = 2L stays the same — that is the invariant. Step 4: The trap \"the direction of line tilt\" actually does stay the same too, but that's a *consequence* of the rule being invariant, not the invariant itself. Step 5: This \"rule is invariant under time\" idea is what we will call a *constant of the motion*, the foundation of *conservation laws* in physics, and the *kernel* concept in linear algebra (Mission 3).",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.1.q17",
+      "topicId": "1.1",
+      "prompt": "How can a child *predict* next week's point on the brothers' graph without doing any math?",
+      "options": [
+        {
+          "text": "Follow the line's direction",
+          "correct": true
+        },
+        {
+          "text": "Just double the week number",
+          "correct": false
+        },
+        {
+          "text": "Wait for brothers to tell",
+          "correct": false
+        },
+        {
+          "text": "Look at a savings chart",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Once the line is drawn, its direction is visible — the slope of the line. Step 2: Following the line's direction forward gives the next point. Step 3: This is \"reading the geometry\" — no math required, just eyes. Step 4: The trap \"just double the week number\" treats the week index as if it were the savings — but R and L are savings, not weeks. Step 5: This is the essence of *visual reasoning* — the same skill we will use to find the image of a line under a matrix in Q3.12.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.1.q18",
+      "topicId": "1.1",
+      "prompt": "What if the brothers swapped who saves more — Ram now saves half of Lakshman instead of double — how would the line tilt?",
+      "options": [
+        {
+          "text": "Tilts away from R-axis",
+          "correct": true
+        },
+        {
+          "text": "Tilts away from L-axis",
+          "correct": false
+        },
+        {
+          "text": "Stays exactly the same",
+          "correct": false
+        },
+        {
+          "text": "Curves into a parabola",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: New rule R = L/2 means R is now smaller than L. Step 2: A line where R < L lies *closer* to the L-axis (the x-axis) — it tilts away from the R-axis. Step 3: The trap \"stays exactly the same\" misses the rule change. Step 4: The trap \"parabola\" would require a squared term, which R = L/2 does not have. Step 5: This \"rule change → tilt change\" connection is exactly what *slope* captures — we will quantify it formally in Q1.3.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.1.q19",
+      "topicId": "1.1",
+      "prompt": "Why does *doubling* Lakshman's savings also force *doubling* Ram's savings?",
+      "options": [
+        {
+          "text": "R scales exactly with L",
+          "correct": true
+        },
+        {
+          "text": "R and L are unrelated",
+          "correct": false
+        },
+        {
+          "text": "Ram copies Lakshman's move",
+          "correct": false
+        },
+        {
+          "text": "Lakshman controls Ram",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: R = 2L means R is computed as 2 × L — a direct multiplication. Step 2: If L becomes 2L, the new R is 2 × (2L) = 4L, which is double the old R = 2L. Step 3: So R \"scales\" with L — when L scales by k, R scales by k too. Step 4: The trap \"R and L are unrelated\" is the opposite — they are tightly linked by the rule. Step 5: This scaling behaviour is what makes the function R(L) = 2L a *homogeneous function*, the seed concept for *linear transformations* in Mission 12.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.1.q20",
+      "topicId": "1.1",
+      "prompt": "What if *only Lakshman* saved and Ram never did? At every week, R would be:",
+      "options": [
+        {
+          "text": "exactly zero every week",
+          "correct": true
+        },
+        {
+          "text": "twice L every week",
+          "correct": false
+        },
+        {
+          "text": "the same as L each week",
+          "correct": false
+        },
+        {
+          "text": "random each passing week",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: If Ram never saves, R = 0 always. Step 2: The rule R = 2L still applies, but with R pinned to 0, only L can vary. Step 3: So the (R, L) points become (0, L) for varying L — they all sit on the L-axis. Step 4: The trap \"twice L\" describes the original rule, not the new situation. Step 5: This \"pin one variable to 0 → axis of points\" picture is the seed of the *kernel / null space* concept we will explore in Q1.16 — where a matrix sends a whole line to zero.\n\n---",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    }
+  ]
+}

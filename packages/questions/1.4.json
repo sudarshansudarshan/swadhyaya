@@ -1,0 +1,548 @@
+{
+  "id": "1.4",
+  "moduleId": 1,
+  "number": 4,
+  "title": "All three lines pass through origin",
+  "vocabulary": {
+    "allowed": [
+      "line",
+      "origin",
+      "slope",
+      "substitution",
+      "equation",
+      "mx.",
+      "Vocabulary",
+      "forbidden:",
+      "matrix",
+      "vector",
+      "function."
+    ],
+    "forbidden": [
+      "matrix",
+      "vector",
+      "function."
+    ]
+  },
+  "questions": [
+    {
+      "id": "1.4.q1",
+      "topicId": "1.4",
+      "prompt": "Why does *every* line of the form y = mx pass through origin, no matter the slope m?",
+      "options": [
+        {
+          "text": "Substituting x = 0 gives 0",
+          "correct": true
+        },
+        {
+          "text": "Slopes are always zero",
+          "correct": false
+        },
+        {
+          "text": "Lines tilt away from origin",
+          "correct": false
+        },
+        {
+          "text": "Lines avoid origin always",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: For any m, substitute x = 0 into y = mx: y = m × 0 = 0. Step 2: So (0, 0) satisfies every y = mx. Step 3: Therefore origin lies on every such line. Step 4: The trap \"slopes are always zero\" is wrong — m can be any number. Step 5: This \"substitution x = 0 → y = 0\" pattern is the algebraic way of saying \"the line is closed under scaling\" — we will see this become the *subspace property* in Mission 3.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.4.q2",
+      "topicId": "1.4",
+      "prompt": "What does it *algebraically* mean that a line passes through origin?",
+      "options": [
+        {
+          "text": "The point (0, 0) works",
+          "correct": true
+        },
+        {
+          "text": "The line has slope zero",
+          "correct": false
+        },
+        {
+          "text": "The line is vertical only",
+          "correct": false
+        },
+        {
+          "text": "The line curves at start",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: \"Passes through origin\" means (0, 0) lies on the line. Step 2: Algebraically, this means the equation is satisfied at x = 0, y = 0. Step 3: For y = mx, this means 0 = m × 0 — always true. Step 4: The trap \"slope zero\" is unrelated to passing through origin. Step 5: This \"substitute the point\" verification is exactly the *evaluation* operation we will use for matrices in Mission 7.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.4.q3",
+      "topicId": "1.4",
+      "prompt": "If a line does NOT pass through origin, what must be true about its equation?",
+      "options": [
+        {
+          "text": "Has a constant added",
+          "correct": true
+        },
+        {
+          "text": "Has slope zero only",
+          "correct": false
+        },
+        {
+          "text": "Is a vertical line",
+          "correct": false
+        },
+        {
+          "text": "Has no slope at all",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: A line that doesn't pass through origin must miss (0, 0). Step 2: For y = mx + c with c ≠ 0, at x = 0, y = c ≠ 0 — so (0, 0) is not on the line. Step 3: So any line not through origin has form y = mx + c with c ≠ 0. Step 4: The trap \"slope zero\" describes a horizontal line, which could go through origin or not. Step 5: This \"c ≠ 0 → off origin\" property distinguishes *linear* from *affine* lines, the central distinction we will draw in Mission 4.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.4.q4",
+      "topicId": "1.4",
+      "prompt": "What value of m in y = mx makes the line *only* the origin point itself?",
+      "options": [
+        {
+          "text": "No value of m works",
+          "correct": true
+        },
+        {
+          "text": "m equals zero only",
+          "correct": false
+        },
+        {
+          "text": "m equals two only",
+          "correct": false
+        },
+        {
+          "text": "m equals infinity",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: For any m, the line y = mx has infinitely many points, not just origin. Step 2: Only when we *force* both x and y to be 0 do we get origin alone. Step 3: So no value of m produces \"just origin\" — y = mx is always a full line. Step 4: The trap \"m equals zero\" gives the x-axis (still a line). Step 5: This \"single point = degenerate case\" is the boundary case of *zero-dimensional subspace*, contrasted with the *one-dimensional subspace* y = mx we will study in Mission 3.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.4.q5",
+      "topicId": "1.4",
+      "prompt": "Why does substitution of x = 0 *prove* origin is on the line?",
+      "options": [
+        {
+          "text": "It satisfies the rule",
+          "correct": true
+        },
+        {
+          "text": "It draws a circle",
+          "correct": false
+        },
+        {
+          "text": "It makes slope zero",
+          "correct": false
+        },
+        {
+          "text": "It makes line vertical",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: To check if a point is on a line, we substitute and see if the equation holds. Step 2: Substituting (0, 0) into y = mx gives 0 = m × 0 = 0 — true. Step 3: So (0, 0) satisfies the rule, hence is on the line. Step 4: The trap \"makes slope zero\" is unrelated. Step 5: This \"substitute to verify\" method is the *definition* of a point being on a line, which generalises to *Ax = b* having a solution in Mission 7.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.4.q6",
+      "topicId": "1.4",
+      "prompt": "If y = mx passes through origin, can we predict *any* other point on the line from this?",
+      "options": [
+        {
+          "text": "Yes, by scaling x",
+          "correct": true
+        },
+        {
+          "text": "No, nothing else known",
+          "correct": false
+        },
+        {
+          "text": "Only origin known",
+          "correct": false
+        },
+        {
+          "text": "Yes, by random walk",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Knowing y = mx and passing through origin lets us compute y for any x. Step 2: At x = 1: y = m. At x = 2: y = 2m. Step 3: So scaling x scales y by the same factor — every point is reachable. Step 4: The trap \"only origin known\" misses the rule. Step 5: This \"rule determines every point\" is the *uniqueness* of line extension, the geometric meaning of *linear interpolation*.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.4.q7",
+      "topicId": "1.4",
+      "prompt": "For y = 5x, what value of x gives origin as the point?",
+      "options": [
+        {
+          "text": "x equals zero only",
+          "correct": true
+        },
+        {
+          "text": "x equals one only",
+          "correct": false
+        },
+        {
+          "text": "x equals five only",
+          "correct": false
+        },
+        {
+          "text": "x equals any value",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: At x = 0: y = 5 × 0 = 0, giving point (0, 0). Step 2: For any other x, y ≠ 0, so the point is not origin. Step 3: So only x = 0 gives origin. Step 4: The trap \"any value\" is wrong — y = 0 only when x = 0 here. Step 5: This \"unique x for y = 0\" is the *injectivity* of the map y = 5x, a property we will formalise for linear maps in Mission 12.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.4.q8",
+      "topicId": "1.4",
+      "prompt": "Why is substitution a powerful way to verify a point is on a line?",
+      "options": [
+        {
+          "text": "It uses the rule",
+          "correct": true
+        },
+        {
+          "text": "It avoids drawing",
+          "correct": false
+        },
+        {
+          "text": "It works for circles",
+          "correct": false
+        },
+        {
+          "text": "It works for curves",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: A line is defined by its equation. Step 2: Substituting a point's coordinates into the equation and checking if it holds is the *direct* verification. Step 3: No geometry, no drawing — just algebra. Step 4: The trap \"works for circles\" is true but unrelated — substitution works for *any* equation. Step 5: This direct algebraic verification is exactly the test we will use for matrix equations A · x = b in Mission 7.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.4.q9",
+      "topicId": "1.4",
+      "prompt": "If a line passes through (0, 0) and (1, 3), what is its slope m?",
+      "options": [
+        {
+          "text": "m equals three",
+          "correct": true
+        },
+        {
+          "text": "m equals zero",
+          "correct": false
+        },
+        {
+          "text": "m equals one",
+          "correct": false
+        },
+        {
+          "text": "m equals infinity",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: The line has form y = mx through origin. Step 2: At (1, 3): 3 = m × 1, so m = 3. Step 3: So slope = 3. Step 4: The trap \"m equals one\" describes y = x through origin, not our line. Step 5: This \"two points determine slope\" is the *two-point form* of slope, used to set up regression lines in statistics.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.4.q10",
+      "topicId": "1.4",
+      "prompt": "Why do all lines of form y = mx share the origin point *no matter the slope*?",
+      "options": [
+        {
+          "text": "Substitution gives zero",
+          "correct": true
+        },
+        {
+          "text": "Slopes are equal here",
+          "correct": false
+        },
+        {
+          "text": "Lines are all vertical",
+          "correct": false
+        },
+        {
+          "text": "Lines are all curved",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: For y = mx, at x = 0: y = 0 always, regardless of m. Step 2: So (0, 0) lies on every such line. Step 3: The trap \"slopes are equal\" is wrong — slopes can be any value. Step 4: This \"algebraic inevitability\" — that (0, 0) is forced to be on every y = mx — is the algebraic reason why all these lines share origin. Step 5: We will use this same substitution argument to show that the *kernel of a matrix* always contains origin — Mission 16.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.4.q11",
+      "topicId": "1.4",
+      "prompt": "What is the *visual* meaning of \"line passes through origin\" on a graph sheet?",
+      "options": [
+        {
+          "text": "Line touches (0, 0)",
+          "correct": true
+        },
+        {
+          "text": "Line is vertical only",
+          "correct": false
+        },
+        {
+          "text": "Line is horizontal only",
+          "correct": false
+        },
+        {
+          "text": "Line is diagonal up",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: Geometrically, \"passes through origin\" means the drawn line touches the origin point. Step 2: The origin is the (0, 0) intersection of the axes. Step 3: Every line through origin must visibly cross this intersection. Step 4: The trap \"vertical line\" describes only vertical lines. Step 5: This \"geometric ↔ algebraic\" correspondence is the *Fundamental Theorem of Analytic Geometry* — points ↔ coordinates, lines ↔ equations.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.4.q12",
+      "topicId": "1.4",
+      "prompt": "If you *know* a line passes through origin and has slope 4, can you sketch it immediately?",
+      "options": [
+        {
+          "text": "Yes, draw through (0, 0)",
+          "correct": true
+        },
+        {
+          "text": "No, need more points",
+          "correct": false
+        },
+        {
+          "text": "Only if vertical",
+          "correct": false
+        },
+        {
+          "text": "Only if horizontal",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: One point (origin) and the slope uniquely determine a line. Step 2: Plot origin, then go \"right 1, up 4\" to get (1, 4). Step 3: Connect origin and (1, 4) — extend to draw the full line. Step 4: The trap \"need more points\" is unnecessary. Step 5: This \"one point + slope = line\" is the *point-slope form*, the most efficient way to describe a line — used in Q1.6 with slider parameters.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.4.q13",
+      "topicId": "1.4",
+      "prompt": "Why does y = mx + c *fail* to pass through origin when c ≠ 0?",
+      "options": [
+        {
+          "text": "At x = 0: y = c",
+          "correct": true
+        },
+        {
+          "text": "Slope is zero then",
+          "correct": false
+        },
+        {
+          "text": "Line is vertical now",
+          "correct": false
+        },
+        {
+          "text": "Line is horizontal now",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: For y = mx + c with c ≠ 0, substitute x = 0: y = c. Step 2: So at x = 0, y = c, not 0. Step 3: The point (0, 0) is not on the line. Step 4: The trap \"slope zero\" is unrelated. Step 5: This \"c ≠ 0 means off origin\" property is what distinguishes *affine* lines from *linear* ones, a distinction we will make precise in Mission 4.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.4.q14",
+      "topicId": "1.4",
+      "prompt": "If a line passes through origin, what can you say about its equation?",
+      "options": [
+        {
+          "text": "Has no constant term",
+          "correct": true
+        },
+        {
+          "text": "Has constant term c",
+          "correct": false
+        },
+        {
+          "text": "Has slope zero only",
+          "correct": false
+        },
+        {
+          "text": "Has no slope at all",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: A line through origin has (0, 0) on it. Step 2: The general line y = mx + c at (0, 0) gives 0 = c. Step 3: So c = 0 — no constant term. Step 4: The trap \"has constant term c\" describes lines not through origin. Step 5: This \"no constant → through origin\" is the algebraic fingerprint of *linearity*, which we will use as a test in Mission 12.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.4.q15",
+      "topicId": "1.4",
+      "prompt": "What does the *lack* of a constant term in y = mx tell us algebraically?",
+      "options": [
+        {
+          "text": "Line passes origin",
+          "correct": true
+        },
+        {
+          "text": "Slope is huge here",
+          "correct": false
+        },
+        {
+          "text": "Line is vertical now",
+          "correct": false
+        },
+        {
+          "text": "Line has no slope",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: y = mx means y = m × x + 0. The constant is 0. Step 2: At x = 0: y = 0. So origin is on the line. Step 3: The trap \"slope is huge\" is unrelated. Step 4: This \"constant 0 → through origin\" is the algebraic content of the *linear subspace* test, which we will apply to many equation types in Mission 3 and beyond.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.4.q16",
+      "topicId": "1.4",
+      "prompt": "If three points (0, 0), (1, 2), (2, 4) lie on one line, what is the rule?",
+      "options": [
+        {
+          "text": "y equals two x",
+          "correct": true
+        },
+        {
+          "text": "y equals x only",
+          "correct": false
+        },
+        {
+          "text": "y equals four x",
+          "correct": false
+        },
+        {
+          "text": "y equals zero only",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: All three points lie on y = mx through origin. Step 2: At (1, 2): 2 = m × 1, so m = 2. Step 3: At (2, 4): 4 = m × 2, so m = 2. Confirmed. Step 4: The trap \"y equals x\" would give (1, 2) on y = x? No, 2 ≠ 1. Step 5: This \"find slope from one point\" technique is the *identification* step, used to extract rules from data.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.4.q17",
+      "topicId": "1.4",
+      "prompt": "If a line passes through origin but you don't know its slope, how many more points do you need to *fully* determine it?",
+      "options": [
+        {
+          "text": "Just one more point",
+          "correct": true
+        },
+        {
+          "text": "Need zero more points",
+          "correct": false
+        },
+        {
+          "text": "Need ten more points",
+          "correct": false
+        },
+        {
+          "text": "Need infinity points",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: A line through origin is determined by its slope. Step 2: One more point gives you the slope: m = (y − 0) / (x − 0) = y / x. Step 3: With the slope, the line is fully known. Step 4: The trap \"zero more points\" leaves the slope unknown. Step 5: This \"one point fixes the slope\" idea is the seed of *parameter counting* — how many numbers are needed to specify an object, which we will use in Mission 7 for matrix dimensions.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.4.q18",
+      "topicId": "1.4",
+      "prompt": "What if a line passed through *every* point on the graph — what would its equation look like?",
+      "options": [
+        {
+          "text": "Impossible for line",
+          "correct": true
+        },
+        {
+          "text": "y equals mx always",
+          "correct": false
+        },
+        {
+          "text": "x equals zero only",
+          "correct": false
+        },
+        {
+          "text": "y equals zero only",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: A line in the plane is one-dimensional, but the plane is two-dimensional. Step 2: So no single line can pass through every point of the plane. Step 3: The \"line through every point\" object is the whole plane, not a line. Step 4: This \"no 1D line covers 2D plane\" is the geometric meaning of *dimension mismatch*, the seed of *rank-nullity theorem* in Mission 16.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.4.q19",
+      "topicId": "1.4",
+      "prompt": "Why does the *test* \"substitute x = 0\" always work to find where a line crosses the y",
+      "options": [
+        {
+          "text": "It finds y at x = 0",
+          "correct": true
+        },
+        {
+          "text": "It finds slope directly",
+          "correct": false
+        },
+        {
+          "text": "It finds both points",
+          "correct": false
+        },
+        {
+          "text": "It avoids the origin",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: The y-axis is the set of points with x = 0. Step 2: Substituting x = 0 into the line's equation gives the y-value where the line meets the y-axis. Step 3: For y = mx + c, this gives y = c — the y-intercept. Step 4: For y = mx, this gives y = 0 — origin. Step 5: This \"y-intercept = c\" formula is the seed of *intercepts* in algebra, used in Q1.5 to discuss *y = mx + c* lines.",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    },
+    {
+      "id": "1.4.q20",
+      "topicId": "1.4",
+      "prompt": "What if you had a line y = mx + c with c ≠ 0 — how could you make it pass through origin?",
+      "options": [
+        {
+          "text": "Subtract the c",
+          "correct": true
+        },
+        {
+          "text": "Add slope m more",
+          "correct": false
+        },
+        {
+          "text": "Keep c the same",
+          "correct": false
+        },
+        {
+          "text": "Make slope negative",
+          "correct": false
+        }
+      ],
+      "explanation": "Step 1: To make y = mx + c pass through origin, we need c = 0. Step 2: Algebraically, rewrite as y − c = mx. Step 3: This shifts the line down by c units. Step 4: Geometrically, subtract c moves the line down so it touches origin. Step 5: This \"shift to make linear\" is the algebraic bridge between *affine* and *linear* — central to Mission 4 where we discuss *quotient spaces*.\n\n---",
+      "tags": [],
+      "source": "CONCEPTUAL_BANK"
+    }
+  ]
+}
