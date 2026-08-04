@@ -3,6 +3,7 @@
 import { signIn } from 'next-auth/react';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -26,7 +27,7 @@ export default function LoginPage() {
       } else {
         router.push('/dashboard');
       }
-    } catch (err) {
+    } catch {
       setError('Failed to sign in');
     } finally {
       setLoading(false);
@@ -38,7 +39,7 @@ export default function LoginPage() {
     setError(null);
     try {
       await signIn('samagama', { callbackUrl: '/dashboard' });
-    } catch (err) {
+    } catch {
       setError('Failed to sign in with samagama.in');
       setLoading(false);
     }
@@ -49,7 +50,7 @@ export default function LoginPage() {
     setError(null);
     try {
       await signIn('google', { callbackUrl: '/dashboard' });
-    } catch (err) {
+    } catch {
       setError('Failed to sign in with Google');
       setLoading(false);
     }
@@ -66,84 +67,80 @@ export default function LoginPage() {
     : [];
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-emerald-50 to-violet-50">
-      <div className="w-full max-w-md p-8 bg-white rounded-2xl shadow-lg">
-        <h1 className="text-3xl font-bold text-center">Swadhyaya</h1>
-        <p className="mt-2 text-center text-muted-foreground">
-          Sign in to continue learning
+    <div className="app-shell">
+      <div className="card" style={{ maxWidth: 520 }}>
+        <h1>Sign in</h1>
+        <p className="subtitle">
+          Welcome back. Choose how you&apos;d like to sign in.
         </p>
 
         {devQuickLogin && (
-          <div className="mt-6">
-            <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-2">
-              Dev quick sign-in
-            </p>
-            <div className="grid grid-cols-2 gap-2">
+          <>
+            <p className="custom-section-label">Dev quick sign-in</p>
+            <div className="menu-grid" style={{ marginBottom: 24 }}>
               {quickAccounts.map((acc) => (
                 <button
                   key={acc.email}
+                  type="button"
+                  className="menu-card"
                   onClick={() => handleEmailLogin(acc.email)}
                   disabled={loading}
-                  className="py-2 px-3 text-left border border-emerald-200 rounded-lg bg-emerald-50 hover:bg-emerald-100 transition disabled:opacity-50"
                 >
-                  <span className="block text-sm font-medium text-emerald-800">{acc.label}</span>
-                  <span className="block text-xs text-emerald-600">{acc.hint}</span>
+                  <div className="menu-title">{acc.label}</div>
+                  <div className="menu-subtitle">{acc.hint}</div>
                 </button>
               ))}
             </div>
-          </div>
+          </>
         )}
 
-        <div className="mt-8 space-y-3">
+        <div className="button-row" style={{ flexDirection: 'column', alignItems: 'stretch', marginTop: 8 }}>
           {hasSamagama && (
-            <button
-              onClick={handleSamagamaLogin}
-              disabled={loading}
-              className="w-full py-3 px-4 bg-emerald-600 text-white rounded-lg font-medium hover:bg-emerald-700 transition disabled:opacity-50"
-            >
+            <button onClick={handleSamagamaLogin} disabled={loading}>
               Sign in with samagama.in
             </button>
           )}
           {hasGoogle && (
-            <button
-              onClick={handleGoogleLogin}
-              disabled={loading}
-              className="w-full py-3 px-4 bg-white border border-gray-300 text-gray-700 rounded-lg font-medium hover:bg-gray-50 transition disabled:opacity-50"
-            >
+            <button className="secondary" onClick={handleGoogleLogin} disabled={loading}>
               Sign in with Google
             </button>
           )}
         </div>
-
-        <div className="mt-6 text-center text-sm text-muted-foreground">or</div>
 
         <form
           onSubmit={(e) => {
             e.preventDefault();
             handleEmailLogin(email);
           }}
-          className="mt-4 space-y-3"
+          style={{ marginTop: 24 }}
         >
           <input
             type="email"
+            className="answer-input"
             placeholder="admin@iitrpr.ac.in"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500"
+            style={{ maxWidth: '100%' }}
           />
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full py-3 px-4 bg-gray-900 text-white rounded-lg font-medium hover:bg-gray-800 transition disabled:opacity-50"
-          >
-            Sign in
-          </button>
+          <div className="button-row">
+            <button type="submit" disabled={loading}>
+              {loading ? 'Signing in…' : 'Sign in with email'}
+            </button>
+          </div>
         </form>
 
         {error && (
-          <p className="mt-4 text-sm text-red-600 text-center">{error}</p>
+          <div className="feedback wrong" style={{ marginTop: 20 }}>
+            {error}
+          </div>
         )}
+
+        <div style={{ marginTop: 28, textAlign: 'center' }}>
+          <Link href="/" className="back-button" style={{ textDecoration: 'none' }}>
+            ← Back to home
+          </Link>
+        </div>
       </div>
     </div>
   );
