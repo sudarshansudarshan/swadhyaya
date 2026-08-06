@@ -3,7 +3,7 @@
 import { useState, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { MuxVideoPlayer } from '@/components/video/MuxVideoPlayer';
-import { ActivityLauncher } from '@/components/activity/ActivityLauncher';
+import { ActivityFrame } from '@/components/activity/ActivityFrame';
 import { QuizApp } from '@/components/quiz/QuizApp';
 import { EthicsConsent } from '@/components/ethics/EthicsConsent';
 import { ProctorPanel } from '@/components/proctor/ProctorPanel';
@@ -184,11 +184,9 @@ export function ItemClient({ item, progress, questions, sectionTitle, backHref, 
         )}
 
         {item.type === 'ACTIVITY' && item.activityHtmlSlug && (
-          <ActivityLauncher
+          <ActivityFrame
             slug={item.activityHtmlSlug}
             minSeconds={item.activityMinSeconds}
-            itemId={item.id}
-            alreadyComplete={progress?.activityCompleted ?? false}
             onComplete={markActivityComplete}
           />
         )}

@@ -1,13 +1,3 @@
-/**
- * Activity manifest — the 37 hand-built interactive HTML activities
- * that live at /public/activities/{slug}.html.
- *
- * Each entry pairs the file slug with a curated title, the historical
- * figure who introduces the concept, the topic family, and a one-line
- * description. Title and figure are read from the <title> tag and the
- * `.eyebrow` line of each HTML file at build time (see scripts/activity-meta.sh).
- */
-
 export type ActivityKind = 'intuition' | 'linear-algebra' | 'systems' | 'markov' | 'cryptography';
 
 export type ActivityMeta = {
@@ -17,7 +7,6 @@ export type ActivityMeta = {
   figure: string;
   kind: ActivityKind;
   topic: string;
-  /** Approximate interaction length in minutes. */
   minutes: number;
 };
 
@@ -65,12 +54,12 @@ export const ACTIVITY_BY_SLUG: Record<string, ActivityMeta> = Object.fromEntries
   ACTIVITIES.map((a) => [a.slug, a]),
 );
 
-export const KIND_LABELS: Record<ActivityKind, { label: string; tone: 'emerald' | 'violet' | 'amber' | 'sky' | 'rose' }> = {
-  intuition: { label: 'Intuition Builder', tone: 'amber' },
-  'linear-algebra': { label: 'Linear Algebra', tone: 'violet' },
-  systems: { label: 'Systems', tone: 'emerald' },
-  markov: { label: 'Markov Chain', tone: 'rose' },
-  cryptography: { label: 'Cryptography', tone: 'sky' },
+export const KIND_LABELS: Record<ActivityKind, string> = {
+  intuition: 'Intuition Builder',
+  'linear-algebra': 'Linear Algebra',
+  systems: 'Systems',
+  markov: 'Markov Chain',
+  cryptography: 'Cryptography',
 };
 
 export function getActivity(slug: string): ActivityMeta | undefined {

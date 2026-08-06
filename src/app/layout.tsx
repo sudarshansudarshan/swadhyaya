@@ -1,29 +1,44 @@
 import type { Metadata, Viewport } from 'next';
-import { Inter } from 'next/font/google';
+import { DM_Sans, Source_Serif_4 } from 'next/font/google';
 import './globals.css';
 
-const inter = Inter({
+const body = DM_Sans({
   subsets: ['latin'],
-  variable: '--font-inter',
   display: 'swap',
+  variable: '--font-tenali-body',
+  weight: ['400', '500', '600', '700'],
+});
+
+const display = Source_Serif_4({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-tenali-display',
+  weight: ['600', '700'],
 });
 
 export const metadata: Metadata = {
   title: {
-    default: 'Swadhyaya — Proctored Self-Study',
+    default: 'Swadhyaya',
     template: '%s · Swadhyaya',
   },
   description:
-    'Self-study with proctored videos, interactive activities, and teacher-led viva approval.',
-  applicationName: 'Swadhyaya',
-  authors: [{ name: 'IIT Ropar' }],
+    'Proctored self-study platform — videos, interactive activities, conceptual quizzes, and viva approval.',
 };
 
 export const viewport: Viewport = {
-  themeColor: '#1F6F5C',
+  themeColor: '#1a1614',
   width: 'device-width',
   initialScale: 1,
 };
+
+const themeScript = `
+(function() {
+  try {
+    var t = localStorage.getItem('swadhyaya-theme');
+    if (t === 'light') document.documentElement.setAttribute('data-theme', 'light');
+  } catch (e) {}
+})();
+`;
 
 export default function RootLayout({
   children,
@@ -31,8 +46,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={inter.variable}>
-      <body className="font-sans">{children}</body>
+    <html lang="en" className={`${body.variable} ${display.variable}`}>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+      </head>
+      <body>{children}</body>
     </html>
   );
 }

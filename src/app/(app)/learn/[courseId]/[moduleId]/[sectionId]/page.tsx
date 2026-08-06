@@ -3,18 +3,7 @@ import Link from 'next/link';
 import { getCurrentUser } from '@/lib/auth-helpers';
 import { prisma } from '@/lib/prisma';
 import { getCourseLockState } from '@/lib/progress';
-import {
-  CheckCircle,
-  Lock,
-  Video,
-  Activity as ActivityIcon,
-  ClipboardCheck,
-  ArrowRight,
-  Sparkles,
-} from 'lucide-react';
 import { getActivity, KIND_LABELS } from '@/lib/activities';
-import { Card } from '@/components/ui/Card';
-import { Badge } from '@/components/ui/Badge';
 
 export default async function SectionPage({
   params,
@@ -54,33 +43,32 @@ export default async function SectionPage({
   });
 
   return (
-    <div className="space-y-6 max-w-3xl">
-      <div>
-        <div className="flex items-center gap-2 text-xs text-[var(--ink-soft)]">
-          <span>Section {section.number}</span>
-          {sectionState?.complete && (
-            <Badge tone="emerald" icon={<CheckCircle className="h-3 w-3" />}>
-              Complete
-            </Badge>
-          )}
-        </div>
-        <h1 className="mt-1 text-3xl font-bold tracking-tight text-[var(--ink)] sm:text-4xl">
-          {section.title}
-        </h1>
+    <div className="space-y-6" style={{ maxWidth: 760 }}>
+      <div className="welcome-box" style={{ paddingTop: 0, paddingBottom: 0, textAlign: 'left' }}>
+        <p className="custom-section-label">Section {section.number}</p>
+        <h1 style={{ textAlign: 'left' }}>{section.title}</h1>
         {section.prompt && (
-          <p className="mt-2 text-[var(--ink-soft)]">{section.prompt}</p>
+          <p className="subtitle" style={{ textAlign: 'left', marginBottom: 0 }}>
+            {section.prompt}
+          </p>
+        )}
+        {sectionState?.complete && (
+          <div className="feedback correct" style={{ marginTop: 20, display: 'inline-block', padding: '8px 18px' }}>
+            Section complete
+          </div>
         )}
       </div>
 
-      <div className="space-y-3">
+      <div className="menu-grid" style={{ justifyContent: 'flex-start' }}>
         {section.items.map((item, idx) => {
           const st = lockState.items.get(item.id);
           const done = st?.done;
-          const isDone = item.type === 'VIDEO'
-            ? done?.video
-            : item.type === 'ACTIVITY'
-            ? done?.activity
-            : done?.quiz;
+          const isDone =
+            item.type === 'VIDEO'
+              ? done?.video
+              : item.type === 'ACTIVITY'
+                ? done?.activity
+                : done?.quiz;
           const locked = st?.locked ?? false;
 
           const isFailed =
@@ -88,114 +76,74 @@ export default async function SectionPage({
               ? latestAttempt.get(item.id) && !latestAttempt.get(item.id)!.passed
               : item.type === 'VIDEO' && sectionQuizFailed && !done?.video;
 
-          const Icon = item.type === 'VIDEO' ? Video : item.type === 'ACTIVITY' ? ActivityIcon : ClipboardCheck;
-          const tone =
-            item.type === 'VIDEO' ? 'sky' : item.type === 'ACTIVITY' ? 'amber' : 'emerald';
-          const toneBg =
-            item.type === 'VIDEO'
-              ? 'bg-sky-100 text-sky-700'
-              : item.type === 'ACTIVITY'
-                ? 'bg-amber-100 text-amber-700'
-                : 'bg-emerald-100 text-emerald-700';
           const ordinal = ['I.', 'II.', 'III.', 'IV.'][idx] ?? `${idx + 1}.`;
-
           const activityMeta =
             item.type === 'ACTIVITY' && item.activityHtmlSlug
               ? getActivity(item.activityHtmlSlug)
               : null;
 
+          const href = locked
+            ? '#'
+            : item.type === 'ACTIVITY' && item.activityHtmlSlug
+              ? `/activity/${item.activityHtmlSlug}?itemId=${item.id}&min=${item.activityMinSeconds}`
+              : `/learn/${courseId}/${moduleId}/${sectionId}/${item.id}`;
+
+          const subtitle =
+            item.type === 'VIDEO'
+              ? `${item.videoMinWatchSeconds}s minimum`
+              : item.type === 'ACTIVITY'
+                ? `${item.activityMinSeconds}s minimum`
+                : `${item.quizQuestionCount} questions · pass ${item.quizPassThreshold}`;
+
+          const kindLabel = activityMeta ? KIND_LABELS[activityMeta.kind] : null;
+
           return (
             <Link
               key={item.id}
-              href={locked ? '#' : `/learn/${courseId}/${moduleId}/${sectionId}/${item.id}`}
-              className={`group relative block rounded-2xl border bg-white p-4 transition-all duration-200 ${
-                locked
-                  ? 'cursor-not-allowed border-[var(--paper-line)] opacity-50'
-                  : 'border-[var(--paper-line)]/60 hover:-translate-y-0.5 hover:border-emerald-200 hover:shadow-lg'
-              }`}
+              href={href}
+              target={item.type === 'ACTIVITY' ? '_blank' : undefined}
+              rel={item.type === 'ACTIVITY' ? 'noopener noreferrer' : undefined}
+              className={`menu-card ${isDone ? '' : locked ? 'placeholder' : ''}`}
+              style={{
+                width: '100%',
+                maxWidth: 360,
+                textDecoration: 'none',
+                opacity: locked ? 0.5 : 1,
+                pointerEvents: locked ? 'none' : 'auto',
+              }}
             >
-              <div className="flex items-start gap-4">
-                <div className="flex flex-col items-center gap-1 pt-1">
-                  <span className="font-mono text-[10px] font-bold text-[var(--ink-soft)]">
-                    {ordinal}
-                  </span>
-                  <div className={`flex h-11 w-11 items-center justify-center rounded-xl ${toneBg}`}>
-                    <Icon className="h-5 w-5" />
-                  </div>
-                </div>
-                <div className="min-w-0 flex-1">
-                  <div className="flex items-center gap-2">
-                    <Badge tone={tone}>{item.type}</Badge>
-                    {activityMeta && (
-                      <Badge tone={KIND_LABELS[activityMeta.kind].tone}>
-                        {KIND_LABELS[activityMeta.kind].label}
-                      </Badge>
-                    )}
-                    {isDone && (
-                      <Badge tone="emerald" icon={<CheckCircle className="h-3 w-3" />}>
-                        Done
-                      </Badge>
-                    )}
-                    {locked && (
-                      <Badge tone="slate" icon={<Lock className="h-3 w-3" />}>
-                        Locked
-                      </Badge>
-                    )}
-                  </div>
-                  <div className="mt-1 font-semibold text-[var(--ink)]">{item.title}</div>
-                  <div className="mt-0.5 text-xs text-[var(--ink-soft)]">
-                    {item.type === 'VIDEO' && `${item.videoMinWatchSeconds}s minimum watch time`}
-                    {item.type === 'ACTIVITY' && `${item.activityMinSeconds}s minimum · opens in a new tab`}
-                    {item.type === 'QUIZ' && `${item.quizQuestionCount} questions · pass ${item.quizPassThreshold}/${item.quizQuestionCount}`}
-                  </div>
-                  {activityMeta && (
-                    <p className="mt-1.5 line-clamp-1 text-xs text-[var(--ink-soft)]">
-                      <Sparkles className="mr-0.5 inline h-3 w-3" />
-                      {activityMeta.title} — introduced by {activityMeta.figure}
-                    </p>
-                  )}
-                  {isFailed && (
-                    <div className="mt-1.5 inline-flex items-center gap-1 rounded-md bg-rose-50 px-2 py-0.5 text-xs font-medium text-rose-700">
-                      ✗ {item.type === 'QUIZ' ? 'Incorrect · retake the quiz' : 'Re-watch the video'}
-                    </div>
-                  )}
-                </div>
-                <div className="flex flex-col items-end gap-1 self-center">
-                  {isDone ? (
-                    <CheckCircle className="h-5 w-5 text-emerald-500" />
-                  ) : locked ? (
-                    <Lock className="h-5 w-5 text-gray-400" />
-                  ) : (
-                    <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[var(--paper)] text-[var(--ink-soft)] transition group-hover:bg-emerald-100 group-hover:text-[var(--primary)]">
-                      <ArrowRight className="h-4 w-4 transition group-hover:translate-x-0.5" />
-                    </div>
-                  )}
-                  {item.type === 'ACTIVITY' && !locked && (
-                    <span className="text-[10px] font-medium uppercase tracking-wider text-[var(--accent)]">
-                      new tab
-                    </span>
-                  )}
-                </div>
+              <div className="menu-title">
+                {ordinal} {item.type}
+                {isDone ? ' ✓' : ''}
               </div>
+              <div className="menu-subtitle">{subtitle}</div>
+              {kindLabel && (
+                <div
+                  style={{
+                    fontSize: '0.72rem',
+                    color: 'var(--clr-text-soft)',
+                    marginTop: 4,
+                  }}
+                >
+                  {kindLabel} — {activityMeta?.figure}
+                </div>
+              )}
+              {isFailed && (
+                <div
+                  style={{
+                    fontSize: '0.72rem',
+                    color: 'var(--clr-wrong)',
+                    marginTop: 4,
+                    fontWeight: 600,
+                  }}
+                >
+                  ✗ {item.type === 'QUIZ' ? 'retake the quiz' : 're-watch the video'}
+                </div>
+              )}
             </Link>
           );
         })}
       </div>
-
-      <Card padding="md" className="bg-gradient-to-br from-emerald-50/40 to-violet-50/40">
-        <div className="flex items-start gap-3">
-          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-white text-emerald-700 shadow-sm">
-            <Sparkles className="h-4 w-4" />
-          </div>
-          <div className="flex-1">
-            <div className="text-sm font-semibold text-[var(--ink)]">Tip</div>
-            <p className="mt-0.5 text-xs text-[var(--ink-soft)]">
-              Activities open in a new tab so you can keep this page nearby. The timer
-              pauses if you switch away, and your progress syncs back here automatically.
-            </p>
-          </div>
-        </div>
-      </Card>
     </div>
   );
 }
